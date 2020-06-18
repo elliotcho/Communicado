@@ -5,7 +5,7 @@ import Signup from './Pages/Signup/Signup';
 class App extends Component{
     render(){
       return(
-         <Signup/>
+         <Login/>
       )
     }
 }
