@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const axios = require('axios');
 
 const app = express();
 
@@ -17,3 +16,13 @@ mongoose.connection.once('open', () => {
 // Static build that uses a module to store data in req.body
 app.use(express.static('../client/build'));
 app.use(bodyParser.json());
+
+// Serve index 
+app.get('/', (req, res) => {
+    res.sendFile('../client/build/index.html');
+});
+
+// Call signup function that gugsa makes 
+
+//Specify localhost port number
+app.listen(3000);
