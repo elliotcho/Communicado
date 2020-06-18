@@ -7,15 +7,11 @@ import Home from './Pages/Home/Home';
 class App extends Component{
     render(){
       return(
-<<<<<<< HEAD
-         <Login/>
-=======
          <HashRouter>
            <Route exact path='/' component={Login}/>
            <Route exact path='/signup' component={Signup}/>
            <Route exact path='/home' component={Home}/>
          </HashRouter>
->>>>>>> upstream/master
       )
     }
 }
