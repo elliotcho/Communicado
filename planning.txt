@@ -6,5 +6,3 @@ Messaging page (different state/props depending on which friend your messaging)
 Settings page (update email/password)
 Friends page (maybe add search bar)
 Notifications page
-
-db password: pwd
