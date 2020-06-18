@@ -9,6 +9,12 @@ class Login extends Component{
             email: '',
             password: ''
         }
+
+        this.toSignup=this.toSignup.bind(this);
+    }
+
+    toSignup(){
+        this.props.history.push('/signup');
     }
 
     render(){
@@ -50,7 +56,7 @@ class Login extends Component{
                     
                     <button className='btn btn-success btn-lg'>Login</button>
 
-                    <p className='mt-4 ml-2'>Don't have an account? Sign up here!</p>
+                    <p onClick={this.toSignup} className='mt-4 ml-2'>Don't have an account? Sign up here!</p>
                 </form>
             </div>
         )
