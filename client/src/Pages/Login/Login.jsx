@@ -39,7 +39,7 @@ class Login extends Component{
             }
 
             else{
-                alert(msg);
+                alert(response.data.msg);
             }
         });
     }
