@@ -35,8 +35,13 @@ class Signup extends Component {
 
         // Use axios to post message to server
         axios.post('/signup', data, config).then(response => {
-            let msg = response.data;
-            console.log(msg);
+            // let msg = response.data;
+            // console.log(msg);
+            if (response.data.msg === "Account Created!!") {
+                this.props.history.push('/')
+            } else {
+                alert(response.data.msg)
+            }
         })
     }
 
