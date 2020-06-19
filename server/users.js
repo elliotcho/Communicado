@@ -1,16 +1,15 @@
 //import collection
 const {User}= require('./dbschema');
 //result is result of query, query is example User.findOne({})
-const Login=(req,res)=>{
+exports.login=(req,res)=>{
     User.findOne({email:req.body.email}).then(result=>{
         if(result===null){res.json({msg:"Email is not registred with Communicado"});}
         else{
             if(result.password===req.body.password){
                 res.json({...User});
             }
-            else{res.json({msg:"icorrect password"});}
+            else{res.json({msg:"incorrect password"});}
         }
     })
     
 }
-export default Login;
