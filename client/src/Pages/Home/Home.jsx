@@ -40,7 +40,7 @@ class Home extends Component{
                         
                     </div>
 
-                    <button>Change Profile Pic</button>
+                    <button className='btn-lg btn-primary ml-3'>Change Profile Pic</button>
                 </aside>
 
                 <footer>

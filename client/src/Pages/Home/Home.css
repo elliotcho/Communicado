@@ -70,6 +70,13 @@
 
 .home .profileCard button{
     cursor: pointer;
+    outline: none;
+    border: none;
+    font-family: 'Nunito';
+}
+
+.home .profileCard button:focus{
+    box-shadow: none;
 }
 
 .home footer{
