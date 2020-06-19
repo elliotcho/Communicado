@@ -39,6 +39,8 @@ class Home extends Component{
                     <div className='profilePic'>
                         
                     </div>
+
+                    <button>Change Profile Pic</button>
                 </aside>
 
                 <footer>
