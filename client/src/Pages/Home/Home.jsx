@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import './Home.css';
 
+import avatar from './avatar.jpg';
+
 class Home extends Component{
     render(){
         return(
@@ -36,9 +38,7 @@ class Home extends Component{
                 <aside className='profileCard'>
                     <h2>Tariq Hirji</h2>
 
-                    <div className='profilePic'>
-                        
-                    </div>
+                    <img className='profilePic' src={avatar} alt='profile pic'></img>
 
                     <button className='btn-lg btn-primary ml-3'>Change Profile Pic</button>
                 </aside>

@@ -62,8 +62,9 @@
 
 .home .profileCard .profilePic{
     margin: 30px auto;
-    width: 300px;
-    height: 300px;
+    margin-left: 3px;
+    width: 250px;
+    height: 250px;
     border: solid royalblue;
     border-radius: 50%;
 }
