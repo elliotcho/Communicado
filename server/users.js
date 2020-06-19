@@ -1,4 +1,4 @@
-const {User}= require('./dbschema');
+const {User} = require('./dbschema');
 
 //result is result of query, query is example User.findOne({})
 const login = (req,res) => {
@@ -7,7 +7,7 @@ const login = (req,res) => {
         if(result === null) {
             // If no email found, inform user
             res.json({msg:"Email is not registred with Communicado"});
-        } else{
+        } else {
             // If email found, verify email
             if(result.password === req.body.password){
                 // Once verified, send User

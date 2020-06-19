@@ -9,11 +9,16 @@ class Signup extends Component {
         this.state = { firstName: "", lastName: "", email: "", password: "", confirmPassword: ""};
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.toLogin = this.toLogin.bind(this);
     }
     
     // Change the state name to the value that the user is typing
     handleChange(evt) {
         this.setState({ [evt.target.name] : evt.target.value });
+    }
+
+    toLogin() {
+        this.props.history.push('/');
     }
 
     handleSubmit(evt) {
@@ -104,6 +109,7 @@ class Signup extends Component {
                     <br/>
                     
                     <button className="Signup-submit-btn">Create Account</button>
+                    <p onClick={this.toLogin} className="Signup-p">Already have an account? Sign in here</p>
                 </form>
             </div>
         ) 

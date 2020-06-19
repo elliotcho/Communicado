@@ -14,7 +14,7 @@
 
 .Signup-title {
     font-family: 'Odibee Sans', cursive;
-    font-size: 2.5em;
+    font-size: 3em;
     margin-bottom: 30px;
 }
 
@@ -30,7 +30,7 @@
 .Signup-submit-btn {
     width: 150px;
     height: 30px;
-    margin: 30px 0 10px 0;
+    margin: 20px 0 25px 0;
     background-color: RGBA(55,55,55,0.55);
     border-color: rgba(50,50,50,0.2);
     border-radius: 5px;
@@ -50,5 +50,18 @@
 }
 
 .Signup-input-long {
-    width: 383px;
+    width: 363px;
+}
+
+.Signup h3 {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+.Signup-p {
+    cursor: pointer;
+}
+
+.Signup-p:hover{
+    text-decoration: underline;
 }
