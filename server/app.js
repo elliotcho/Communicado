@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const { login } = require('./users');
 
 const app = express();
 
@@ -22,7 +23,8 @@ app.get('/', (req, res) => {
     res.sendFile('../client/build/index.html');
 });
 
-// Call signup function that gugsa makes 
+// 
+app.post('/', login) 
 
 //Specify localhost port number
 app.listen(3000);
