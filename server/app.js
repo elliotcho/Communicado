@@ -1,9 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
-//this is how you import in javaScript
-const { login } = require('./users.js');
+const users = require('./users');
+const { signup } = require('./users');
 
 const app = express();
 
@@ -14,6 +13,20 @@ mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Comm
 
 mongoose.connection.once('open', () => {
     console.log("Connected to Database");
-}).on('error', err => {console.log(err)});
+}).on('error', err => {console.log(err);});
 
-app.post('/',login)
+// Static build that uses a module to store data in req.body
+app.use(express.static('../client/build'));
+app.use(bodyParser.json());
+
+// Serve index 
+app.get('/', (req, res) => {
+    res.sendFile('../client/build/index.html');
+});
+
+// 
+app.post('/', users.login())
+app.post('/signup', users.signup()) 
+
+//Specify localhost port number
+app.listen(3000);
