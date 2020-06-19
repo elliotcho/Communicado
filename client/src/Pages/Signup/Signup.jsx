@@ -29,7 +29,7 @@ class Signup extends Component {
         }
 
         // Use axios to post message to server
-        axios.post('/', data, config).then(response => {
+        axios.post('/signup', data, config).then(response => {
             let msg = response.data;
             console.log(msg);
         })

@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const { login } = require('./users');
+const users = require('./users');
+const { signup } = require('./users');
 
 const app = express();
 
@@ -24,7 +25,8 @@ app.get('/', (req, res) => {
 });
 
 // 
-app.post('/', login) 
+app.post('/', users.login())
+app.post('/signup', users.signup()) 
 
 //Specify localhost port number
 app.listen(3000);
