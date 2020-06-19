@@ -34,7 +34,13 @@ class Login extends Component{
 
         axios.post('/', data, {headers: {'Content-Type': 'application/json'}})
         .then(response =>{
-            alert(response.data.msg);
+            if(msg==='Success'){
+                this.props.history.push('/home');
+            }
+
+            else{
+                alert(msg);
+            }
         });
     }
 
