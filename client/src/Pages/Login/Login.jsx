@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import './Login.css';
 
+const axios=require('axios');
+
 class Login extends Component{
     constructor(){
         super();
@@ -11,10 +13,29 @@ class Login extends Component{
         }
 
         this.toSignup=this.toSignup.bind(this);
+        this.handleChange=this.handleChange.bind(this);
+        this.handleSubmit=this.handleSubmit.bind(this);
     }
 
     toSignup(){
         this.props.history.push('/signup');
+    }
+
+    handleChange(e){
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    handleSubmit(e){
+        e.preventDefault();
+
+        const data = {...this.state};
+
+        axios.post('/', data, {headers: {'Content-Type': 'application/json'}})
+        .then(response =>{
+            alert(response.data.msg);
+        });
     }
 
     render(){
@@ -35,11 +56,13 @@ class Login extends Component{
                     </div>
                 </nav>
 
-                <form className='mb-5'>
+                <form className='mb-5' onSubmit={this.handleSubmit}>
                     <h1 className='ml-2 mb-5'>Sign in</h1>
 
                     <input type='email' 
-                           email ={this.state.email} 
+                           name ='email'
+                           value ={this.state.email} 
+                           onChange={this.handleChange}
                            minLength='6' 
                            maxLength='50' 
                            placeholder='Your email here' 
@@ -47,7 +70,9 @@ class Login extends Component{
                     />
                     
                     <input type='password' 
-                           password ={this.state.password} 
+                           name='password'
+                           value ={this.state.password} 
+                           onChange={this.handleChange}
                            minLength='6' 
                            maxLength='50' 
                            placeholder='Your password here' 

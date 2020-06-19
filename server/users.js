@@ -11,7 +11,7 @@ const login = (req,res) => {
             // If email found, verify email
             if(result.password === req.body.password){
                 // Once verified, send User
-                res.json({...User});
+                res.json({...result, msg:'Logged in successfully'});
             }
             // If password is not correct
             else{res.json({msg:"incorrect password"});}
