@@ -36,7 +36,7 @@ const signup = (req, res) => {
                     lastName: req.body.lastName,
                     email: req.body.email,
                     password: req.body.password,
-                    dateCreated: Date.now() 
+                    dateCreated: Date.now()
                 });
                 // Save user to DB and return it to access, along with confirmation msg
                 newUser.save().then(() => {
@@ -47,8 +47,45 @@ const signup = (req, res) => {
     }
 }
 
+const handleProfilePic = (upload, fs, path) => (req, res) =>{
+   if(req.body.action === 'load'){
+       User.findOne({_id: req.body.id}).then(result =>{
+            if(typeof result.profilePic === 'undefined'){
+                res.sendFile(path.join(__dirname, 'images/avatar.jpg'));
+            } 
+
+            else{
+                res.sendFile(path.join(__dirname, `images/${result.profilePic}`));
+            }
+       });
+   }
+
+   else{
+        upload(req, res, err => {
+            if(err){
+                console.log(err);
+            }
+
+            User.findOne({_id: req.body.id}).then(result =>{
+                if(result.profilePic !== null){
+                    fs.unlink(path.join(__dirname, `images/${result.profilePic}`), err =>{
+                        if(err){
+                            console.log(err);
+                        }
+                    });
+                }
+
+                User.updateOne({_id: req.body.id}, {profilePic: req.file.filename}).then(()=>{
+                    res.json({msg: 'Success'});
+                });
+            });
+        });
+    }
+}
+
 // exports
 module.exports = {
-    login: login,
-    signup: signup
+    login,
+    signup,
+    handleProfilePic
 }
