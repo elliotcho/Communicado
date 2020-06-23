@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
 import './Home.css';
+import Navbar from '../../Components/Navbar'
 
 class Home extends Component{
     render(){
         return(
             <div className='home'>
-                <nav>
-
-                </nav>
-
+                <Navbar />
                 <section className='message'>
                     <h3>Gugsa Challa</h3>
                     <p className='text-muted date'>5 minutes ago</p>
