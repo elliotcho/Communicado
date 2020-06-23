@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import './Home.css';
 
+import loading from './loading.jpg';
+
 const axios=require('axios');
 
 class Home extends Component{
@@ -97,7 +99,7 @@ class Home extends Component{
                 <aside className='profileCard'>
                     <h2>{firstName} {lastName}</h2>
 
-                    <img className='profilePic' src={imgURL} alt='profile pic'></img>
+                    <img className='profilePic' src={imgURL? imgURL: loading} alt='profile pic'></img>
 
                     <input id='upload' type='file' accept='jpg jpeg png' style={{visibility: 'hidden'}} onChange={this.handleChange}/> 
 
