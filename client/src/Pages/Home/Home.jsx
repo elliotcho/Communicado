@@ -4,7 +4,46 @@ import './Home.css';
 import avatar from './avatar.jpg';
 
 class Home extends Component{
+    constructor(){
+        super();
+
+        this.state={
+            imgURL: null,
+            userInfo: {}
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidMount(){
+        if(typeof this.props.location.state !== 'undefined'){
+            this.setState({userInfo: this.props.location.state.userInfo}, ()=>{
+                window.localStorage.setItem('userInfo', this.state.userInfo);
+            });
+        }
+
+        else{
+            this.setState({userInfo: JSON.parse(window.localStorage.getItem('userInfo'))}, ()=>{
+                window.localStorage.setItem('userInfo', this.state.userInfo);
+            });
+        }
+    }
+
+    handleChange(e){
+        const imgFile = e.target.files[0];
+
+        this.setState({imageURL: URL.createObjectURL(imgFile)}, ()=>{
+            const formData =new FormData();
+
+            formData.append('image', imgFile);
+            formData.append('id', this.state.userInfo.id);
+        });
+    }
+
     render(){
+        const {imgURL} = this.state;
+        const {firstName, lastName} =this.state.userInfo;
+
         return(
             <div className='home'>
                 <nav>
@@ -36,11 +75,13 @@ class Home extends Component{
                 </section>
 
                 <aside className='profileCard'>
-                    <h2>Tariq Hirji</h2>
+                    <h2>{firstName} {lastName}</h2>
 
-                    <img className='profilePic' src={avatar} alt='profile pic'></img>
+                    <img className='profilePic' src={imgURL? imgURL: avatar} alt='profile pic'></img>
 
-                    <button className='btn-lg btn-primary ml-3'>Change Profile Pic</button>
+                    <input type='file' accept='jpg jpeg png' style={{visibility: 'hidden'}} onChange={this.handleChange}/> 
+
+                    <label className='btn-lg btn-primary ml-3'>Change Profile Pic</label>
                 </aside>
 
                 <footer>

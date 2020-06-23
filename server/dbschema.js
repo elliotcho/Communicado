@@ -7,7 +7,7 @@ const UserSchema = new schema({
     lastName: String,
     email: String,
     password: String,
-    dateCreated: Date
+    dateCreated: Date, 
 });
 
 // Model the User object after the schema and export the "User"

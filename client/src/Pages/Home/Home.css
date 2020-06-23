@@ -69,14 +69,15 @@
     border-radius: 50%;
 }
 
-.home .profileCard button{
+.home .profileCard label{
     cursor: pointer;
     outline: none;
     border: none;
     font-family: 'Nunito';
+    margin-right: 10px;
 }
 
-.home .profileCard button:focus{
+.home .profileCard label:focus{
     box-shadow: none;
 }
 

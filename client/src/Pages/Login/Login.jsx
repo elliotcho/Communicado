@@ -34,12 +34,17 @@ class Login extends Component{
 
         axios.post('/', data, {headers: {'Content-Type': 'application/json'}})
         .then(response =>{
-            if(response.data.msg==='Success'){
-                this.props.history.push('/home');
+            const {msg, _doc} =response.data;
+
+            if(msg==='Success'){
+                this.props.history.push({
+                    pathname: '/home',
+                    state: {userInfo: _doc}
+                });
             }
 
             else{
-                alert(response.data.msg);
+                alert(msg);
             }
         });
     }
