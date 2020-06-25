@@ -1,0 +1,33 @@
+body{
+    background: #1a1a1a;
+    color:white;
+  }
+  
+  
+  h1{
+    color:White;
+      font-family: 'Gloria Hallelujah', cursive;
+  }
+  
+  #changePassword{
+    display:none
+  }
+  
+  #Update{
+  color:blue;
+  }
+  
+  #complete{
+  color:blue;
+  }
+  
+  #UpdatePassword{
+  color:blue;
+  }
+
+
+
+
+
+
+

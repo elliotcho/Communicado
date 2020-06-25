@@ -1,0 +1,86 @@
+.home{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: lightgray;
+    overflow: auto;
+}
+
+.home nav{
+    background: royalblue;
+    height: 80px;
+    margin-bottom: 30px;
+}
+
+.home .message{
+    margin-top: 5px;
+    max-width: 800px;
+    padding: 15px;
+    border: solid gray;
+    background: white;
+    cursor: pointer;
+}
+
+.home .message:hover{
+    border-color: royalblue;
+    background: #e8e8e8;
+}
+
+.home .message h3{
+    font-weight: bold;
+    font-family: 'Nunito';
+    color: #313131;
+}
+
+.home .message .date{
+    font-family: 'Trebuchet MS';
+    color: #525252;
+    margin-left: 2px;
+}
+
+.home .message .content{
+    font-family: 'Segoe UI';
+    margin: 2px;
+    font-size: 20px;
+}
+
+.home .profileCard{
+    padding: 20px;
+    position: absolute;
+    width: 400px;
+    left: 1000px;
+    top: 15%;
+    background: white;
+    text-align: center;
+}
+
+.home .profileCard h2{
+    margin-top: 10px;
+    margin-right: 10px;
+    font-family: 'Nunito';
+}
+
+.home .profileCard .profilePic{
+    margin: 30px auto;
+    margin-left: 3px;
+    width: 250px;
+    height: 250px;
+    border: solid royalblue;
+    border-radius: 50%;
+}
+
+.home .profileCard label{
+    cursor: pointer;
+    outline: none;
+    border: none;
+    font-family: 'Nunito';
+    margin-right: 10px;
+}
+
+.home .profileCard label:focus{
+    box-shadow: none;
+}
+
+.home footer{
+    margin-top: 50px;
+}
