@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import './Settings.css';
 import Navbar from '../../Partials/Navbar';
 
@@ -24,7 +25,9 @@ class Settings extends Component{
     }
 
     componentDidMount(){
-        console.log(this.props);
+        this.setState({
+            userInfo: this.props.userInfo
+        });
     }
 
     showForm(){
@@ -45,6 +48,7 @@ class Settings extends Component{
         e.preventDefault();
 
         const data={
+            id: this.state.userInfo._id,
             firstName: this.state.firstName,
             lastName: this.state.lastName
         }
@@ -97,4 +101,10 @@ class Settings extends Component{
     }
 }
 
-export default Settings;
+const mapStateToProps = (state) =>{
+    return {
+        userInfo: state
+    }
+};
+
+export default connect(mapStateToProps)(Settings);
