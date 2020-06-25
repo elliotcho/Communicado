@@ -7,7 +7,7 @@
 }
 
 .home .message{
-    margin-top: 5px;
+    margin-top: 15px;
     max-width: 800px;
     padding: 15px;
     border: solid gray;
@@ -39,13 +39,14 @@
 }
 
 .home .profileCard{
+    margin-top: 50px;
+    margin-right: 20px;
     padding: 20px;
+    height: auto;
     position: absolute;
-    width: 400px;
-    left: 1000px;
-    top: 15%;
-    background: white;
+    background: lightblue;
     text-align: center;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.45);
 }
 
 .home .profileCard h2{

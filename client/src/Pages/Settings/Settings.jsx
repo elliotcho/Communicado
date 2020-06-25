@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './Settings.css';
 import Navbar from '../../Partials/Navbar';
 
+
 const axios=require('axios');
 
 class Settings extends Component{
