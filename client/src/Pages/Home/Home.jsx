@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Home.css';
-import Navbar from '../../Components/Navbar'
+import Navbar from '../../Partials/Navbar'
 
 import loading from './loading.jpg';
 
