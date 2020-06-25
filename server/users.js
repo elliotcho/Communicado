@@ -83,9 +83,28 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
     }
 }
 
+const changeName = (req, res) => {
+    if(req.body.firstName ==='' && req.body.lastName !== ''){
+       
+    }
+
+    else if(req.body.firstName !== '' && req.body.lastName ===''){
+
+    }
+
+    else if(req.body.firstName !== '' && req.body.lastName !== ''){
+        
+    }
+
+    else{
+        res.json({msg: 'Both inputs are blank: your name has not been changed.'});
+    }
+}
+
 // exports
 module.exports = {
     login,
     signup,
-    handleProfilePic
+    handleProfilePic,
+    changeName
 }

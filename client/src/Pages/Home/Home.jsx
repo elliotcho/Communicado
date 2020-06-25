@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import './Home.css';
 import Navbar from '../../Partials/Navbar'
 
@@ -20,19 +21,11 @@ class Home extends Component{
     }
 
     componentDidMount(){
-        if(typeof this.props.location.state !== 'undefined'){
-            this.setState({userInfo: this.props.location.state.userInfo}, ()=>{
-                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));
-                this.loadProfile(this.state.userInfo._id);
-            });
-        }
-
-        else{
-            this.setState({userInfo: JSON.parse(window.localStorage.getItem('userInfo'))}, ()=>{
-                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));
-                this.loadProfile(this.state.userInfo._id);
-            });
-        }
+       this.setState({
+           userInfo: this.props.userInfo
+       }, ()=>{
+           this.loadProfile(this.state.userInfo._id);
+       });
     }
 
     loadProfile(id){
@@ -69,9 +62,11 @@ class Home extends Component{
 
         return(
             <div className='home'>
-                <Navbar />
+                <Navbar/>
+                
                 <div className="container-fluid">
                     <div className="row">
+                        
                         <div className="col-sm-12 col-md-7">
                             <section className='message'>
                                 <h3>Gugsa Challa</h3>
@@ -79,17 +74,18 @@ class Home extends Component{
                                 <p className='content'>This guy is comedy!!!</p>
                             </section>
                         </div>
-                        <div className="col-sm-12 col-md-5">
+
+                        <div className="col-sm-12 col-md-5 col-xl-4">
                             <div className='profileCard'>
                                 <h2>{firstName} {lastName}</h2>
                                 <img className="profilePic" src={imgURL ? imgURL: loading} alt="profile pic"></img>
                                 <input id='upload' type='file' accept='jpg jpeg png' style={{visibility: 'hidden'}} onChange={this.handleChange}/>
                                 <label htmlFor='upload' className='btn-lg btn-primary ml-3'>Change Profile Pic</label>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
+
                 <footer>
     
                 </footer>
@@ -98,4 +94,10 @@ class Home extends Component{
     }
 }
 
-export default Home;
+const mapStateToProps = (state) =>{
+    return {
+        userInfo: state
+    }
+};
+
+export default connect(mapStateToProps)(Home);

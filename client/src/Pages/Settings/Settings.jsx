@@ -10,6 +10,7 @@ class Settings extends Component{
         super();
     
         this.state={
+            userInfo: {},
             firstName: '',
             lastName: '',
             currentPwd: '',
@@ -20,6 +21,10 @@ class Settings extends Component{
 
         this.handleChange=this.handleChange.bind(this);
         this.showForm = this.showForm.bind(this);
+    }
+
+    componentDidMount(){
+        console.log(this.props);
     }
 
     showForm(){
@@ -44,7 +49,10 @@ class Settings extends Component{
             lastName: this.state.lastName
         }
 
-
+        axios.post('/changename', data , {headers: {'content-type': 'application/json'}})
+        .then(response => {
+            alert(response.data.msg);
+        });
     }
 
     render(){

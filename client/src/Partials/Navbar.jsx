@@ -17,7 +17,7 @@ class Navbar extends Component {
                         <div className="collapse navbar-collapse" id="navbarResponsive">
                             <ul className="navbar-nav ml-auto">
                                 <li>
-                                    <Link path to='/home' className="nav-link">Home</Link>
+                                    <Link to='/home' className="nav-link">Home</Link>
                                 </li>
                                 
                                 <li>
@@ -31,7 +31,7 @@ class Navbar extends Component {
                                 </li>
 
                                 <li>
-                                    <Link path to='/settings' className="nav-link">Settings</Link>
+                                    <Link to='/settings' className="nav-link">Settings</Link>
                                 </li>
                             </ul>
                         </div>

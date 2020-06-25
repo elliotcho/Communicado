@@ -38,11 +38,17 @@ app.get('/', (req, res) => {
     res.sendFile('../client/build/index.html');
 });
 
-const { login, signup , handleProfilePic } = require('./users');
+const { 
+    login, 
+    signup, 
+    handleProfilePic, 
+    changeName
+} = require('./users');
 
 app.post('/', login);
 app.post('/signup', signup);
-app.post('/profilepic', handleProfilePic(upload, fs, path))
+app.post('/profilepic', handleProfilePic(upload, fs, path));
+app.post('/changename', changeName);
 
 //Specify localhost port number
 app.listen(3000);

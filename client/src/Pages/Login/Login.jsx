@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {saveUserInfo} from '../../reducers/rootReducer';
 import './Login.css';
 
 const axios=require('axios');
@@ -37,9 +39,10 @@ class Login extends Component{
             const {msg, _doc} =response.data;
 
             if(msg==='Success'){
+                this.props.saveUserInfo(_doc);
+
                 this.props.history.push({
                     pathname: '/home',
-                    state: {userInfo: _doc}
                 });
             }
 
@@ -99,4 +102,10 @@ class Login extends Component{
     }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveUserInfo: (userInfo) => {dispatch(saveUserInfo(userInfo));}
+    }
+};
+
+export default connect(null, mapDispatchToProps)(Login);
