@@ -6,12 +6,6 @@
     overflow: auto;
 }
 
-.home nav{
-    background: royalblue;
-    height: 80px;
-    margin-bottom: 30px;
-}
-
 .home .message{
     margin-top: 5px;
     max-width: 800px;

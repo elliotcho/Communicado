@@ -4,36 +4,35 @@ import './Navbar.css'
 class Navbar extends Component {
     render() {
         return(
-            <div className="Navbar">
-                <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <a className="navbar-brand" href="#">Communicado</a>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse bg-dark" id="navbarNav">
-                        <ul className="navbar-nav ml-auto">
-                            <li className="nav-item active pr-5">
-                                <a className="nav-link" href="#">Home</a>
-                            </li>
-                            <li className="nav-item pr-5">
-                                <a className="nav-link" href="#">Messages</a>
-                            </li>
-                            <li className="nav-item pr-5">
-                                <a className="nav-link" href="#">Friends</a>
-                            </li>
-                            <li className="nav-item pr-5">
-                                <a className="nav-link" href="#">
-                                    <i className="fas fa-bell"></i>
-                                </a>
-                            </li>
-                            <li className="nav-item pr-5">
-                                <a className="nav-link" href="#">
-                                    <i className ="fas fa-user-cog"></i>
-                                </a>
-                            </li>
-                        </ul>
+            <div>
+                <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed">
+                    <div className="container-fluid">
+                        <a className="navbar-brand">Communicado</a>
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" 
+                        data-target="#navbarResponsive">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+                        <div className="collapse navbar-collapse" id="navbarResponsive">
+                            <ul className="navbar-nav ml-auto">
+                                <li>
+                                    <a className="nav-link active">Home</a>
+                                </li>
+                                <li>
+                                    <a className="nav-link">Messages</a>
+                                </li>
+                                <li>
+                                    <a className="nav-link">Friends</a>
+                                </li>
+                                <li>
+                                    <a className="nav-link">Notifs</a>
+                                </li>
+                                <li>
+                                    <a className="nav-link">Settings</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    </nav>
+                </nav>
             </div>
         )
     }
