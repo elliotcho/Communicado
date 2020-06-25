@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './Settings.css'
 
 const axios=require('axios');
 

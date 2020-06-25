@@ -70,40 +70,26 @@ class Home extends Component{
         return(
             <div className='home'>
                 <Navbar />
-                <section className='message'>
-                    <h3>Gugsa Challa</h3>
-                    <p className='text-muted date'>5 minutes ago</p>
-                    <p className='content'>This guy is comedy!!!</p>
-                </section>
-
-                <section className='message'>
-                    <h3>Gugsa Challa</h3>
-                    <p className='text-muted date'>5 minutes ago</p>
-                    <p className='content'>This guy is comedy!!!</p>
-                </section>
-
-                <section className='message'>
-                    <h3>Gugsa Challa</h3>
-                    <p className='text-muted date'>5 minutes ago</p>
-                    <p className='content'>This guy is comedy!!!</p>
-                </section>
-
-                <section className='message'>
-                    <h3>Gugsa Challa</h3>
-                    <p className='text-muted date'>5 minutes ago</p>
-                    <p className='content'>This guy is comedy!!!</p>
-                </section>
-
-                <aside className='profileCard'>
-                    <h2>{firstName} {lastName}</h2>
-
-                    <img className='profilePic' src={imgURL? imgURL: loading} alt='profile pic'></img>
-
-                    <input id='upload' type='file' accept='jpg jpeg png' style={{visibility: 'hidden'}} onChange={this.handleChange}/> 
-
-                    <label htmlFor='upload' className='btn-lg btn-primary ml-3'>Change Profile Pic</label>
-                </aside>
-
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-sm-12 col-md-7">
+                            <section className='message'>
+                                <h3>Gugsa Challa</h3>
+                                <p className='text-muted date'>5 minutes ago</p>
+                                <p className='content'>This guy is comedy!!!</p>
+                            </section>
+                        </div>
+                        <div className="col-sm-12 col-md-5">
+                            <div className='profileCard'>
+                                <h2>{firstName} {lastName}</h2>
+                                <img className="profilePic" src={imgURL ? imgURL: loading} alt="profile pic"></img>
+                                <input id='upload' type='file' accept='jpg jpeg png' style={{visibility: 'hidden'}} onChange={this.handleChange}/>
+                                <label htmlFor='upload' className='btn-lg btn-primary ml-3'>Change Profile Pic</label>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
                 <footer>
     
                 </footer>
