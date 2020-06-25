@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-import './Signup.css';
 
 const axios=require('axios');
 
@@ -22,8 +20,6 @@ class Settings extends Component{
             name: '',
             password: ''
         }
-        this.updateName=this.updateName.bind(this);
-        this.completePassword=this.completePassword.bind(this);
     }
 
     render(){
