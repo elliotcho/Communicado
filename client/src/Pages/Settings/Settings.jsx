@@ -12,13 +12,7 @@ function showPass(){
     else{
         updatePassword.style.display='block';
     }
- 
 }
-
-
-
-
-
 
 class Settings extends Component{
     constructor(){
@@ -31,12 +25,6 @@ class Settings extends Component{
         this.updateName=this.updateName.bind(this);
         this.completePassword=this.completePassword.bind(this);
     }
-
-    
-
-
-
-
 
     render(){
         return(
