@@ -8,10 +8,11 @@ class Navbar extends Component {
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed">
                     <div className="container-fluid">
                         <a className="navbar-brand">Communicado</a>
-                        <button className="navbar-toggler" type="button" data-toggle="collapse" 
-                        data-target="#navbarResponsive">
+                        
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                             <span className="navbar-toggler-icon"></span>
                         </button>
+
                         <div className="collapse navbar-collapse" id="navbarResponsive">
                             <ul className="navbar-nav ml-auto">
                                 <li>
