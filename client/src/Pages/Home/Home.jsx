@@ -63,7 +63,6 @@ class Home extends Component{
         return(
             <div className='home'>
                 <Navbar/>
-                
                 <div className="container-fluid">
                     <div className="row">
                         

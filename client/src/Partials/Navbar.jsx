@@ -24,7 +24,9 @@ class Navbar extends Component {
                                     <a className="nav-link pr-lg-5">Messages</a>
                                 </li>
                                 <li>
-                                    <a className="nav-link pr-lg-5">Friends</a>
+                                    <Link to='/friends'>
+                                        <a className="nav-link pr-lg-5">Friends</a>
+                                    </Link>
                                 </li>
                                 <li>
                                     <a className="nav-link">
