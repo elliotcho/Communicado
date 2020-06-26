@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {saveUserInfo, changeUserName} from '../../reducers/rootReducer';
 import './Settings.css';
 import Navbar from '../../Partials/Navbar';
 
@@ -26,9 +27,23 @@ class Settings extends Component{
     }
 
     componentDidMount(){
-        this.setState({
-            userInfo: this.props.userInfo
-        });
+        if(this.props.userInfo._id === ''){
+            this.props.saveUserInfo(JSON.parse(window.localStorage.getItem('userInfo')));
+
+            this.setState({
+                userInfo: JSON.parse(window.localStorage.getItem('userInfo'))
+            }, ()=>{
+                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));        
+            });
+        }
+        
+        else{
+            this.setState({
+                userInfo: this.props.userInfo
+            }, ()=>{
+                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));        
+            });
+        }
     }
 
     showForm(){
@@ -56,7 +71,13 @@ class Settings extends Component{
 
         axios.post('/changename', data , {headers: {'content-type': 'application/json'}})
         .then(response => {
-            alert(response.data.msg);
+            const {_doc, msg} =response.data;
+
+            if(_doc){
+                this.props.changeUserName(_doc.firstName, _doc.lastName);
+            }
+
+            alert(msg);
         });
     }
 
@@ -108,4 +129,11 @@ const mapStateToProps = (state) =>{
     }
 };
 
-export default connect(mapStateToProps)(Settings);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveUserInfo: (userInfo) => {dispatch(saveUserInfo(userInfo));},
+        changeUserName: (fName, lName) =>{dispatch(changeUserName(fName, lName));}
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

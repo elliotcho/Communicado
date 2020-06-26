@@ -13,6 +13,14 @@ const rootReducer = (state =initState, action) =>{
         }
     }
 
+    else if(action.type ==='CHANGE'){
+        return{
+            ...state,
+            firstName: action.fName,
+            lastName: action.lName
+        }
+    }
+
     return state;
 };
 
@@ -22,6 +30,14 @@ export const saveUserInfo = (userInfo) =>{
          userInfo
      }
 };
+
+export const changeUserName = (fName, lName) =>{
+    return{
+        type: 'CHANGE',
+        fName,
+        lName
+    }
+}
 
 export const clearUserInfo = () => {
     return {};

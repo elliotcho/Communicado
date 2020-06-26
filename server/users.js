@@ -85,22 +85,28 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
 
 const changeName = (req, res) => {
     const {id, firstName, lastName} = req.body;
-    
+
     if(firstName ==='' && lastName !== ''){
-       User.updateOne({_id: id}, {lastName}).then(()=>{
-            res.json({msg: 'Your last name has been updated'});
+       User.updateOne({_id: id}, {lastName}).then(() =>{
+            User.findOne({_id: id}).then(result =>{
+                res.json({...result, msg: 'Your last name has been updated'});
+            });
        });
     }
 
     else if(firstName !== '' && lastName ===''){
-        User.updateOne({_id: id}, {firstName}).then(()=>{
-            res.json({msg: 'Your first name has been updated'});
+        User.updateOne({_id: id}, {firstName}).then(() =>{
+            User.findOne({_id: id}).then(result =>{
+                res.json({...result, msg: 'Your first name has been updated'});
+            });
         });
     }
 
     else if(firstName !== '' && lastName !== ''){
-        User.updateOne({_id: id}, {firstName, lastName}).then(()=>{
-            res.json({msg: 'Your full name has been updated'});
+        User.updateOne({_id: id}, {firstName, lastName}).then(() =>{
+            User.findOne({_id: id}).then(result =>{
+                res.json({...result, msg: 'Your full name has been updated'});
+            });
         });
     }
 

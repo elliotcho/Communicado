@@ -22,17 +22,25 @@ class Home extends Component{
     }
 
     componentDidMount(){
-        if(window.localStorage.getItem('userInfo') != null){
+        if(this.props.userInfo._id === ''){
             this.props.saveUserInfo(JSON.parse(window.localStorage.getItem('userInfo')));
+
+            this.setState({
+                userInfo: JSON.parse(window.localStorage.getItem('userInfo'))
+            }, ()=>{
+                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));        
+                this.loadProfile(this.state.userInfo._id);
+            });
         }
         
-        window.localStorage.setItem('userInfo', JSON.stringify(this.props.userInfo));
-        
-       this.setState({
-           userInfo: this.props.userInfo
-       }, ()=>{
-           this.loadProfile(this.state.userInfo._id);
-       });
+        else{
+            this.setState({
+                userInfo: this.props.userInfo
+            }, ()=>{
+                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));        
+                this.loadProfile(this.state.userInfo._id);
+            });
+        }
     }
 
     loadProfile(id){
