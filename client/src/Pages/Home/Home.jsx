@@ -78,7 +78,6 @@ class Home extends Component{
         return(
             <div className='home'>
                 <Navbar/>
-                
                 <div className="container-fluid">
                     <div className="row">
                         
@@ -109,7 +108,7 @@ class Home extends Component{
     }
 }
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     return {
         userInfo: state
     }
