@@ -40,7 +40,7 @@ const signup = (req, res) => {
                 });
                 // Save user to DB and return it to access, along with confirmation msg
                 newUser.save().then(() => {
-                    res.json({...newUser, msg: "Account created!"})
+                    res.json({...newUser, msg: 'Success'})
                 });
             }
         });
@@ -84,16 +84,24 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
 }
 
 const changeName = (req, res) => {
-    if(req.body.firstName ==='' && req.body.lastName !== ''){
-       
+    const {id, firstName, lastName} = req.body;
+    
+    if(firstName ==='' && lastName !== ''){
+       User.updateOne({_id: id}, {lastName}).then(()=>{
+            res.json({msg: 'Your last name has been updated'});
+       });
     }
 
-    else if(req.body.firstName !== '' && req.body.lastName ===''){
-
+    else if(firstName !== '' && lastName ===''){
+        User.updateOne({_id: id}, {firstName}).then(()=>{
+            res.json({msg: 'Your first name has been updated'});
+        });
     }
 
-    else if(req.body.firstName !== '' && req.body.lastName !== ''){
-        
+    else if(firstName !== '' && lastName !== ''){
+        User.updateOne({_id: id}, {firstName, lastName}).then(()=>{
+            res.json({msg: 'Your full name has been updated'});
+        });
     }
 
     else{

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {saveUserInfo} from '../../reducers/rootReducer';
 import './Home.css';
 import Navbar from '../../Partials/Navbar'
 
@@ -21,6 +22,12 @@ class Home extends Component{
     }
 
     componentDidMount(){
+        if(window.localStorage.getItem('userInfo') != null){
+            this.props.saveUserInfo(JSON.parse(window.localStorage.getItem('userInfo')));
+        }
+        
+        window.localStorage.setItem('userInfo', JSON.stringify(this.props.userInfo));
+        
        this.setState({
            userInfo: this.props.userInfo
        }, ()=>{
@@ -100,4 +107,10 @@ const mapStateToProps = (state) =>{
     }
 };
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveUserInfo: (userInfo) => {dispatch(saveUserInfo(userInfo));}
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

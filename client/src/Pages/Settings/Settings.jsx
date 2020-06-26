@@ -20,8 +20,9 @@ class Settings extends Component{
             hidePwd: true, 
         }
 
-        this.handleChange=this.handleChange.bind(this);
         this.showForm = this.showForm.bind(this);
+        this.handleChange=this.handleChange.bind(this);
+        this.changeName=this.changeName.bind(this);
     }
 
     componentDidMount(){

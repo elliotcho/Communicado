@@ -26,7 +26,6 @@ class Signup extends Component {
 
         // Create data object with form values
         const data = {...this.state};
-        // console.log(data);
 
         // Basic config for "post" axios method
         const config = {
@@ -35,10 +34,8 @@ class Signup extends Component {
 
         // Use axios to post message to server
         axios.post('/signup', data, config).then(response => {
-            // let msg = response.data;
-            // console.log(msg);
-            if (response.data.msg === "Account Created!!") {
-                this.props.history.push('/')
+            if (response.data.msg === 'Success') {
+                this.props.history.push('/');
             } else {
                 alert(response.data.msg)
             }
