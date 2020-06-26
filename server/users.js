@@ -40,7 +40,7 @@ const signup = (req, res) => {
                 });
                 // Save user to DB and return it to access, along with confirmation msg
                 newUser.save().then(() => {
-                    res.json({...newUser, msg: "Account created!"})
+                    res.json({...newUser, msg: 'Success'})
                 });
             }
         });
@@ -84,20 +84,56 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
 }
 
 const changeName = (req, res) => {
-    if(req.body.firstName ==='' && req.body.lastName !== ''){
-       
+    const {id, firstName, lastName} = req.body;
+
+    if(firstName ==='' && lastName !== ''){
+       User.updateOne({_id: id}, {lastName}).then(() =>{
+            User.findOne({_id: id}).then(result =>{
+                res.json({...result, msg: 'Your last name has been updated'});
+            });
+       });
     }
 
-    else if(req.body.firstName !== '' && req.body.lastName ===''){
-
+    else if(firstName !== '' && lastName ===''){
+        User.updateOne({_id: id}, {firstName}).then(() =>{
+            User.findOne({_id: id}).then(result =>{
+                res.json({...result, msg: 'Your first name has been updated'});
+            });
+        });
     }
 
-    else if(req.body.firstName !== '' && req.body.lastName !== ''){
-        
+    else if(firstName !== '' && lastName !== ''){
+        User.updateOne({_id: id}, {firstName, lastName}).then(() =>{
+            User.findOne({_id: id}).then(result =>{
+                res.json({...result, msg: 'Your full name has been updated'});
+            });
+        });
     }
 
     else{
         res.json({msg: 'Both inputs are blank: your name has not been changed.'});
+    }
+}
+
+const changePwd = (req, res) =>{
+    const {id, currPwd, newPwd, confirmPwd} = req.body;
+
+    if(newPwd !== confirmPwd){
+        res.json({msg: 'New password does not match confirm password'});
+    }
+
+    else{
+        User.findOne({_id: id}).then(result=>{
+            if(result.password !== currPwd){
+                res.json({msg: 'Your current password is incorrect'});
+            }
+
+            else{
+                User.updateOne({_id: id}, {password: newPwd}).then(()=>{
+                    res.json({...result, msg: 'Your password has been changed'});
+                });
+            }
+        });
     }
 }
 
@@ -106,5 +142,6 @@ module.exports = {
     login,
     signup,
     handleProfilePic,
-    changeName
+    changeName,
+    changePwd
 }

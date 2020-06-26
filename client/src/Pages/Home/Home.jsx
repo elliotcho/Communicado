@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {saveUserInfo} from '../../reducers/rootReducer';
 import './Home.css';
 import Navbar from '../../Partials/Navbar'
 
@@ -21,11 +22,25 @@ class Home extends Component{
     }
 
     componentDidMount(){
-       this.setState({
-           userInfo: this.props.userInfo
-       }, ()=>{
-           this.loadProfile(this.state.userInfo._id);
-       });
+        if(this.props.userInfo._id === ''){
+            this.props.saveUserInfo(JSON.parse(window.localStorage.getItem('userInfo')));
+
+            this.setState({
+                userInfo: JSON.parse(window.localStorage.getItem('userInfo'))
+            }, ()=>{
+                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));        
+                this.loadProfile(this.state.userInfo._id);
+            });
+        }
+        
+        else{
+            this.setState({
+                userInfo: this.props.userInfo
+            }, ()=>{
+                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));        
+                this.loadProfile(this.state.userInfo._id);
+            });
+        }
     }
 
     loadProfile(id){
@@ -99,4 +114,10 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveUserInfo: (userInfo) => {dispatch(saveUserInfo(userInfo));}
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
