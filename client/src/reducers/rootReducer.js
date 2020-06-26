@@ -13,11 +13,18 @@ const rootReducer = (state =initState, action) =>{
         }
     }
 
-    else if(action.type ==='CHANGE'){
+    else if(action.type ==='CHANGE_NAME'){
         return{
             ...state,
             firstName: action.fName,
             lastName: action.lName
+        }
+    }
+
+    else if(action.type==='CHANGE_PWD'){
+        return{
+            ...state,
+            password: action.pwd
         }
     }
 
@@ -33,9 +40,16 @@ export const saveUserInfo = (userInfo) =>{
 
 export const changeUserName = (fName, lName) =>{
     return{
-        type: 'CHANGE',
+        type: 'CHANGE_NAME',
         fName,
         lName
+    }
+}
+
+export const changePwd = (pwd) =>{
+    return{
+        type: 'CHANGE_PWD',
+        pwd
     }
 }
 

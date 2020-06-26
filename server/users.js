@@ -115,10 +115,33 @@ const changeName = (req, res) => {
     }
 }
 
+const changePwd = (req, res) =>{
+    const {id, currPwd, newPwd, confirmPwd} = req.body;
+
+    if(newPwd !== confirmPwd){
+        res.json({msg: 'New password does not match confirm password'});
+    }
+
+    else{
+        User.findOne({_id: id}).then(result=>{
+            if(result.password !== currPwd){
+                res.json({msg: 'Your current password is incorrect'});
+            }
+
+            else{
+                User.updateOne({_id: id}, {password: newPwd}).then(()=>{
+                    res.json({...result, msg: 'Your password has been changed'});
+                });
+            }
+        });
+    }
+}
+
 // exports
 module.exports = {
     login,
     signup,
     handleProfilePic,
-    changeName
+    changeName,
+    changePwd
 }

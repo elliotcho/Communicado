@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {saveUserInfo, changeUserName} from '../../reducers/rootReducer';
+import {saveUserInfo, changeUserName, changePwd} from '../../reducers/rootReducer';
 import './Settings.css';
 import Navbar from '../../Partials/Navbar';
 
@@ -15,7 +15,7 @@ class Settings extends Component{
             userInfo: {},
             firstName: '',
             lastName: '',
-            currentPwd: '',
+            currPwd: '',
             newPwd: '',
             confirmPwd: '',
             hidePwd: true, 
@@ -24,6 +24,7 @@ class Settings extends Component{
         this.showForm = this.showForm.bind(this);
         this.handleChange=this.handleChange.bind(this);
         this.changeName=this.changeName.bind(this);
+        this.changePwd =this.changePwd.bind(this);
     }
 
     componentDidMount(){
@@ -81,6 +82,25 @@ class Settings extends Component{
         });
     }
 
+    changePwd(e){
+        e.preventDefault();
+
+        const {userInfo, currPwd, newPwd, confirmPwd} =this.state;
+
+        const data={id: userInfo._id, currPwd, newPwd, confirmPwd}
+
+        axios.post('/changepwd', data, {headers:{'content-type': 'application/json'}})
+        .then(response =>{
+            const {_doc, msg} = response.data;
+
+            if(_doc){
+                this.props.changePwd(_doc.password);
+            }
+
+            alert(msg);
+        });
+    }
+
     render(){
         const {hidePwd} = this.state;
 
@@ -106,8 +126,8 @@ class Settings extends Component{
                     <div className='update' onClick={this.showForm}>{hidePwd? 'Update Password': 'Hide'}</div>
 
                     <form className='changePwd' onSubmit={this.changePwd} style={formStyle}>
-                        <label htmlFor="currentPwd">Current Password:</label>
-                        <input type="password" id="currentPwd" minLength='6' maxLength='50' onChange={this.handleChange} required/>
+                        <label htmlFor="currPwd">Current Password:</label>
+                        <input type="password" id="currPwd" minLength='6' maxLength='50' onChange={this.handleChange} required/>
                     
                         <label htmlFor="newPwd">New Password:</label>
                         <input type="password" id="newPwd" minLength='6' maxLength='50' onChange={this.handleChange} required/>
@@ -132,7 +152,8 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = (dispatch) => {
     return {
         saveUserInfo: (userInfo) => {dispatch(saveUserInfo(userInfo));},
-        changeUserName: (fName, lName) =>{dispatch(changeUserName(fName, lName));}
+        changeUserName: (fName, lName) =>{dispatch(changeUserName(fName, lName));},
+        changePwd: (pwd) => {dispatch(changePwd(pwd));}
     }
 };
 

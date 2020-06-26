@@ -42,13 +42,15 @@ const {
     login, 
     signup, 
     handleProfilePic, 
-    changeName
+    changeName,
+    changePwd
 } = require('./users');
 
 app.post('/', login);
 app.post('/signup', signup);
 app.post('/profilepic', handleProfilePic(upload, fs, path));
 app.post('/changename', changeName);
+app.post('/changepwd', changePwd);
 
 //Specify localhost port number
 app.listen(3000);
