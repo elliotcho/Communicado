@@ -17,21 +17,34 @@ class Navbar extends Component {
                         <div className="collapse navbar-collapse" id="navbarResponsive">
                             <ul className="navbar-nav ml-auto">
                                 <li>
-                                    <Link to='/home' className="nav-link">Home</Link>
+                                    <Link to='/home' className="nav-link pr-lg-5">Home</Link>
                                 </li>
                                 
                                 <li>
-                                    <a className="nav-link">Messages</a>
+                                    <a className="nav-link pr-lg-5">Messages</a>
                                 </li>
                                 <li>
-                                    <a className="nav-link">Friends</a>
+                                    <Link to='/friends'>
+                                        <a className="nav-link pr-lg-5">Friends</a>
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a className="nav-link">Notifs</a>
+                                    <a className="nav-link">
+                                        <a className="nav-link d-inline-block d-md-none">Notifications</a>
+                                        <i class="fas fa-bell"></i>
+                                    </a>
                                 </li>
-
                                 <li>
-                                    <Link to='/settings' className="nav-link">Settings</Link>
+                                    <Link to='/settings' className="nav-link">
+                                        <a className="nav-link d-inline-block d-md-none">Settings</a>
+                                        <i class="fas fa-user-cog"></i>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to='/' class='nav-link'>
+                                        <a className="nav-link d-inline-block d-md-none">Logout</a>
+                                        <i class="fas fa-sign-out-alt"></i>
+                                    </Link>
                                 </li>
                             </ul>
                         </div>
