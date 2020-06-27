@@ -1,0 +1,87 @@
+/*
+	Comment
+*/
+
+a { /* Comment */ color: /* Comment */ Red; }
+
+.TestClass {
+	color: Black;
+	background-color: White;
+	text-align: left;
+}
+
+.card-img{
+	border-radius:50%;
+	height:100px;
+	max-width:200px;
+	
+	
+}
+
+.row{
+	padding:10px;
+}
+
+body{
+	background-color:#edf6f9;
+	padding:10px;
+}
+hr{
+	background-color:#edf6f9;
+	color:#edf6f9;
+   	
+   }
+   
+   h4{
+   	padding:10px;
+   }
+   
+.clearOne{
+   	width:10px;
+	height:10px;
+	opacity:0.6;
+	color:grey;
+  border: none;
+  
+  font-size: 36px;
+  cursor: pointer;
+   }
+   
+   .clearOne:hover{
+   	color:black;
+   }
+
+
+
+header{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px,10%;
+}
+
+.clear{
+  position:relative;
+  right:10px;
+  padding: 3px;
+  background-color: whitesmoke;
+  color:red;
+  border-radius: 35%;
+  float: right;
+  border:none;
+  
+
+}
+
+.clear:hover{
+	background-color: red;
+  color:whitesmoke;
+}
+
+h1{
+	font-family: 'Balsamiq Sans';
+}
+
+p{
+	font-family:'Oswald';
+}
