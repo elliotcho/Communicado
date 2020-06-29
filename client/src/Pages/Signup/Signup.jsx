@@ -33,7 +33,7 @@ class Signup extends Component {
         }
 
         // Use axios to post message to server
-        axios.post('/signup', data, config).then(response => {
+        axios.post('http://localhost:5000/signup', data, config).then(response => {
             if (response.data.msg === 'Success') {
                 this.props.history.push('/');
             } else {

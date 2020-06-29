@@ -70,7 +70,7 @@ class Settings extends Component{
             lastName: this.state.lastName
         }
 
-        axios.post('/changename', data , {headers: {'content-type': 'application/json'}})
+        axios.post('http://localhost:5000/changename', data , {headers: {'content-type': 'application/json'}})
         .then(response => {
             const {_doc, msg} =response.data;
 
@@ -89,7 +89,7 @@ class Settings extends Component{
 
         const data={id: userInfo._id, currPwd, newPwd, confirmPwd}
 
-        axios.post('/changepwd', data, {headers:{'content-type': 'application/json'}})
+        axios.post('http://localhost:5000/changepwd', data, {headers:{'content-type': 'application/json'}})
         .then(response =>{
             const {_doc, msg} = response.data;
 

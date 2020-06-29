@@ -48,7 +48,7 @@ class Home extends Component{
 
         const config={'Content-Type': 'application/json'};
 
-        fetch('/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
+        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
         .then(response =>response.blob())
         .then(file =>{
             this.setState({imgURL: URL.createObjectURL(file)});
@@ -66,7 +66,7 @@ class Home extends Component{
     
             const config = {headers: {'Content-Type': 'multipart/form-data'}};
     
-            axios.post('/profilepic', formData, config)
+            axios.post('http://localhost:5000/profilepic', formData, config)
             .then(()=>{});
         });
     }

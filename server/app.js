@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const multer=require('multer');
 const fs=require('fs');
 const path=require('path');
+const cors=require('cors');
 const express = require('express');
 const app = express();
 
@@ -29,14 +30,8 @@ const upload = multer({
     limits: {fileSize: 1000000000}
 }).single('image');
 
-// Static build that uses a module to store data in req.body
-app.use(express.static('../client/build'));
 app.use(bodyParser.json());
-
-// Serve index 
-app.get('/', (req, res) => {
-    res.sendFile('../client/build/index.html');
-});
+app.use(cors());
 
 const { 
     login, 
@@ -53,4 +48,4 @@ app.post('/changename', changeName);
 app.post('/changepwd', changePwd);
 
 //Specify localhost port number
-app.listen(3000);
+app.listen(5000);
