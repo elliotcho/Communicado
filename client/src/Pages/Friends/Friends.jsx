@@ -6,7 +6,7 @@ class Friends extends Component {
     constructor(props) {
         super(props);
         // Set initial state and bind any methods
-        this.state = {friendQuery: ""}
+        this.state = {allUserQuery: "", friendQuery: ""}
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -25,19 +25,37 @@ class Friends extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-12 d-flex justify-content-center">
+                        <div className="jumbotron d-flex flex-column justify-content-center align-items-center mb-3">
+                            <h4>Search for new friends!</h4>
                             <form className="Friends-form">
+                                <label htmlFor="allUserQuery"></label>
+                                <input
+                                    type="text"
+                                    name="allUserQuery"
+                                    value={this.state.allUserQuery}
+                                    onChange={this.handleChange}
+                                    placeholder="Browse profiles"
+                                />
+                                <button><i class="fas fa-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12 d-flex justify-content-center">
+                            <form className="Friends-form mb-4">
+                                <label htmlFor="friendQuery">Search through your friends list: </label>
                                 <input
                                     type="text"
                                     name="friendQuery"
                                     value={this.state.friendQuery}
                                     onChange={this.handleChange}
-                                    placeholder="Find a friend"
+                                    placeholder="Browse friends"
+                                    className="Friends-input"
                                 />
                             </form>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row no-gutters">
                         <div className="col-md-6 col-sm-12 d-flex justify-content-center">
                             <div className="card bg-light mb-4">
                                 <div className="card-body d-flex justify-content-center">
@@ -53,7 +71,7 @@ class Friends extends Component {
                             </div>  
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row no-gutters">
                         <div className="col-md-6 col-sm-12 d-flex justify-content-center">
                             <div className="card bg-light mb-4">
                                 <div className="card-body d-flex justify-content-center">
