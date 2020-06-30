@@ -34,7 +34,7 @@ class Friends extends Component {
                                     name="allUserQuery"
                                     value={this.state.allUserQuery}
                                     onChange={this.handleChange}
-                                    placeholder="Browse profiles"
+                                    placeholder="Browse all profiles"
                                 />
                                 <button><i class="fas fa-search"></i></button>
                             </form>
