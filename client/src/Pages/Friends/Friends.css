@@ -3,10 +3,19 @@
 }
 
 .Friends-form {
-    margin: 10px 0 25px 0;
+    margin: 10px 0;
 }
 
 .card {
-    width: 90%
+    width: 95%
 }
 
+.Friends-input {
+    margin-left: 10px;
+    padding-left: 5px;
+}
+
+.jumbotron {
+    width: 100vw;
+    height: 150px;
+}
