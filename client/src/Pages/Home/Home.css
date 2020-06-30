@@ -41,9 +41,9 @@
 .home .profileCard{
     margin-top: 50px;
     margin-right: 20px;
+    margin-bottom: 70px;
     padding: 20px;
     height: auto;
-    position: absolute;
     background: lightblue;
     text-align: center;
     box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.45);

@@ -1,87 +1,43 @@
-/*
-	Comment
-*/
-
-a { /* Comment */ color: /* Comment */ Red; }
-
-.TestClass {
-	color: Black;
-	background-color: White;
-	text-align: left;
+.notifs{
+  font-family: 'Nunito';
+  -webkit-touch-callout: none;
+  -webkit-user-select: none; 
+  -khtml-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
+  user-select: none;
 }
 
-.card-img{
-	border-radius:50%;
-	height:100px;
-	max-width:200px;
-	
-	
+.notifs h1, .notifs h4{
+  text-align: center;
+  padding: 15px;
+  color: #626060;
+  font-weight: bold;
 }
 
-.row{
-	padding:10px;
+.notifs h4{
+    border-bottom: solid 1px lightgray;
+    border-top: solid 1px lightgray;
+    margin-bottom: 0;
 }
 
-body{
-	background-color:#edf6f9;
-	padding:10px;
-}
-hr{
-	background-color:#edf6f9;
-	color:#edf6f9;
-   	
-   }
-   
-   h4{
-   	padding:10px;
-   }
-   
-.clearOne{
-   	width:10px;
-	height:10px;
-	opacity:0.6;
-	color:grey;
-  border: none;
-  
-  font-size: 36px;
+.notifs .row{
   cursor: pointer;
-   }
-   
-   .clearOne:hover{
-   	color:black;
-   }
-
-
-
-header{
-  display:flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 30px,10%;
 }
 
-.clear{
-  position:relative;
-  right:10px;
-  padding: 3px;
-  background-color: whitesmoke;
-  color:red;
-  border-radius: 35%;
-  float: right;
-  border:none;
-  
-
+.notifs img{
+    width: 150px;
+    height: 150px;
 }
 
-.clear:hover{
-	background-color: red;
-  color:whitesmoke;
+.notifs p{
+  font-family: 'Balsamiq Sans';
+  font-size: 1.4rem;
+  margin-left: 10px;
+  margin-top: 50px;
 }
 
-h1{
-	font-family: 'Balsamiq Sans';
-}
-
-p{
-	font-family:'Oswald';
+.notifs .row:hover{
+  box-shadow: 0 0 1px black;
+  box-sizing: border-box;
 }
