@@ -3,6 +3,17 @@ import {Link} from 'react-router-dom';
 import './Navbar.css'
 
 class Navbar extends Component {
+    constructor(){
+        super();
+        this.signOut=this.signOut.bind(this);
+    }
+
+    signOut(e){
+        e.preventDefault();
+        window.localStorage.clear();
+        window.location.href='/';
+    }
+
     render() {
         return(
             <div>
@@ -29,10 +40,10 @@ class Navbar extends Component {
                                     </Link>
                                 </li>
                                 <li>
-                                    <a className="nav-link">
+                                    <Link to='/notifications' className="nav-link">
                                         <a className="nav-link d-inline-block d-md-none">Notifications</a>
                                         <i class="fas fa-bell"></i>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li>
                                     <Link to='/settings' className="nav-link">
@@ -41,10 +52,10 @@ class Navbar extends Component {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to='/' class='nav-link'>
+                                    <a onClick={this.signOut} class='nav-link'>
                                         <a className="nav-link d-inline-block d-md-none">Logout</a>
                                         <i class="fas fa-sign-out-alt"></i>
-                                    </Link>
+                                    </a>
                                 </li>
                             </ul>
                         </div>

@@ -4,7 +4,8 @@ import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import Home from './Pages/Home/Home';
 import Settings from './Pages/Settings/Settings';
-import Friends from './Pages/Friends/Friends.jsx'
+import Friends from './Pages/Friends/Friends.jsx';
+import Notifications from './Pages/Notifications/Notifications.jsx';
 
 class App extends Component{
     render(){
@@ -16,6 +17,7 @@ class App extends Component{
               <Route path='/home' component={Home}/>
               <Route path='/settings' component = {Settings}/>
               <Route path='/friends' component = {Friends}/>
+              <Route path='/notifications' component={Notifications}/>
            </Switch>
          </HashRouter>
       )
