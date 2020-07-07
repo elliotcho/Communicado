@@ -6,3 +6,46 @@ Messaging page (different state/props depending on which friend your messaging)
 Settings page (update email/password)
 Friends page (maybe add search bar)
 Notifications page
+
+if messages are blank render friends component
+friend card has profile pic, name, message and delete
+delete friend has window.confirm
+
+delete account in settings (change settings background)
+
+unread box shadow, bold message, iphone dot icon
+read no box shadow
+
+friends in user array
+
+message:{
+    _id: String,
+    sender _id: String
+    recipient _id: String
+    content: String
+    time_sent: Date 
+    time_read: Date
+    read: boolean
+}
+
+notification: {
+    _id: String,
+    content: String,
+    friendRequest: boolean
+}
+
+message: on the left all the messages: 
+chat with that person on the right
+
+alphabetical friends list for now
+
+TODOS for July 8:
+
+Tariq/Gugsa
+[ ] Delete account on settings
+[ ] restyling a settings
+[ ] style messages
+
+Elliot
+[ ]  work on search bar
+[ ]  work on adding friends
