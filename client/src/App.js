@@ -16,8 +16,8 @@ class App extends Component{
       return(
          <BrowserRouter>
            <Switch>
-              <Route path='/messages' component={Messages}/>
               <Route exact path='/' render = {()=> uid? <Home uid ={uid}/>: <Login uid ={uid}/>}/>
+              <Route path='/messages' component={Messages}/>
               <Route path='/signup' render ={() => <Signup uid ={uid}/>}/>
               <Route path='/settings' component = {Settings}/>
               <Route path='/friends' component = {Friends}/>
