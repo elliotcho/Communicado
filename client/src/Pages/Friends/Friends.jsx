@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import FriendCard from './FriendCard'
 import './Friends.css'
 import Navbar from '../../Partials/Navbar'
 
@@ -19,12 +20,7 @@ class Friends extends Component {
             <div className="Friends">
             <Navbar />
                 <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-12 d-flex justify-content-center">
-                            <h1 className="Friends-title">Friends</h1>
-                        </div>
-                    </div>
-                    <div className="row">
+                    <div className="row no-gutters">
                         <div className="jumbotron d-flex flex-column justify-content-center align-items-center mb-3">
                             <h4>Search for new friends!</h4>
                             <form className="Friends-form">
@@ -86,6 +82,10 @@ class Friends extends Component {
                                 </div>
                             </div> 
                         </div>
+                    </div>
+                    <div className="row no-gutters">
+                        {/* <FriendCard /> */}
+                        {/* <FriendCard /> */}
                     </div>
                 </div>
             </div>

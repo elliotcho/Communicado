@@ -17,5 +17,6 @@
 
 .jumbotron {
     width: 100vw;
-    height: 150px;
+    height: 175px;
+    margin: 0;
 }

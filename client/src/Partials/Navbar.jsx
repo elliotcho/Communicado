@@ -5,10 +5,10 @@ import './Navbar.css'
 class Navbar extends Component {
     constructor(){
         super();
-        this.signOut=this.signOut.bind(this);
+        this.signOut = this.signOut.bind(this);
     }
 
-    signOut(e){
+    signOut(e) {
         e.preventDefault();
         window.localStorage.clear();
         window.location.href='/';
@@ -32,7 +32,7 @@ class Navbar extends Component {
                                 </li>
                                 
                                 <li>
-                                    <a className="nav-link pr-lg-5">Messages</a>
+                                    <Link to='/messages' className="nav-link pr-lg-5">Messages</Link>
                                 </li>
                                 <li>
                                     <Link to='/friends'>
