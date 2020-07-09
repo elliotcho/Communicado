@@ -36,6 +36,7 @@ app.use(cors());
 const { 
     login, 
     signup, 
+    getUserInfo,
     handleProfilePic, 
     changeName,
     changePwd
@@ -43,6 +44,7 @@ const {
 
 app.post('/', login);
 app.post('/signup', signup);
+app.post('/userinfo', getUserInfo);
 app.post('/profilepic', handleProfilePic(upload, fs, path));
 app.post('/changename', changeName);
 app.post('/changepwd', changePwd);

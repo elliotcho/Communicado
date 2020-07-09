@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {HashRouter, Route, Switch} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import Home from './Pages/Home/Home';
@@ -9,19 +10,26 @@ import Notifications from './Pages/Notifications/Notifications.jsx';
 
 class App extends Component{
     render(){
+      const {uid} =this.props;
+
       return(
-         <HashRouter>
+         <BrowserRouter>
            <Switch>
-              <Route exact path='/' component={Login}/>
-              <Route path='/signup' component={Signup}/>
-              <Route path='/home' component={Home}/>
+              <Route exact path='/' render = {()=> uid? <Home uid ={uid}/>: <Login uid ={uid}/>}/>
+              <Route path='/signup' render ={() => <Signup uid ={uid}/>}/>
               <Route path='/settings' component = {Settings}/>
               <Route path='/friends' component = {Friends}/>
               <Route path='/notifications' component={Notifications}/>
            </Switch>
-         </HashRouter>
+         </BrowserRouter>
       )
     }
 }
 
-export default App;
+const mapStateToProps = (state) =>{
+    return {
+        uid: state.auth.uid
+    }
+}
+
+export default connect(mapStateToProps)(App);

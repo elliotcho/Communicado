@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
+import {withRouter, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {saveUserInfo} from '../../reducers/rootReducer';
+import {login} from '../../store/actions/authActions';
 import './Login.css';
-
-const axios=require('axios');
 
 class Login extends Component{
     constructor(){
@@ -31,28 +30,14 @@ class Login extends Component{
 
     handleSubmit(e){
         e.preventDefault();
-
-        const data = {...this.state};
-
-        axios.post('http://localhost:5000/', data, {headers: {'Content-Type': 'application/json'}})
-        .then(response =>{
-            const {msg, _doc} =response.data;
-
-            if(msg==='Success'){
-                this.props.saveUserInfo(_doc);
-
-                this.props.history.push({
-                    pathname: '/home',
-                });
-            }
-
-            else{
-                alert(msg);
-            }
-        });
+        this.props.login(this.state);
     }
 
     render(){
+        if(this.props.uid){
+            return <Redirect to='/'/>
+        }
+
         return(
             <div className='login text-white'>
                  <nav className='navbar'>
@@ -104,8 +89,8 @@ class Login extends Component{
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveUserInfo: (userInfo) => {dispatch(saveUserInfo(userInfo));}
+        login: (credentials) => {dispatch(login(credentials));}
     }
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default withRouter(connect(null, mapDispatchToProps)(Login));

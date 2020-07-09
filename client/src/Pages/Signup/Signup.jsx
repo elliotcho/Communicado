@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import {withRouter, Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {signUp} from '../../store/actions/authActions';
 import './Signup.css'
 
 class Signup extends Component {
@@ -24,26 +26,15 @@ class Signup extends Component {
     handleSubmit(evt) {
         evt.preventDefault();
 
-        // Create data object with form values
-        const data = {...this.state};
-
-        // Basic config for "post" axios method
-        const config = {
-            headers: {'Content-Type': 'application/json'}
-        }
-
-        // Use axios to post message to server
-        axios.post('http://localhost:5000/signup', data, config).then(response => {
-            if (response.data.msg === 'Success') {
-                this.props.history.push('/');
-            } else {
-                alert(response.data.msg)
-            }
-        })
+        this.props.signUp(this.state);
     }
 
 
     render() {
+        if(this.props.uid){
+            return <Redirect exact to='/'/>
+        }
+
         return(
             <div className="Signup">
                 <form className="Signup-form" onSubmit={this.handleSubmit}>
@@ -118,4 +109,10 @@ class Signup extends Component {
     }
 }
 
-export default Signup;
+const mapDispatchToProps = (dispatch) =>{
+    return{
+        signUp: (credentials) => {dispatch(signUp(credentials));}
+    }
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(Signup));

@@ -1,18 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {saveUserInfo, changeUserName, changePwd} from '../../reducers/rootReducer';
+import {getUserInfo, changeUserName, changePwd} from '../../store/actions/profileActions';
 import './Settings.css';
 import Navbar from '../../Partials/Navbar';
-
-
-const axios=require('axios');
 
 class Settings extends Component{
     constructor(){
         super();
     
         this.state={
-            userInfo: {},
             firstName: '',
             lastName: '',
             currPwd: '',
@@ -24,27 +20,11 @@ class Settings extends Component{
         this.showForm = this.showForm.bind(this);
         this.handleChange=this.handleChange.bind(this);
         this.changeName=this.changeName.bind(this);
-        this.changePwd =this.changePwd.bind(this);
+        this.changePwd=this.changePwd.bind(this);
     }
 
     componentDidMount(){
-        if(this.props.userInfo._id === ''){
-            this.props.saveUserInfo(JSON.parse(window.localStorage.getItem('userInfo')));
-
-            this.setState({
-                userInfo: JSON.parse(window.localStorage.getItem('userInfo'))
-            }, ()=>{
-                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));        
-            });
-        }
-        
-        else{
-            this.setState({
-                userInfo: this.props.userInfo
-            }, ()=>{
-                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));        
-            });
-        }
+        this.props.getUserInfo(this.props.uid);
     }
 
     showForm(){
@@ -64,45 +44,34 @@ class Settings extends Component{
     changeName(e){
         e.preventDefault();
 
-        const data={
-            id: this.state.userInfo._id,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName
-        }
+        const {uid, changeUserName} =this.props;
+        const {firstName, lastName} =this.state;
 
-        axios.post('http://localhost:5000/changename', data , {headers: {'content-type': 'application/json'}})
-        .then(response => {
-            const {_doc, msg} =response.data;
-
-            if(_doc){
-                this.props.changeUserName(_doc.firstName, _doc.lastName);
-            }
-
-            alert(msg);
+        this.setState({
+            firstName: "",
+            lastName:""
         });
+
+        changeUserName(uid, firstName, lastName);
     }
 
     changePwd(e){
         e.preventDefault();
 
-        const {userInfo, currPwd, newPwd, confirmPwd} =this.state;
+        const {uid} = this.props;
+        const  {currPwd, newPwd, confirmPwd} =this.state;
 
-        const data={id: userInfo._id, currPwd, newPwd, confirmPwd}
+        this.setState({
+            currPwd: "",
+            newPwd: "", 
+            confirmPwd: ""
+        })
 
-        axios.post('http://localhost:5000/changepwd', data, {headers:{'content-type': 'application/json'}})
-        .then(response =>{
-            const {_doc, msg} = response.data;
-
-            if(_doc){
-                this.props.changePwd(_doc.password);
-            }
-
-            alert(msg);
-        });
+        this.props.changePwd(uid, currPwd, newPwd, confirmPwd);
     }
 
     render(){
-        const {hidePwd} = this.state;
+        const {hidePwd, firstName, lastName, currPwd, newPwd, confirmPwd} = this.state;
 
         let formStyle = hidePwd? {visibility: 'hidden'}: {visibility: 'visible'}; 
 
@@ -115,10 +84,10 @@ class Settings extends Component{
                 
                     <form className='changeName' onSubmit={this.changeName}>
                         <label htmlFor="firstName">First Name</label>
-                        <input type="text" id="firstName" minLength='2' maxLength='30' onChange={this.handleChange}/>
+                        <input type="text" id="firstName" minLength='2' maxLength='30' onChange={this.handleChange} value={firstName}/>
 
                         <label htmlFor="lastName">Last Name</label>
-                        <input type="text" id="lastName" minLength='2' maxLength='30' onChange={this.handleChange}/>
+                        <input type="text" id="lastName" minLength='2' maxLength='30' onChange={this.handleChange} value={lastName}/>
 
                         <button className='btn btn-lg btn-danger'>Change Name</button>
                     </form>
@@ -127,13 +96,13 @@ class Settings extends Component{
 
                     <form className='changePwd' onSubmit={this.changePwd} style={formStyle}>
                         <label htmlFor="currPwd">Current Password:</label>
-                        <input type="password" id="currPwd" minLength='6' maxLength='50' onChange={this.handleChange} required/>
+                        <input type="password" id="currPwd" minLength='6' maxLength='50' onChange={this.handleChange} value={currPwd} required/>
                     
                         <label htmlFor="newPwd">New Password:</label>
-                        <input type="password" id="newPwd" minLength='6' maxLength='50' onChange={this.handleChange} required/>
+                        <input type="password" id="newPwd" minLength='6' maxLength='50' onChange={this.handleChange} value={newPwd} required/>
             
                         <label htmlFor="confirmPwd">Confirm Password:</label>
-                        <input type="password" id="confirmPwd" minLength='6' maxLength='50' onChange={this.handleChange} required/>
+                        <input type="password" id="confirmPwd" minLength='6' maxLength='50' onChange={this.handleChange} value={confirmPwd} required/>
                     
                         <button className='btn btn-lg btn-danger'>Change Password</button>
                     </form>
@@ -145,15 +114,17 @@ class Settings extends Component{
 
 const mapStateToProps = (state) =>{
     return {
-        userInfo: state
+        uid: state.auth.uid,
+        firstName: state.profile.firstName,
+        lastName: state.profile.lastName
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveUserInfo: (userInfo) => {dispatch(saveUserInfo(userInfo));},
-        changeUserName: (fName, lName) =>{dispatch(changeUserName(fName, lName));},
-        changePwd: (pwd) => {dispatch(changePwd(pwd));}
+        getUserInfo: (uid) => {dispatch(getUserInfo(uid));},
+        changeUserName: (uid, firstName, lastName) =>{dispatch(changeUserName(uid, firstName, lastName));},
+        changePwd: (pwd, currPwd, newPwd, confirmPwd) => {dispatch(changePwd(pwd, currPwd, newPwd, confirmPwd));}
     }
 };
 
