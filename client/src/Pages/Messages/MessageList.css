@@ -1,0 +1,5 @@
+.MessageList {
+    background-color: lightgray;
+    height: 90vh;
+    overflow: scroll;
+}
