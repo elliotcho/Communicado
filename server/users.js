@@ -11,7 +11,7 @@ const login = (req,res) => {
             // If email found, verify email
             if(result.password === req.body.password){
                 // Once verified, send User
-                res.json({...result, msg:'Success'});
+                res.json({uid: result._id, msg:'Success'});
             }
             // If password is not correct
             else{res.json({msg:"incorrect password"});}
@@ -39,17 +39,23 @@ const signup = (req, res) => {
                     dateCreated: Date.now()
                 });
                 // Save user to DB and return it to access, along with confirmation msg
-                newUser.save().then(() => {
-                    res.json({...newUser, msg: 'Success'})
+                newUser.save().then(result => {
+                    res.json({msg: 'Success', uid: result._id})
                 });
             }
         });
     }
 }
 
+const getUserInfo = (req, res) =>{
+    User.findOne({_id: req.body.uid}).then(result =>{
+        res.json({...result});
+    });
+}
+
 const handleProfilePic = (upload, fs, path) => (req, res) =>{
    if(req.body.action === 'load'){
-       User.findOne({_id: req.body.id}).then(result =>{
+       User.findOne({_id: req.body.uid}).then(result =>{
             if(typeof result.profilePic === 'undefined'){
                 res.sendFile(path.join(__dirname, 'images/avatar.jpg'));
             } 
@@ -66,7 +72,7 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
                 console.log(err);
             }
 
-            User.findOne({_id: req.body.id}).then(result =>{
+            User.findOne({_id: req.body.uid}).then(result =>{
                 if(typeof result.profliePic ==='undefined'){
                     fs.unlink(path.join(__dirname, `images/${result.profilePic}`), err =>{
                         if(err){
@@ -75,7 +81,7 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
                     });
                 }
 
-                User.updateOne({_id: req.body.id}, {profilePic: req.file.filename}).then(()=>{
+                User.updateOne({_id: req.body.uid}, {profilePic: req.file.filename}).then(()=>{
                     res.json({msg: 'Success'});
                 });
             });
@@ -84,27 +90,27 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
 }
 
 const changeName = (req, res) => {
-    const {id, firstName, lastName} = req.body;
+    const {uid, firstName, lastName} = req.body;
 
     if(firstName ==='' && lastName !== ''){
-       User.updateOne({_id: id}, {lastName}).then(() =>{
-            User.findOne({_id: id}).then(result =>{
+       User.updateOne({_id: uid}, {lastName}).then(() =>{
+            User.findOne({_id: uid}).then(result =>{
                 res.json({...result, msg: 'Your last name has been updated'});
             });
        });
     }
 
     else if(firstName !== '' && lastName ===''){
-        User.updateOne({_id: id}, {firstName}).then(() =>{
-            User.findOne({_id: id}).then(result =>{
+        User.updateOne({_id: uid}, {firstName}).then(() =>{
+            User.findOne({_id: uid}).then(result =>{
                 res.json({...result, msg: 'Your first name has been updated'});
             });
         });
     }
 
     else if(firstName !== '' && lastName !== ''){
-        User.updateOne({_id: id}, {firstName, lastName}).then(() =>{
-            User.findOne({_id: id}).then(result =>{
+        User.updateOne({_id: uid}, {firstName, lastName}).then(() =>{
+            User.findOne({_id: uid}).then(result =>{
                 res.json({...result, msg: 'Your full name has been updated'});
             });
         });
@@ -116,21 +122,21 @@ const changeName = (req, res) => {
 }
 
 const changePwd = (req, res) =>{
-    const {id, currPwd, newPwd, confirmPwd} = req.body;
+    const {uid, currPwd, newPwd, confirmPwd} = req.body;
 
     if(newPwd !== confirmPwd){
         res.json({msg: 'New password does not match confirm password'});
     }
 
     else{
-        User.findOne({_id: id}).then(result=>{
+        User.findOne({_id: uid}).then(result=>{
             if(result.password !== currPwd){
                 res.json({msg: 'Your current password is incorrect'});
             }
 
             else{
-                User.updateOne({_id: id}, {password: newPwd}).then(()=>{
-                    res.json({...result, msg: 'Your password has been changed'});
+                User.updateOne({_id: uid}, {password: newPwd}).then(()=>{
+                    res.json({msg: 'Your password has been changed'});
                 });
             }
         });
@@ -142,6 +148,7 @@ module.exports = {
     login,
     signup,
     handleProfilePic,
+    getUserInfo,
     changeName,
     changePwd
 }

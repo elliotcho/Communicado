@@ -1,79 +1,36 @@
 import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {saveUserInfo} from '../../reducers/rootReducer';
-import './Home.css';
+import {getUserInfo, loadProfilePic, changeProfilePic} from '../../store/actions/profileActions';
 import Navbar from '../../Partials/Navbar'
+import './Home.css';
 
 import loading from './loading.jpg';
-
-const axios=require('axios');
 
 class Home extends Component{
     constructor(){
         super();
-
-        this.state={
-            imgURL: null,
-            userInfo: {}
-        }
-
-        this.handleChange = this.handleChange.bind(this);
-        this.loadProfile=this.loadProfile.bind(this);
+        this.handleChange=this.handleChange.bind(this);
     }
 
     componentDidMount(){
-        if(this.props.userInfo._id === ''){
-            this.props.saveUserInfo(JSON.parse(window.localStorage.getItem('userInfo')));
+        const {uid} = this.props;
 
-            this.setState({
-                userInfo: JSON.parse(window.localStorage.getItem('userInfo'))
-            }, ()=>{
-                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));        
-                this.loadProfile(this.state.userInfo._id);
-            });
-        }
-        
-        else{
-            this.setState({
-                userInfo: this.props.userInfo
-            }, ()=>{
-                window.localStorage.setItem('userInfo', JSON.stringify(this.state.userInfo));        
-                this.loadProfile(this.state.userInfo._id);
-            });
-        }
-    }
+        this.props.getUserInfo(uid);
 
-    loadProfile(id){
-        const data={action: 'load', id}
-
-        const config={'Content-Type': 'application/json'};
-
-        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        .then(response =>response.blob())
-        .then(file =>{
-            this.setState({imgURL: URL.createObjectURL(file)});
-        });
+        this.props.loadProfilePic(uid);
     }
 
     handleChange(e){
-        const imgFile = e.target.files[0];
-
-        this.setState({imgURL: URL.createObjectURL(imgFile)}, ()=>{
-            const formData =new FormData();
-
-            formData.append('id', this.state.userInfo._id);
-            formData.append('image', imgFile);
-    
-            const config = {headers: {'Content-Type': 'multipart/form-data'}};
-    
-            axios.post('http://localhost:5000/profilepic', formData, config)
-            .then(()=>{});
-        });
+        this.props.changeProfilePic(this.props.uid, e.target.files[0]);
     }
 
     render(){
-        const {imgURL} = this.state;
-        const {firstName, lastName} =this.state.userInfo;
+        const {imgURL, firstName, lastName} = this.props;
+
+        if(!this.props.uid){
+            return <Redirect to='/'/>
+        }
 
         return(
             <div className='home'>
@@ -110,13 +67,18 @@ class Home extends Component{
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state
+        uid: state.auth.uid,
+        firstName: state.profile.firstName,
+        lastName: state.profile.lastName,
+        imgURL: state.profile.imgURL
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveUserInfo: (userInfo) => {dispatch(saveUserInfo(userInfo));}
+        getUserInfo: (uid) => {dispatch(getUserInfo(uid));},
+        loadProfilePic: (uid) => {dispatch(loadProfilePic(uid));},
+        changeProfilePic: (uid, imgFile) => {dispatch(changeProfilePic(uid, imgFile));}
     }
 };
 
