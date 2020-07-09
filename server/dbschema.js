@@ -11,6 +11,24 @@ const UserSchema = new schema({
     profilePic: String
 });
 
+const MessageSchema = new schema({
+    sender_id: String,
+    recipient_id: String,
+    timeSent: Date,
+    timeRead: Date,
+    body: String,
+    read: Boolean
+})
+
+const NotifSchema = new schema({
+    friendRequest: Boolean,
+    content: String,
+    read: Boolean
+})
+
 // Model the User object after the schema and export the "User"
 const User = mongoose.model('user', UserSchema);
+const Message = mongoose.model('message', MessageSchema)
+const Notification = mongoose.model('notification', NotifSchema)
+
 exports.User = User;

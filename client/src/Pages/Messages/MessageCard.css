@@ -1,4 +1,9 @@
 .MessageCard {
-    background-color: cornflowerblue;
+    background-color: #DFDFDF;
     width: 100%;
+    border-radius: 0;
+}
+
+img {
+    border-radius: 50%;
 }

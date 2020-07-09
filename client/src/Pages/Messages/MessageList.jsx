@@ -4,6 +4,12 @@ import './MessageList.css'
 
 
 class MessageList extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            unreadMessages: []
+        }
+    }
     render() {
         return (
             <div className="MessageList">
