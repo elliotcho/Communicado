@@ -39,7 +39,8 @@ const {
     getUserInfo,
     handleProfilePic, 
     changeName,
-    changePwd
+    changePwd,
+    findUsers
 } = require('./users');
 
 app.post('/', login);
@@ -48,6 +49,7 @@ app.post('/userinfo', getUserInfo);
 app.post('/profilepic', handleProfilePic(upload, fs, path));
 app.post('/changename', changeName);
 app.post('/changepwd', changePwd);
+app.post('/findusers', findUsers);
 
 //Specify localhost port number
 app.listen(5000);
