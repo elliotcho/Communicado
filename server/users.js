@@ -143,6 +143,69 @@ const changePwd = (req, res) =>{
     }
 }
 
+const findUsers = (req, res) =>{
+    let {name} = req.body;
+
+    let firstName;
+    let lastName;
+
+    let split;
+    let oneWord = true;
+
+    if(req.body.name.includes(" ")){
+        oneWord =false;
+
+        split = name.split(" ");
+
+        if(split.length > 2 || name.length === 0){
+            res.json({msg: "No users found"});
+        }
+        
+        firstName = split[0].charAt(0).toUpperCase();
+
+        for(let i=1;i<split[0].length;i++){
+            firstName+=split[0][i].toLowerCase();
+        }
+
+        lastName = split[1].charAt(0).toUpperCase();
+
+        for(let i=1;i<split[1].length;i++){
+            lastName+=split[1][i].toLowerCase();
+        }
+    }
+
+    else{
+        firstName = name.charAt(0).toUpperCase();
+
+        for(let i=1;i<name.length;i++){
+            firstName+=name[i].toLowerCase();
+        }
+    }
+
+    User.find({}).then(result => {
+        const users = [];
+
+        for(let i=0;i<result.length;i++){
+            //one word and the word is part of user's first name
+            if(oneWord && result[i].firstName.startsWith(firstName)){
+                users.push(result[i]);
+            }
+
+            //one word and word is part of users's last name
+            else if(oneWord && result[i].lastName.startsWith(firstName)){
+                users.push(result[i]);
+            }
+
+            //two words and word 1 is part of first name and word 2 is part of last name
+            else if(result[i].firstName.startsWith(firstName) && result[i].lastName.startsWith(lastName)){
+                users.push(result[i]);
+            }
+        }
+
+        res.json({users, msg: "Success, here are your users"});
+    }).catch(e => console.log(e));
+}
+
 // exports
 module.exports = {
     login,
@@ -150,5 +213,6 @@ module.exports = {
     handleProfilePic,
     getUserInfo,
     changeName,
-    changePwd
+    changePwd,
+    findUsers
 }

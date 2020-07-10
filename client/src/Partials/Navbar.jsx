@@ -19,7 +19,7 @@ class Navbar extends Component {
             <div>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed">
                     <div className="container-fluid">
-                        <Link to='/home' className="navbar-brand">Communicado</Link>
+                        <Link to='/' className="navbar-brand">Communicado</Link>
                         
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                             <span className="navbar-toggler-icon"></span>
