@@ -41,7 +41,7 @@ const {
     changeName,
     changePwd,
     findUsers
-} = require('./users');
+} = require('./handlers/users');
 
 app.post('/', login);
 app.post('/signup', signup);

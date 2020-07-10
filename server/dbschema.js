@@ -8,7 +8,8 @@ const UserSchema = new schema({
     email: String,
     password: String,
     dateCreated: Date, 
-    profilePic: String
+    profilePic: String,
+    friends: [String]
 });
 
 const MessageSchema = new schema({
