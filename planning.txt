@@ -41,11 +41,12 @@ alphabetical friends list for now
 
 TODOS for July 8:
 
-Tariq/Gugsa
+Gugsa
 [ ] Delete account on settings
 [ ] restyling a settings
-[ ] style messages
 
 Elliot
-[ ]  work on search bar
-[ ]  work on adding friends
+[ ]  style message page
+
+Tariq 
+[ ] style friends
