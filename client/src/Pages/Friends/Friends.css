@@ -16,7 +16,11 @@
 }
 
 .jumbotron {
-    width: 100vw;
-    height: 175px;
+    min-height: 175px;
     margin: 0;
+    padding: 32px 16px;
 }
+/* 
+#resultsRow {
+    width: 85vw;
+} */

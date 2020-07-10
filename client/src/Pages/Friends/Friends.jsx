@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {findUsers} from '../../store/actions/friendsActions';
 import FriendCard from './FriendCard'
+import FoundFriends from './FoundFriends'
 import './Friends.css'
 import Navbar from '../../Partials/Navbar'
 
@@ -12,6 +13,7 @@ class Friends extends Component {
         this.state = {allUserQuery: "", friendQuery: ""}
         this.handleChange = this.handleChange.bind(this);
         this.globalSearch = this.globalSearch.bind(this);
+        this.showResults = this.showResults.bind(this);
     }
 
     handleChange(evt) {
@@ -20,21 +22,31 @@ class Friends extends Component {
 
     globalSearch(e){
         e.preventDefault();
-
         this.props.findUsers(this.state.allUserQuery);
     }
 
-    render() {
-        console.log(this.props.users);
+    showResults() {
+        let row = document.getElementById('resultsRow')
+        if (row.style.display === "none") {
+            row.style.display = "block";
+        } else {
+            row.style.display = "none"
+        }
+    }
 
+
+    render() {
+        // console.log(this.props.users);
         return (
             <div className="Friends">
             <Navbar />
                 <div className="container-fluid">
-                    <div className="row no-gutters">
-                        <div className="jumbotron d-flex flex-column justify-content-center align-items-center mb-3">
+                    <div className="jumbotron d-flex flex-column justify-content-center align-items-center mb-3">
+                        <div className="row">
                             <h4>Search for new friends!</h4>
-                            <form className="Friends-form" onSubmit={this.globalSearch}>
+                        </div>
+                        <div className="row">
+                            <form className="Friends-form mb-4" onSubmit={this.globalSearch}>
                                 <label htmlFor="allUserQuery"></label>
                                 <input
                                     type="text"
@@ -43,14 +55,15 @@ class Friends extends Component {
                                     onChange={this.handleChange}
                                     placeholder="Browse all profiles"
                                 />
-                                <button><i class="fas fa-search"></i></button>
+                                <button onClick={this.showResults}><i className="fas fa-search"></i></button>
                             </form>
                         </div>
+                        {/* Results row that will only show if button is pressed. Starts with no view */}
+                        <div className="row" style={{display: 'none'}} id="resultsRow">
+                            <FoundFriends/>
+                        </div>
                     </div>
-
-                    {this.props.users? this.props.users.map(user =>{
-                        return <li key={user._id}>{user.firstName} {user.lastName}</li>
-                    }): null}
+                    
 
                     <div className="row">
                         <div className="col-12 d-flex justify-content-center">
@@ -99,10 +112,10 @@ class Friends extends Component {
                             </div> 
                         </div>
                     </div>
-                    <div className="row no-gutters">
+                    {/* <div className="row no-gutters"> */}
                         {/* <FriendCard /> */}
                         {/* <FriendCard /> */}
-                    </div>
+                    {/* </div> */}
                 </div>
             </div>
         )
@@ -112,7 +125,8 @@ class Friends extends Component {
 //put data from reducer into props
 const mapStateToProps = (state) =>{
     return {
-        users: state.friends.users
+        users: state.friends.users,
+        uid: state.auth.uid
     }
 }
 
