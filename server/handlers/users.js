@@ -1,4 +1,4 @@
-const {User} = require('./dbschema');
+const {User} = require('../dbschema');
 
 //result is result of query, query is example User.findOne({})
 const login = (req,res) => {
@@ -36,8 +36,11 @@ const signup = (req, res) => {
                     lastName: req.body.lastName,
                     email: req.body.email,
                     password: req.body.password,
-                    dateCreated: Date.now()
+                    dateCreated: Date.now(),
+                    profilePic: null,
+                    friends: []
                 });
+
                 // Save user to DB and return it to access, along with confirmation msg
                 newUser.save().then(result => {
                     res.json({msg: 'Success', uid: result._id})
@@ -56,12 +59,12 @@ const getUserInfo = (req, res) =>{
 const handleProfilePic = (upload, fs, path) => (req, res) =>{
    if(req.body.action === 'load'){
        User.findOne({_id: req.body.uid}).then(result =>{
-            if(typeof result.profilePic === 'undefined'){
-                res.sendFile(path.join(__dirname, 'images/avatar.jpg'));
+            if(result.profilePic === null){
+                res.sendFile(path.join(__dirname, '../', 'images/avatar.jpg'));
             } 
 
             else{
-                res.sendFile(path.join(__dirname, `images/${result.profilePic}`));
+                res.sendFile(path.join(__dirname, '../', `images/${result.profilePic}`));
             }
        });
    }
@@ -73,8 +76,8 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
             }
 
             User.findOne({_id: req.body.uid}).then(result =>{
-                if(typeof result.profliePic ==='undefined'){
-                    fs.unlink(path.join(__dirname, `images/${result.profilePic}`), err =>{
+                if(result.profliePic === null){
+                    fs.unlink(path.join(__dirname, '../', `images/${result.profilePic}`), err =>{
                         if(err){
                             console.log(err);
                         }
@@ -146,60 +149,47 @@ const changePwd = (req, res) =>{
 const findUsers = (req, res) =>{
     let {name} = req.body;
 
-    let firstName;
-    let lastName;
+    if(name.length === 0){
+        res.json({msg: "No users found"});
+    }
 
-    let split;
-    let oneWord = true;
+    let listOfNames = [];
 
     if(req.body.name.includes(" ")){
         oneWord =false;
 
         split = name.split(" ");
-
-        if(split.length > 2 || name.length === 0){
-            res.json({msg: "No users found"});
-        }
         
-        firstName = split[0].charAt(0).toUpperCase();
-
-        for(let i=1;i<split[0].length;i++){
-            firstName+=split[0][i].toLowerCase();
-        }
-
-        lastName = split[1].charAt(0).toUpperCase();
-
-        for(let i=1;i<split[1].length;i++){
-            lastName+=split[1][i].toLowerCase();
+        for(let i=0;i<split.length;i++){
+            listOfNames.push(split[i].toLowerCase());
         }
     }
 
     else{
-        firstName = name.charAt(0).toUpperCase();
-
-        for(let i=1;i<name.length;i++){
-            firstName+=name[i].toLowerCase();
-        }
+        listOfNames.push(name.toLowerCase());
     }
 
     User.find({}).then(result => {
         const users = [];
 
         for(let i=0;i<result.length;i++){
-            //one word and the word is part of user's first name
-            if(oneWord && result[i].firstName.startsWith(firstName)){
-                users.push(result[i]);
+            let userNames = `${result[i].firstName} ${result[i].lastName}`.split(" ");
+            
+            for(let j=0;j<userNames.length;j++){
+                let found = false;
+
+                for(let k=0;k<listOfNames.length;k++){
+                    if(userNames[j].toLowerCase().startsWith(listOfNames[k])){
+                        users.push(result[i]);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if(found){break;}
             }
 
-            //one word and word is part of users's last name
-            else if(oneWord && result[i].lastName.startsWith(firstName)){
-                users.push(result[i]);
-            }
-
-            //two words and word 1 is part of first name and word 2 is part of last name
-            else if(result[i].firstName.startsWith(firstName) && result[i].lastName.startsWith(lastName)){
-                users.push(result[i]);
-            }
+            if(users.length === 14){break;}
         }
 
         res.json({users, msg: "Success, here are your users"});
