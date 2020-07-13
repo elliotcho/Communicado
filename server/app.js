@@ -12,12 +12,11 @@ const socket = require('socket.io');
 const server= app.listen(5000);
 const io= socket(server);
 
-
 //connect to socket
 io.on('connection', (socket)=>{
-    //listen for message being sent from client
-    socket.on("msg", (data)=>{
-        io.sockets.emit("msg",data);
+    // listen for message being sent from client. Sends back msg data
+    socket.on("msg", (data) => {
+        io.sockets.emit("msg", data);
     });
 })
 
@@ -27,18 +26,19 @@ mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Comm
     useNewUrlParser: true
 });
 
+// Open Connection to database
 mongoose.connection.once('open', () => {
     console.log("Connected to Database");
 }).on('error', err => {console.log(err);});
 
-//set up image storage
+// Set up image storage into images folder
 const storage = multer.diskStorage({
     destination: './images',
     filename: (req, file, cb) =>{
         cb(null, 'PROFILE-' + req.body.id + Date.now() + path.extname(file.originalname));
     }
 });
-
+// Use multer to upload imgs
 const upload = multer({
     storage,
     limits: {fileSize: 1000000000}
@@ -47,6 +47,7 @@ const upload = multer({
 app.use(bodyParser.json());
 app.use(cors());
 
+// User functions
 const { 
     login, 
     signup, 
@@ -56,7 +57,7 @@ const {
     changePwd,
     findUsers
 } = require('./handlers/users');
-
+// User funtional routes
 app.post('/', login);
 app.post('/signup', signup);
 app.post('/userinfo', getUserInfo);

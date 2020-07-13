@@ -9,6 +9,7 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 
+// Create central store of data for client
 const store =createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(

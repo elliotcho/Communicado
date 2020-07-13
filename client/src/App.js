@@ -11,11 +11,12 @@ import Messages from './Pages/Messages/Messages'
 
 class App extends Component{
     render(){
-      const {uid} =this.props;
+      const {uid} = this.props;
 
       return(
          <BrowserRouter>
            <Switch>
+           {/* Router that switches paths based on route */}
               <Route exact path='/' render = {()=> uid? <Home uid ={uid}/>: <Login uid ={uid}/>}/>
               <Route path='/messages' component={Messages}/>
               <Route path='/signup' render ={() => <Signup uid ={uid}/>}/>
@@ -27,7 +28,7 @@ class App extends Component{
       )
     }
 }
-
+// Convert state to props using reducer
 const mapStateToProps = (state) =>{
     return {
         uid: state.auth.uid
