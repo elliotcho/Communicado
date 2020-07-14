@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './FilterForm.css'
 
 class FilterForm extends Component {
     constructor(props) {
@@ -24,6 +25,7 @@ class FilterForm extends Component {
                             value = {this.state.friendQuery}
                             onChange = {this.handleChange}
                             placeholder = "Friend name"
+                            className="FilterForm-inp"
                         />
                     </form>
                 </div>
