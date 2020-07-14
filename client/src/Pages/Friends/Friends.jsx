@@ -3,14 +3,14 @@ import {connect} from 'react-redux';
 import {findUsers} from '../../store/actions/friendsActions';
 import FriendCard from './FriendCard'
 import FindForm from './FindForm'
+import FilterForm from './FilterForm'
 import './Friends.css'
 import Navbar from '../../Partials/Navbar'
 
 // Friends Page composed of separate components that make up the page
 class Friends extends Component {
-    constructor() {
-        super();
-        this.state = {friendQuery: ""}
+    constructor(props) {
+        super(props);
     }
 
     render() {
@@ -20,22 +20,9 @@ class Friends extends Component {
                 <Navbar />
                 <div className="container-fluid">
                     <FindForm findUsers = {this.props.findUsers}/>
+                    <FilterForm />
                     
-                    <div className="row">
-                        <div className="col-12 d-flex justify-content-center">
-                            <form className="Friends-form mb-4">
-                                <label htmlFor="friendQuery">Search through your friends list: </label>
-                                <input
-                                    type="text"
-                                    name="friendQuery"
-                                    value={this.state.friendQuery}
-                                    onChange={this.handleChange}
-                                    placeholder="Browse friends"
-                                    className="Friends-input"
-                                />
-                            </form>
-                        </div>
-                    </div>
+                    
                     <div className="row no-gutters">
                         <div className="col-md-6 col-sm-12 d-flex justify-content-center">
                             <div className="card bg-light mb-4">
