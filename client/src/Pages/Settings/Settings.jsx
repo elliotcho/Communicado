@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 import {getUserInfo, changeUserName, changePwd} from '../../store/actions/profileActions';
 import './Settings.css';
 import Navbar from '../../Partials/Navbar';
@@ -71,6 +72,10 @@ class Settings extends Component{
     }
 
     render(){
+        if(!this.props.uid){
+            return <Redirect to = '/'/>
+        }
+
         const {hidePwd, firstName, lastName, currPwd, newPwd, confirmPwd} = this.state;
 
         let formStyle = hidePwd? {visibility: 'hidden'}: {visibility: 'visible'}; 

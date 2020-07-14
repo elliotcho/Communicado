@@ -21,8 +21,7 @@ class Friends extends Component {
                 <div className="container-fluid">
                     <FindForm findUsers = {this.props.findUsers}/>
                     <FilterForm />
-                    
-                    
+                  
                     <div className="row no-gutters">
                         <div className="col-md-6 col-sm-12 d-flex justify-content-center">
                             <div className="card bg-light mb-4">

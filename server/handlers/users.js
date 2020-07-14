@@ -189,8 +189,6 @@ const findUsers = (req, res) =>{
 
                 if(found){break;}
             }
-            // Max returns is 14, afterwards stop
-            if(users.length === 14){break;}
         }
         res.json({users, msg: "Success, here are your users"});
     }).catch(e => console.log(e));
