@@ -1,0 +1,24 @@
+.jumbotron {
+    min-height: 250px;
+    margin: 0;
+    padding: 32px 16px;
+}
+
+.FindForm-input {
+    font-size: 22px;
+}
+
+.FindForm-btn {
+    font-size: 22px;
+    border-radius: 3px;
+}
+
+.FindForm-form {
+    padding: 15px 10px;
+}
+
+#resultsRow {
+    width: 100%;
+    padding: 15px;
+    margin: 0;
+}
