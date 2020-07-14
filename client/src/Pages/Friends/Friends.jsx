@@ -64,7 +64,6 @@ class Friends extends Component {
                         </div>
                     </div>
                     
-
                     <div className="row">
                         <div className="col-12 d-flex justify-content-center">
                             <form className="Friends-form mb-4">

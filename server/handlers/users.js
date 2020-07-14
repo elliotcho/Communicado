@@ -188,8 +188,6 @@ const findUsers = (req, res) =>{
 
                 if(found){break;}
             }
-
-            if(users.length === 14){break;}
         }
 
         res.json({users, msg: "Success, here are your users"});
