@@ -7,13 +7,13 @@ class Navbar extends Component {
         super();
         this.signOut = this.signOut.bind(this);
     }
-
+    // Function to signout user, making sure they cannot go back and still be logged in
     signOut(e) {
         e.preventDefault();
         window.localStorage.clear();
         window.location.href='/';
     }
-
+    // Return navbar using bootstrap4 and React-Router links
     render() {
         return(
             <div>
