@@ -6,19 +6,7 @@ const path=require('path');
 const cors=require('cors');
 const express = require('express');
 const app = express();
-const socket = require('socket.io');
-
-//setup socket
-// const server= app.listen(5000);
-// const io= socket(server);
-
-// //connect to socket
-// io.on('connection', (socket)=>{
-//     // listen for message being sent from client. Sends back msg data
-//     socket.on("msg", (data) => {
-//         io.sockets.emit("msg", data);
-//     });
-// })
+//const socket = require('socket.io');
 
 //connect to database
 mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Communicado?retryWrites=true&w=majority', {

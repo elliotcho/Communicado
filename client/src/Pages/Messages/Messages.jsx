@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from '../../Partials/Navbar';
 import MessageList from './MessageList'
+import ExpandChat from './ExpandChat';
 import './Messages.css'
 
 class Messages extends Component {
@@ -13,8 +14,9 @@ class Messages extends Component {
                         <div className="col-4">
                             <MessageList />
                         </div>
-                        <div className="col-8">
-                            <h2>Message Expanded</h2>
+
+                        <div className="expandChat-container col-8">
+                            <ExpandChat/>
                         </div>
                     </div>
                 </div>
