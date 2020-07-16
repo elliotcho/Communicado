@@ -4,8 +4,9 @@ import {findUsers} from '../../store/actions/friendsActions';
 import Navbar from '../../Partials/Navbar'
 import FindForm from '../../Partials/FindForm'
 import FilterForm from '../../Partials/FilterForm'
+import FriendGrid from './FriendGrid'
 import './Friends.css'
-import FriendGrid from './FriendGrid';
+
 
 
 // Friends Page composed of separate components that make up the page
