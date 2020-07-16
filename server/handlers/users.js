@@ -75,7 +75,7 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
             }
 
             User.findOne({_id: req.body.uid}).then(result =>{
-                if(result.profliePic === null){
+                if(result.profliePic !== null){
                     fs.unlink(path.join(__dirname, '../', `images/${result.profilePic}`), err =>{
                         if(err){
                             console.log(err);
