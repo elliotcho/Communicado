@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './FilterForm.css'
 
+// Class that creates form that filters through a friends list 
+// Takes up a row, goes in a container
 class FilterForm extends Component {
     constructor(props) {
         super(props);
@@ -15,16 +17,16 @@ class FilterForm extends Component {
 
     render() {
         return (
-            <div className="row my-4 py-3 d-flex justify-content-center text-center">
-                <div className = "col-12">
-                    <form>
-                        <label htmlFor="friendQuery">Search through your friends list: </label>
+            <div className="row my-4 py-3 FilterForm">
+                <div className = "col-12 d-flex justify-content-center text-center">
+                    <form className="FilterForm-form">
+                        <label htmlFor="friendQuery">Search your friends: </label>
                         <input 
                             type = "text"
                             name = "friendQuery"
                             value = {this.state.friendQuery}
                             onChange = {this.handleChange}
-                            placeholder = "Friend name"
+                            placeholder = "Name"
                             className="FilterForm-inp"
                         />
                     </form>

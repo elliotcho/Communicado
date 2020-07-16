@@ -1,0 +1,14 @@
+.FilterForm {
+    width: 100%;
+    height: 100%;
+}
+
+.FilterForm-form {
+    width: fit-content;
+    padding: 25px;
+    border: 1px solid lightgray;
+}
+
+.FilterForm-inp {
+    margin-left: 10px !important;
+}
