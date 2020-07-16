@@ -15,14 +15,15 @@ class ExpandChat extends Component{
                </header>
                
                <section className = 'chat-box'>
-                    <div className ='chat-r'>
-                        <div className ='space'></div>
-                        
-                        <div className='mess mess-r'>
-                            <p>ThIs GuY Is CoMeDY</p>
+                    <div>
+                        <div className ='msg msg-r'>
+                            <div className ='msg-content'>This GuY is CoMEdy</div>
+                            <i className ='fa fa-check'></i>
                         </div>
-                    
-                     
+
+                        <div className ='msg msg-l'>
+                            <div className ='msg-content'>This GuY is CoMEdy</div>
+                        </div>
                     </div>
                </section>
             </div>

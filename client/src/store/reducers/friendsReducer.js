@@ -1,4 +1,4 @@
-const initState = {};
+const initState = {users: []};
 // Reducer for friend actions
 const friendsReducer = (state=initState, action) =>{
     switch(action.type){
@@ -6,7 +6,9 @@ const friendsReducer = (state=initState, action) =>{
         case "USERS_FOUND":
             return{
                 ...state,
-                users: action.users
+
+                //using ... operator recreate new array
+                users: [...action.users]
             }
 
         default:

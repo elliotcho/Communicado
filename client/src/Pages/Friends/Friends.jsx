@@ -16,7 +16,7 @@ class Friends extends Component {
             <div className="Friends">
                 <Navbar />
                 <div className="container-fluid">
-                    <FindForm findUsers = {this.props.findUsers}/>
+                    <FindForm findUsers = {this.props.findUsers} users = {this.props.users}/>
                     <FilterForm />
 
                     <FriendGrid />

@@ -7,7 +7,11 @@ class FindForm extends Component {
     // State - form query that user is entering
     constructor(props) {
         super(props);
-        this.state = { nameQuery: "" };
+
+        this.state = { 
+            nameQuery: "" 
+        };
+
         this.handleChange = this.handleChange.bind(this);
         this.globalSearch = this.globalSearch.bind(this);
         this.showResults = this.showResults.bind(this);
@@ -19,6 +23,9 @@ class FindForm extends Component {
 
     globalSearch(e) {
         e.preventDefault();
+
+        if(this.state.nameQuery === ""){return;}
+
         this.props.findUsers(this.state.nameQuery);
     }
     // Function that shows the hidden row when form is submit
@@ -33,6 +40,10 @@ class FindForm extends Component {
 
     // Use BS4 to display form in jumbotron
     render() {
+        const foundUsers = this.props.users.map(user =>
+            <FoundFriendCard key={user._id} user = {user}/>
+        );
+
         return (
             <div className="jumbotron d-flex flex-column justify-content-center align-items-center mb-3">
                 <div className="row">
@@ -56,11 +67,7 @@ class FindForm extends Component {
                 {/* Hidden container that displays when form is submitted */}
                 <div className="container" style={{display: 'none'}} id="resultsContainer">
                     <div className="row d-flex justify-content-center align-items-center" id="resultsRow">
-                        <FoundFriendCard />
-                        <FoundFriendCard />
-                        <FoundFriendCard />
-                        <FoundFriendCard />
-                        <FoundFriendCard />
+                        {foundUsers}
                     </div>
                 </div>
             </div>

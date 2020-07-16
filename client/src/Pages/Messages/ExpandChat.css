@@ -37,39 +37,28 @@
 }
 
 .expandChat .chat-box{
-    padding-left: 20px;
-    overflow-y: scroll;
-    flex: 1;
+    padding: 20px;
 }
 
-.expandChat .chat-r{
-    display: flex;
-}
-
-.chat-r .space{
-    flex: 1;
-}
-
-.chat-box .mess{
-    max-width: 300px;
-    background: #F7FCF6;
+.expandChat .msg{
+    max-width: 400px;
     padding: 10px;
-    border-radius: 10px;
-    margin: 20px 0px;
-    cursor: pointer;
+    border-radius: 10%;
+    
 }
 
-.chat-box .mess p{
-    word-break: break-all;
-    font-size: 18px;
+.expandChat .fa-check{
+    margin: 10px 10px;
+    float: right;
+    color: darkblue;
 }
 
-.chat-box .mess-r{
+.expandChat .msg-r{
     background: #E2FFC7;
+    float: right;
 }
 
-.chat-box .check span{
-    color: #888;
-    font-size: 12px;
-    font-weight: 700px;
+.expandChat .msg-l{
+    background: lightgray;
+    float: left;
 }
