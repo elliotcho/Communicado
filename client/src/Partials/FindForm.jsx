@@ -24,13 +24,15 @@ class FindForm extends Component {
     globalSearch(e) {
         e.preventDefault();
 
-        if(this.state.nameQuery === ""){return;}
+        if(this.state.nameQuery.trim() === "") { return; }
 
         this.props.findUsers(this.state.nameQuery);
     }
     // Function that shows the hidden row when form is submit
     showResults() {
         let row = document.getElementById("resultsContainer")
+        // If query is just empty space, do not show block
+        if(this.state.nameQuery.trim() === "") { return; }
         if (row.style.display === "none") {
             row.style.display = "block";
         } else {
@@ -67,7 +69,7 @@ class FindForm extends Component {
                 {/* Hidden container that displays when form is submitted */}
                 <div className="container" style={{display: 'none'}} id="resultsContainer">
                     <div className="row d-flex justify-content-center align-items-center" id="resultsRow">
-                        {foundUsers}
+                        {foundUsers.length === 0 ? <h3>No Users Found</h3> : foundUsers}
                     </div>
                 </div>
             </div>

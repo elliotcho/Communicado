@@ -14,11 +14,19 @@
 }
 
 .delete {
-    font-size: 36px;
+    font-size: 2rem;
     color: red;
 }
 
 .delete i {
+    cursor: pointer;
+}
+
+.msg {
+    font-size: 2rem
+}
+
+.msg i {
     cursor: pointer;
 }
 

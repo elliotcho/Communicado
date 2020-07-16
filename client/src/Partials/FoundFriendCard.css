@@ -2,3 +2,19 @@
     padding: 0;
     margin: 0 10px;
 }
+
+#userIcon {
+    width: 100%;
+    height: 100%;
+}
+
+.FoundFriendCard .card-footer {
+    cursor: pointer;
+    color: darkgray;
+}
+
+.FoundFriendCard .card-footer:hover {
+    color: black;
+    background-color: white;
+}
+

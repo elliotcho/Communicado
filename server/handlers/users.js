@@ -68,7 +68,6 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
             }
        });
    }
-
    else{
         upload(req, res, err => {
             if(err){
