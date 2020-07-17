@@ -1,4 +1,8 @@
-const initState = {uid: null || window.localStorage.getItem('uid')};
+const initState = {
+    uid: null || window.localStorage.getItem('uid')
+};
+
+
 // Setup reducer for authentication actions (signup and login)
 const authReducer = (state = initState, action) =>{
     if(state.uid){window.localStorage.setItem('uid', state.uid);}

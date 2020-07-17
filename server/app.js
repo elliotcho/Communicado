@@ -6,7 +6,7 @@ const path=require('path');
 const cors=require('cors');
 const express = require('express');
 const app = express();
-//const socket = require('socket.io');
+const socket = require('socket.io');
 
 //connect to database
 mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Communicado?retryWrites=true&w=majority', {
@@ -55,4 +55,14 @@ app.post('/changepwd', changePwd);
 app.post('/findusers', findUsers);
 
 //Specify localhost port number
-app.listen(5000);
+const server = app.listen(5000);
+
+const io = socket(server);
+
+io.on('connection', socket =>{
+    socket.on("FRIEND_REQUEST", data =>{
+        console.log(data);
+
+        socket.broadcast.emit('FRIEND_REQUEST', {friendId: data.friendId, msg: "You got a friend request"});
+    });
+});

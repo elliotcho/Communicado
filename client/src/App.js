@@ -9,9 +9,14 @@ import Friends from './Pages/Friends/Friends.jsx';
 import Notifications from './Pages/Notifications/Notifications.jsx';
 import Messages from './Pages/Messages/Messages'
 
-class App extends Component{
-    render(){
-      const {uid} = this.props;
+import socket from 'socket.io-client';
+
+function App({uid}){
+      const io = socket('http://localhost:5000');
+
+      io.on('FRIEND_REQUEST', data => {if(data.friendId === uid){
+        alert("HEY");
+      }});
 
       return(
          <BrowserRouter>
@@ -26,7 +31,6 @@ class App extends Component{
            </Switch>
          </BrowserRouter>
       )
-    }
 }
 // Convert state to props using reducer
 const mapStateToProps = (state) =>{

@@ -12,12 +12,13 @@ import './Friends.css'
 // Friends Page composed of separate components that make up the page
 class Friends extends Component {
     render() {
-        // console.log(this.props.users);
+        const {findUsers, users, uid} = this.props;
+
         return (
             <div className="Friends">
                 <Navbar />
                 <div className="container-fluid">
-                    <FindForm findUsers = {this.props.findUsers} users = {this.props.users}/>
+                    <FindForm findUsers = {findUsers} users = {users} uid = {uid}/>
                     <FilterForm />
 
                     <FriendGrid />

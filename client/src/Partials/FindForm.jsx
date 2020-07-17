@@ -42,8 +42,10 @@ class FindForm extends Component {
 
     // Use BS4 to display form in jumbotron
     render() {
+        const {uid} = this.props;
+
         const foundUsers = this.props.users.map(user =>
-            <FoundFriendCard key={user._id} user = {user}/>
+            <FoundFriendCard key={user._id} user = {user} uid ={uid}/>
         );
 
         return (

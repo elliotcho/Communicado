@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import './FoundFriendCard.css'
 
+import socket from 'socket.io-client';
+
 class FoundFriendCard extends Component {
     constructor(props){
         super(props);
         this.state = {
             imgURL: "//placehold.it/10"
         }
+        this.handleClick = this.handleClick.bind(this);
     }
     // Once rendered, load img of user from DB
     componentDidMount(){
@@ -25,6 +28,16 @@ class FoundFriendCard extends Component {
         });
     }
 
+    handleClick(){
+        const {uid} = this.props;
+
+        const {_id} = this.props.user;
+
+        const io = socket('http://localhost:5000');
+
+        io.emit("FRIEND_REQUEST", {uid, friendId: _id});
+    }
+
     render() {
         const {firstName, lastName} = this.props.user;
         const {imgURL} = this.state;
@@ -37,7 +50,7 @@ class FoundFriendCard extends Component {
                         {firstName} {lastName}
                     </h5>
                 </div>
-                <div className="card-footer text-center">
+                <div className="card-footer text-center" onClick = {this.handleClick}>
                         <i className="fas fa-user-plus"></i>
                 </div>
             </div>
