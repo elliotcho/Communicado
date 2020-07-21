@@ -45,6 +45,7 @@ const {
     changePwd,
     findUsers
 } = require('./handlers/users');
+
 // User funtional routes
 app.post('/', login);
 app.post('/signup', signup);
@@ -57,12 +58,34 @@ app.post('/findusers', findUsers);
 //Specify localhost port number
 const server = app.listen(5000);
 
+
+const {User} = require('./dbschema');
 const io = socket(server);
+const active = {};
 
 io.on('connection', socket =>{
-    socket.on("FRIEND_REQUEST", data =>{
-        console.log(data);
+    socket.on('JOIN_SERVER', data =>{
+        const {uid} = data;
 
-        socket.broadcast.emit('FRIEND_REQUEST', {friendId: data.friendId, msg: "You got a friend request"});
+        if(!(uid in active)){
+            active[uid] = socket.id;
+        }
+    });
+
+    socket.on("DISCONNECT", data =>{
+        delete active[data.uid];
+    });
+
+    socket.on("FRIEND_REQUEST", data =>{
+        const {uid, friendId} = data;
+
+        User.findOne({_id: uid}).then(result =>{
+            const {firstName, lastName} = result;
+
+            const userName = `${firstName} ${lastName}`;
+
+            io.sockets.to(active[friendId])
+            .emit('FRIEND_REQUEST', {...data, msg: `${userName} sent you a friend request`});
+        });
     });
 });

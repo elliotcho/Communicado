@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Navbar from '../../Partials/Navbar';
 import './Notifications.css'
 import loading from './loading.jpg';
 
@@ -9,8 +8,6 @@ class Notifications extends Component{
     render(){
         return(
             <div className="notifs">
-                <Navbar/>
-
                 <header>
                     <h1>Notifications</h1>
                 </header>

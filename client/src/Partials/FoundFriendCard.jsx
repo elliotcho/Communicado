@@ -34,7 +34,7 @@ class FoundFriendCard extends Component {
         const {_id} = this.props.user;
 
         const io = socket('http://localhost:5000');
-
+        
         io.emit("FRIEND_REQUEST", {uid, friendId: _id});
     }
 

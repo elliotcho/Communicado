@@ -8,7 +8,6 @@ class Messages extends Component {
     render() {
         return (
             <div className="Messages">
-                <Navbar />
                 <div className="container-fluid">
                     <div className="row no-gutters">
                         <div className="col-4">

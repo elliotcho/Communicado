@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {getUserInfo, changeUserName, changePwd} from '../../store/actions/profileActions';
 import './Settings.css';
-import Navbar from '../../Partials/Navbar';
 
 class Settings extends Component{
     constructor(){
@@ -82,8 +81,6 @@ class Settings extends Component{
 
         return(
            <div className='settings'>
-               <Navbar/>
-
                <main>
                     <h1>Account Settings</h1>
                 
