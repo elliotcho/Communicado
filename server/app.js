@@ -8,11 +8,13 @@ const express = require('express');
 const app = express();
 const socket = require('socket.io');
 
+
+/** 
 //setup socket
 const server= app.listen(5000);
 const io= socket(server);
 
-
+is that hw its suppose to look?
 //connect to socket
 io.on('connection', (socket)=>{
     //listen for message being sent from client
@@ -21,11 +23,14 @@ io.on('connection', (socket)=>{
     });
 })
 
+*/
 //connect to database
 mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Communicado?retryWrites=true&w=majority', {
     useUnifiedTopology: true,
     useNewUrlParser: true
-});
+}); 
+
+
 
 mongoose.connection.once('open', () => {
     console.log("Connected to Database");
@@ -47,6 +52,8 @@ const upload = multer({
 app.use(bodyParser.json());
 app.use(cors());
 
+
+
 const { 
     login, 
     signup, 
@@ -54,8 +61,10 @@ const {
     handleProfilePic, 
     changeName,
     changePwd,
-    findUsers
+    findUsers,
+    deleteUser
 } = require('./handlers/users');
+const { User } = require('./dbschema');
 
 app.post('/', login);
 app.post('/signup', signup);
@@ -64,6 +73,8 @@ app.post('/profilepic', handleProfilePic(upload, fs, path));
 app.post('/changename', changeName);
 app.post('/changepwd', changePwd);
 app.post('/findusers', findUsers);
+app.post('/deleteUser', deleteUser);
+
 
 //Specify localhost port number
 app.listen(5000);

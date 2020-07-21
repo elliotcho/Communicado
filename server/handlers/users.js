@@ -52,9 +52,11 @@ const signup = (req, res) => {
 
 const getUserInfo = (req, res) =>{
     User.findOne({_id: req.body.uid}).then(result =>{
-        res.json({...result});
+        res.json({result});
     });
 }
+
+
 
 const handleProfilePic = (upload, fs, path) => (req, res) =>{
    if(req.body.action === 'load'){
@@ -124,6 +126,17 @@ const changeName = (req, res) => {
     }
 }
 
+/**
+ * 
+ * const deleteUser = (req, res) =>{
+    const{uid} = req.body;
+    User.findOneAndDelete({_id:uid}).then(result=>{
+        res.join({msg: 'This account has been deleted'})
+    })
+}
+ */
+
+
 const changePwd = (req, res) =>{
     const {uid, currPwd, newPwd, confirmPwd} = req.body;
 
@@ -144,6 +157,16 @@ const changePwd = (req, res) =>{
             }
         });
     }
+}
+
+//delete
+const deleteUser = (req,res) =>{
+    const {uid} = req.body
+    console.log(uid)
+    User.deleteOne({_id: uid}).then(()=>{
+        res.json({msg: 'Account is being deleted, press ok to continue.'});
+
+    })
 }
 
 const findUsers = (req, res) =>{
@@ -204,5 +227,6 @@ module.exports = {
     getUserInfo,
     changeName,
     changePwd,
-    findUsers
+    findUsers,
+    deleteUser
 }

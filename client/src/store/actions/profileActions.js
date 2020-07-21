@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+
+
 export const getUserInfo = (uid) =>{
     return (dispatch) =>{
       
@@ -9,7 +11,7 @@ export const getUserInfo = (uid) =>{
         }
     
         axios.post('http://localhost:5000/userinfo', {uid}, config).then(response =>{
-            const {firstName, lastName} = response.data._doc;
+            const {firstName, lastName} = response.data.result;
     
            dispatch({
                 type: "USER_INFO",
@@ -80,3 +82,38 @@ export const changePwd = (uid, currPwd, newPwd, confirmPwd) =>{
         });
     }
 }
+
+export const deleteUser = (uid) =>{
+    return () =>{
+        
+        const data = {uid}
+
+        
+
+        axios.post('http://localhost:5000/deleteUser', data,   {headers: {'content-type': 'application/json'}}).then(response =>{
+            
+        const {msg} =response.data;
+        alert(msg);
+            window.localStorage.clear();
+            window.location.href='/';
+         
+        })
+
+        
+    }
+}
+
+/**
+ * //deleteUser
+export const deleteUser = (uid)=>{
+    return()=>{
+        const data={uid};
+
+        axios.post('http://localhost:5000', data, {headers:{'content-type': 'application/json'}} )
+        .then(response=>{
+            const {msg} = response.data;
+            alert(msg);
+        });
+    }
+}
+ */
