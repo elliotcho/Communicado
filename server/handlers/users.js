@@ -1,6 +1,6 @@
 const {User} = require('../dbschema');
 
-//result is result of query, query is example User.findOne({})
+// result is result of query, query is example User.findOne({})
 const login = (req,res) => {
     // Find user based on email
     User.findOne({email: req.body.email}).then(result => {
@@ -49,15 +49,14 @@ const signup = (req, res) => {
         });
     }
 }
-
+// Function to get user's info as json
 const getUserInfo = (req, res) =>{
     User.findOne({_id: req.body.uid}).then(result =>{
         res.json({result});
     });
 }
 
-
-
+// Function to change profile pic and add as current pic
 const handleProfilePic = (upload, fs, path) => (req, res) =>{
    if(req.body.action === 'load'){
        User.findOne({_id: req.body.uid}).then(result =>{
@@ -70,7 +69,6 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
             }
        });
    }
-
    else{
         upload(req, res, err => {
             if(err){
@@ -78,7 +76,7 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
             }
 
             User.findOne({_id: req.body.uid}).then(result =>{
-                if(result.profliePic === null){
+                if(result.profliePic !== null){
                     fs.unlink(path.join(__dirname, '../', `images/${result.profilePic}`), err =>{
                         if(err){
                             console.log(err);
@@ -93,10 +91,10 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
         });
     }
 }
-
+// Changes a users same should it be provided
 const changeName = (req, res) => {
     const {uid, firstName, lastName} = req.body;
-
+    // Last name given
     if(firstName ==='' && lastName !== ''){
        User.updateOne({_id: uid}, {lastName}).then(() =>{
             User.findOne({_id: uid}).then(result =>{
@@ -104,7 +102,7 @@ const changeName = (req, res) => {
             });
        });
     }
-
+    // First name given
     else if(firstName !== '' && lastName ===''){
         User.updateOne({_id: uid}, {firstName}).then(() =>{
             User.findOne({_id: uid}).then(result =>{
@@ -112,7 +110,7 @@ const changeName = (req, res) => {
             });
         });
     }
-
+    // Both names given
     else if(firstName !== '' && lastName !== ''){
         User.updateOne({_id: uid}, {firstName, lastName}).then(() =>{
             User.findOne({_id: uid}).then(result =>{
@@ -120,36 +118,27 @@ const changeName = (req, res) => {
             });
         });
     }
-
+    // No input given
     else{
         res.json({msg: 'Both inputs are blank: your name has not been changed.'});
     }
 }
 
-/**
- * 
- * const deleteUser = (req, res) =>{
-    const{uid} = req.body;
-    User.findOneAndDelete({_id:uid}).then(result=>{
-        res.join({msg: 'This account has been deleted'})
-    })
-}
- */
-
-
+// Changes a users password
 const changePwd = (req, res) =>{
     const {uid, currPwd, newPwd, confirmPwd} = req.body;
-
+    // Check if passwords match
     if(newPwd !== confirmPwd){
         res.json({msg: 'New password does not match confirm password'});
     }
 
     else{
+        // If user's password is incorrent, inform them
         User.findOne({_id: uid}).then(result=>{
             if(result.password !== currPwd){
-                res.json({msg: 'Your current password is incorrect'});
+                res.json({msg: 'Your password is incorrect'});
             }
-
+            // If old password is correct, successfully update password
             else{
                 User.updateOne({_id: uid}, {password: newPwd}).then(()=>{
                     res.json({msg: 'Your password has been changed'});
@@ -158,6 +147,7 @@ const changePwd = (req, res) =>{
         });
     }
 }
+
 
 //delete
 const deleteUser = (req,res) =>{
@@ -169,38 +159,39 @@ const deleteUser = (req,res) =>{
     })
 }
 
+=======
+// Find all users based on a given name
+// Used to find new friends to add
 const findUsers = (req, res) =>{
     let {name} = req.body;
-
     if(name.length === 0){
         res.json({msg: "No users found"});
     }
 
     let listOfNames = [];
-
     if(req.body.name.includes(" ")){
+        // Check if user gave 1 or multiple words
         oneWord =false;
-
         split = name.split(" ");
         
+        // convert to lowercase 
         for(let i=0;i<split.length;i++){
             listOfNames.push(split[i].toLowerCase());
         }
     }
-
     else{
         listOfNames.push(name.toLowerCase());
     }
-
+    // Find all users and filter name
     User.find({}).then(result => {
         const users = [];
-
         for(let i=0;i<result.length;i++){
             let userNames = `${result[i].firstName} ${result[i].lastName}`.split(" ");
             
             for(let j=0;j<userNames.length;j++){
                 let found = false;
-
+                // Convert names of all users to lowercase when comparing 
+                // If matching, add to array of found users
                 for(let k=0;k<listOfNames.length;k++){
                     if(userNames[j].toLowerCase().startsWith(listOfNames[k])){
                         users.push(result[i]);
@@ -211,10 +202,7 @@ const findUsers = (req, res) =>{
 
                 if(found){break;}
             }
-
-            if(users.length === 14){break;}
         }
-
         res.json({users, msg: "Success, here are your users"});
     }).catch(e => console.log(e));
 }

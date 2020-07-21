@@ -1,20 +1,42 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {uncolorNavbar} from '../store/actions/notificationsActions';
 import {Link} from 'react-router-dom';
 import './Navbar.css'
+
+import socket from 'socket.io-client';
 
 class Navbar extends Component {
     constructor(){
         super();
         this.signOut = this.signOut.bind(this);
+        this.toNotifs = this.toNotifs.bind(this);
     }
-
+    // Function to signout user, making sure they cannot go back and still be logged in
     signOut(e) {
         e.preventDefault();
+
+        const io = socket('http://localhost:5000');
+
+        io.emit('DISCONNECT', {uid: this.props.uid});
+
         window.localStorage.clear();
         window.location.href='/';
     }
 
+    toNotifs(e){
+        e.preventDefault();
+        this.props.uncolorNavbar();
+        this.props.history.push('/notifications');
+    }
+
+    // Return navbar using bootstrap4 and React-Router links
     render() {
+        const {newNotif} = this.props;
+
+        const notifColor = (newNotif) ? 'nav-link text-danger' : 'nav-link';
+
         return(
             <div>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed">
@@ -40,10 +62,10 @@ class Navbar extends Component {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to='/notifications' className="nav-link">
+                                    <a onClick= {this.toNotifs} href='/notifications' className={notifColor}>
                                         <a href='/notifications' className="nav-link d-inline-block d-md-none">Notifications</a>
-                                        <i class="fas fa-bell"></i>
-                                    </Link>
+                                        <i className ="fas fa-bell"></i>
+                                    </a>
                                 </li>
                                 <li>
                                     <Link to='/settings' className="nav-link">
@@ -65,4 +87,18 @@ class Navbar extends Component {
         )
     }
 }
-export default Navbar;
+
+const mapStateToProps = (state) =>{
+    return{
+        uid: state.auth.uid
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return{
+        uncolorNavbar: () => {dispatch(uncolorNavbar());}
+    }
+}
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

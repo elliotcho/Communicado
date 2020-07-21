@@ -1,0 +1,36 @@
+.FriendCard {
+    width: 90%;
+    min-height: 100px;
+    padding: 10px;
+}
+
+.FriendCard .row {
+    height: fit-content;
+    width: 100%;
+}
+
+.card-title {
+    margin: 0;
+}
+
+.delete {
+    font-size: 2rem;
+    color: red;
+}
+
+.delete i {
+    cursor: pointer;
+}
+
+.msg {
+    font-size: 2rem
+}
+
+.msg i {
+    cursor: pointer;
+}
+
+.avatar {
+    width: 90%;
+    height: 90%;
+}

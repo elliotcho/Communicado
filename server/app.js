@@ -9,21 +9,6 @@ const app = express();
 const socket = require('socket.io');
 
 
-/** 
-//setup socket
-const server= app.listen(5000);
-const io= socket(server);
-
-is that hw its suppose to look?
-//connect to socket
-io.on('connection', (socket)=>{
-    //listen for message being sent from client
-    socket.on("msg", (data)=>{
-        io.sockets.emit("msg",data);
-    });
-})
-
-*/
 //connect to database
 mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Communicado?retryWrites=true&w=majority', {
     useUnifiedTopology: true,
@@ -32,18 +17,19 @@ mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Comm
 
 
 
+// Open Connection to database
 mongoose.connection.once('open', () => {
     console.log("Connected to Database");
 }).on('error', err => {console.log(err);});
 
-//set up image storage
+// Set up image storage into images folder
 const storage = multer.diskStorage({
     destination: './images',
     filename: (req, file, cb) =>{
         cb(null, 'PROFILE-' + req.body.id + Date.now() + path.extname(file.originalname));
     }
 });
-
+// Use multer to upload imgs
 const upload = multer({
     storage,
     limits: {fileSize: 1000000000}
@@ -53,6 +39,9 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
+
+=======
+// User functions
 
 const { 
     login, 
@@ -66,6 +55,7 @@ const {
 } = require('./handlers/users');
 const { User } = require('./dbschema');
 
+// User funtional routes
 app.post('/', login);
 app.post('/signup', signup);
 app.post('/userinfo', getUserInfo);
@@ -77,4 +67,36 @@ app.post('/deleteUser', deleteUser);
 
 
 //Specify localhost port number
-app.listen(5000);
+const server = app.listen(5000);
+
+
+const {User} = require('./dbschema');
+const io = socket(server);
+const active = {};
+
+io.on('connection', socket =>{
+    socket.on('JOIN_SERVER', data =>{
+        const {uid} = data;
+
+        if(!(uid in active)){
+            active[uid] = socket.id;
+        }
+    });
+
+    socket.on("DISCONNECT", data =>{
+        delete active[data.uid];
+    });
+
+    socket.on("FRIEND_REQUEST", data =>{
+        const {uid, friendId} = data;
+
+        User.findOne({_id: uid}).then(result =>{
+            const {firstName, lastName} = result;
+
+            const userName = `${firstName} ${lastName}`;
+
+            io.sockets.to(active[friendId])
+            .emit('FRIEND_REQUEST', {...data, msg: `${userName} sent you a friend request`});
+        });
+    });
+});
