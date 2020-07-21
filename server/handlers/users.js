@@ -52,7 +52,7 @@ const signup = (req, res) => {
 // Function to get user's info as json
 const getUserInfo = (req, res) =>{
     User.findOne({_id: req.body.uid}).then(result =>{
-        res.json({...result});
+        res.json({result});
     });
 }
 // Function to change profile pic and add as current pic
