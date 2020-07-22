@@ -14,7 +14,6 @@ class Friends extends Component {
 
         return (
             <div className="Friends">
-                <Navbar />
                 <div className="container-fluid">
                     <FindForm findUsers = {findUsers} users = {users} uid = {uid}/>
                     <FilterForm />

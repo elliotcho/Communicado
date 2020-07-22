@@ -1,6 +1,7 @@
 Login page   -- Sign up page (first layer)
 
-Home page (all your chats)
+Home page (all your chats? posts?)
+
 Messaging page (different state/props depending on which friend your messaging)
 
 Settings page (update email/password)

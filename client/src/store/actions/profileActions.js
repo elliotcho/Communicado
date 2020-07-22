@@ -10,7 +10,10 @@ export const getUserInfo = (uid) =>{
         }
         // Send post request to userInfo branch in server handlers
         axios.post('http://localhost:5000/userinfo', {uid}, config).then(response =>{
-            const {firstName, lastName} = response.data._doc;
+            const {firstName, lastName} = response.data.result;
+
+            console.log(response.data);
+
             dispatch({
                 type: "USER_INFO",
                 firstName,
