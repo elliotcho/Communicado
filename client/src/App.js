@@ -15,24 +15,23 @@ import socket from 'socket.io-client';
 
 function App(props){
       const {uid, newNotif, colorNavbar} = props;
-
+      // Setup socket to join a server with the users ID
       const io = socket('http://localhost:5000');
-
       if(uid){
          io.emit("JOIN_SERVER", {uid});
       }
-
+      // Listen for a friend request from the server
       io.on('FRIEND_REQUEST', data =>{
          alert(data.msg);
          colorNavbar();
       });
 
       return(
+         // If ID required for route, show Navbar
          <BrowserRouter>
             {uid? <Navbar newNotif = {newNotif}/>: null}
-
            <Switch>
-           {/* Router that switches paths based on route */}
+            {/* Router that switches paths based on route */}
               <Route exact path='/' render = {()=> uid? <Home uid ={uid}/>: <Login uid ={uid}/>}/>
               <Route path='/messages' component={Messages}/>
               <Route path='/signup' render ={() => <Signup uid ={uid}/>}/>

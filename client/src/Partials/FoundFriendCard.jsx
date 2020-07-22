@@ -26,7 +26,7 @@ class FoundFriendCard extends Component {
             this.setState({imgURL: URL.createObjectURL(file)});
         });
     }
-
+    // Send friend request to client when user clicks btn to add friend
     handleClick(){
         const {uid} = this.props;
         const {_id} = this.props.user;

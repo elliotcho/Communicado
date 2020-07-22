@@ -13,7 +13,7 @@ export const getUserInfo = (uid) =>{
             const {firstName, lastName} = response.data.result;
 
             console.log(response.data);
-
+            // Send user info to client side to validate
             dispatch({
                 type: "USER_INFO",
                 firstName,

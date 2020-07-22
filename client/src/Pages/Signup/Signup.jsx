@@ -18,14 +18,13 @@ class Signup extends Component {
     handleChange(evt) {
         this.setState({ [evt.target.name] : evt.target.value });
     }
-
+    // Send user to login if link clicked
     toLogin() {
         this.props.history.push('/');
     }
-
+    // Submit form and send to signUp mapped from client redux store
     handleSubmit(evt) {
         evt.preventDefault();
-
         this.props.signUp(this.state);
     }
 
@@ -108,7 +107,7 @@ class Signup extends Component {
         ) 
     }
 }
-
+// Map signup from store into props for Signup
 const mapDispatchToProps = (dispatch) =>{
     return{
         signUp: (credentials) => {dispatch(signUp(credentials));}
