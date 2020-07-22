@@ -7,8 +7,6 @@ import FilterForm from '../../Partials/FilterForm'
 import FriendGrid from './FriendGrid'
 import './Friends.css'
 
-
-
 // Friends Page composed of separate components that make up the page
 class Friends extends Component {
     render() {
@@ -20,7 +18,6 @@ class Friends extends Component {
                 <div className="container-fluid">
                     <FindForm findUsers = {findUsers} users = {users} uid = {uid}/>
                     <FilterForm />
-
                     <FriendGrid />
                 </div>
             </div>

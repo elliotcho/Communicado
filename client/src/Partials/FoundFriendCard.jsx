@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import './FoundFriendCard.css'
-
 import socket from 'socket.io-client';
 
 class FoundFriendCard extends Component {
@@ -30,11 +29,8 @@ class FoundFriendCard extends Component {
 
     handleClick(){
         const {uid} = this.props;
-
         const {_id} = this.props.user;
-
         const io = socket('http://localhost:5000');
-
         io.emit("FRIEND_REQUEST", {uid, friendId: _id});
     }
 
