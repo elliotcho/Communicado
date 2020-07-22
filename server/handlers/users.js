@@ -1,5 +1,6 @@
 const {User} = require('../dbschema');
 
+// Login function for user based on credentials
 // result is result of query, query is example User.findOne({})
 const login = (req,res) => {
     // Find user based on email
@@ -59,21 +60,23 @@ const getUserInfo = (req, res) =>{
 const handleProfilePic = (upload, fs, path) => (req, res) =>{
    if(req.body.action === 'load'){
        User.findOne({_id: req.body.uid}).then(result =>{
+            // Load original as avatar
             if(result.profilePic === null){
                 res.sendFile(path.join(__dirname, '../', 'images/avatar.jpg'));
             } 
-
+            // Load img from user
             else{
                 res.sendFile(path.join(__dirname, '../', `images/${result.profilePic}`));
             }
        });
    }
    else{
+        // Upload profile image    
         upload(req, res, err => {
             if(err){
                 console.log(err);
             }
-
+            // Find user and update its image
             User.findOne({_id: req.body.uid}).then(result =>{
                 if(result.profliePic !== null){
                     fs.unlink(path.join(__dirname, '../', `images/${result.profilePic}`), err =>{
@@ -82,7 +85,7 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
                         }
                     });
                 }
-
+                // Update user
                 User.updateOne({_id: req.body.uid}, {profilePic: req.file.filename}).then(()=>{
                     res.json({msg: 'Success'});
                 });
@@ -150,10 +153,10 @@ const changePwd = (req, res) =>{
 // Used to find new friends to add
 const findUsers = (req, res) =>{
     let {name} = req.body;
+    // No users found
     if(name.length === 0){
         res.json({msg: "No users found"});
     }
-
     let listOfNames = [];
     if(req.body.name.includes(" ")){
         // Check if user gave 1 or multiple words

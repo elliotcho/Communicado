@@ -12,7 +12,7 @@ const io= socket(server);
 //connect to socket
 io.on("connection", (socket)=>{
     console.log("made socket connection");
-    //listen for message being sent from client
+    // listen for message being sent from client
     socket.on("msg", (data)=>{
         io.sockets.emit("msg",data);
     });

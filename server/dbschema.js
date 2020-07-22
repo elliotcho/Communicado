@@ -11,6 +11,7 @@ const UserSchema = new schema({
     profilePic: String,
     friends: [String]
 });
+
 // Message Schema, has sender and recipient ID
 const MessageSchema = new schema({
     sender_id: String,
@@ -20,11 +21,13 @@ const MessageSchema = new schema({
     body: String,
     read: Boolean
 })
+
 // Notification Schema
 const NotifSchema = new schema({
     friendRequest: Boolean,
     content: String,
-    read: Boolean
+    read: Boolean,
+    timeCreated: Date
 })
 
 // Model objects after the schema and export

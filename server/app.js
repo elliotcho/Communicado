@@ -18,7 +18,6 @@ mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Comm
 mongoose.connection.once('open', () => {
     console.log("Connected to Database");
 }).on('error', err => {console.log(err);});
-
 // Set up image storage into images folder
 const storage = multer.diskStorage({
     destination: './images',
@@ -57,7 +56,6 @@ app.post('/findusers', findUsers);
 
 //Specify localhost port number
 const server = app.listen(5000);
-
 
 const {User} = require('./dbschema');
 const io = socket(server);
