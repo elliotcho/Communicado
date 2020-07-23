@@ -65,11 +65,7 @@ const active = {};
 
 io.on('connection', socket =>{
     socket.on('JOIN_SERVER', data =>{
-        const {uid} = data;
-
-        if(!(uid in active)){
-            active[uid] = socket.id;
-        }
+        active[data.uid] = socket.id;
     });
 
     socket.on("DISCONNECT", data =>{
