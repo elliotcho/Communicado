@@ -27,7 +27,6 @@ class Navbar extends Component {
 
     toNotifs(e){
         e.preventDefault();
-        this.props.uncolorNavbar();
         this.props.history.push('/notifications');
     }
 

@@ -1,5 +1,5 @@
 
-const {User} = require('../dbschema');
+const {User, Notification} = require('../dbschema');
 
 const active = {};
 
@@ -17,13 +17,26 @@ module.exports = (io) => {
             const {uid, friendId} = data;
     
             User.findOne({_id: uid}).then(result =>{
-                const {firstName, lastName} = result;
+                const {_id} = result;
     
-                const userName = `${firstName} ${lastName}`;
+                const msg = `sent you a friend request`;
     
-                io.sockets.to(active[friendId])
-                .emit('FRIEND_REQUEST', {...data, msg: `${userName} sent you a friend request`});
-            });
+                const newNotification = new Notification({
+                    friendRequest: true,
+                    read: false,
+                    content: msg,
+                    senderId: _id,
+                    receiverId: friendId,
+                    date: new Date()
+                });
+
+                newNotification.save().then(() =>{
+                    io.sockets.to(active[friendId]).emit(
+                        'FRIEND_REQUEST', 
+                        {msg}
+                    ); 
+                });
+            }); 
         });
     });
 }

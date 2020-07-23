@@ -59,7 +59,7 @@ const getUserInfo = (req, res) =>{
 const handleProfilePic = (upload, fs, path) => (req, res) =>{
    if(req.body.action === 'load'){
        User.findOne({_id: req.body.uid}).then(result =>{
-            if(result.profilePic === null){
+           if(result.profilePic === null){
                 res.sendFile(path.join(__dirname, '../', 'images/avatar.jpg'));
             } 
 
@@ -88,7 +88,7 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
                 });
             });
         });
-    }
+    } 
 }
 // Changes a users same should it be provided
 const changeName = (req, res) => {
