@@ -8,11 +8,13 @@ const notificationsReducer = (state = initState, action) =>{
         case('INCOMING_NOTIF'):
             return{
                 ...state,
+                notifs: [...state.notifs],
                 newNotif: action.newNotif
             }
         case('READ_NOTIF'):
             return{
                 ...state,
+                notifs: [],
                 newNotif: action.newNotif
             }
         case('LOAD_NOTIFS'):

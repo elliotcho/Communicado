@@ -16,9 +16,9 @@ class NotifRow extends Component{
     componentDidMount(){
         const {senderId} = this.props.notif;
 
-        const config = {headers: {'Content-Type': 'application/json'}};
+        const config = {'Content-Type': 'application/json'};
 
-        axios.post('http://localhost:5000/userinfo', {uid: senderId}, config).then(response =>{
+        axios.post('http://localhost:5000/userinfo', {uid: senderId}, {headers: config}).then(response =>{
             const {firstName, lastName} = response.data;
 
             this.setState({
@@ -26,15 +26,16 @@ class NotifRow extends Component{
             });
         });
 
-        // const data = {action: 'load', uid: senderId};
+        const data = {action: 'load', uid: senderId};
 
-        //  // Fetch from server functional route using post with stringified data
-        //  fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        //  .then(response =>response.blob())
-        //  .then(file =>{
-        //      // Set state of imgURL to display
-        //      this.setState({imgURL: URL.createObjectURL(file)});
-        //  });
+        // Fetch from server functional route using post with stringified data
+        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
+        .then(response =>response.blob())
+        .then(file =>{
+            // Set state of imgURL to display
+            this.setState({imgURL: URL.createObjectURL(file)});
+        });
+       
     }
 
     render(){

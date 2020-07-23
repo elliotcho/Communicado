@@ -17,7 +17,7 @@ module.exports = (io) => {
             const {uid, friendId} = data;
     
             User.findOne({_id: uid}).then(result =>{
-                const {_id} = result;
+                const {_id, firstName, lastName} = result;
     
                 const msg = `sent you a friend request`;
     
@@ -33,7 +33,7 @@ module.exports = (io) => {
                 newNotification.save().then(() =>{
                     io.sockets.to(active[friendId]).emit(
                         'FRIEND_REQUEST', 
-                        {msg}
+                        {msg: `${firstName} ${lastName} ${msg}`}
                     ); 
                 });
             }); 
