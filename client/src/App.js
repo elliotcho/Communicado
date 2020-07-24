@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {colorNavbar} from './store/actions/notificationsActions';
@@ -13,19 +13,27 @@ import Messages from './Pages/Messages/Messages'
 
 import socket from 'socket.io-client';
 
-function App(props){
-      const {uid, newNotif, colorNavbar} = props;
-      // Setup socket to join a server with the users ID
-      const io = socket('http://localhost:5000');
-      if(uid){
-         io.emit("JOIN_SERVER", {uid});
-      }
-      // Listen for a friend request from the server
+let io;
+
+class App extends Component{
+   constructor(){
+      super();
+
+      io = socket('http://localhost:5000');
+
       io.on('FRIEND_REQUEST', data =>{
          alert(data.msg);
-         colorNavbar();
+         this.props.colorNavbar();
       });
+   }
 
+   render(){
+      const {uid, newNotif} = this.props;
+
+      if(this.props.uid){
+         io.emit("JOIN_SERVER", {uid: this.props.uid});
+      }
+      
       return(
          // If ID required for route, show Navbar
          <BrowserRouter>
@@ -41,6 +49,7 @@ function App(props){
            </Switch>
          </BrowserRouter>
       )
+   }
 }
 // Convert state to props using reducer
 const mapStateToProps = (state) =>{
@@ -55,5 +64,7 @@ const mapDispatchToProps = (dispatch) => {
         colorNavbar: () => {dispatch(colorNavbar());}  
     }
 }
+
+export {io};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

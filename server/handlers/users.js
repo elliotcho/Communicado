@@ -53,15 +53,14 @@ const signup = (req, res) => {
 // Function to get user's info as json
 const getUserInfo = (req, res) =>{
     User.findOne({_id: req.body.uid}).then(result =>{
-        res.json({result});
+        res.json(result);
     });
 }
 // Function to change profile pic and add as current pic
 const handleProfilePic = (upload, fs, path) => (req, res) =>{
    if(req.body.action === 'load'){
        User.findOne({_id: req.body.uid}).then(result =>{
-            // Load original as avatar
-            if(result.profilePic === null){
+           if(result.profilePic === null){
                 res.sendFile(path.join(__dirname, '../', 'images/avatar.jpg'));
             } 
             // Load img from user
@@ -91,7 +90,7 @@ const handleProfilePic = (upload, fs, path) => (req, res) =>{
                 });
             });
         });
-    }
+    } 
 }
 // Changes a users same should it be provided
 const changeName = (req, res) => {
