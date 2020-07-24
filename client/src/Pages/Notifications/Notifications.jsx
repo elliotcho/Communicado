@@ -3,22 +3,24 @@ import NotifRow from './NotifRow';
 import {connect} from 'react-redux';
 import {uncolorNavbar, getNotifications} from '../../store/actions/notificationsActions';
 import './Notifications.css'
+import NotificationCard from './NotificationCard';
 
 class Notifications extends Component{
+    // After first render, remove highlighted icon and destructure props
     componentDidMount(){
         const {uid, uncolorNavbar, getNotifications} = this.props;
-
         uncolorNavbar();
-
-        getNotifications(uid);
+        getNotifications(uid);  // Get notifications for specific user
     }
 
     render(){
+        // read notifications for current user
         const {notifs} = this.props;
-
+        // Create list of notifications
         const list = notifs.map(notif =>
-            <NotifRow notif = {notif}/>
+            <NotificationCard notif = {notif}/>
         );
+
 
         return(
             <div className="notifs">
@@ -34,13 +36,14 @@ class Notifications extends Component{
     }
 }
 
+// Props from redux store. UserID and notifications
 const mapStateToProps = (state) =>{
     return{
         uid: state.auth.uid,
         notifs: state.notifs.notifs
     }
 }
-
+// Methods for notifications to use after mounting
 const mapDispatchToProps = (dispatch) =>{
     return{
         uncolorNavbar: () => {dispatch(uncolorNavbar());},

@@ -1,0 +1,12 @@
+
+.NotificationCard i {
+    font-size: 40px;
+}
+
+.accept {
+    color: lightgreen;
+}
+
+.reject {
+    color: red;
+}

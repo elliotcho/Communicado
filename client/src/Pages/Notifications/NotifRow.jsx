@@ -16,12 +16,9 @@ class NotifRow extends Component{
 
     componentDidMount(){
         const {senderId} = this.props.notif;
-
         const config = {'Content-Type': 'application/json'};
-
         axios.post('http://localhost:5000/userinfo', {uid: senderId}, {headers: config}).then(response =>{
             const {firstName, lastName} = response.data;
-
             this.setState({
                 firstName, lastName
             });
@@ -42,7 +39,7 @@ class NotifRow extends Component{
     render(){
         const {imgURL, firstName, lastName} = this.state;
 
-        const {content, date} = this.props.notif;
+        const {content, date, friendRequest} = this.props.notif;
 
         /*
             moment(date).calendar()
