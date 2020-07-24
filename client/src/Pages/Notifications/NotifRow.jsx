@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import loading from './loading.jpg';
 import axios from 'axios';
+import moment from 'moment';
 
 class NotifRow extends Component{
     constructor(){
@@ -42,6 +43,10 @@ class NotifRow extends Component{
         const {imgURL, firstName, lastName} = this.state;
 
         const {content, date} = this.props.notif;
+
+        /*
+            moment(date).calendar()
+        */
 
         return(
             <div className='row'>

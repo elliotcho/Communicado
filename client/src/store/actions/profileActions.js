@@ -1,19 +1,16 @@
 // Actions for users to interact with their profile and update any settings
 import axios from 'axios';
 
-
-
-=======
 // Get user profile info
 export const getUserInfo = (uid) =>{
     return (dispatch) =>{
         // Send json
         const config = {
+            
             headers: {'Content-Type': 'application/json'}
         }
         // Send post request to userInfo branch in server handlers
         axios.post('http://localhost:5000/userinfo', {uid}, config).then(response =>{
-           dispatch({
             const {firstName, lastName} = response.data;
             dispatch({
                 type: "USER_INFO",
@@ -101,18 +98,3 @@ export const deleteUser = (uid) =>{
         
     }
 }
-
-/**
- * //deleteUser
-export const deleteUser = (uid)=>{
-    return()=>{
-        const data={uid};
-
-        axios.post('http://localhost:5000', data, {headers:{'content-type': 'application/json'}} )
-        .then(response=>{
-            const {msg} = response.data;
-            alert(msg);
-        });
-    }
-}
- */

@@ -39,8 +39,6 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-
-=======
 // User functions
 
 const { 
@@ -59,7 +57,7 @@ const {
     loadNotifs
 } = require('./handlers/notifications');
 
-// User funtional routes
+// User funtional routes 
 app.post('/', login);
 app.post('/signup', signup);
 app.post('/userinfo', getUserInfo);

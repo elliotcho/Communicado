@@ -159,7 +159,6 @@ const deleteUser = (req,res) =>{
     })
 }
 
-=======
 // Find all users based on a given name
 // Used to find new friends to add
 const findUsers = (req, res) =>{

@@ -43,11 +43,8 @@ alphabetical friends list for now
 TODOS for July 8:
 
 Gugsa
-[ ] Delete account on settings
 [ ] restyling a settings
 
 Elliot
-[ ]  style message page
 
 Tariq 
-[ ] style friends
