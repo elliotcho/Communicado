@@ -55,6 +55,7 @@ const getUserInfo = (req, res) =>{
         res.json(result);
     });
 }
+
 // Function to change profile pic and add as current pic
 const handleProfilePic = (upload, fs, path) => (req, res) =>{
    if(req.body.action === 'load'){
@@ -122,6 +123,7 @@ const changeName = (req, res) => {
         res.json({msg: 'Both inputs are blank: your name has not been changed.'});
     }
 }
+
 // Changes a users password
 const changePwd = (req, res) =>{
     const {uid, currPwd, newPwd, confirmPwd} = req.body;
@@ -146,6 +148,18 @@ const changePwd = (req, res) =>{
     }
 }
 
+
+//delete
+const deleteUser = (req,res) =>{
+    const {uid} = req.body
+    console.log(uid)
+    User.deleteOne({_id: uid}).then(()=>{
+        res.json({msg: 'Account is being deleted, press ok to continue.'});
+
+    })
+}
+
+=======
 // Find all users based on a given name
 // Used to find new friends to add
 const findUsers = (req, res) =>{
@@ -201,5 +215,6 @@ module.exports = {
     getUserInfo,
     changeName,
     changePwd,
-    findUsers
+    findUsers,
+    deleteUser
 }
