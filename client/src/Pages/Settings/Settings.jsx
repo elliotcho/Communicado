@@ -95,8 +95,7 @@ class Settings extends Component{
 
         const {hidePwd, firstName, lastName, currPwd, newPwd, confirmPwd} = this.state;
 
-        // var to store if pwd should be visible or not
-        let formStyle = hidePwd? {visibility: 'hidden'}: {visibility: 'visible'}; 
+        let formStyle = hidePwd? {display: 'none'}: {display: 'block'}; 
 
         return(
            <div className='settings'>

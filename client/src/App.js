@@ -12,6 +12,7 @@ import Navbar from './Partials/Navbar';
 import Messages from './Pages/Messages/Messages'
 
 import socket from 'socket.io-client';
+import axios from 'axios';
 
 let io;
 
@@ -25,6 +26,30 @@ class App extends Component{
          alert(data.msg);
          this.props.colorNavbar();
       });
+   }
+
+   componentDidMount(){
+      const {uid, colorNavbar} = this.props;
+
+      if(uid !== null){
+         axios.get(`http://localhost:5000/unreadnotifs/${uid}`).then(response=>{
+            if(response.data.unread){
+               colorNavbar();
+            }
+         });
+      }
+   }
+
+   componentDidUpdate(prevProps){
+      const {uid, colorNavbar} = this.props;
+
+      if(prevProps.uid !== uid){
+         axios.get(`http://localhost:5000/unreadnotifs/${uid}`).then(response=>{
+            if(response.data.unread){
+               colorNavbar();
+            }
+         });
+      }
    }
 
    render(){
@@ -61,7 +86,7 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        colorNavbar: () => {dispatch(colorNavbar());}  
+        colorNavbar: () => {dispatch(colorNavbar());},
     }
 }
 

@@ -26,15 +26,20 @@ module.exports = (io) => {
                     read: false,
                     content: msg,
                     senderId: _id,
-                    receiverId: friendId,
                     date: new Date()
                 });
 
-                newNotification.save().then(() =>{
-                    io.sockets.to(active[friendId]).emit(
-                        'FRIEND_REQUEST', 
-                        {msg: `${firstName} ${lastName} ${msg}`}
-                    ); 
+                User.findOne({_id: friendId}).then(user =>{
+                    const {notifs} = user;
+
+                    notifs.push(newNotification);
+
+                    User.updateOne({_id: friendId}, {notifs}).then(() =>{
+                        io.sockets.to(active[friendId]).emit(
+                            'FRIEND_REQUEST', 
+                            {msg: `${firstName} ${lastName} ${msg}`}
+                        ); 
+                    });
                 });
             }); 
         });

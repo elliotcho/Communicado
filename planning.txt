@@ -1,6 +1,8 @@
 Home page (all your chats? posts?)
 Messaging page (different state/props depending on which friend your messaging)
-Friends page (maybe add search bar)
+
+Settings page (gugsa will design)
+Friends page (render our friends)
 Notifications page
 
 TODOS (Wed):
@@ -24,21 +26,42 @@ Tariq
 
 if messages are blank render friends component
 delete friend has window.confirm
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 unread box shadow, bold message, iphone dot icon
 read no box shadow
 
 friends in user array
+alphabetical friends list for now
 
+<<<<<<< HEAD
 message: on the left all the messages: 
 chat with that person on the right
 
 alphabetical friends list for now
 
+=======
+message:{
+    _id: String,
+    sender _id: String
+    recipient _id: String
+    content: String
+    time_sent: Date 
+    time_read: Date
+    read: boolean
+}
+
+TODOS for July 23:
+>>>>>>> upstream/master
 
 Gugsa
-[ ] restyling a settings
+[ ] restyle settings
+[ ] help Tariq or Elliot when done
 
 Elliot
+[ ] non real time notifications
 
 Tariq 
+[ ] restyle notifications for FR/regular
