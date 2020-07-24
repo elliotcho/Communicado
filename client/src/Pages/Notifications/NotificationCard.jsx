@@ -40,22 +40,22 @@ class NotificationCard extends Component {
     
     render() {
         const {imgURL, firstName, lastName} = this.state;
-        const {content, date, friendRequest} = this.props;
+        const {content, date, friendRequest} = this.props.notif;
         return (
             <div className="NotificationCard card">
-                <div className="row d-flex justify-content-center text-center align-items-center">
-                    <div className="col-2">
+                <div className="row d-flex justify-content-center text-left align-items-center">
+                    <div className="col-2 text-center">
                         <img src={imgURL ? imgURL : loading} className="img-fluid avatar" alt="tester" />
                     </div>
-                    <div className="col-4">
-                        <h1>{firstName} {lastName}</h1>
-                        <h3>has sent you a friend request</h3>
+                    <div className="col-5 NotificationCard-body">
+                        <h2 className="NotificationCard-msg">
+                            <strong className="NotificationCard-name">{firstName} {lastName} </strong>
+                            <span className="NotificationCard-content">{content}</span>
+                        </h2>
+                        <h5 className="text-muted">Sent {moment(date).calendar()}</h5>
                     </div>
-                    <div className="col-1">
-                        <h5>sent {moment(date).calendar()}</h5>
-                    </div>
-                    <div className="col-1" />
-                    <div className="col-1 accept">
+                    {/* <div className="col-2" /> */}
+                    <div className="offset-2 col-1 accept">
                         <i className="fas fa-check-square"></i>
                     </div>
                     <div className="col-1 reject">
