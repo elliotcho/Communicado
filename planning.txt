@@ -36,10 +36,9 @@ chat with that person on the right
 alphabetical friends list for now
 
 
-COMPLETED:
-:Login page
-:Sign up page 
-:Settings page 
---- deleted account in settings (change settings background)
+Gugsa
+[ ] restyling a settings
 
+Elliot
 
+Tariq 

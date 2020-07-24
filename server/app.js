@@ -8,11 +8,14 @@ const express = require('express');
 const app = express();
 const socket = require('socket.io');
 
+
 //connect to database
 mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Communicado?retryWrites=true&w=majority', {
     useUnifiedTopology: true,
     useNewUrlParser: true
-});
+}); 
+
+
 
 // Open Connection to database
 mongoose.connection.once('open', () => {
@@ -34,7 +37,9 @@ const upload = multer({
 app.use(bodyParser.json());
 app.use(cors());
 
+
 // User functions
+
 const { 
     login, 
     signup, 
@@ -42,14 +47,16 @@ const {
     handleProfilePic, 
     changeName,
     changePwd,
-    findUsers
+    findUsers,
+    deleteUser
 } = require('./handlers/users');
+const { User } = require('./dbschema');
 
 const {
     loadNotifs
 } = require('./handlers/notifications');
 
-// User funtional routes
+// User funtional routes 
 app.post('/', login);
 app.post('/signup', signup);
 app.post('/userinfo', getUserInfo);
@@ -57,6 +64,8 @@ app.post('/profilepic', handleProfilePic(upload, fs, path));
 app.post('/changename', changeName);
 app.post('/changepwd', changePwd);
 app.post('/findusers', findUsers);
+app.post('/deleteUser', deleteUser);
+
 
 app.get('/notifs/:uid', loadNotifs);
 

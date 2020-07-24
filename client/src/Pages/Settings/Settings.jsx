@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {getUserInfo, changeUserName, changePwd, deleteUser} from '../../store/actions/profileActions';
 import {Redirect} from 'react-router-dom';
-import {getUserInfo, changeUserName, changePwd} from '../../store/actions/profileActions';
+
 import './Settings.css';
+
+
 
 class Settings extends Component{
     constructor(){
@@ -20,6 +23,7 @@ class Settings extends Component{
         this.handleChange=this.handleChange.bind(this);
         this.changeName=this.changeName.bind(this);
         this.changePwd=this.changePwd.bind(this);
+        this.deleteUser= this.deleteUser.bind(this);
     }
     // After init render, retrieve userID
     componentDidMount(){
@@ -67,6 +71,23 @@ class Settings extends Component{
         this.props.changePwd(uid, currPwd, newPwd, confirmPwd);
     }
 
+    deleteUser(e){
+        e.preventDefault();
+        const {uid} = this.props;
+        
+        this.props.deleteUser(uid);
+        
+    }
+
+    /**
+     *   deleteUser(e){
+        e.preventDefault();
+        alert("clicked")
+        const {uid} = this.props;
+        this.props.deleteUser(uid);
+    }
+
+     */
     render(){
         if(!this.props.uid){
             return <Redirect to = '/'/>
@@ -108,6 +129,10 @@ class Settings extends Component{
                         {/* Submit btn */}
                         <button className='btn btn-lg btn-danger'>Change Password</button>
                     </form>
+                     
+                    <form  onSubmit={this.deleteUser}>
+                        <button className='delete'>Delete Account</button>
+                    </form>
                </main>
            </div>
         )
@@ -126,7 +151,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getUserInfo: (uid) => {dispatch(getUserInfo(uid));},
         changeUserName: (uid, firstName, lastName) =>{dispatch(changeUserName(uid, firstName, lastName));},
-        changePwd: (pwd, currPwd, newPwd, confirmPwd) => {dispatch(changePwd(pwd, currPwd, newPwd, confirmPwd));}
+        changePwd: (pwd, currPwd, newPwd, confirmPwd) => {dispatch(changePwd(pwd, currPwd, newPwd, confirmPwd));},
+        deleteUser: (uid) =>{dispatch(deleteUser(uid));}
     }
 };
 

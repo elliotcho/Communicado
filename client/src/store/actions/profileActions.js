@@ -6,12 +6,12 @@ export const getUserInfo = (uid) =>{
     return (dispatch) =>{
         // Send json
         const config = {
+            
             headers: {'Content-Type': 'application/json'}
         }
         // Send post request to userInfo branch in server handlers
         axios.post('http://localhost:5000/userinfo', {uid}, config).then(response =>{
             const {firstName, lastName} = response.data;
-
             dispatch({
                 type: "USER_INFO",
                 firstName,
@@ -76,5 +76,25 @@ export const changePwd = (uid, currPwd, newPwd, confirmPwd) =>{
             const {msg} = response.data;
             alert(msg);
         });
+    }
+}
+
+export const deleteUser = (uid) =>{
+    return () =>{
+        
+        const data = {uid}
+
+        
+
+        axios.post('http://localhost:5000/deleteUser', data,   {headers: {'content-type': 'application/json'}}).then(response =>{
+            
+        const {msg} =response.data;
+        alert(msg);
+            window.localStorage.clear();
+            window.location.href='/';
+         
+        })
+
+        
     }
 }
