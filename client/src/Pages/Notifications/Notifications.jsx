@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import NotifRow from './NotifRow';
 import {connect} from 'react-redux';
 import {uncolorNavbar, getNotifications} from '../../store/actions/notificationsActions';
 import './Notifications.css'

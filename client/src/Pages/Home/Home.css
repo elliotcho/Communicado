@@ -21,8 +21,8 @@
 }
 
 .home .message h3{
-    font-weight: bold;
-    font-family: 'Nunito';
+    font-weight: 600;
+    font-family: 'Nunito Sans';
     color: #313131;
 }
 
@@ -52,7 +52,7 @@
 .home .profileCard h2{
     margin-top: 10px;
     margin-right: 10px;
-    font-family: 'Nunito';
+    font-family: 'Nunito Sans';
 }
 
 .home .profileCard .profilePic{
@@ -68,7 +68,7 @@
     cursor: pointer;
     outline: none;
     border: none;
-    font-family: 'Nunito';
+    font-family: 'Nunito Sans';
     margin-right: 10px;
 }
 
