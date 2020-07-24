@@ -1,16 +1,6 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-// User Schema that shows the data that a user will have
-const UserSchema = new schema({
-    firstName: String,
-    lastName: String,
-    email: String,
-    password: String,
-    dateCreated: Date, 
-    profilePic: String,
-    friends: [String]
-});
 // Message Schema, has sender and recipient ID
 const MessageSchema = new schema({
     sender_id: String,
@@ -28,7 +18,19 @@ const NotifSchema = new schema({
     senderId: String,
     receiverId: String,
     date: Date
-})
+});
+
+// User Schema that shows the data that a user will have
+const UserSchema = new schema({
+    firstName: String,
+    lastName: String,
+    email: String,
+    password: String,
+    dateCreated: Date, 
+    profilePic: String,
+    friends: [String],
+    notifs: [NotifSchema]
+});
 
 // Model objects after the schema and export
 const User = mongoose.model('user', UserSchema);

@@ -63,6 +63,7 @@ class FindForm extends Component {
                             placeholder = "Enter a users name"
                             className="FindForm-input"
                         />
+                        
                         <button onClick = {this.showResults} className="FindForm-btn">
                             <i className="fas fa-search FindForm-icon"></i>
                         </button>

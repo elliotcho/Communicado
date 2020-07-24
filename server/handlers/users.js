@@ -38,7 +38,8 @@ const signup = (req, res) => {
                     password: req.body.password,
                     dateCreated: Date.now(),
                     profilePic: null,
-                    friends: []
+                    friends: [],
+                    notifs: []
                 });
 
                 // Save user to DB and return it to access, along with confirmation msg
