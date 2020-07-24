@@ -24,7 +24,10 @@ const MessageSchema = new schema({
 const NotifSchema = new schema({
     friendRequest: Boolean,
     content: String,
-    read: Boolean
+    read: Boolean,
+    senderId: String,
+    receiverId: String,
+    date: Date
 })
 
 // Model objects after the schema and export
@@ -33,3 +36,4 @@ const Message = mongoose.model('message', MessageSchema)
 const Notification = mongoose.model('notification', NotifSchema)
 
 exports.User = User;
+exports.Notification = Notification;

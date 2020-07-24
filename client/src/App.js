@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {colorNavbar} from './store/actions/notificationsActions';
@@ -13,20 +13,27 @@ import Messages from './Pages/Messages/Messages'
 
 import socket from 'socket.io-client';
 
-function App(props){
-      const {uid, newNotif, colorNavbar} = props;
+let io;
 
-      const io = socket('http://localhost:5000');
+class App extends Component{
+   constructor(){
+      super();
 
-      if(uid){
-         io.emit("JOIN_SERVER", {uid});
-      }
+      io = socket('http://localhost:5000');
 
       io.on('FRIEND_REQUEST', data =>{
          alert(data.msg);
-         colorNavbar();
+         this.props.colorNavbar();
       });
+   }
 
+   render(){
+      const {uid, newNotif} = this.props;
+
+      if(this.props.uid){
+         io.emit("JOIN_SERVER", {uid: this.props.uid});
+      }
+      
       return(
          <BrowserRouter>
             {uid? <Navbar newNotif = {newNotif}/>: null}
@@ -42,6 +49,7 @@ function App(props){
            </Switch>
          </BrowserRouter>
       )
+   }
 }
 // Convert state to props using reducer
 const mapStateToProps = (state) =>{
@@ -56,5 +64,7 @@ const mapDispatchToProps = (dispatch) => {
         colorNavbar: () => {dispatch(colorNavbar());}  
     }
 }
+
+export {io};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

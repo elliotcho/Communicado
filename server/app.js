@@ -26,7 +26,7 @@ mongoose.connection.once('open', () => {
 const storage = multer.diskStorage({
     destination: './images',
     filename: (req, file, cb) =>{
-        cb(null, 'PROFILE-' + req.body.id + Date.now() + path.extname(file.originalname));
+        cb(null, 'PROFILE-' + req.body.uid + Date.now() + path.extname(file.originalname));
     }
 });
 // Use multer to upload imgs
@@ -55,6 +55,10 @@ const {
 } = require('./handlers/users');
 const { User } = require('./dbschema');
 
+const {
+    loadNotifs
+} = require('./handlers/notifications');
+
 // User funtional routes
 app.post('/', login);
 app.post('/signup', signup);
@@ -66,37 +70,9 @@ app.post('/findusers', findUsers);
 app.post('/deleteUser', deleteUser);
 
 
+app.get('/notifs/:uid', loadNotifs);
+
 //Specify localhost port number
 const server = app.listen(5000);
 
-
-const {User} = require('./dbschema');
-const io = socket(server);
-const active = {};
-
-io.on('connection', socket =>{
-    socket.on('JOIN_SERVER', data =>{
-        const {uid} = data;
-
-        if(!(uid in active)){
-            active[uid] = socket.id;
-        }
-    });
-
-    socket.on("DISCONNECT", data =>{
-        delete active[data.uid];
-    });
-
-    socket.on("FRIEND_REQUEST", data =>{
-        const {uid, friendId} = data;
-
-        User.findOne({_id: uid}).then(result =>{
-            const {firstName, lastName} = result;
-
-            const userName = `${firstName} ${lastName}`;
-
-            io.sockets.to(active[friendId])
-            .emit('FRIEND_REQUEST', {...data, msg: `${userName} sent you a friend request`});
-        });
-    });
-});
+require('./handlers/socketEvents')(socket(server));
