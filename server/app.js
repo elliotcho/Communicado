@@ -54,7 +54,8 @@ const {
 const { User } = require('./dbschema');
 
 const {
-    loadNotifs
+    loadNotifs,
+    checkUnreadNotifs
 } = require('./handlers/notifications');
 
 // User funtional routes 
@@ -69,6 +70,7 @@ app.post('/deleteUser', deleteUser);
 
 
 app.get('/notifs/:uid', loadNotifs);
+app.get('/unreadnotifs/:uid', checkUnreadNotifs);
 
 //Specify localhost port number
 const server = app.listen(5000);

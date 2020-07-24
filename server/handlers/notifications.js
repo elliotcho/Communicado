@@ -9,6 +9,19 @@ const loadNotifs = (req, res) =>{
     });
 }
 
+const checkUnreadNotifs = (req, res) =>{
+    const {uid} = req.params;
+
+    Notification.find({receiverId: uid}).then(result =>{
+        const unread = result.filter(notif => !notif.read);
+        
+        res.json({
+            unread: unread.length !== 0
+        });
+    });
+}
+
 module.exports= {
-    loadNotifs
+    loadNotifs, 
+    checkUnreadNotifs
 }

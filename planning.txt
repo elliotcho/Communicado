@@ -1,23 +1,18 @@
-Login page   -- Sign up page (first layer)
-
 Home page (all your chats? posts?)
-
 Messaging page (different state/props depending on which friend your messaging)
 
-Settings page (update email/password)
-Friends page (maybe add search bar)
+Settings page (gugsa will design)
+Friends page (render our friends)
 Notifications page
 
 if messages are blank render friends component
 friend card has profile pic, name, message and delete
 delete friend has window.confirm
-
-delete account in settings (change settings background)
-
 unread box shadow, bold message, iphone dot icon
 read no box shadow
 
 friends in user array
+alphabetical friends list for now
 
 message:{
     _id: String,
@@ -29,22 +24,14 @@ message:{
     read: boolean
 }
 
-notification: {
-    _id: String,
-    content: String,
-    friendRequest: boolean
-}
-
-message: on the left all the messages: 
-chat with that person on the right
-
-alphabetical friends list for now
-
-TODOS for July 8:
+TODOS for July 23:
 
 Gugsa
-[ ] restyling a settings
+[ ] restyle settings
+[ ] help Tariq or Elliot when done
 
 Elliot
+[ ] non real time notifications
 
 Tariq 
+[ ] restyle notifications for FR/regular
