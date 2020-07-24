@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import './FoundFriendCard.css'
+import socket from 'socket.io-client';
 
 import {io} from '../App';
 
@@ -27,12 +28,10 @@ class FoundFriendCard extends Component {
             this.setState({imgURL: URL.createObjectURL(file)});
         });
     }
-
+    // Send friend request to client when user clicks btn to add friend
     handleClick(){
         const {uid} = this.props;
-
         const {_id} = this.props.user;
-
         io.emit("FRIEND_REQUEST", {uid, friendId: _id});
     }
 

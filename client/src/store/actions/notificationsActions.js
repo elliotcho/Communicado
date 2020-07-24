@@ -1,3 +1,4 @@
+// Color navbar if unread notification exists
 import axios from 'axios';
 
 export const colorNavbar = () =>{
@@ -5,7 +6,7 @@ export const colorNavbar = () =>{
         dispatch({type: 'INCOMING_NOTIF', newNotif: true});
     }   
 }
-
+// Uncolor navbar if read notification 
 export const uncolorNavbar = () =>{
     return (dispatch) =>{
         dispatch({type: 'READ_NOTIF', newNotif: false});

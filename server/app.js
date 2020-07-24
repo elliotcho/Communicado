@@ -21,7 +21,6 @@ mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Comm
 mongoose.connection.once('open', () => {
     console.log("Connected to Database");
 }).on('error', err => {console.log(err);});
-
 // Set up image storage into images folder
 const storage = multer.diskStorage({
     destination: './images',

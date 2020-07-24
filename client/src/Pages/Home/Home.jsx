@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getUserInfo, loadProfilePic, changeProfilePic} from '../../store/actions/profileActions';
-import Navbar from '../../Partials/Navbar'
 import './Home.css';
-
 import loading from './loading.jpg';
 
 class Home extends Component{
@@ -13,19 +11,20 @@ class Home extends Component{
         this.handleChange=this.handleChange.bind(this);
     }
 
+    // After init render, read userID and get info + picture to display
     componentDidMount(){
         const {uid} = this.props;
-
         this.props.getUserInfo(uid);
-
         this.props.loadProfilePic(uid);
     }
 
+    // Change profile picture
     handleChange(e){
         this.props.changeProfilePic(this.props.uid, e.target.files[0]);
     }
 
     render(){
+        // Destructure props that were mapped to Home
         const {imgURL, firstName, lastName} = this.props;
 
         if(!this.props.uid){
@@ -63,7 +62,7 @@ class Home extends Component{
         )
     }
 }
-
+// Map all variables to props using redux
 const mapStateToProps = (state) => {
     return {
         uid: state.auth.uid,
@@ -73,6 +72,7 @@ const mapStateToProps = (state) => {
     }
 };
 
+// Map all methods to props using redux
 const mapDispatchToProps = (dispatch) => {
     return {
         getUserInfo: (uid) => {dispatch(getUserInfo(uid));},

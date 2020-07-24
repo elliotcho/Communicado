@@ -7,8 +7,7 @@ const friendsReducer = (state=initState, action) =>{
         case "USERS_FOUND":
             return{
                 ...state,
-
-                //using ... operator recreate new array
+                // Update users for all found users
                 users: [...action.users]
             }
         default:

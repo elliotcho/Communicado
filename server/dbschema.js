@@ -10,6 +10,7 @@ const MessageSchema = new schema({
     body: String,
     read: Boolean
 })
+
 // Notification Schema
 const NotifSchema = new schema({
     friendRequest: Boolean,
