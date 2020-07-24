@@ -76,6 +76,11 @@ class Settings extends Component{
 
     deleteUser(e){
         e.preventDefault();
+
+        if(!window.confirm("Are you sure you want to delete your account?")){
+            return;
+        }
+
         const {uid} = this.props;
         
         this.props.deleteUser(uid);

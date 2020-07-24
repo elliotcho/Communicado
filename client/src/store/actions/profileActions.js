@@ -80,21 +80,14 @@ export const changePwd = (uid, currPwd, newPwd, confirmPwd) =>{
 }
 
 export const deleteUser = (uid) =>{
-    return () =>{
-        
+    return () =>{ 
         const data = {uid}
-
         
-
         axios.post('http://localhost:5000/deleteUser', data,   {headers: {'content-type': 'application/json'}}).then(response =>{
-            
-        const {msg} =response.data;
-        alert(msg);
+            const {msg} =response.data;
+            alert(msg);
             window.localStorage.clear();
             window.location.href='/';
-         
-        })
-
-        
+        }); 
     }
 }
