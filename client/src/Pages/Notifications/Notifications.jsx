@@ -14,10 +14,10 @@ class Notifications extends Component{
 
     render(){
         // read notifications for current user
-        const {notifs} = this.props;
+        const {uid, notifs} = this.props;
         // Create list of notifications
         const list = notifs.map(notif =>
-            <NotificationCard notif = {notif}/>
+            <NotificationCard notif = {notif} uid={uid}/>
         );
 
 

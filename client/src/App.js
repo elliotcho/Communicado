@@ -13,19 +13,17 @@ import Messages from './Pages/Messages/Messages'
 
 import socket from 'socket.io-client';
 import axios from 'axios';
+import {handleSocketEvents} from './socket/socketEvents';
 
 let io;
 
 class App extends Component{
-   constructor(){
-      super();
+   constructor(props){
+      super(props);
 
       io = socket('http://localhost:5000');
 
-      io.on('FRIEND_REQUEST', data =>{
-         alert(data.msg);
-         this.props.colorNavbar();
-      });
+      handleSocketEvents(io, this.props.colorNavbar)
    }
 
    componentDidMount(){

@@ -63,7 +63,7 @@ app.post('/signup', signup);
 app.post('/userinfo', getUserInfo);
 app.post('/profilepic', handleProfilePic(upload, fs, path));
 app.post('/changename', changeName);
-app.post('/changepwd', changePwd);
+app.post('/changepwd', changePwd); 
 app.post('/findusers', findUsers);
 app.post('/deleteUser', deleteUser);
 

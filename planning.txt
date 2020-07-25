@@ -42,14 +42,14 @@ message:{
     read: boolean
 }
 
-TODOS for July 23:
+pending, add, and check for friend status in found friend card
+other notifs: friend request accepted and message
+add new properties to notifications frontend read and backend read
 
+TODOS for July 24:
 Gugsa
-[ ] restyle settings
-[ ] help Tariq or Elliot when done
 
 Elliot
-[ ] non real time notifications
 
 Tariq 
-[ ] restyle notifications for FR/regular
+[ ] regular

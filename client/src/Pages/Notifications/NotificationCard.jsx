@@ -2,16 +2,20 @@ import React, { Component } from 'react'
 import loading from './loading.jpg';
 import axios from 'axios';
 import moment from 'moment';
+import {io} from '../../App';
 import './NotificationCard.css'
 
 class NotificationCard extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             firstName: "",
             lastName: "",
             imgURL: null
         }
+
+        this.acceptRequest = this.acceptRequest.bind(this);
     }
     // Mount component with usersID 
     componentDidMount(){
@@ -34,13 +38,22 @@ class NotificationCard extends Component {
             // Set state of imgURL to display senders IMG
             this.setState({imgURL: URL.createObjectURL(file)});
         });
-       
     }
 
+    acceptRequest(){
+        const {uid} = this.props;
+        const {senderId} = this.props.notif;
+
+        io.emit("ACCEPT_REQUEST", {receiverId: uid, senderId});
+    }
     
     render() {
         const {imgURL, firstName, lastName} = this.state;
-        const {content, date, friendRequest} = this.props.notif;
+        
+        const {content, date, friendRequest, read} = this.props.notif;
+
+        //const bg = (read)? {background: 'white'}: {background: 'lightgray'} ;
+        
         return (
             <div className="NotificationCard card">
                 <div className="row d-flex justify-content-center text-left align-items-center">
@@ -56,7 +69,7 @@ class NotificationCard extends Component {
                     </div>
                     {/* <div className="col-2" /> */}
                     <div className="offset-2 col-1 accept">
-                        <i className="fas fa-check-square"></i>
+                        <i className="fas fa-check-square" onClick = {this.acceptRequest}></i>
                     </div>
                     <div className="col-1 reject">
                         <i className="fas fa-times-circle"></i>
