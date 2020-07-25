@@ -1,10 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {uncolorNavbar, getNotifications} from '../../store/actions/notificationsActions';
+import {uncolorNavbar, getNotifications, removeNotification} from '../../store/actions/notificationsActions';
 import './Notifications.css'
 import NotificationCard from './NotificationCard';
 
 class Notifications extends Component{
+    constructor(){
+        super();
+        this.deleteNotif = this.deleteNotif.bind(this);
+    }
+
     // After first render, remove highlighted icon and destructure props
     componentDidMount(){
         const {uid, uncolorNavbar, getNotifications} = this.props;
@@ -12,12 +17,21 @@ class Notifications extends Component{
         getNotifications(uid);  // Get notifications for specific user
     }
 
+    deleteNotif(id){
+        const {
+            notifs, 
+            removeNotification
+        } = this.props;
+
+        removeNotification(id, notifs);
+    }
+
     render(){
         // read notifications for current user
         const {uid, notifs} = this.props;
         // Create list of notifications
         const list = notifs.map(notif =>
-            <NotificationCard notif = {notif} uid={uid}/>
+            <NotificationCard notif = {notif} uid={uid} deleteNotif={this.deleteNotif}/>
         );
 
 
@@ -46,7 +60,8 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = (dispatch) =>{
     return{
         uncolorNavbar: () => {dispatch(uncolorNavbar());},
-        getNotifications: (uid) => {dispatch(getNotifications(uid));}
+        getNotifications: (uid) => {dispatch(getNotifications(uid));},
+        removeNotification: (notifId, notifs) => {dispatch(removeNotification(notifId, notifs));}
     }
 }
 

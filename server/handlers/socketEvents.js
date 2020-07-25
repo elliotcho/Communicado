@@ -26,7 +26,14 @@ module.exports = (io) => {
                 }
 
                 else{
-                    const {firstName, lastName, friends} = receiver;
+                    const {firstName, lastName, friends, notifs} = receiver;
+
+                    for(let i =0;i<notifs.length;i++){
+                        if(notifs[i].senderId === senderId && notifs[i].friendRequest){
+                            notifs.splice(i, 1);
+                            break;
+                        }
+                    }
 
                     friends.push(senderId);
     
@@ -34,7 +41,7 @@ module.exports = (io) => {
                     const msg = `${firstName} ${lastName} accepted your friend request`;
     
                     //update receiver's friends
-                    User.updateOne({_id: receiverId}, {friends}).then(() =>{
+                    User.updateOne({_id: receiverId}, {friends, notifs}).then(() =>{
     
                         //find sender and add receiver onto their friend's list
                         User.findOne({_id: senderId}).then(sender =>{

@@ -41,8 +41,11 @@ class NotificationCard extends Component {
     }
 
     acceptRequest(){
-        const {uid} = this.props;
-        const {senderId} = this.props.notif;
+        const {uid, deleteNotif} = this.props;
+
+        const {_id, senderId} = this.props.notif;
+
+        deleteNotif(_id);
 
         io.emit("ACCEPT_REQUEST", {receiverId: uid, senderId});
     }

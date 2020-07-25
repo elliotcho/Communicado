@@ -20,3 +20,16 @@ export const getNotifications = (uid) =>{
         });
     }
 }
+
+export const removeNotification = (notifId, list) =>{
+    return (dispatch) => {
+        for(let i=0;i<list.length;i++){
+            if(list[i]._id === notifId){
+                list.splice(i, 1);
+                break;
+            }
+        }
+
+        dispatch({type:"DELETE_NOTIF", notifs: list});
+    }
+}

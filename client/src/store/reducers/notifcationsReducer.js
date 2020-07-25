@@ -22,6 +22,11 @@ const notificationsReducer = (state = initState, action) =>{
                 ...state,
                 notifs: [...action.notifs]
             }
+        case("DELETE_NOTIF"):
+            return{
+                ...state,
+                notifs: [...action.notifs]
+            }
         default:
             return state;
     }
