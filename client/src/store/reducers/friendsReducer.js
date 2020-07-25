@@ -1,4 +1,4 @@
-const initState = {users: []};
+const initState = {users: [], friends: []};
 
 // Reducer for friend actions
 const friendsReducer = (state=initState, action) =>{
@@ -9,6 +9,11 @@ const friendsReducer = (state=initState, action) =>{
                 ...state,
                 // Update users for all found users
                 users: [...action.users]
+            }
+        case 'LOAD_FRIENDS':
+            return{
+                ...state,
+                friends: [...action.friends]
             }
         default:
             return state;

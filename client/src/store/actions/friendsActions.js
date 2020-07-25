@@ -12,3 +12,11 @@ export const findUsers = (name) => {
     }
 }
 
+export const loadFriends = (uid) =>{
+    return (dispatch) =>{
+        axios.get(`http://localhost:5000/friends/${uid}`).then(response =>{
+            dispatch({type: 'LOAD_FRIENDS', friends: response.data});
+        });
+    }
+}
+

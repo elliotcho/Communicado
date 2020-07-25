@@ -48,13 +48,13 @@ const {
     changeName,
     changePwd,
     findUsers,
-    deleteUser
+    deleteUser,
+    getFriends
 } = require('./handlers/users');
-const { User } = require('./dbschema');
 
 const {
     loadNotifs,
-    checkUnreadNotifs
+    checkUnreadNotifs,
 } = require('./handlers/notifications');
 
 // User funtional routes 
@@ -67,6 +67,7 @@ app.post('/changepwd', changePwd);
 app.post('/findusers', findUsers);
 app.post('/deleteUser', deleteUser);
 
+app.get('/friends/:uid', getFriends);
 
 app.get('/notifs/:uid', loadNotifs);
 app.get('/unreadnotifs/:uid', checkUnreadNotifs);

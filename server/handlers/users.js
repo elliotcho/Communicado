@@ -209,6 +209,18 @@ const findUsers = (req, res) =>{
     }).catch(e => console.log(e));
 }
 
+const getFriends = (req, res) =>{
+    const {uid} = req.params;
+
+    User.findOne({_id: uid}).then(result =>{
+        const {friends} = result;
+
+        User.find({_id: {$in: friends}}).then(users =>{
+            res.json(users);
+        });
+    });
+}
+ 
 // exports
 module.exports = {
     login,
@@ -218,5 +230,6 @@ module.exports = {
     changeName,
     changePwd,
     findUsers,
-    deleteUser
+    deleteUser,
+    getFriends
 }
