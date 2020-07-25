@@ -15,7 +15,7 @@ class NotificationCard extends Component {
             imgURL: null
         }
 
-        this.acceptRequest = this.acceptRequest.bind(this);
+        this.handleRequest = this.handleRequest.bind(this);
     }
     // Mount component with usersID 
     componentDidMount(){
@@ -40,16 +40,16 @@ class NotificationCard extends Component {
         });
     }
 
-    acceptRequest(){
+    handleRequest(eventType){
         const {uid, deleteNotif} = this.props;
 
         const {_id, senderId} = this.props.notif;
 
         deleteNotif(_id);
 
-        io.emit("ACCEPT_REQUEST", {receiverId: uid, senderId});
+        io.emit(eventType , {receiverId: uid, senderId});
     }
-    
+
     render() {
         const {imgURL, firstName, lastName} = this.state;
         
@@ -72,10 +72,10 @@ class NotificationCard extends Component {
                     </div>
                     {/* <div className="col-2" /> */}
                     <div className="offset-2 col-1 accept">
-                        <i className="fas fa-check-square" onClick = {this.acceptRequest}></i>
+                        <i className="fas fa-check-square" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
                     </div>
                     <div className="col-1 reject">
-                        <i className="fas fa-times-circle"></i>
+                        <i className="fas fa-times-circle" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
                     </div>
                     <div className="col-1" />
                 </div>

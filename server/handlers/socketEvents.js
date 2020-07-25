@@ -13,6 +13,23 @@ module.exports = (io) => {
             delete active[data.uid];
         });
 
+        socket.on("DECLINE_REQUEST", data =>{
+            const {receiverId, senderId} = data;
+
+            User.findOne({_id: receiverId}).then(result =>{
+                const {notifs} = result;
+
+                for(let i =0;i<notifs.length;i++){
+                    if(notifs[i].senderId === senderId && notifs[i].friendRequest){
+                        notifs.splice(i, 1);
+                        break;
+                    }
+                }
+
+                User.updateOne({_id: receiverId}, {notifs}).then(()=>{console.log("Request declined");});
+            });
+        });
+
         socket.on("ACCEPT_REQUEST", data =>{
             const {receiverId, senderId} = data;
 
