@@ -27,7 +27,7 @@ module.exports = (io) => {
                 }
 
                 User.updateOne({_id: receiverId}, {notifs}).then(()=>{console.log("Request declined");});
-            });
+            }); 
         });
 
         socket.on("ACCEPT_REQUEST", data =>{
@@ -108,7 +108,7 @@ module.exports = (io) => {
                             friendRequest: true,
                             read: false,
                             content: msg,
-                            senderId: _id,
+                            senderId: uid,
                             date: new Date()
                         });
     

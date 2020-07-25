@@ -43,13 +43,6 @@ message:{
 }
 
 pending, add, and check for friend status in found friend card
-other notifs: friend request accepted and message
-add new properties to notifications frontend read and backend read
-
-TODOS for July 24:
-Gugsa
-
-Elliot
-
-Tariq 
-[ ] regular
+other notifs: friend request accepted
+only read notif if clicked/hovered
+deleting friends

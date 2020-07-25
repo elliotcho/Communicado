@@ -55,10 +55,10 @@ class NotificationCard extends Component {
         
         const {content, date, friendRequest, read} = this.props.notif;
 
-        //const bg = (read)? {background: 'white'}: {background: 'lightgray'} ;
+        const bg = (read)? {background: 'white'}: {background: 'lightgray'} ;
         
         return (
-            <div className="NotificationCard card">
+            <div className="NotificationCard card" style = {bg}>
                 <div className="row d-flex justify-content-center text-left align-items-center">
                     <div className="col-2 text-center">
                         <img src={imgURL ? imgURL : loading} className="img-fluid avatar" alt="tester" />
