@@ -61,7 +61,7 @@ class App extends Component{
          // If ID required for route, show Navbar
          <BrowserRouter>
             {uid? <Navbar newNotif = {newNotif}/>: null}
-           <Switch>
+            <Switch>
             {/* Router that switches paths based on route */}
               <Route exact path='/' render = {()=> uid? <Home uid ={uid}/>: <Login uid ={uid}/>}/>
               <Route path='/messages' component={Messages}/>
