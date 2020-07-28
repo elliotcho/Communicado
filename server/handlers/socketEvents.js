@@ -135,7 +135,18 @@ module.exports = (io) => {
                     }
 
                     else if(status === 'Pending'){
-                        User.deleteOne({_id: friendId}).then(()=>{});
+                        User.findOne({_id: receiverId}).then(result =>{
+                            const {notifs} = result;
+
+                            for(let i=0;i<notifs.length;i++){
+                                if(notifs[i].senderId === senderId && notifs.friendRequest){
+                                    notifs.splice(i, 1);
+                                    break;
+                                }
+                            }
+
+                            User.updateOne({_id: receiverId}, {notifs}).then(()=>{});
+                        });
                     }
 
                     else{

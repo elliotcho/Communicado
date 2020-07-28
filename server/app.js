@@ -15,8 +15,6 @@ mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Comm
     useNewUrlParser: true
 }); 
 
-
-
 // Open Connection to database
 mongoose.connection.once('open', () => {
     console.log("Connected to Database");
@@ -59,7 +57,7 @@ const {
 } = require('./handlers/notifications');
 
 // User funtional routes 
-app.post('/', login);
+app.post('/', login)
 app.post('/signup', signup);
 app.post('/userinfo', getUserInfo);
 app.post('/profilepic', handleProfilePic(upload, fs, path));
