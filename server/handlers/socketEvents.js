@@ -6,31 +6,31 @@ const active = {};
 
 module.exports = (io) => {
     io.on('connection', socket =>{
+        // JOIN SERVER --- store socket id
         socket.on('JOIN_SERVER', data =>{
             active[data.uid] = socket.id;
         });
-    
+        // DISCONNECT FROM SERVER --- delete socket id
         socket.on("DISCONNECT", data =>{
             delete active[data.uid];
         });
-
+        // DECLINE REQUEST --- Remove notification from user
         socket.on("DECLINE_REQUEST", data =>{
             const {receiverId, senderId} = data;
-
+            // Find receiver from ID
             User.findOne({_id: receiverId}).then(result =>{
                 const {notifs} = result;
-
+                // Look for friend request sent by user
                 for(let i =0;i<notifs.length;i++){
                     if(notifs[i].senderId === senderId && notifs[i].friendRequest){
+                        // Once found, remove notification and break
                         notifs.splice(i, 1);
                         break;
                     }
                 }
-
-                User.updateOne({_id: receiverId}, {notifs}).then(()=>{console.log("Request declined");});
             }); 
         });
-
+        // ACCEPT FRIEND REQUEST --- Store sender and recipient data from request
         socket.on("ACCEPT_REQUEST", data =>{
             const {status, receiverId, senderId} = data;
 
@@ -48,26 +48,40 @@ module.exports = (io) => {
                             }
 
                             friends.push(senderId);
+                          
+                            const newNotif = new Notification({
+                                friendRequest: false,
+                                read: false,
+                                content: msg,
+                                // Sender of acceptance is receiver who accepted it
+                                senderId: receiverId,
+                                date: new Date()
+                            });
+                        
                 
                             //construct message for the sender
                             const msg = `${firstName} ${lastName} accepted your friend request`;
+                          
+                           
                 
-                            //update receiver's friends
-                            User.updateOne({_id: receiverId}, {friends, notifs}).then(() =>{});
-                
-                            //find sender and add receiver onto their friend's list
-                            User.findOne({_id: senderId}).then(sender =>{
-                                const senderFriends = sender.friends;
-                
-                                senderFriends.push(receiverId);
-                
-                                //update sender's friends and send them a notification
-                                User.updateOne({_id: senderId}, {friends: senderFriends}).then(() =>{
-                                    io.sockets.to(active[senderId]).emit(
-                                        'ACCEPT_REQUEST', 
-                                        {msg}
-                                    ); 
-                                });
+                                      // Update receiver's friends and notifs
+                        User.updateOne({_id: receiverId}, {friends, notifs}).then(() => {
+                        //find sender and add receiver onto their friend's list
+                        User.findOne({_id: senderId}).then(sender =>{
+                            const senderFriends = sender.friends;
+                            senderFriends.push(receiverId);
+
+                            // also add new notification to sender of acceptance
+                            const senderNotifs = sender.notifs;
+                            senderNotifs.push(newNotif);
+
+                            //update sender's friends and notifs with acceptance results
+                            User.updateOne({_id: senderId}, {friends: senderFriends, notifs: senderNotifs}).then(() => { 
+                                // Emit new notification to socket and add 
+                                io.sockets.to(active[senderId]).emit(
+                                    'ACCEPT_REQUEST', 
+                                    {msg}
+                                ); 
                             });
                         });
                     }
@@ -137,8 +151,9 @@ module.exports = (io) => {
 
                             User.updateOne({_id: friendId}, {notifs}).then(()=>{});
                         });
+                      
                     }
-
+                    // If no previous request, continue creating notification
                     else{
                         User.findOne({_id: uid}).then(result =>{
                             const {friends} = result;

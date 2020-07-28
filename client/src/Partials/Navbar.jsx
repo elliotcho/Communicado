@@ -56,15 +56,13 @@ class Navbar extends Component {
                                     <Link to='/messages' className="nav-link pr-lg-5">Messages</Link>
                                 </li>
                                 <li>
-                                    <Link to='/friends'>
-                                        <a href='/friends' className="nav-link pr-lg-5">Friends</a>
-                                    </Link>
+                                    <Link to='/friends' className="nav-link pr-lg-5">Friends</Link>
                                 </li>
                                 <li>
-                                    <a onClick= {this.toNotifs} href='/notifications' className={notifColor}>
+                                    <Link onClick= {this.toNotifs} to='/notifications' className={notifColor}>
                                         <a href='/notifications' className="nav-link d-inline-block d-md-none">Notifications</a>
                                         <i className ="fas fa-bell"></i>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li>
                                     <Link to='/settings' className="nav-link">

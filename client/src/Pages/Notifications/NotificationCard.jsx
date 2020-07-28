@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import loading from './loading.jpg';
 import axios from 'axios';
 import moment from 'moment';
@@ -8,18 +8,18 @@ import './NotificationCard.css'
 class NotificationCard extends Component {
     constructor(props) {
         super(props);
-
+        // State that will control user elements of notif
         this.state = {
             firstName: "",
             lastName: "",
             imgURL: null, 
             status: ''
         }
-
         this.handleRequest = this.handleRequest.bind(this);
     }
     // Mount component with usersID 
     componentDidMount(){
+        // Get sender ID from notif to fetch their data and render
         const {senderId} = this.props.notif;
 
         const {uid} = this.props;
@@ -47,32 +47,34 @@ class NotificationCard extends Component {
             this.setState({status: response.data.status});
         });
     }
-
     handleRequest(eventType){
         const {uid, deleteNotif} = this.props;
-
         const {_id, senderId} = this.props.notif;
 
         const {status} = this.state;
 
+        // Delete notification once clicked
         deleteNotif(_id);
 
+         // Send io event type to handle request of accept or decline
         io.emit(eventType , {status, receiverId: uid, senderId});
     }
 
     render() {
+        // Destructure state and props
         const {imgURL, firstName, lastName} = this.state;
-        
         const {content, date, friendRequest, read} = this.props.notif;
-
+        // Render diff bg colour if read or not
         const bg = (read)? {background: 'white'}: {background: 'lightgray'} ;
-        
+
         return (
-            <div className="NotificationCard card" style = {bg}>
+            <div className="NotificationCard card" style={bg}>
                 <div className="row d-flex justify-content-center text-left align-items-center">
                     <div className="col-2 text-center">
+                        {/* While loading for img, display placeholer */}
                         <img src={imgURL ? imgURL : loading} className="img-fluid avatar" alt="tester" />
                     </div>
+                    {/* Notif body: name, content and date */}
                     <div className="col-5 NotificationCard-body">
                         <h2 className="NotificationCard-msg">
                             <strong className="NotificationCard-name">{firstName} {lastName} </strong>
@@ -80,14 +82,19 @@ class NotificationCard extends Component {
                         </h2>
                         <h5 className="text-muted">Sent {moment(date).calendar()}</h5>
                     </div>
-                    {/* <div className="col-2" /> */}
-                    <div className="offset-2 col-1 accept">
-                        <i className="fas fa-check-square" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
-                    </div>
-                    <div className="col-1 reject">
-                        <i className="fas fa-times-circle" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
-                    </div>
-                    <div className="col-1" />
+                    <Fragment>
+                        <div className="btns">
+                            <div className="offset-2 col-1 accept">
+                                {/* Accept friend request */}
+                                <i className="fas fa-check-square" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
+                            </div>
+                            <div className="col-1 reject">
+                                {/* Reject friend Request */}
+                                <i className="fas fa-times-circle" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
+                            </div>
+                            <div className="col-1" />
+                        </div>
+                    </Fragment>
                 </div>
             </div>
         )
