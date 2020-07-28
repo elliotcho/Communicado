@@ -12,14 +12,15 @@ class NotificationCard extends Component {
         this.state = {
             firstName: "",
             lastName: "",
-            imgURL: null
+            imgURL: null, 
+            status: ''
         }
 
         this.handleRequest = this.handleRequest.bind(this);
     }
     // Mount component with usersID 
     componentDidMount(){
-        const {senderId} = this.props.notif;
+        const {receiverId, senderId} = this.props.notif;
         const config = {'Content-Type': 'application/json'};
         // Get fName and lName of user who sent notification 
         axios.post('http://localhost:5000/userinfo', {uid: senderId}, {headers: config}).then(response =>{
@@ -38,6 +39,10 @@ class NotificationCard extends Component {
             // Set state of imgURL to display senders IMG
             this.setState({imgURL: URL.createObjectURL(file)});
         });
+
+        axios.post('http://localhost:5000/friends/status', {receiverId, senderId}, {headers: config}).then(response =>{
+            this.setState({status: response.data.status});
+        });
     }
 
     handleRequest(eventType){
@@ -45,9 +50,11 @@ class NotificationCard extends Component {
 
         const {_id, senderId} = this.props.notif;
 
+        const {status} = this.state;
+
         deleteNotif(_id);
 
-        io.emit(eventType , {receiverId: uid, senderId});
+        io.emit(eventType , {status, receiverId: uid, senderId});
     }
 
     render() {

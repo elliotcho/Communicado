@@ -55,6 +55,7 @@ const {
 const {
     loadNotifs,
     checkUnreadNotifs,
+    getFriendStatus
 } = require('./handlers/notifications');
 
 // User funtional routes 
@@ -68,6 +69,7 @@ app.post('/findusers', findUsers);
 app.post('/deleteUser', deleteUser);
 
 app.get('/friends/:uid', getFriends);
+app.post('/friends/status', getFriendStatus);
 
 app.get('/notifs/:uid', loadNotifs);
 app.get('/unreadnotifs/:uid', checkUnreadNotifs);
