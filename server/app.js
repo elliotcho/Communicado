@@ -15,8 +15,6 @@ mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Comm
     useNewUrlParser: true
 }); 
 
-
-
 // Open Connection to database
 mongoose.connection.once('open', () => {
     console.log("Connected to Database");
@@ -55,10 +53,11 @@ const {
 const {
     loadNotifs,
     checkUnreadNotifs,
+    getFriendStatus
 } = require('./handlers/notifications');
 
 // User funtional routes 
-app.post('/', login);
+app.post('/', login)
 app.post('/signup', signup);
 app.post('/userinfo', getUserInfo);
 app.post('/profilepic', handleProfilePic(upload, fs, path));
@@ -68,6 +67,7 @@ app.post('/findusers', findUsers);
 app.post('/deleteUser', deleteUser);
 
 app.get('/friends/:uid', getFriends);
+app.post('/friends/status', getFriendStatus);
 
 app.get('/notifs/:uid', loadNotifs);
 app.get('/unreadnotifs/:uid', checkUnreadNotifs);

@@ -43,6 +43,7 @@ message:{
 }
 
 pending, add, and check for friend status in found friend card
+
 other notifs: friend request accepted
+
 only read notif if clicked/hovered
-deleting friends

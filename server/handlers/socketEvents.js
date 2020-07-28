@@ -1,5 +1,6 @@
-
 const {User, Notification} = require('../dbschema');
+
+const axios = require('axios');
 
 const active = {};
 
@@ -31,42 +32,40 @@ module.exports = (io) => {
         });
         // ACCEPT FRIEND REQUEST --- Store sender and recipient data from request
         socket.on("ACCEPT_REQUEST", data =>{
-            const {receiverId, senderId} = data;
-            //find receiver and add sender onto their friend's list
-            User.findOne({_id: receiverId}).then(receiver =>{
-                // If users are already friends, send notification
-                // R: Will this ever run? can we send requests to a friend already? 
-                if(receiver.friends.includes(senderId)){
-                    io.sockets.to(active[senderId]).emit(
-                        'ACCEPT_REQUEST', 
-                        {msg: "You're already friends"}
-                    ); 
-                }
-                // If users not already friends, store variables of receiver
-                else{
-                    const {firstName, lastName, friends, notifs} = receiver;
-                    // Remove notification from recievers notif list
-                    for(let i =0;i<notifs.length;i++){
-                        if(notifs[i].senderId === senderId && notifs[i].friendRequest){
-                            notifs.splice(i, 1);
-                            break;
-                        }
-                    }
-                    // Add user who sent request to friends list
-                    friends.push(senderId);
-                    // New notification to send to sender of acceptance
-                    const newNotif = new Notification({
-                        friendRequest: false,
-                        read: false,
-                        content: msg,
-                        // Sender of acceptance is receiver who accepted it
-                        senderId: receiverId,
-                        date: new Date()
-                    })
-                    // Accept message for new notif for sender of friend request
-                    const msg = `${firstName} ${lastName} accepted your friend request`;
-                    // Update receiver's friends and notifs
-                    User.updateOne({_id: receiverId}, {friends, notifs}).then(() => {
+            const {status, receiverId, senderId} = data;
+
+            axios.post('http://localhost:5000/friends/status', {receiverId, senderId}).then(response =>{
+                if(status === response.data.status){
+                    if(status === 'Pending'){
+                        User.findOne({_id: receiverId}).then(receiver =>{
+                            const {firstName, lastName, friends, notifs} = receiver;
+
+                            for(let i =0;i<notifs.length;i++){
+                                if(notifs[i].senderId === senderId && notifs[i].friendRequest){
+                                    notifs.splice(i, 1);
+                                    break; 
+                                }
+                            }
+
+                            friends.push(senderId);
+                          
+                            const newNotif = new Notification({
+                                friendRequest: false,
+                                read: false,
+                                content: msg,
+                                // Sender of acceptance is receiver who accepted it
+                                senderId: receiverId,
+                                date: new Date()
+                            });
+                        
+                
+                            //construct message for the sender
+                            const msg = `${firstName} ${lastName} accepted your friend request`;
+                          
+                           
+                
+                                      // Update receiver's friends and notifs
+                        User.updateOne({_id: receiverId}, {friends, notifs}).then(() => {
                         //find sender and add receiver onto their friend's list
                         User.findOne({_id: senderId}).then(sender =>{
                             const senderFriends = sender.friends;
@@ -85,51 +84,105 @@ module.exports = (io) => {
                                 ); 
                             });
                         });
-                    });
+                    }
                 }
             });
         });
-        // FRIEND REQUEST SENT --- send new notif to friend
-        socket.on("FRIEND_REQUEST", data => {
-            const {uid, friendId} = data;
-            User.findOne({_id: uid}).then(result =>{
-                const {firstName, lastName} = result;
-                const msg = `sent you a friend request`;
-                User.findOne({_id: friendId}).then(friend =>{
-                    // Check users notifs to see if friend request was already sent
-                    const {notifs} = friend;
-                    let prevRequest = false;
-                    for(let i =0;i<notifs.length;i++){
-                        if(notifs[i].senderId === uid && notifs[i].friendRequest){
-                            prevRequest = true;
-                            break;
-                        }
-                    }                    
-                    // If previous requenst, send msg response to client
-                    if(prevRequest){
-                        io.emit('FRIEND_REQUEST', {msg: "Request already has been sent."});
+    
+        socket.on("CHANGE_FRIEND_STATUS", data =>{
+            const {uid, friendId, status} = data;
+
+            axios.post('http://localhost:5000/friends/status', {senderId: uid, receiverId: friendId}).then(response=>{
+                if(status === response.data.status){
+                    if(status === 'Add Friend'){
+                        User.findOne({_id: uid}).then(result =>{
+                            const {firstName, lastName} = result;
+                
+                            const msg = `sent you a friend request`;
+            
+                            User.findOne({_id: friendId}).then(user =>{
+                                const {notifs} = user;
+            
+                                let prevRequest = false;
+            
+                                for(let i =0;i<notifs.length;i++){
+                                    if(notifs[i].senderId === uid && notifs[i].friendRequest){
+                                        prevRequest = true;
+                                        break;
+                                    }
+                                }                    
+                    
+                                if(prevRequest){
+                                    io.emit('FRIEND_REQUEST', {msg: "Request already has been sent."});
+                                }
+            
+                                else{
+                                    const newNotification = new Notification({
+                                        friendRequest: true,
+                                        read: false,
+                                        content: msg,
+                                        senderId: uid,
+                                        date: new Date()
+                                    });
+                
+                                    notifs.push(newNotification);
+                
+                                    User.updateOne({_id: friendId}, {notifs}).then(() =>{
+                                            io.sockets.to(active[friendId]).emit(
+                                                'FRIEND_REQUEST', 
+                                                {msg: `${firstName} ${lastName} ${msg}`}
+                                            ); 
+                                    });
+                                }
+                            });
+                        }); 
+                    }
+
+                    else if(status === 'Pending'){
+                        User.findOne({_id: friendId}).then(result =>{
+                            const {notifs} = result;
+
+                            for(let i=0;i<notifs.length;i++){
+                                if(notifs[i].senderId === uid && notifs.friendRequest){
+                                    notifs.splice(i, 1);
+                                    break;
+                                }
+                            }
+
+                            User.updateOne({_id: friendId}, {notifs}).then(()=>{});
+                        });
+                      
                     }
                     // If no previous request, continue creating notification
                     else{
-                        const newNotification = new Notification({
-                            friendRequest: true,
-                            read: false,
-                            content: msg,
-                            senderId: uid,
-                            date: new Date()
+                        User.findOne({_id: uid}).then(result =>{
+                            const {friends} = result;
+
+                            for(let i=0;i<friends.length;i++){
+                                if(friends[i] === friendId){
+                                    friends.splice(i, 1);
+                                    break;
+                                }
+                            }
+
+                            User.updateOne({_id: uid}, {friends}).then(()=>{});
                         });
-                        // Push new notification to friends notif 
-                        notifs.push(newNotification);
-                        // Update friends notifs and emit result msg
-                        User.updateOne({_id: friendId}, {notifs}).then(() =>{
-                            io.sockets.to(active[friendId]).emit(
-                                'FRIEND_REQUEST', 
-                                {msg: `${firstName} ${lastName} ${msg}`}
-                            ); 
+
+                        User.findOne({_id: friendId}).then(result =>{
+                            const {friends} = result;
+
+                            for(let i=0;i<friends.length;i++){
+                                if(friends[i] === uid){
+                                    friends.splice(i, 1);
+                                    break;
+                                }
+                            }
+
+                            User.updateOne({_id: friendId}, {friends}).then(()=>{});
                         });
                     }
-                });
-            }); 
+                }
+            });
         });
     });
 }

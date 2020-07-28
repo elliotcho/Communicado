@@ -12,7 +12,8 @@ class NotificationCard extends Component {
         this.state = {
             firstName: "",
             lastName: "",
-            imgURL: null
+            imgURL: null, 
+            status: ''
         }
         this.handleRequest = this.handleRequest.bind(this);
     }
@@ -20,6 +21,9 @@ class NotificationCard extends Component {
     componentDidMount(){
         // Get sender ID from notif to fetch their data and render
         const {senderId} = this.props.notif;
+
+        const {uid} = this.props;
+
         const config = {'Content-Type': 'application/json'};
         // Get fName and lName of user who sent notification 
         axios.post('http://localhost:5000/userinfo', {uid: senderId}, {headers: config}).then(response =>{
@@ -38,14 +42,22 @@ class NotificationCard extends Component {
             // Set state of imgURL to display senders IMG
             this.setState({imgURL: URL.createObjectURL(file)});
         });
+
+        axios.post('http://localhost:5000/friends/status', {receiverId: uid, senderId}, {headers: config}).then(response =>{
+            this.setState({status: response.data.status});
+        });
     }
     handleRequest(eventType){
         const {uid, deleteNotif} = this.props;
         const {_id, senderId} = this.props.notif;
+
+        const {status} = this.state;
+
         // Delete notification once clicked
         deleteNotif(_id);
-        // Send io event type to handle request of accept or decline
-        io.emit(eventType , {receiverId: uid, senderId});
+
+         // Send io event type to handle request of accept or decline
+        io.emit(eventType , {status, receiverId: uid, senderId});
     }
 
     render() {

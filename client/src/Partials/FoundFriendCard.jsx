@@ -1,21 +1,25 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import axios from 'axios';
 import './FoundFriendCard.css'
-import socket from 'socket.io-client';
 
 import {io} from '../App';
 
 class FoundFriendCard extends Component {
     constructor(props){
         super(props);
+
         this.state = {
-            imgURL: "//placehold.it/10"
+            imgURL: "//placehold.it/10",
+            status: 'Add Friend'
         }
+        
         this.handleClick = this.handleClick.bind(this);
     }
     // Once rendered, load img of user from DB
     componentDidMount(){
         const {_id} = this.props.user;
+        const {uid} = this.props;
 
         const data = {action: 'load', uid: _id};
         const config={'Content-Type': 'application/json'};
@@ -27,17 +31,53 @@ class FoundFriendCard extends Component {
             // Set state of imgURL to display
             this.setState({imgURL: URL.createObjectURL(file)});
         });
+
+        axios.post('http://localhost:5000/friends/status', {receiverId: _id, senderId: uid}, {headers: config}).then(response =>{
+            this.setState({status: response.data.status});
+        });
     }
+
     // Send friend request to client when user clicks btn to add friend
     handleClick(){
+        const {status} = this.state;
+
         const {uid} = this.props;
-        const {_id} = this.props.user;
-        io.emit("FRIEND_REQUEST", {uid, friendId: _id});
+
+        const {_id, firstName, lastName} = this.props.user;
+
+        if(status === 'Add Friend'){
+            io.emit("CHANGE_FRIEND_STATUS", {status, uid, friendId: _id});
+
+            this.setState({
+                status: 'Pending'
+            });
+        }
+
+        else if(status === 'Pending'){
+            io.emit("CHANGE_FRIEND_STATUS", {status, uid, friendId: _id});
+
+            this.setState({
+                status: 'Add Friend'
+            });
+        }
+
+        else{
+            if(!window.confirm(`Are you sure you want to unfriend ${firstName} ${lastName}?`)){
+                return;
+            }
+            
+            io.emit("CHANGE_FRIEND_STATUS", {status, uid, friendId: _id});
+
+            this.setState({
+                status: 'Add Friend'
+            });
+        }
     }
 
     render() {
         const {firstName, lastName} = this.props.user;
-        const {imgURL} = this.state;
+        
+        const {imgURL, status} = this.state;
 
         return (
             <div className="FoundFriendCard card col-lg-2 col-sm-4 col-6">
@@ -48,7 +88,10 @@ class FoundFriendCard extends Component {
                     </h5>
                 </div>
                 <div className="card-footer text-center" onClick = {this.handleClick}>
-                        <i className="fas fa-user-plus"></i>
+                        {status === 'Add Friend'? <i className="fas fa-user-plus"></i>:
+                        status === 'Pending'? <i className ='fas fa-user-clock'/> :
+                        <i className ='fa fa-check'/> 
+                        }      
                 </div>
             </div>
         )

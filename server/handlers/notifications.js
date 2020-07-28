@@ -1,5 +1,46 @@
 const {User} = require('../dbschema');
 
+const getFriendStatus = (req, res) => {
+    const {senderId, receiverId} = req.body;
+
+    User.findOne({_id: receiverId}).then(user =>{
+        const {notifs, friends} = user;
+
+        let found =false;
+
+        for(let i=0;i<friends.length;i++){
+            if(friends[i] === senderId){
+                found = true;
+                break;
+            }
+        } 
+
+        if(found){
+            res.json({status: 'Friends'});
+        }
+
+        else{
+            found =false;
+
+            for(let i=0;i<notifs.length;i++){
+                if(notifs[i].senderId === senderId && notifs[i].friendRequest){
+                    found = true;
+                    break;
+                }
+            }
+
+            if(found){
+                res.json({status: 'Pending'});
+            }
+
+            else{
+                res.json({status: 'Add Friend'});
+            }
+        }
+    
+    });
+}
+
 const loadNotifs = (req, res) =>{
     const {uid} = req.params;
     // Find User by ID
@@ -28,5 +69,6 @@ const checkUnreadNotifs = (req, res) =>{
 
 module.exports= {
     loadNotifs, 
-    checkUnreadNotifs
+    checkUnreadNotifs,
+    getFriendStatus
 }
