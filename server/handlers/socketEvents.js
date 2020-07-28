@@ -35,50 +35,40 @@ module.exports = (io) => {
             const {status, receiverId, senderId} = data;
 
             axios.post('http://localhost:5000/friends/status', {receiverId, senderId}).then(response =>{
-                if(status === response.data.staus){
+                if(status === response.data.status){
                     if(status === 'Pending'){
                         User.findOne({_id: receiverId}).then(receiver =>{
-                            if(receiver.friends.includes(senderId)){
-                                io.sockets.to(active[senderId]).emit(
-                                    'ACCEPT_REQUEST', 
-                                    {msg: "You're already friends"}
-                                ); 
-                            }
+                            const {firstName, lastName, friends, notifs} = receiver;
 
-                            else{
-                                const {firstName, lastName, friends, notifs} = receiver;
-
-                                for(let i =0;i<notifs.length;i++){
-                                    if(notifs[i].senderId === senderId && notifs[i].friendRequest){
-                                        notifs.splice(i, 1);
-                                        break;
-                                    }
+                            for(let i =0;i<notifs.length;i++){
+                                if(notifs[i].senderId === senderId && notifs[i].friendRequest){
+                                    notifs.splice(i, 1);
+                                    break; 
                                 }
-
-                                friends.push(senderId);
-                
-                                //construct message for the sender
-                                const msg = `${firstName} ${lastName} accepted your friend request`;
-                
-                                //update receiver's friends
-                                User.updateOne({_id: receiverId}, {friends, notifs}).then(() =>{
-                
-                                    //find sender and add receiver onto their friend's list
-                                    User.findOne({_id: senderId}).then(sender =>{
-                                        const senderFriends = sender.friends;
-                
-                                        senderFriends.push(receiverId);
-                
-                                        //update sender's friends and send them a notification
-                                        User.updateOne({_id: senderId}, {friends: senderFriends}).then(() =>{
-                                            io.sockets.to(active[senderId]).emit(
-                                                'ACCEPT_REQUEST', 
-                                                {msg}
-                                            ); 
-                                        });
-                                    });
-                                });
                             }
+
+                            friends.push(senderId);
+                
+                            //construct message for the sender
+                            const msg = `${firstName} ${lastName} accepted your friend request`;
+                
+                            //update receiver's friends
+                            User.updateOne({_id: receiverId}, {friends, notifs}).then(() =>{});
+                
+                            //find sender and add receiver onto their friend's list
+                            User.findOne({_id: senderId}).then(sender =>{
+                                const senderFriends = sender.friends;
+                
+                                senderFriends.push(receiverId);
+                
+                                //update sender's friends and send them a notification
+                                User.updateOne({_id: senderId}, {friends: senderFriends}).then(() =>{
+                                    io.sockets.to(active[senderId]).emit(
+                                        'ACCEPT_REQUEST', 
+                                        {msg}
+                                    ); 
+                                });
+                            });
                         });
                     }
                 }
@@ -135,17 +125,17 @@ module.exports = (io) => {
                     }
 
                     else if(status === 'Pending'){
-                        User.findOne({_id: receiverId}).then(result =>{
+                        User.findOne({_id: friendId}).then(result =>{
                             const {notifs} = result;
 
                             for(let i=0;i<notifs.length;i++){
-                                if(notifs[i].senderId === senderId && notifs.friendRequest){
+                                if(notifs[i].senderId === uid && notifs.friendRequest){
                                     notifs.splice(i, 1);
                                     break;
                                 }
                             }
 
-                            User.updateOne({_id: receiverId}, {notifs}).then(()=>{});
+                            User.updateOne({_id: friendId}, {notifs}).then(()=>{});
                         });
                     }
 

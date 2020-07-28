@@ -13,7 +13,7 @@ const getFriendStatus = (req, res) => {
                 found = true;
                 break;
             }
-        }
+        } 
 
         if(found){
             res.json({status: 'Friends'});
@@ -37,6 +37,7 @@ const getFriendStatus = (req, res) => {
                 res.json({status: 'Add Friend'});
             }
         }
+    
     });
 }
 

@@ -20,7 +20,10 @@ class NotificationCard extends Component {
     }
     // Mount component with usersID 
     componentDidMount(){
-        const {receiverId, senderId} = this.props.notif;
+        const {senderId} = this.props.notif;
+
+        const {uid} = this.props;
+
         const config = {'Content-Type': 'application/json'};
         // Get fName and lName of user who sent notification 
         axios.post('http://localhost:5000/userinfo', {uid: senderId}, {headers: config}).then(response =>{
@@ -40,7 +43,7 @@ class NotificationCard extends Component {
             this.setState({imgURL: URL.createObjectURL(file)});
         });
 
-        axios.post('http://localhost:5000/friends/status', {receiverId, senderId}, {headers: config}).then(response =>{
+        axios.post('http://localhost:5000/friends/status', {receiverId: uid, senderId}, {headers: config}).then(response =>{
             this.setState({status: response.data.status});
         });
     }
