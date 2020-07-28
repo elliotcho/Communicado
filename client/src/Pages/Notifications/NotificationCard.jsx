@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import loading from './loading.jpg';
 import axios from 'axios';
 import moment from 'moment';
@@ -70,16 +70,19 @@ class NotificationCard extends Component {
                         </h2>
                         <h5 className="text-muted">Sent {moment(date).calendar()}</h5>
                     </div>
-                    {/* If friend request, show buttons */}
-                    <div className="offset-2 col-1 accept">
-                        {/* Accept friend request */}
-                        <i className="fas fa-check-square" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
-                    </div>
-                    <div className="col-1 reject">
-                        {/* Reject friend Request */}
-                        <i className="fas fa-times-circle" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
-                    </div>
-                    <div className="col-1" />
+                    <Fragment>
+                        <div className="btns">
+                            <div className="offset-2 col-1 accept">
+                                {/* Accept friend request */}
+                                <i className="fas fa-check-square" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
+                            </div>
+                            <div className="col-1 reject">
+                                {/* Reject friend Request */}
+                                <i className="fas fa-times-circle" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
+                            </div>
+                            <div className="col-1" />
+                        </div>
+                    </Fragment>
                 </div>
             </div>
         )
