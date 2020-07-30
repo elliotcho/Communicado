@@ -5,15 +5,18 @@ const axios = require('axios');
 const active = {};
 
 module.exports = (io) => {
-    io.on('connection', socket =>{
+    io.on('connection', socket => {
+
         // JOIN SERVER --- store socket id
         socket.on('JOIN_SERVER', data =>{
             active[data.uid] = socket.id;
         });
+
         // DISCONNECT FROM SERVER --- delete socket id
         socket.on("DISCONNECT", data =>{
             delete active[data.uid];
         });
+        
         // DECLINE REQUEST --- Remove notification from user
         socket.on("DECLINE_REQUEST", data =>{
             const {receiverId, senderId} = data;
