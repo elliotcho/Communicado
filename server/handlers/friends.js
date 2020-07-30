@@ -43,10 +43,11 @@ const acceptReq = async (data) => {
             friends.push(senderId);
 
             // construct message for the sender
-            const msg = `${firstName} ${lastName} accepted your friend request`;
+            const msg = `accepted your friend request`;
             // Create new notif to send acceptance
             const newNotif = new Notification({
                 friendRequest: false,
+                acceptFriendRequest: true,
                 read: false,
                 content: msg,
                 // Sender of acceptance is receiver who accepted it
@@ -73,12 +74,8 @@ const acceptReq = async (data) => {
                 }
             }
             await User.updateOne({_id: senderId}, {friends: senderFriends, notifs: senderNotifs});
-            // Emit new notification to socket and add 
-            io.sockets.to(active[senderId]).emit(
-                'ACCEPT_REQUEST', {
-                    msg
-                }
-            );
+            
+            return `${firstName} ${lastName} ${msg}`;
         }
     }
 }
@@ -99,6 +96,7 @@ const changeFriendStatus = async (data) => {
             const {notifs} = user;
             const newNotification = new Notification({
                 friendRequest: true,
+                acceptFriendRequest: false,
                 read: false,
                 content: msg,
                 senderId: uid,
@@ -110,55 +108,72 @@ const changeFriendStatus = async (data) => {
             // Update friends notifs
             await User.updateOne({_id: friendId}, {notifs});
             
-            io.sockets.to(active[friendId]).emit(
-                'FRIEND_REQUEST', 
-                {msg: `${firstName} ${lastName} ${msg}`}
-            );
-        }
-    } else if (status === "Pending") {
-        const result = await User.findOne({_id: friendId})
-        const {notifs} = result;
 
-        // If already pending, cancel request and remove notif
-        for(let i=0;i<notifs.length;i++){
-            if(notifs[i].senderId === uid && notifs[i].friendRequest){
-                notifs.splice(i, 1);
-                break;
+            return `${firstName} ${lastName} ${msg}`;
+        }
+
+        //cancel pending friend request
+        else if (status === "Pending") {
+            const result = await User.findOne({_id: friendId})
+            const {notifs} = result;
+
+            // If already pending, cancel request and remove notif
+            for(let i=0;i<notifs.length;i++){
+                if(notifs[i].senderId === uid && notifs[i].friendRequest){
+                    notifs.splice(i, 1);
+                    break;
+                }
             }
+            // Update users notification list
+            await User.updateOne({_id: friendId}, {notifs});
         }
-        // Update users notification list
-        await User.updateOne({_id: friendId}, {notifs});
 
+        else {
+            const result = await User.findOne({_id: uid});
+            let {friends, notifs} = result;
 
-
-    } else {
-        const result = await User.findOne({_id: uid});
-        const {friends} = result;
-
-        // Remove friend from friends list
-        for(let i=0;i<friends.length;i++){
-            if(friends[i] === friendId){
-                friends.splice(i, 1);
-                break;
+            // Remove friend from friends list
+            for(let i=0;i<friends.length;i++){
+                if(friends[i] === friendId){
+                    friends.splice(i, 1);
+                    break;
+                }
             }
-        }
 
-        // Update friends list of user
-        await User.updateOne({_id: uid}, {friends});
-
-        // Remove current user from friends' list of friends
-        const friend = await User.findOne({_id: friendId})
-        const {friends} = friend;
-
-        // Remove friend from friends list
-        for(let i=0;i<friends.length;i++){
-            if(friends[i] === friendId){
-                friends.splice(i, 1);
-                break;
+            for(let i=0;i<notifs.length;i++){
+                if(notifs[i].senderId ===friendId && notifs[i].acceptFriendRequest){
+                    notifs.splice(i, 1);
+                    break;
+                }
             }
+
+            // Update friends list of user
+            await User.updateOne({_id: uid}, {friends, notifs});
+
+            // Remove current user from friends' list of friends
+            const friend = await User.findOne({_id: friendId})
+            
+            let oldFriends = friend.friends;
+            let oldNotifs = friend.notifs;
+
+            // Remove friend from friends list
+            for(let i=0;i<oldFriends.length;i++){
+                if(oldFriends[i] === uid){
+                    oldFriends.splice(i, 1);
+                    break;
+                }
+            }
+
+            for(let i=0;i<oldNotifs.length;i++){
+                if(oldNotifs[i].senderId ===uid && oldNotifs[i].acceptFriendRequest){
+                    oldNotifs.splice(i, 1);
+                    break;
+                }
+            }
+
+            // Update friends list of user who is removed
+            await User.updateOne({_id: friendId}, {friends: oldFriends, notifs:oldNotifs});
         }
-        // Update friends list of user who is removed
-        await User.updateOne({_id: friendId}, {friends})
     }
 }
 

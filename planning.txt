@@ -45,3 +45,4 @@ message:{
 redesign friend request frontend
 incorporate toasts
 refactor
+x-button in friend card not fully functional
