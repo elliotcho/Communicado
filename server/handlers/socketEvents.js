@@ -28,6 +28,8 @@ module.exports = (io) => {
                         break;
                     }
                 }
+
+                User.updateOne({_id: receiverId}, {notifs}).then(()=>{});
             }); 
         });
         // ACCEPT FRIEND REQUEST --- Store sender and recipient data from request
@@ -48,6 +50,10 @@ module.exports = (io) => {
                             }
 
                             friends.push(senderId);
+
+                            
+                            //construct message for the sender
+                            const msg = `${firstName} ${lastName} accepted your friend request`;   
                           
                             const newNotif = new Notification({
                                 friendRequest: false,
@@ -57,10 +63,7 @@ module.exports = (io) => {
                                 senderId: receiverId,
                                 date: new Date()
                             });
-                
-                            //construct message for the sender
-                            const msg = `${firstName} ${lastName} accepted your friend request`;   
-                
+        
                             // Update receiver's friends and notifs
                             User.updateOne({_id: receiverId}, {friends, notifs}).then(() => {});
                             //find sender and add receiver onto their friend's list
@@ -71,6 +74,13 @@ module.exports = (io) => {
                                 // also add new notification to sender of acceptance
                                 const senderNotifs = sender.notifs;
                                 senderNotifs.push(newNotif);
+
+                                for(let i =0;i<senderNotifs.length;i++){
+                                    if(senderNotifs[i].senderId === receiverId && senderNotifs[i].friendRequest){
+                                        senderNotifs.splice(i, 1);
+                                        break; 
+                                    }
+                                }
 
                                 //update sender's friends and notifs with acceptance results
                                 User.updateOne({_id: senderId}, {friends: senderFriends, notifs: senderNotifs}).then(() => { 
@@ -100,38 +110,23 @@ module.exports = (io) => {
             
                             User.findOne({_id: friendId}).then(user =>{
                                 const {notifs} = user;
-            
-                                let prevRequest = false;
-            
-                                for(let i =0;i<notifs.length;i++){
-                                    if(notifs[i].senderId === uid && notifs[i].friendRequest){
-                                        prevRequest = true;
-                                        break;
-                                    }
-                                }                    
-                    
-                                if(prevRequest){
-                                    io.emit('FRIEND_REQUEST', {msg: "Request already has been sent."});
-                                }
-            
-                                else{
-                                    const newNotification = new Notification({
-                                        friendRequest: true,
-                                        read: false,
-                                        content: msg,
-                                        senderId: uid,
-                                        date: new Date()
-                                    });
+                        
+                                const newNotification = new Notification({
+                                    friendRequest: true,
+                                    read: false,
+                                    content: msg,
+                                    senderId: uid,
+                                    date: new Date()
+                                });
                 
-                                    notifs.push(newNotification);
+                                notifs.push(newNotification);
                 
-                                    User.updateOne({_id: friendId}, {notifs}).then(() =>{
-                                            io.sockets.to(active[friendId]).emit(
-                                                'FRIEND_REQUEST', 
-                                                {msg: `${firstName} ${lastName} ${msg}`}
-                                            ); 
-                                    });
-                                }
+                                User.updateOne({_id: friendId}, {notifs}).then(() =>{
+                                    io.sockets.to(active[friendId]).emit(
+                                        'FRIEND_REQUEST', 
+                                        {msg: `${firstName} ${lastName} ${msg}`}
+                                    ); 
+                                });
                             });
                         }); 
                     }
@@ -141,7 +136,7 @@ module.exports = (io) => {
                             const {notifs} = result;
 
                             for(let i=0;i<notifs.length;i++){
-                                if(notifs[i].senderId === uid && notifs.friendRequest){
+                                if(notifs[i].senderId === uid && notifs[i].friendRequest){
                                     notifs.splice(i, 1);
                                     break;
                                 }
@@ -149,7 +144,6 @@ module.exports = (io) => {
 
                             User.updateOne({_id: friendId}, {notifs}).then(()=>{});
                         });
-                      
                     }
                     // If no previous request, continue creating notification
                     else{
