@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {io} from '../App';
 import './FriendCard.css'
 
 class FriendCard extends Component {
@@ -8,6 +9,8 @@ class FriendCard extends Component {
         this.state = {
             imgURL: null
         }
+
+        this.deleteFriend = this.deleteFriend.bind(this);
     }
 
     componentDidMount(){
@@ -26,6 +29,18 @@ class FriendCard extends Component {
         });
     }
 
+    deleteFriend(){
+        const {_id, firstName, lastName} = this.props.user;
+
+        if(!window.confirm(`Are you sure you want to unfriend ${firstName} ${lastName}?`));
+
+        const {uid, friends, removeFriend} = this.props;
+
+        removeFriend(_id, friends);
+
+        io.emit("CHANGE_FRIEND_STATUS", {status: "Friends", uid, friendId: _id});
+    }
+
     render() {
         const {imgURL} = this.state;
 
@@ -41,7 +56,7 @@ class FriendCard extends Component {
                         <div className="col-7">
                             <h3 className="card-title">{firstName} {lastName}</h3>
                         </div>
-                        <div className="col-1 delete">
+                        <div className="col-1 delete" onClick={this.deleteFriend}>
                             <i className="fas fa-times"></i>
                         </div>
                         <div className="col-1 msg">

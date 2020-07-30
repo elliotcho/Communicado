@@ -57,6 +57,7 @@ module.exports = (io) => {
                           
                             const newNotif = new Notification({
                                 friendRequest: false,
+                                acceptFriendRequest: true,
                                 read: false,
                                 content: msg,
                                 // Sender of acceptance is receiver who accepted it
@@ -113,6 +114,7 @@ module.exports = (io) => {
                         
                                 const newNotification = new Notification({
                                     friendRequest: true,
+                                    acceptFriendRequest: false,
                                     read: false,
                                     content: msg,
                                     senderId: uid,
@@ -148,7 +150,7 @@ module.exports = (io) => {
                     // If no previous request, continue creating notification
                     else{
                         User.findOne({_id: uid}).then(result =>{
-                            const {friends} = result;
+                            const {friends, notifs} = result;
 
                             for(let i=0;i<friends.length;i++){
                                 if(friends[i] === friendId){
@@ -157,11 +159,18 @@ module.exports = (io) => {
                                 }
                             }
 
-                            User.updateOne({_id: uid}, {friends}).then(()=>{});
+                            for(let i=0;i<notifs.length;i++){
+                                if(notifs[i].senderId === friendId && notifs[i].acceptFriendRequest){
+                                    notifs.splice(i, 1);
+                                    break;
+                                }
+                            }
+
+                            User.updateOne({_id: uid}, {friends, notifs}).then(()=>{});
                         });
 
                         User.findOne({_id: friendId}).then(result =>{
-                            const {friends} = result;
+                            const {notifs, friends} = result;
 
                             for(let i=0;i<friends.length;i++){
                                 if(friends[i] === uid){
@@ -170,7 +179,14 @@ module.exports = (io) => {
                                 }
                             }
 
-                            User.updateOne({_id: friendId}, {friends}).then(()=>{});
+                            for(let i=0;i<notifs.length;i++){
+                                if(notifs[i].senderId === uid && notifs[i].acceptFriendRequest){
+                                    notifs.splice(i, 1);
+                                    break;
+                                }
+                            }
+
+                            User.updateOne({_id: friendId}, {friends, notifs}).then(()=>{});
                         });
                     }
                 }

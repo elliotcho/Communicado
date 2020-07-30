@@ -20,3 +20,15 @@ export const loadFriends = (uid) =>{
     }
 }
 
+export const removeFriend = (friendId, friends) =>{
+    return (dispatch) => {
+        for(let i=0;i<friends.length;i++){
+            if(friends[i]._id === friendId){
+                friends.splice(i, 1);
+                break;
+            }
+        }
+
+        dispatch({type: 'REMOVE_FRIEND', friends});
+    }
+}

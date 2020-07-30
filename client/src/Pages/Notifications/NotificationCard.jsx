@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component} from 'react'
 import loading from './loading.jpg';
 import axios from 'axios';
 import moment from 'moment';
@@ -63,12 +63,10 @@ class NotificationCard extends Component {
     render() {
         // Destructure state and props
         const {imgURL, firstName, lastName} = this.state;
-        const {content, date, friendRequest, read} = this.props.notif;
-        // Render diff bg colour if read or not
-        const bg = (read)? {background: 'white'}: {background: 'lightgray'} ;
-
+        const {content, date, friendRequest} = this.props.notif;
+     
         return (
-            <div className="NotificationCard card" style={bg}>
+            <div className="NotificationCard card">
                 <div className="row d-flex justify-content-center text-left align-items-center">
                     <div className="col-2 text-center">
                         {/* While loading for img, display placeholer */}
@@ -82,19 +80,20 @@ class NotificationCard extends Component {
                         </h2>
                         <h5 className="text-muted">Sent {moment(date).calendar()}</h5>
                     </div>
-                    <Fragment>
-                        <div className="btns">
-                            <div className="offset-2 col-1 accept">
+                   
+                    {
+                        friendRequest?
+                        (<div className ='col-2'>
+                            <div className = "accept">
                                 {/* Accept friend request */}
-                                <i className="fas fa-check-square" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
-                            </div>
-                            <div className="col-1 reject">
+                                <i className="fas fa-check-square accept" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
+                           
                                 {/* Reject friend Request */}
-                                <i className="fas fa-times-circle" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
+                                <i className="fas fa-times-circle reject" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
                             </div>
-                            <div className="col-1" />
-                        </div>
-                    </Fragment>
+                        </div>)
+                        :null
+                    }
                 </div>
             </div>
         )

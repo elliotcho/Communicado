@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {loadFriends} from '../../store/actions/friendsActions';
+import {loadFriends, removeFriend} from '../../store/actions/friendsActions';
 import FriendCard from '../../Partials/FriendCard';
 
 class FriendGrid extends Component {
@@ -9,8 +9,15 @@ class FriendGrid extends Component {
     }
 
     render() {
+        const {uid, removeFriend} = this.props;
+
         const friends = this.props.friends.map(friend =>
-            <FriendCard user = {friend}/>
+            <FriendCard 
+                user = {friend} 
+                uid = {uid}
+                friends = {this.props.friends}
+                removeFriend = {removeFriend}
+            />
         );
 
         return (
@@ -33,7 +40,8 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) =>{
     return {
-        loadFriends: (uid) => {dispatch(loadFriends(uid));}
+        loadFriends: (uid) => {dispatch(loadFriends(uid));},
+        removeFriend: (friendId, friends) => {dispatch(removeFriend(friendId, friends));}
     }
 }
 

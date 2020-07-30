@@ -11,11 +11,11 @@ const notificationsReducer = (state = initState, action) =>{
                 notifs: [...state.notifs],
                 newNotif: action.newNotif
             }
-        case('READ_NOTIF'):
+        case('READ_NOTIFS'):
             return{
                 ...state,
-                notifs: [],
-                newNotif: action.newNotif
+                notifs: [...action.notifs],
+                newNotif: false
             }
         case('LOAD_NOTIFS'):
             return{

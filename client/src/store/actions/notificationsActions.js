@@ -7,16 +7,10 @@ export const colorNavbar = () =>{
     }   
 }
 // Uncolor navbar if read notification 
-export const uncolorNavbar = () =>{
+export const uncolorNavbar = (uid) =>{
     return (dispatch) =>{
-        dispatch({type: 'READ_NOTIF', newNotif: false});
-    }
-}
-
-export const getNotifications = (uid) =>{ 
-    return (dispatch) =>{
-        axios.get(`http://localhost:5000/notifs/${uid}`).then(response=>{
-            dispatch({type: 'LOAD_NOTIFS', notifs: response.data});
+        axios.put(`http://localhost:5000/notifs/${uid}`).then(response =>{
+            dispatch({type: 'READ_NOTIFS', notifs: response.data});
         });
     }
 }

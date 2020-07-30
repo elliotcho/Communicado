@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {uncolorNavbar, getNotifications, removeNotification} from '../../store/actions/notificationsActions';
+import {uncolorNavbar, removeNotification} from '../../store/actions/notificationsActions';
 import './Notifications.css'
 import NotificationCard from './NotificationCard';
 
@@ -12,9 +12,9 @@ class Notifications extends Component{
 
     // After first render, remove highlighted icon and destructure props
     componentDidMount(){
-        const {uid, uncolorNavbar, getNotifications} = this.props;
-        uncolorNavbar();
-        getNotifications(uid);  // Get notifications for specific user
+        const {uid, uncolorNavbar} = this.props;
+        
+        uncolorNavbar(uid);
     }
 
     deleteNotif(id){
@@ -59,8 +59,7 @@ const mapStateToProps = (state) =>{
 // Methods for notifications to use after mounting
 const mapDispatchToProps = (dispatch) =>{
     return{
-        uncolorNavbar: () => {dispatch(uncolorNavbar());},
-        getNotifications: (uid) => {dispatch(getNotifications(uid));},
+        uncolorNavbar: (uid) => {dispatch(uncolorNavbar(uid));},
         removeNotification: (notifId, notifs) => {dispatch(removeNotification(notifId, notifs));}
     }
 }

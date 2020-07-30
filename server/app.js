@@ -51,7 +51,7 @@ const {
 } = require('./handlers/users');
 
 const {
-    loadNotifs,
+    readNotifs,
     checkUnreadNotifs,
     getFriendStatus
 } = require('./handlers/notifications');
@@ -69,7 +69,7 @@ app.post('/deleteUser', deleteUser);
 app.get('/friends/:uid', getFriends);
 app.post('/friends/status', getFriendStatus);
 
-app.get('/notifs/:uid', loadNotifs);
+app.put('/notifs/:uid', readNotifs);
 app.get('/unreadnotifs/:uid', checkUnreadNotifs);
 
 //Specify localhost port number

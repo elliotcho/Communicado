@@ -41,16 +41,24 @@ const getFriendStatus = (req, res) => {
     });
 }
 
-const loadNotifs = (req, res) =>{
+const readNotifs = (req, res) =>{
     const {uid} = req.params;
     // Find User by ID
     User.findOne({_id: uid}).then(result =>{
         // Store notifs attached from result 
         const {notifs} = result;
+
+        for(let i=0;i<notifs.length;i++){
+            notifs[i].read = true;
+        }
+
         // Sort notifs by current date and send back as json
         notifs.sort((a, b) => b.date - a.date);
-        res.json(notifs);
-    });
+ 
+        User.updateOne({_id: uid}, {notifs}).then(() =>{
+            res.json(notifs);
+        });
+    }); 
 }
 // Check if unread notifs when loaded and colour navbar if new notif
 const checkUnreadNotifs = (req, res) =>{
@@ -68,7 +76,7 @@ const checkUnreadNotifs = (req, res) =>{
 }
 
 module.exports= {
-    loadNotifs, 
+    readNotifs, 
     checkUnreadNotifs,
     getFriendStatus
 }

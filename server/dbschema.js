@@ -14,6 +14,7 @@ const MessageSchema = new schema({
 // Notification Schema
 const NotifSchema = new schema({
     friendRequest: Boolean,
+    acceptFriendRequest: Boolean,
     content: String,
     read: Boolean,
     senderId: String,
