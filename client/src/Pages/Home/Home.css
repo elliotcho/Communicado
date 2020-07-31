@@ -79,3 +79,85 @@
 .home footer{
     margin-top: 50px;
 }
+
+.home .panel-heading {
+    color: #fff !important;
+    background-color: royalblue !important;
+    padding: 25px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  .home .panel {
+    border: 1px solid royalblue; 
+    border-radius:0 !important;
+    transition: box-shadow 0.5s;
+  }
+  .home .panel:hover {
+    box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+  }
+
+  .home .container{
+    padding: 60px 
+  }
+  
+
+  .home .panel-footer {
+    background-color: white !important;
+  }
+  .home .panel-footer h3 {
+    font-size: 32px;
+  }
+  .home .panel-footer h4 {
+    color: #aaa;
+    font-size: 14px;
+  }
+  .home .panel-footer .btn {
+    margin: 15px 4px;
+  }
+  
+  .blueButton {
+    background-color: royalblue;
+    color: #fff;
+  }
+  .whiteButton {
+    background-color: #fff;
+    color: royalblue;
+    border: 1px solid royalblue;
+  }
+
+  .home .panel-footer .btn .blueButton:hover {
+    border: 1px solid royalblue;
+    background-color: #fff !important;
+    color: royalblue;
+  }
+
+ .whiteButton:hover {
+    
+    background-color: royalblue !important;
+    color: white;
+  }
+
+
+
+  .slideanim {visibility:hidden;}
+  .slide {
+    animation-name: slide;
+    -webkit-animation-name: slide;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    visibility: visible;
+  }
+
+  @media screen and (max-width: 768px) {
+    .col-lg-4 {
+      text-align: center;
+      margin: 25px 0;
+    }
+ }
+
+
+
