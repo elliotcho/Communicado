@@ -9,6 +9,7 @@
 }
 
 .FoundFriendCard .card-footer {
+    background: lightgray;
     cursor: pointer;
     color: gray;
 }
