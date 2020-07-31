@@ -1,4 +1,4 @@
-const {User} = require('../dbschema');
+const {User, Notification} = require('../dbschema');
 
 // Login function for user based on credentials
 // result is result of query, query is example User.findOne({})
@@ -153,13 +153,35 @@ const changePwd = (req, res) =>{
 
 
 //delete
-const deleteUser = (req,res) =>{
+const deleteUser = async  (req,res) =>{
     const {uid} = req.body
-    console.log(uid)
-    User.deleteOne({_id: uid}).then(()=>{
-        res.json({msg: 'Account is being deleted, press ok to continue.'});
 
-    })
+    const user = await User.findOne({_id: uid});
+
+    const userFriends = await User.find({_id: {$in: user.friends}});
+
+    for(let i=0;i<userFriends.length;i++){
+        for(let j=0;j<userFriends[i].friends.length;j++){
+            let found =  false;
+
+            if(userFriends[i].friends[j] === uid){
+                userFriends[i].friends.splice(j, 1);
+                
+                found = true;
+                
+                await User.updateOne({_id: userFriends[i]._id}, {friends: userFriends[i].friends});
+                
+                break;
+            }
+
+            if(found){break;}
+        }
+    }
+    
+    await User.deleteOne({_id: uid});
+
+    res.json({msg: 'Account is being deleted, press ok to continue.'});
+
 }
 
 // Find all users based on a given name
