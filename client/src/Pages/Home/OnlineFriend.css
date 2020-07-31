@@ -1,5 +1,3 @@
-
-
  .searchBox-inner input:focus {
     outline: none;
     border: none;
@@ -78,3 +76,24 @@
     vertical-align: baseline;
   }
   
+  .activeIconOn {
+    position: absolute;
+    bottom: 0px;
+    margin: 0px -10px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background-color: #2bcd72;
+  }
+
+  .activeIconOff {
+    position: absolute;
+    bottom: 0px;
+    margin: 0px -10px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background-color: #7a9787;
+  }

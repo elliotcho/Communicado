@@ -5,6 +5,7 @@ import {getUserInfo, loadProfilePic, changeProfilePic} from '../../store/actions
 import './Home.css';
 import OnlineFriend from './OnlineFriend'
 import ProfileCard from './ProfileCard'
+import SearchProfileCard from './SearchProfileCard'
 import loading from './loading.jpg';
 
 class Home extends Component{
@@ -36,65 +37,70 @@ class Home extends Component{
         return(
             <div className='home'>
                 <div className="container-fluid">
-                    <div className="row">
-                    <div class="col"></div>
-                    <div class="col-lg-3">
-                        <div class="panel panel-default text-center">
-                            <div class="panel-heading">
-                            <h1>Search For Friends</h1>
-                            </div>
-                            <div class="panel-body">
-
-
-
-                        
-
-
-          
-                            
-                            </div>
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-lg-3">
+                            <div class="panel panel-default text-center">
+                                <div class="panel-heading">
+                                <h1 >Search For Friends</h1>
+                                </div>
+                                <div class="panel-body">
+                                    <input id="searchResult" type="text" class="form-control" placeholder="Search Names"></input>
+                                
+                                    
+                                
+                                </div>
                                 <div class="panel-footer">
-                                    <h3>temp</h3>
-                                    <h4>temp</h4>
+                                    <SearchProfileCard />
+                                    <SearchProfileCard />
                     
-                            </div>
-                        </div>      
-                    </div>     
-                    <div class="col-lg-4">
-                        <div class="panel panel-default text-center">
-                            <div class="panel-heading">
-                                <h1>My Profile</h1>
-                            </div>
-                            <div class="panel-body">
+                                </div>
+                            </div>      
+                        </div>     
+                        <div class="col-lg-4">
+                            <div class="panel panel-default text-center">
+                                <div class="panel-heading">
+                                    <h1>My Profile</h1>
+                                </div>
+                                <div class="panel-body">
 
-                                <ProfileCard />
+                                    <ProfileCard />
                                 
 
-                            </div>
-                            <div class="panel-footer">
+                                </div>
+                                <div class="panel-footer">
                                 
-                                <button class="btn blueButton btn-lg">Account Settings</button>
-                                <button class="btn whiteButton btn-lg">Edit Biography</button>
-                            </div>
-                        </div>      
-                    </div>       
-                    <div class="col-lg-3">
-                        <div class="panel panel-default text-center">
-                            <div class="panel-heading">
-                                <h1>Active Friends</h1>
-                            </div>
-                            <div class="panel-body">
-                                <OnlineFriend />
-                                <OnlineFriend />
-                                <OnlineFriend />
+                                    <button class="btn blueButton btn-lg">Account Settings</button>
+                                    <button class="btn whiteButton btn-lg">Edit Profile</button>
+                                </div>
+                            </div>      
+                        </div>       
+                        <div class="col-lg-3">
+                            <div class="panel panel-default text-center">
+                                <div class="panel-heading">
+                                    <h1>Online Friends</h1>
+                                </div>
+                                    <div class="panel-body">
+                                        <OnlineFriend />
+                                        <OnlineFriend />
+                                        <OnlineFriend />
 
-                            </div>
-                            <div class="panel-footer">
-
-                            </div>
-                        </div>      
-                    </div> 
-                    <div class="col"></div>   
+                                </div>
+                                <div class="panel-heading">
+                                    <h1>Offline Friends</h1>
+                                </div>
+                                    <div class="panel-body">
+                                        <OnlineFriend />
+                                        <OnlineFriend />
+                                        <OnlineFriend />
+                                        <OnlineFriend />
+                                        <OnlineFriend />
+                                        
+                                    </div>
+                                </div>
+                                  
+                        </div> 
+                        <div class="col"></div>   
 
 
                         {/*
