@@ -75,7 +75,9 @@ class FoundFriendCard extends Component {
     }
 
     render() {
-        const {firstName, lastName} = this.props.user;
+        const {_id, firstName, lastName} = this.props.user;
+
+        const {uid} = this.props;
         
         const {imgURL, status} = this.state;
 
@@ -87,12 +89,16 @@ class FoundFriendCard extends Component {
                         {firstName} {lastName}
                     </h5>
                 </div>
-                <div className="card-footer text-center" onClick = {this.handleClick}>
+
+                {uid !== _id ?
+                (<div className="card-footer text-center" onClick = {this.handleClick}>
                         {status === 'Add Friend'? <i className="fas fa-user-plus"></i>:
                         status === 'Pending'? <i className ='fas fa-user-clock'/> :
                         <i className ='fa fa-check'/> 
                         }      
-                </div>
+                </div>)
+                :null 
+                }
             </div>
         )
     }

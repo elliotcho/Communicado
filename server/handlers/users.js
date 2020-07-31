@@ -216,6 +216,12 @@ const getFriends = (req, res) =>{
         const {friends} = result;
 
         User.find({_id: {$in: friends}}).then(users =>{
+            users.sort((a, b) => 
+                a.firstName === b.firstName?
+                a.lastName - b.lastName:
+                a.firstName - b.firstName
+            );
+
             res.json(users);
         });
     });
