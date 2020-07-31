@@ -188,9 +188,8 @@ const findUsers = async (req, res) =>{
     let result;
 
     if(findFriends){
-        let user = await User.find({_id: uid});
+        let user = await User.findOne({_id: uid});
         result = await User.find({_id: {$in: user.friends}});
-        console.log(result)
     }
 
     else{
