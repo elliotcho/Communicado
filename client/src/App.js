@@ -10,13 +10,10 @@ import Friends from './Pages/Friends/Friends.jsx';
 import Notifications from './Pages/Notifications/Notifications.jsx';
 import Navbar from './Partials/Navbar';
 import Messages from './Pages/Messages/Messages'
-import ToastMsg from './Partials/ToastMsg';
-
 import socket from 'socket.io-client';
 import axios from 'axios';
 import {handleSocketEvents} from './socket/socketEvents';
-import {ToastContainer, toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from 'react-toastify';
 
 let io;
 
@@ -62,11 +59,6 @@ class App extends Component{
       
       return(
          <div>
-            <button onClick = {() => toast.info(<ToastMsg/>, {
-               position: toast.POSITION_TOP_RIGHT,
-               draggable:false
-            })}>HELLO</button>
-
             { /*If ID required for route, show Navbar*/}
             <BrowserRouter>   
                {uid? <Navbar newNotif = {newNotif}/>: null}
@@ -79,10 +71,9 @@ class App extends Component{
                   <Route path='/friends' component = {Friends}/>
                   <Route path='/notifications' component={Notifications}/>
                </Switch>
+               
                <ToastContainer/>
             </BrowserRouter>
-
-            
          </div>
       )
    }

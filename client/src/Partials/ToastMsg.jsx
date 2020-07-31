@@ -1,36 +1,72 @@
 import React, {Component} from 'react';
 import './ToastMsg.css';
-import {Link, BrowserRouter} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
-import {connect} from 'react-redux';
+import loading from './loading.jpg';
+import axios from 'axios';
 
 class ToastMsg extends Component{
-
     constructor(){
         super();
+
+        this.state = {
+            firstName: 'Loading...',
+            lastName: 'User...', 
+            imgURL: null
+        }
+
         this.toNotifs = this.toNotifs.bind(this);
+    }
+
+    componentDidMount(){
+        const {toastId} = this.props;
+
+        const data = {action: 'load', uid: toastId};
+        const config={'Content-Type': 'application/json'};
+
+        axios.post('http://localhost:5000/userinfo', {uid: toastId}, {headers: config}).then(response =>{
+            this.setState({
+                firstName: response.data.firstName,
+                lastName: response.data.lastName
+            });
+        });
+        
+        // Fetch from server functional route using post with stringified data
+        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
+        .then(response =>response.blob())
+        .then(file =>{
+            // Set state of imgURL to display
+            this.setState({imgURL: URL.createObjectURL(file)});
+        });
     }
 
     toNotifs(e){
         e.preventDefault();
-        this.props.history.push('/notifications');
+        
+        const {pathname} = this.props.location;
+
+        if(pathname !== '/notifications'){
+            this.props.history.push('/notifications');
+        }
+
+        else{
+            window.location.reload();
+        }
     }
+
     render(){
+        const {msg} = this.props;
+        
+        const {firstName, lastName, imgURL} = this.state;
+
         //R: Make message card responsive, use real code and not dummy code
         return(
-            <div>
-                <div class="ToastMsg card flex-row flex-wrap" onClick={this.toNotifs}>
-                    <div class="card-header border-0" >
-                        <img src="//placehold.it/100" alt="" />
-                    </div>
-                    <div class="card-block px-2">
-                        <h4 class="card-title">Elliot Cho</h4>
-                        <br></br>
-                        <p class="card-text">sent you a friend request!</p>
-                    </div>
-                    
-                    
-                </div>  
+            <div onClick = {this.toNotifs} className ='toast-notif row'>
+                <img src = {imgURL? imgURL: loading} className ='col-5' alt ='profile pic'/>
+            
+                <div className ='col-7 mt-2'>
+                    <strong>{firstName} {lastName}</strong>
+                    <span> {msg}</span>
+                </div>
             </div>
         )
     }

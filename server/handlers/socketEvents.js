@@ -26,10 +26,11 @@ module.exports = (io) => {
         socket.on("ACCEPT_REQUEST", async data =>{
             const msg = await acceptReq(data);
 
+            const {receiverId} = data;
             
             io.sockets.to(active[data.senderId]).emit(
                 'ACCEPT_REQUEST', 
-                {msg}
+                {toastId: receiverId}
             ); 
         });
 
@@ -37,10 +38,12 @@ module.exports = (io) => {
         socket.on("CHANGE_FRIEND_STATUS", async data =>{
             const msg = await changeFriendStatus(data)
 
+            const {uid} = data;
+
             if(msg){
                 io.sockets.to(active[data.friendId]).emit(
                     'FRIEND_REQUEST', 
-                    {msg}
+                    {toastId: uid}
                 );
             }
         });
