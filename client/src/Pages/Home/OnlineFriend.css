@@ -1,12 +1,10 @@
-
-
- .searchBox-inner input:focus {
+ .online-friend .searchBox-inner input:focus {
     outline: none;
     border: none;
     box-shadow: none;
   }
   
-  .sideBar {
+  .online-friend .sideBar {
     padding: 0 !important;
     margin: 0 !important;
     background-color: #fff;
@@ -15,7 +13,7 @@
     height: calc(100% - 120px);
   }
   
-  .sideBar-body {
+  .online-friend .sideBar-body {
     position: relative;
     padding: 10px !important;
     border-bottom: 2px solid #f7f7f7;
@@ -25,39 +23,36 @@
     
   }
   
-  .sideBar-body:hover {
+  .online-friend .sideBar-body:hover {
     background-color: #f2f2f2;
   }
   
-  .sideBar-avatar {
+  .online-friend .sideBar-avatar {
     text-align: center;
     padding: 0 !important;
-    
-
   }
   
-  .avatar-icon img {
+  .online-friend .avatar-icon img {
     border-radius: 50%;
     height: 80px;
     width: 80px;
+    margin-left: 30px;
   }
   
-  .sideBar-main {
+  .online-friend .sideBar-main {
     padding: 0 !important;
-    
-
   }
   
-  .sideBar-main .row {
+  .online-friend .sideBar-main .row {
     padding: 0 !important;
     margin: 0 !important;
   }
   
-  .sideBar-name {
+  .online-friend .sideBar-name {
     padding: 10px !important;
   }
   
-  .name-meta {
+  .online-friend .name-meta {
     font-size: 100%;
     padding: 1% !important;
     text-align: left;
@@ -66,15 +61,14 @@
     color: #000;
   }
   
-  .sideBar-time {
+  .online-friend .sideBar-time {
     padding: 10px !important;
   }
   
-  .time-meta {
+  .online-friend .time-meta {
     text-align: right;
     font-size: 12px;
     padding: 1% !important;
     color: rgba(0, 0, 0, .4);
     vertical-align: baseline;
   }
-  

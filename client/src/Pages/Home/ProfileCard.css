@@ -1,7 +1,6 @@
-
-
-
-img {
+  .profile-card img {
+    position: relative;
+    right: 40px;
     max-width:300px;
     max-height:300px;
     width: 300px;
@@ -9,10 +8,10 @@ img {
     object-fit: cover;
   }
   
-  
-  .activeIcon {
+  .profile-card .activeIcon {
     position: absolute;
     bottom: 15px;
+    left: 80px;
     margin: 0px -20px;
     width: 20px;
     height: 20px;
@@ -21,37 +20,37 @@ img {
     background-color: #2bcd72;
   }
   
-  .text-black {
+  .profile-card .text-black {
       color: #555555 !important;
   }
-  .mb-1, .my-1 {
+  .profile-card .mb-1, .profile-card .my-1 {
       margin-bottom: .25rem!important;
   }
-  .mt-1, .my-1 {
+  .profile-card .mt-1, .profile-card .my-1 {
       margin-top: .25rem!important;
   }
-  .h5, h5 {
+  .profile-card .h5, .profile-card h5 {
       font-size: 4.25rem;
   }
 
-  .h3, h3 {
+  .profile-card .h3, .profile-card h3 {
     font-size: 3rem;
 }
   
-  .card-header:first-child {
+  .profile-card .card-header:first-child {
       border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
   }
-  .card-header {
+  .profile-card .card-header {
       border-bottom: 1px solid rgba(85, 85, 85, 0.05);
   }
-  .bg-white {
+  .profile-card .bg-white {
       background-color: limegreen !important;
   }
   
-  .card {
+  .profile-card .card {
       border: none;
       box-shadow: 0 0 30px 0 rgba(200, 200, 200, 0.2);
   }
-  .m-b-30 {
+  .profile-card .m-b-30 {
       margin-bottom: 1px;
   }

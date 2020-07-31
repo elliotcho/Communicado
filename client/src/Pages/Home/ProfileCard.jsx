@@ -5,7 +5,7 @@ import avatar from './obama.jpg';
 class ProfileCard extends Component {
     render() {
         return(
-            <div>
+            <div className ='profile-card'>
                 <div class="card m-b-30"></div>
                     {/*
                     <div class="card-header bg-white">
@@ -22,11 +22,8 @@ class ProfileCard extends Component {
                                     
                                 </div>
                                 <div class="col-6">
-                                    
-                                        <img src={avatar} alt="user-profile" class="rounded-circle img-fluid"></img>
-                                        <span class="activeIcon"></span>
-                                   
-                                    
+                                    <img src={avatar} alt="user-profile" className="rounded-circle"></img>
+                                    <span class="activeIcon"></span>
                                 </div>
                                 <div class="col-3">
                                     

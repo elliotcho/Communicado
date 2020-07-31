@@ -72,6 +72,7 @@ class NotificationCard extends Component {
                         {/* While loading for img, display placeholer */}
                         <img src={imgURL ? imgURL : loading} className="img-fluid avatar" alt="tester" />
                     </div>
+
                     {/* Notif body: name, content and date */}
                     <div className="col-5 NotificationCard-body">
                         <h2 className="NotificationCard-msg">
@@ -83,13 +84,14 @@ class NotificationCard extends Component {
                    
                     {
                         friendRequest?
-                        (<div className ='col-2'>
-                            <div className = "accept">
+                        (<div>
+                            <div className = "accept col-1 offset-2 d-inline-block">
                                 {/* Accept friend request */}
-                                <i className="fas fa-check-square accept" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
-                           
+                                <i className="fas fa-check-square" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
+                            </div>
+                            <div className ='reject col-1 d-inline-block'>
                                 {/* Reject friend Request */}
-                                <i className="fas fa-times-circle reject" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
+                                <i className="fas fa-times-circle" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
                             </div>
                         </div>)
                         :null

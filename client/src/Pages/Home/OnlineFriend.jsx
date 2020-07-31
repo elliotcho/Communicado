@@ -6,7 +6,7 @@ class OnlineFriend extends Component {
     render() {
         return (
 
-            <div class="row sideBar-body">
+            <div class="online-friend row sideBar-body">
                 
                 <div class="col-sm-3 sideBar-avatar">
                     <div class="avatar-icon">

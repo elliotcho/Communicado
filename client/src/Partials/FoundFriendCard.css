@@ -10,11 +10,13 @@
 
 .FoundFriendCard .card-footer {
     cursor: pointer;
-    color: darkgray;
+    color: gray;
 }
 
 .FoundFriendCard .card-footer:hover {
     color: black;
-    background-color: white;
 }
 
+.FoundFriendCard img{
+    max-height: 190px;
+}

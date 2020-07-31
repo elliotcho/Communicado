@@ -44,14 +44,7 @@ class Home extends Component{
                             <h1>Search For Friends</h1>
                             </div>
                             <div class="panel-body">
-
-
-
-                        
-
-
-          
-                            
+                                
                             </div>
                                 <div class="panel-footer">
                                     <h3>temp</h3>
@@ -105,7 +98,6 @@ class Home extends Component{
                                 <p className='content'>This guy is comedy!!!</p>
                             </section>
                         </div>
-
                         <div className="col-sm-12 col-md-5 col-xl-4">
                             <div className='profileCard'>
                                 <h2>{firstName} {lastName}</h2>
