@@ -60,7 +60,10 @@ class Navbar extends Component {
                                 </li>
                                 <li>
                                     <Link onClick= {this.toNotifs} to='/notifications' className={notifColor}>
-                                        <a href='/notifications' className="nav-link d-inline-block d-md-none">Notifications</a>
+                                        <a href='/notifications' className={`nav-link d-inline-block d-md-none ${notifColor}`}>
+                                            Notifications
+                                        </a>
+
                                         <i className ="fas fa-bell"></i>
                                     </Link>
                                 </li>

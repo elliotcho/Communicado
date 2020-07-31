@@ -94,7 +94,10 @@ class NotificationCard extends Component {
                                 <i className="fas fa-times-circle" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
                             </div>]
                         )
-                        :null
+                        :[
+                          <div className='col-1 d-inline-block' key='block1'/>
+                         ,<div className='col-1 d-inline-block' key='block2'/>
+                         ]
                     }
                 </div>
             </div>
