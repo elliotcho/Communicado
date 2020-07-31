@@ -26,7 +26,11 @@ class FindForm extends Component {
 
         if(this.state.nameQuery.trim() === "") { return; }
 
-        this.props.findUsers(this.state.nameQuery);
+        const {findUsers, uid} = this.props;
+
+        const {nameQuery} = this.state;
+
+        findUsers(nameQuery, uid);
     }
     // Function that shows the hidden row when form is submit
     showResults() {

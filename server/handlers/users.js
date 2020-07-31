@@ -164,8 +164,8 @@ const deleteUser = (req,res) =>{
 
 // Find all users based on a given name
 // Used to find new friends to add
-const findUsers = (req, res) =>{
-    let {name} = req.body;
+const findUsers = async (req, res) =>{
+    let {name, uid, findFriends} = req.body;
     // No users found
     if(name.length === 0){
         res.json({msg: "No users found"});
@@ -184,29 +184,40 @@ const findUsers = (req, res) =>{
     else{
         listOfNames.push(name.toLowerCase());
     }
-    // Find all users and filter name
-    User.find({}).then(result => {
-        const users = [];
-        for(let i=0;i<result.length;i++){
-            let userNames = `${result[i].firstName} ${result[i].lastName}`.split(" ");
-            
-            for(let j=0;j<userNames.length;j++){
-                let found = false;
-                // Convert names of all users to lowercase when comparing 
-                // If matching, add to array of found users
-                for(let k=0;k<listOfNames.length;k++){
-                    if(userNames[j].toLowerCase().startsWith(listOfNames[k])){
-                        users.push(result[i]);
-                        found = true;
-                        break;
-                    }
-                }
 
-                if(found){break;}
+    let result;
+
+    if(findFriends){
+        let user = await User.find({_id: uid});
+        result = await User.find({_id: {$in: user.friends}});
+        console.log(result)
+    }
+
+    else{
+        result = await User.find({});
+    }
+
+    // Find all users and filter name
+    const users = [];
+    for(let i=0;i<result.length;i++){
+        let userNames = `${result[i].firstName} ${result[i].lastName}`.split(" ");
+            
+        for(let j=0;j<userNames.length;j++){
+            let found = false;
+            // Convert names of all users to lowercase when comparing 
+            // If matching, add to array of found users
+            for(let k=0;k<listOfNames.length;k++){
+                if(userNames[j].toLowerCase().startsWith(listOfNames[k])){
+                    users.push(result[i]);
+                    found = true;
+                    break;
+                }
             }
+
+            if(found){break;}
         }
-        res.json({users, msg: "Success, here are your users"});
-    }).catch(e => console.log(e));
+    }
+    res.json({users, msg: "Success, here are your users"});
 }
 
 const getFriends = (req, res) =>{

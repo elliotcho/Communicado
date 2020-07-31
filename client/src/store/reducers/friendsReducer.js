@@ -10,6 +10,11 @@ const friendsReducer = (state=initState, action) =>{
                 // Update users for all found users
                 users: [...action.users]
             }
+        case "FRIENDS_FOUND":
+            return{
+                ...state,
+                friends: [...action.friends]
+            }
         case 'REMOVE_FRIEND':
             return{
                 ...state,

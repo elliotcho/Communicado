@@ -31,7 +31,7 @@ class Notifications extends Component{
         const {uid, notifs} = this.props;
         // Create list of notifications
         const list = notifs.map(notif =>
-            <NotificationCard notif = {notif} uid={uid} deleteNotif={this.deleteNotif}/>
+            <NotificationCard key={notif._id} notif = {notif} uid={uid} deleteNotif={this.deleteNotif}/>
         );
 
 
