@@ -84,16 +84,16 @@ class NotificationCard extends Component {
                    
                     {
                         friendRequest?
-                        (<div>
-                            <div className = "accept col-1 offset-2 d-inline-block">
+                        (
+                            [<div className = "accept col-1 d-inline-block" key ='check-button'>
                                 {/* Accept friend request */}
                                 <i className="fas fa-check-square" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
                             </div>
-                            <div className ='reject col-1 d-inline-block'>
+                            ,<div className ='reject col-1 d-inline-block' key='x-button'>
                                 {/* Reject friend Request */}
                                 <i className="fas fa-times-circle" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
-                            </div>
-                        </div>)
+                            </div>]
+                        )
                         :null
                     }
                 </div>
