@@ -1,6 +1,4 @@
-  .profile-card img {
-    position: relative;
-    right: 40px;
+.card-body img {
     max-width:300px;
     max-height:300px;
     width: 300px;
@@ -8,7 +6,7 @@
     object-fit: cover;
   }
   
-  .profile-card .activeIcon {
+  .card-body .activeIcon {
     position: absolute;
     bottom: 15px;
     left: 80px;
@@ -20,37 +18,41 @@
     background-color: #2bcd72;
   }
   
-  .profile-card .text-black {
+  .card-body .text-black {
       color: #555555 !important;
   }
-  .profile-card .mb-1, .profile-card .my-1 {
+  .card-body .mb-1, .my-1 {
       margin-bottom: .25rem!important;
   }
-  .profile-card .mt-1, .profile-card .my-1 {
+  .card-body .mt-1, .my-1 {
       margin-top: .25rem!important;
   }
-  .profile-card .h5, .profile-card h5 {
+  .card-body .h5, .card-body h5 {
       font-size: 4.25rem;
   }
+  .card-body .h4, .card-body h4 {
+    padding: 8px;
+  }
+  .card-body .h3, .card-body h3 {
 
-  .profile-card .h3, .profile-card h3 {
     font-size: 3rem;
-}
-  
-  .profile-card .card-header:first-child {
+    padding-top: 5px;
+  }
+
+  .card-body .card-header:first-child {
       border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
   }
-  .profile-card .card-header {
+  .card-body .card-header {
       border-bottom: 1px solid rgba(85, 85, 85, 0.05);
   }
-  .profile-card .bg-white {
+  .card-body .bg-white {
       background-color: limegreen !important;
   }
   
-  .profile-card .card {
+  .card-body .card {
       border: none;
       box-shadow: 0 0 30px 0 rgba(200, 200, 200, 0.2);
   }
-  .profile-card .m-b-30 {
+  .card-body .m-b-30 {
       margin-bottom: 1px;
   }

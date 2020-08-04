@@ -5,14 +5,14 @@ import avatar from './obama.jpg';
 class ProfileCard extends Component {
     render() {
         return(
-            <div className ='profile-card'>
+            <div>
                 <div class="card m-b-30"></div>
                     {/*
                     <div class="card-header bg-white">
                         <h5 class="card-title text-black mb-0">Social Profile</h5>
                     </div>
                     */}
-                    <div class="card-body">
+                    <div className="card-body">
                         
                             
                             <div class="row">

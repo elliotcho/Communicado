@@ -1,10 +1,12 @@
- .online-friend .searchBox-inner input:focus {
+
+ .onlineFriend .searchBox-inner input:focus {
     outline: none;
     border: none;
     box-shadow: none;
   }
   
-  .online-friend .sideBar {
+
+  .onlineFriend .sideBar {
     padding: 0 !important;
     margin: 0 !important;
     background-color: #fff;
@@ -13,7 +15,7 @@
     height: calc(100% - 120px);
   }
   
-  .online-friend .sideBar-body {
+  .onlineFriend .sideBar-body {
     position: relative;
     padding: 10px !important;
     border-bottom: 2px solid #f7f7f7;
@@ -22,37 +24,36 @@
     cursor: pointer;
     
   }
-  
-  .online-friend .sideBar-body:hover {
+  .onlineFriend .sideBar-body:hover {
     background-color: #f2f2f2;
   }
   
-  .online-friend .sideBar-avatar {
+  .onlineFriend .sideBar-avatar {
     text-align: center;
     padding: 0 !important;
   }
   
-  .online-friend .avatar-icon img {
+  .onlineFriend .avatar-icon img {
     border-radius: 50%;
     height: 80px;
     width: 80px;
     margin-left: 30px;
   }
   
-  .online-friend .sideBar-main {
+  .onlineFriend .sideBar-main {
     padding: 0 !important;
   }
   
-  .online-friend .sideBar-main .row {
+  .onlineFriend .sideBar-main .row {
     padding: 0 !important;
     margin: 0 !important;
   }
   
-  .online-friend .sideBar-name {
+  .onlineFriend .sideBar-name {
     padding: 10px !important;
   }
   
-  .online-friend .name-meta {
+  .onlineFriend .name-meta {
     font-size: 100%;
     padding: 1% !important;
     text-align: left;
@@ -60,15 +61,37 @@
     white-space: nowrap;
     color: #000;
   }
-  
-  .online-friend .sideBar-time {
+
+  .onlineFriend .sideBar-time {
     padding: 10px !important;
   }
   
-  .online-friend .time-meta {
+  .onlineFriend .time-meta {
     text-align: right;
     font-size: 12px;
     padding: 1% !important;
     color: rgba(0, 0, 0, .4);
     vertical-align: baseline;
+  }
+  
+  .onlineFriend .activeIconOn {
+    position: absolute;
+    bottom: 0px;
+    margin: 0px -10px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background-color: #2bcd72;
+  }
+
+  .onlineFriend .activeIconOff {
+    position: absolute;
+    bottom: 0px;
+    margin: 0px -10px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background-color: #7a9787;
   }
