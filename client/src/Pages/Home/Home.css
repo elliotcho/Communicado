@@ -122,11 +122,11 @@
   margin: 15px 4px;
 }
 
-.blueButton {
+.home .blueButton {
   background-color: royalblue;
   color: #fff;
 }
-.whiteButton {
+.home .whiteButton {
   background-color: #fff;
   color: royalblue;
   border: 1px solid royalblue;
@@ -138,7 +138,7 @@
   color: royalblue;
 }
 
-.whiteButton:hover {
+.home .whiteButton:hover {
   
   background-color: royalblue !important;
   color: white;
@@ -146,8 +146,8 @@
 
 
 
-.slideanim {visibility:hidden;}
-.slide {
+.home .slideanim {visibility:hidden;}
+.home .slide {
   animation-name: slide;
   -webkit-animation-name: slide;
   animation-duration: 1s;
@@ -156,7 +156,7 @@
 }
 
 @media screen and (max-width: 768px) {
-  .col-lg-4 {
+  .home .col-lg-4 {
     text-align: center;
     margin: 25px 0;
   }

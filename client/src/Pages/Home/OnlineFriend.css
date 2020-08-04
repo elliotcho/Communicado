@@ -1,10 +1,10 @@
- .searchBox-inner input:focus {
+ .onlineFriend .searchBox-inner input:focus {
     outline: none;
     border: none;
     box-shadow: none;
   }
   
-  .sideBar {
+  .onlineFriend .sideBar {
     padding: 0 !important;
     margin: 0 !important;
     background-color: #fff;
@@ -13,7 +13,7 @@
     height: calc(100% - 120px);
   }
   
-  .sideBar-body {
+  .onlineFriend .sideBar-body {
     position: relative;
     padding: 10px !important;
     border-bottom: 2px solid #f7f7f7;
@@ -23,39 +23,39 @@
     
   }
   
-  .sideBar-body:hover {
+  .onlineFriend .sideBar-body:hover {
     background-color: #f2f2f2;
   }
   
-  .sideBar-avatar {
+  .onlineFriend .sideBar-avatar {
     text-align: center;
     padding: 0 !important;
     
 
   }
   
-  .avatar-icon img {
+  .onlineFriend .avatar-icon img {
     border-radius: 50%;
     height: 80px;
     width: 80px;
   }
   
-  .sideBar-main {
+  .onlineFriend .sideBar-main {
     padding: 0 !important;
     
 
   }
   
-  .sideBar-main .row {
+  .onlineFriend .sideBar-main .row {
     padding: 0 !important;
     margin: 0 !important;
   }
   
-  .sideBar-name {
+  .onlineFriend .sideBar-name {
     padding: 10px !important;
   }
   
-  .name-meta {
+  .onlineFriend .name-meta {
     font-size: 100%;
     padding: 1% !important;
     text-align: left;
@@ -64,11 +64,11 @@
     color: #000;
   }
   
-  .sideBar-time {
+  .onlineFriend .sideBar-time {
     padding: 10px !important;
   }
   
-  .time-meta {
+  .onlineFriend .time-meta {
     text-align: right;
     font-size: 12px;
     padding: 1% !important;
@@ -76,7 +76,7 @@
     vertical-align: baseline;
   }
   
-  .activeIconOn {
+  .onlineFriend .activeIconOn {
     position: absolute;
     bottom: 0px;
     margin: 0px -10px;
@@ -87,7 +87,7 @@
     background-color: #2bcd72;
   }
 
-  .activeIconOff {
+  .onlineFriend .activeIconOff {
     position: absolute;
     bottom: 0px;
     margin: 0px -10px;
