@@ -160,10 +160,40 @@ const deleteUser = async  (req,res) =>{
 
     const userFriends = await User.find({_id: {$in: user.friends}});
 
+    const sentNotifs = await Notification.find({senderId: uid});
+
+
+    //delete all the notifications that other users have received from this one
+    for(let i=0;i<sentNotifs.length;i++){
+        const receiver = await User.findOne({_id: sentNotifs[i].receiverId});
+
+        const receiverNotifs = receiver.notifs;
+
+        for(let j =0;j<receiverNotifs.length;j++){
+            let found = false;
+
+            if(receiverNotifs[j].senderId === uid){
+                receiverNotifs.splice(j, 1);
+
+                found = true;
+
+                break;
+            }
+
+            if(found){break;}
+        }
+
+        await User.updateOne({_id: sentNotifs[i].receiverId}, {notifs: receiverNotifs});
+    }
+
+    await Notification.deleteMany({senderId: uid});
+
+    //iterate through all of the deleted user's friends
     for(let i=0;i<userFriends.length;i++){
         for(let j=0;j<userFriends[i].friends.length;j++){
             let found =  false;
 
+            //remove the deleted user's id from their former friends' lists
             if(userFriends[i].friends[j] === uid){
                 userFriends[i].friends.splice(j, 1);
                 
