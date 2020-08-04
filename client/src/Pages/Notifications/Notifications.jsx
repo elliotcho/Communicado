@@ -17,6 +17,14 @@ class Notifications extends Component{
         uncolorNavbar(uid);
     }
 
+    componentDidUpdate(prevProps){
+        const {newNotif} = this.props;
+
+        if(prevProps.newNotif !== newNotif && newNotif!==false){   
+            window.location.reload();
+        }
+    }
+
     deleteNotif(id){
         const {
             notifs, 
@@ -53,7 +61,8 @@ class Notifications extends Component{
 const mapStateToProps = (state) =>{
     return{
         uid: state.auth.uid,
-        notifs: state.notifs.notifs
+        notifs: state.notifs.notifs,
+        newNotif: state.notifs.newNotif
     }
 }
 // Methods for notifications to use after mounting
