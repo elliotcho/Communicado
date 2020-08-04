@@ -1,9 +1,11 @@
+
  .onlineFriend .searchBox-inner input:focus {
     outline: none;
     border: none;
     box-shadow: none;
   }
   
+
   .onlineFriend .sideBar {
     padding: 0 !important;
     margin: 0 !important;
@@ -22,7 +24,6 @@
     cursor: pointer;
     
   }
-  
   .onlineFriend .sideBar-body:hover {
     background-color: #f2f2f2;
   }
@@ -30,20 +31,17 @@
   .onlineFriend .sideBar-avatar {
     text-align: center;
     padding: 0 !important;
-    
-
   }
   
   .onlineFriend .avatar-icon img {
     border-radius: 50%;
     height: 80px;
     width: 80px;
+    margin-left: 30px;
   }
   
   .onlineFriend .sideBar-main {
     padding: 0 !important;
-    
-
   }
   
   .onlineFriend .sideBar-main .row {
@@ -63,7 +61,7 @@
     white-space: nowrap;
     color: #000;
   }
-  
+
   .onlineFriend .sideBar-time {
     padding: 10px !important;
   }

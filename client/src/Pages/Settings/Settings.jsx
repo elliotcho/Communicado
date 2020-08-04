@@ -84,15 +84,6 @@ class Settings extends Component{
         
     }
 
-    /**
-     *   deleteUser(e){
-        e.preventDefault();
-        alert("clicked")
-        const {uid} = this.props;
-        this.props.deleteUser(uid);
-    }
-
-     */
     render(){
         if(!this.props.uid){
             return <Redirect to = '/'/>
@@ -115,7 +106,7 @@ class Settings extends Component{
                         <label htmlFor="lastName">Last Name</label>
                         <input type="text" id="lastName" minLength='2' maxLength='30' onChange={this.handleChange} value={lastName}/>
                         {/* Submit name change */}
-                        <button className='btn btn-lg btn-danger'>Change Name</button>
+                        <button className='btn btn-lg btn-success'>Change Name</button>
                     </form>
                     {/* Show password toggle button */}
                     <div className='update' onClick={this.showForm}>{hidePwd? 'Update Password': 'Hide'}</div>
@@ -131,11 +122,11 @@ class Settings extends Component{
                         <label htmlFor="confirmPwd">Confirm Password:</label>
                         <input type="password" id="confirmPwd" minLength='6' maxLength='50' onChange={this.handleChange} value={confirmPwd} required/>
                         {/* Submit btn */}
-                        <button className='btn btn-lg btn-danger'>Change Password</button>
+                        <button className='btn btn-lg btn-success'>Change Password</button>
                     </form>
                      
                     <form  onSubmit={this.deleteUser}>
-                        <button className='delete'>Delete Account</button>
+                        <button className='delete btn btn-lg btn-danger'>Delete Account</button>
                     </form>
                </main>
            </div>

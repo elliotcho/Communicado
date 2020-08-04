@@ -107,7 +107,6 @@
   padding: 60px 
 }
 
-
 .home .panel-footer {
   background-color: white !important;
 }
@@ -121,6 +120,7 @@
 .home .panel-footer .btn {
   margin: 15px 4px;
 }
+
 
 .home .blueButton {
   background-color: royalblue;
@@ -144,8 +144,6 @@
   color: white;
 }
 
-
-
 .home .slideanim {visibility:hidden;}
 .home .slide {
   animation-name: slide;
@@ -161,6 +159,3 @@
     margin: 25px 0;
   }
 }
-
-
-
