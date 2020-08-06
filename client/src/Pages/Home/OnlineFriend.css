@@ -32,6 +32,10 @@
     text-align: center;
     padding: 0 !important;
   }
+
+  .onlineFriend .avatar-icon{
+    position: relative;
+  }
   
   .onlineFriend .avatar-icon img {
     border-radius: 50%;
@@ -80,7 +84,9 @@
   
   .onlineFriend .activeIconOn {
     position: absolute;
-    bottom: 28px;
+    z-index: 1;
+    left: 100px;
+    bottom: 0px;
     margin: 0px -10px;
     width: 15px;
     height: 15px;

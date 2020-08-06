@@ -6,32 +6,6 @@
   overflow: auto;
 }
 
-.home .profileCard{
-  margin-top: 50px;
-  margin-right: 20px;
-  margin-bottom: 70px;
-  padding: 20px;
-  height: auto;
-  background: lightblue;
-  text-align: center;
-  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.45);
-}
-
-.home .profileCard h2{
-  margin-top: 10px;
-  margin-right: 10px;
-  font-family: 'Nunito Sans';
-}
-
-.home .profileCard .profilePic{
-  margin: 30px auto;
-  margin-left: 3px;
-  width: 250px;
-  height: 250px;
-  border: solid royalblue;
-  border-radius: 50%;
-}
-
 .home footer{
   margin-top: 50px;
 }

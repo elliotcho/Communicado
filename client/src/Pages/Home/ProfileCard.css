@@ -1,4 +1,9 @@
-.card-body img {
+  .card-body .img-container{
+    text-align: center;
+    position: relative;
+  }
+  
+  .card-body img {
     max-width:300px;
     max-height:300px;
     width: 300px;
@@ -9,7 +14,7 @@
   .card-body .activeIcon {
     position: absolute;
     bottom: 0px;
-    left: 320px;
+    left: 320x;
     margin: 0px -20px;
     width: 20px;
     height: 20px;
