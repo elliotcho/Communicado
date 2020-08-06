@@ -1,6 +1,4 @@
-const {declineReq, acceptReq, changeFriendStatus} = require('./friends');
-
-const axios = require('axios');
+const {declineReq, acceptReq, changeFriendStatus, getOnlineFriends} = require('./friends');
 
 const active = {};
 
@@ -45,6 +43,15 @@ module.exports = (io) => {
                     {toastId: uid}
                 );
             }
+        });
+
+        socket.on('GET_ONLINE_FRIENDS', async data =>{
+            const friends = await getOnlineFriends(data, active);
+
+            io.sockets.to(active[data.uid]).emit(
+                'GET_ONLINE_FRIENDS',
+                {friends}
+            );
         });
     });
 }

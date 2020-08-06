@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {colorNavbar} from './store/actions/notificationsActions';
+import {updateOnlineFriends} from './store/actions/friendsActions';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import Home from './Pages/Home/Home';
@@ -23,7 +24,11 @@ class App extends Component{
 
       io = socket('http://localhost:5000');
 
-      handleSocketEvents(io, this.props.colorNavbar)
+      handleSocketEvents(
+         io, 
+         props.colorNavbar,
+         props.updateOnlineFriends
+      );
    }
 
    componentDidMount(){
@@ -89,6 +94,7 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = (dispatch) => {
     return {
         colorNavbar: () => {dispatch(colorNavbar());},
+        updateOnlineFriends: (friends) => {dispatch(updateOnlineFriends(friends));}
     }
 }
 

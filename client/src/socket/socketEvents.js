@@ -3,7 +3,7 @@ import {toast} from 'react-toastify';
 import ToastMsg from '../Partials/ToastMsg';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const handleSocketEvents = (io, colorNavbar) =>{
+export const handleSocketEvents = (io, colorNavbar, updateOnlineFriends) =>{
     io.on('FRIEND_REQUEST', data =>{
         const {toastId} = data;
 
@@ -24,5 +24,9 @@ export const handleSocketEvents = (io, colorNavbar) =>{
             draggable: false,
             position: toast.POSITION.BOTTOM_RIGHT
         });
+    });
+
+    io.on('GET_ONLINE_FRIENDS', data =>{
+        updateOnlineFriends(data.friends);
     });
 }

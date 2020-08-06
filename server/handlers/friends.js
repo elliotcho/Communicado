@@ -213,8 +213,31 @@ const changeFriendStatus = async (data) => {
     }
 }
 
+const getOnlineFriends = async (data, active) =>{
+    const {uid} = data;
+
+    const activeFriends = [];
+    const inactiveFriends = [];
+
+    const user = await User.findOne({_id: uid});
+    const friends = await User.find({_id: {$in: user.friends}});
+
+    for(let i=0;i<friends.length;i++){
+        if(active[friends[i]._id]){
+            activeFriends.push(friends[i]);
+        }
+
+        else{
+            inactiveFriends.push(friends[i]);
+        }
+    }
+
+    return [activeFriends, inactiveFriends];
+}
+
 module.exports = {
     declineReq,
     acceptReq,
-    changeFriendStatus
+    changeFriendStatus,
+    getOnlineFriends
 }

@@ -44,6 +44,10 @@ class FindForm extends Component {
         }
     }
 
+    componentWillUnmount(){
+        this.props.clearUsers();
+    }
+
     // Use BS4 to display form in jumbotron
     render() {
         const {uid} = this.props;
