@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {colorNavbar} from './store/actions/notificationsActions';
+import {updateOnlineFriends} from './store/actions/friendsActions';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import Home from './Pages/Home/Home';
@@ -10,13 +11,10 @@ import Friends from './Pages/Friends/Friends.jsx';
 import Notifications from './Pages/Notifications/Notifications.jsx';
 import Navbar from './Partials/Navbar';
 import Messages from './Pages/Messages/Messages'
-import ToastMsg from './Partials/ToastMsg';
-
 import socket from 'socket.io-client';
 import axios from 'axios';
 import {handleSocketEvents} from './socket/socketEvents';
-import {ToastContainer, toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from 'react-toastify';
 
 let io;
 
@@ -26,7 +24,11 @@ class App extends Component{
 
       io = socket('http://localhost:5000');
 
-      handleSocketEvents(io, this.props.colorNavbar)
+      handleSocketEvents(
+         io, 
+         props.colorNavbar,
+         props.updateOnlineFriends
+      );
    }
 
    componentDidMount(){
@@ -62,11 +64,6 @@ class App extends Component{
       
       return(
          <div>
-            <button onClick = {() => toast.info(<ToastMsg/>, {
-               position: toast.POSITION_TOP_RIGHT,
-               draggable:false
-            })}>HELLO</button>
-
             { /*If ID required for route, show Navbar*/}
             <BrowserRouter>   
                {uid? <Navbar newNotif = {newNotif}/>: null}
@@ -79,10 +76,9 @@ class App extends Component{
                   <Route path='/friends' component = {Friends}/>
                   <Route path='/notifications' component={Notifications}/>
                </Switch>
+               
                <ToastContainer/>
             </BrowserRouter>
-
-            
          </div>
       )
    }
@@ -98,6 +94,7 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = (dispatch) => {
     return {
         colorNavbar: () => {dispatch(colorNavbar());},
+        updateOnlineFriends: (friends) => {dispatch(updateOnlineFriends(friends));}
     }
 }
 

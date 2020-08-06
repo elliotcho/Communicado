@@ -8,6 +8,7 @@ class FilterForm extends Component {
         super(props);
         this.state = { friendQuery: "" };
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     // Handle change in input to adjust state every character
@@ -15,11 +16,23 @@ class FilterForm extends Component {
         this.setState({ [evt.target.name] : evt.target.value });
     }
 
+    handleSubmit(e){
+        e.preventDefault();
+
+        const {friendQuery} = this.state;
+
+        if(friendQuery.trim() === "") { return; }
+
+        const {findFriends, uid} = this.props;
+
+        findFriends(friendQuery, uid);
+    }
+
     render() {
         return (
             <div className="row my-4 py-3 FilterForm">
                 <div className = "col-12 d-flex justify-content-center text-center">
-                    <form className="FilterForm-form">
+                    <form className="FilterForm-form" onSubmit={this.handleSubmit}>
                         <label htmlFor="friendQuery">Search your friends: </label>
                         <input 
                             type = "text"

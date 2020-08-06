@@ -9,12 +9,15 @@
 }
 
 .FoundFriendCard .card-footer {
+    background: #e8e8e8;
     cursor: pointer;
-    color: darkgray;
+    color: gray;
 }
 
 .FoundFriendCard .card-footer:hover {
     color: black;
-    background-color: white;
 }
 
+.FoundFriendCard img{
+    max-height: 200px;
+}

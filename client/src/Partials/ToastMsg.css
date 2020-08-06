@@ -1,10 +1,16 @@
-.ToastMsg {
-    width: 100%;
-    border-radius: 0;
-    color:black;
-
+.toast-notif{
+    font-family: 'Nunito Sans';
+    color: #e8e8e8;
 }
 
-img {
-    border-radius: 50%;
+.toast-notif img{
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    border-radius: 0;
+}
+
+.Toastify__toast-container button:focus{
+    outline: none;
+    box-shadow: none;
 }

@@ -13,6 +13,7 @@ class FriendGrid extends Component {
 
         const friends = this.props.friends.map(friend =>
             <FriendCard 
+                key = {friend._id}
                 user = {friend} 
                 uid = {uid}
                 friends = {this.props.friends}

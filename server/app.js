@@ -64,7 +64,7 @@ app.post('/profilepic', handleProfilePic(upload, fs, path));
 app.post('/changename', changeName);
 app.post('/changepwd', changePwd); 
 app.post('/findusers', findUsers);
-app.post('/deleteUser', deleteUser);
+app.post('/deleteUser', deleteUser); 
 
 app.get('/friends/:uid', getFriends);
 app.post('/friends/status', getFriendStatus);

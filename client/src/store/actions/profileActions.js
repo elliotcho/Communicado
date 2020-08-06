@@ -6,7 +6,6 @@ export const getUserInfo = (uid) =>{
     return (dispatch) =>{
         // Send json
         const config = {
-            
             headers: {'Content-Type': 'application/json'}
         }
         // Send post request to userInfo branch in server handlers

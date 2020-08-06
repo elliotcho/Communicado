@@ -1,6 +1,4 @@
-const {User, Notification} = require('../dbschema');
-
-const {declineReq, acceptReq, changeFriendStatus} = require('./friends');
+const {declineReq, acceptReq, changeFriendStatus, getOnlineFriends} = require('./friends');
 
 const active = {};
 
@@ -14,6 +12,7 @@ module.exports = (io) => {
 
         // DISCONNECT FROM SERVER --- delete socket id
         socket.on("DISCONNECT", data =>{
+            console.log(data.uid);
             delete active[data.uid];
         });
         
@@ -23,23 +22,37 @@ module.exports = (io) => {
         // ACCEPT FRIEND REQUEST --- Store sender and recipient data from request
         socket.on("ACCEPT_REQUEST", async data =>{
             const msg = await acceptReq(data);
-            // Send back msg returned from accepting
-            io.sockets.to(active[data.senderId]).emit(
-                'ACCEPT_REQUEST', 
-                {msg}
-            ); 
+
+            const {receiverId} = data;
+            
+            if(msg){
+                io.sockets.to(active[data.senderId]).emit(
+                    'ACCEPT_REQUEST', 
+                    {toastId: receiverId}
+                ); 
+            }
         });
 
-        // CHANGE FRIEND STATUS --- acts as a friend request method
         socket.on("CHANGE_FRIEND_STATUS", async data =>{
             const msg = await changeFriendStatus(data)
-            // Send back msg returned from updating friend status
-            if ( msg ) {
+
+            const {uid} = data;
+
+            if(msg){
                 io.sockets.to(active[data.friendId]).emit(
                     'FRIEND_REQUEST', 
-                    {msg}
+                    {toastId: uid}
                 );
             }
+        });
+
+        socket.on('GET_ONLINE_FRIENDS', async data =>{
+            const friends = await getOnlineFriends(data, active);
+
+            io.sockets.to(active[data.uid]).emit(
+                'GET_ONLINE_FRIENDS',
+                {friends}
+            );
         });
     });
 }
