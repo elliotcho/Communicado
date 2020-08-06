@@ -12,6 +12,7 @@ module.exports = (io) => {
 
         // DISCONNECT FROM SERVER --- delete socket id
         socket.on("DISCONNECT", data =>{
+            console.log(data.uid);
             delete active[data.uid];
         });
         

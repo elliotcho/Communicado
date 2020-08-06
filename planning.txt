@@ -1,36 +1,9 @@
 Home page (all your chats? posts?)
 Messaging page (different state/props depending on which friend your messaging)
 
-Settings page (gugsa will design)
-Friends page (render our friends)
-Notifications page
+chat:{
 
-TODOS (Wed):
-Gugsa
--- Read msg from client using socket
--- Render new msg with msg.body on client
-
-Elliot + Tariq
--- Send notif from client to server and handle. Add to users list of notifs and set to unread
--- Store notif in 2nd user and make visible in the client.
--- Style notification card and create grid 
-
-TODOS (Thurs):
-Gugsa + Elliot
--- Home page redesign?
--- Connecting messages and showing all messages
-
-Tariq
--- Render friend card or each friends alphabetically
--- Add filter form on friends functionality
-
-if messages are blank render friends component
-delete friend has window.confirm
-unread box shadow, bold message, iphone dot icon
-read no box shadow
-
-friends in user array
-alphabetical friends list for now
+}
 
 message:{
     _id: String,
@@ -42,5 +15,7 @@ message:{
     read: boolean
 }
 
-redesign friend request frontend
-refactor
+TODO:
+Eric: load profile pic
+Tariq: home page help / change cardbody in ProfileCard.css
+Gugsa: can keep designing
