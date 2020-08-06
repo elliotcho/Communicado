@@ -51,6 +51,8 @@
   }
   
   .searchProfileCard .name-meta {
+    position: relative;
+    bottom: -20px;
     font-size: 100%;
     padding: 1% !important;
     text-align: left;
@@ -59,3 +61,10 @@
     color: #000;
   }
   
+  .searchProfileCard .sideBar-time {
+    padding: 10px !important;
+    position: relative;
+    font-size: 12px;
+    bottom: 22px;
+    
+  }

@@ -16,16 +16,14 @@ class OnlineFriend extends Component {
                     </div>
                     <div class="col-sm-9 sideBar-main">
                         
-                            <div class="col-sm-8 sideBar-name">
-                                <br></br>
-                                <span class="name-meta">John Doe
-                                </span>
-                            </div>
-                            <div class="col-sm-4 pull-right sideBar-time">
-                                <br></br>
-                                <span class="time-meta pull-right">Last Chatted 18:18
-                                </span>
-                            </div>  
+                        <div class="col-sm-8 sideBar-name">
+                            
+                            <span class="name-meta">John Doe</span>
+                        </div>
+                        <div class="col-sm-4 float-right sideBar-time">
+                            <br></br>
+                            <span class="time-meta float-right">Last Chatted 18:18</span>
+                        </div>  
                         
                     </div>
                     
