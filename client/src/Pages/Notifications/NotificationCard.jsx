@@ -28,7 +28,7 @@ class NotificationCard extends Component {
         const config = {'Content-Type': 'application/json'};
 
         // Get fName and lName of user who sent notification 
-        // R: --- Asycn, Await?!
+        // R: --- Async, Await?!
         axios.post('http://localhost:5000/userinfo', {uid: senderId}, {headers: config}).then(response =>{
             const {firstName, lastName} = response.data;
             // Store names in state of Card
