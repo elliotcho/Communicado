@@ -6,15 +6,28 @@ import FilterForm from '../../Partials/FilterForm'
 import FriendGrid from './FriendGrid'
 import './Friends.css'
 
-// Friends Page composed of separate components that make up the page
+// Friends Page composed of separate components in Partials that make up the page
 class Friends extends Component {
     render() {
         const {findUsers, findFriends, clearUsers, users, uid} = this.props;
         return (
             <div className="Friends">
                 <div className="container-fluid">
-                    <FindForm findUsers = {findUsers} clearUsers={clearUsers} users = {users} uid = {uid}/>
-                    <FilterForm findFriends = {findFriends} uid = {uid}/>
+                    {/* Find new friends with jumbotron that has functionallity passed to it */}
+                    <FindForm 
+                        findUsers={findUsers} 
+                        clearUsers={clearUsers} 
+                        users={users} 
+                        uid={uid}
+                    />
+
+                    {/* Form to filter a friends list */}
+                    <FilterForm 
+                        findFriends = {findFriends} 
+                        uid = {uid}
+                    />
+
+                    {/* Grid of friendCards */}
                     <FriendGrid />
                 </div>
             </div>

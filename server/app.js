@@ -8,7 +8,6 @@ const express = require('express');
 const app = express();
 const socket = require('socket.io');
 
-
 //connect to database
 mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Communicado?retryWrites=true&w=majority', {
     useUnifiedTopology: true,
@@ -37,7 +36,6 @@ app.use(cors());
 
 
 // User functions
-
 const { 
     login, 
     signup, 
@@ -50,6 +48,7 @@ const {
     getFriends
 } = require('./handlers/users');
 
+// Notification Functions
 const {
     readNotifs,
     checkUnreadNotifs,
@@ -66,9 +65,11 @@ app.post('/changepwd', changePwd);
 app.post('/findusers', findUsers);
 app.post('/deleteUser', deleteUser); 
 
+// Friend Functional Routes
 app.get('/friends/:uid', getFriends);
 app.post('/friends/status', getFriendStatus);
 
+// Notification functional routes
 app.put('/notifs/:uid', readNotifs);
 app.get('/unreadnotifs/:uid', checkUnreadNotifs);
 
