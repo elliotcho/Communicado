@@ -6,38 +6,6 @@
   overflow: auto;
 }
 
-.home .message{
-  margin-top: 15px;
-  max-width: 800px;
-  padding: 15px;
-  border: solid gray;
-  background: white;
-  cursor: pointer;
-}
-
-.home .message:hover{
-  border-color: royalblue;
-  background: #e8e8e8;
-}
-
-.home .message h3{
-  font-weight: 600;
-  font-family: 'Nunito Sans';
-  color: #313131;
-}
-
-.home .message .date{
-  font-family: 'Trebuchet MS';
-  color: #525252;
-  margin-left: 2px;
-}
-
-.home .message .content{
-  font-family: 'Segoe UI';
-  margin: 2px;
-  font-size: 20px;
-}
-
 .home .profileCard{
   margin-top: 50px;
   margin-right: 20px;
@@ -64,23 +32,11 @@
   border-radius: 50%;
 }
 
-.home .profileCard label{
-  cursor: pointer;
-  outline: none;
-  border: none;
-  font-family: 'Nunito Sans';
-  margin-right: 10px;
-}
-
-.home .profileCard label:focus{
-  box-shadow: none;
-}
-
 .home footer{
   margin-top: 50px;
 }
 
-.home .panel-heading {
+.home .card-header {
   color: #fff !important;
   background-color: royalblue !important;
   padding: 1px;
@@ -91,15 +47,15 @@
   border-bottom-right-radius: 16px;
 }
 
-.home .panel {
+.home .card {
   border: 1px solid royalblue; 
   border-radius:0 !important;
   transition: box-shadow 0.5s;
   overflow: hidden; 
-    margin-bottom: -9999px;
-    padding-bottom: 9999px;
+    margin-bottom: -9px;
+    padding-bottom:9px;
 }
-.home .panel:hover {
+.home .card:hover {
   box-shadow: 5px 0px 40px rgba(0,0,0, .2);
 }
 
@@ -107,17 +63,17 @@
   padding: 60px 
 }
 
-.home .panel-footer {
+.home .card-footer {
   background-color: white !important;
 }
-.home .panel-footer h3 {
+.home .card-footer h3 {
   font-size: 32px;
 }
-.home .panel-footer h4 {
+.home .card-footer h4 {
   color: #aaa;
   font-size: 14px;
 }
-.home .panel-footer .btn {
+.home .card-footer .btn {
   margin: 15px 4px;
 }
 
@@ -132,9 +88,9 @@
   border: 1px solid royalblue;
 }
 
-.home .panel-footer .btn .blueButton:hover {
+.home .blueButton:hover {
   border: 1px solid royalblue;
-  background-color: #fff !important;
+  background-color: lightskyblue !important;
   color: royalblue;
 }
 
@@ -153,9 +109,12 @@
   visibility: visible;
 }
 
+
+
 @media screen and (max-width: 768px) {
   .home .col-lg-4 {
     text-align: center;
     margin: 25px 0;
+    
   }
 }

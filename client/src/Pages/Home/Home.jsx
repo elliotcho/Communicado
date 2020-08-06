@@ -40,56 +40,57 @@ class Home extends Component{
                     <div class="row">
                         <div class="col"></div>
                         <div class="col-lg-3">
-                            <div class="panel panel-default text-center">
-                                <div class="panel-heading">
+                            <div class="card text-center h-100">
+                                <div class="card-header">
                                 <h1 >Search For Friends</h1>
                                 </div>
-                                <div class="panel-body">
+                                <div class="card-body">
                                     <input id="searchResult" type="text" class="form-control" placeholder="Search Names"></input>
-                                
+                                    <SearchProfileCard />
+                                    <SearchProfileCard />
                                     
                                 
                                 </div>
-                                <div class="panel-footer">
-                                    <SearchProfileCard />
-                                    <SearchProfileCard />
+                                <div class="card-footer fill">
+                                    
                     
                                 </div>
                             </div>      
                         </div>     
                         <div class="col-lg-4">
-                            <div class="panel panel-default text-center">
-                                <div class="panel-heading">
+                            <div class="card text-center h-100">
+                                <div class="card-header">
                                     <h1>My Profile</h1>
                                 </div>
-                                <div class="panel-body">
+                                <div class="card-body">
 
                                     <ProfileCard />
-                                
 
-                                </div>
-                                <div class="panel-footer">
-                                
-                                    <button class="btn blueButton btn-lg">Account Settings</button>
+                                    <br></br>
+                                    <button class="btn whiteButton btn-lg">Account Settings</button>
                                     <button class="btn whiteButton btn-lg">Edit Profile</button>
+                                </div>
+                                <div class="card-footer fill">
+                                
+                                    
                                 </div>
                             </div>      
                         </div>       
                         <div class="col-lg-3">
-                            <div class="panel panel-default text-center">
-                                <div class="panel-heading">
+                            <div class="card text-center h-100">
+                                <div class="card-header">
                                     <h1>Online Friends</h1>
                                 </div>
-                                    <div class="panel-body">
+                                    <div class="card-body">
                                         <OnlineFriend />
                                         <OnlineFriend />
                                         <OnlineFriend />
 
                                 </div>
-                                <div class="panel-heading">
+                                <div class="card-heading">
                                     <h1>Offline Friends</h1>
                                 </div>
-                                    <div class="panel-body">
+                                    <div class="card-body">
                                         <OnlineFriend />
                                         <OnlineFriend />
                                         <OnlineFriend />
@@ -97,6 +98,9 @@ class Home extends Component{
                                         <OnlineFriend />
                                         
                                     </div>
+                                    <div class="card-footer fill">
+                                
+                                    </div>  
                                 </div>
                                   
                         </div> 
