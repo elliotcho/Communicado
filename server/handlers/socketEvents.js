@@ -2,8 +2,6 @@ const {User, Notification} = require('../dbschema');
 
 const {declineReq, acceptReq, changeFriendStatus} = require('./friends');
 
-const axios = require('axios');
-
 const active = {};
 
 module.exports = (io) => {
@@ -25,19 +23,18 @@ module.exports = (io) => {
         // ACCEPT FRIEND REQUEST --- Store sender and recipient data from request
         socket.on("ACCEPT_REQUEST", async data =>{
             const msg = await acceptReq(data);
-
-            
+            // Send back msg returned from accepting
             io.sockets.to(active[data.senderId]).emit(
                 'ACCEPT_REQUEST', 
                 {msg}
             ); 
         });
 
-    
+        // CHANGE FRIEND STATUS --- acts as a friend request method
         socket.on("CHANGE_FRIEND_STATUS", async data =>{
             const msg = await changeFriendStatus(data)
-
-            if(msg){
+            // Send back msg returned from updating friend status
+            if ( msg ) {
                 io.sockets.to(active[data.friendId]).emit(
                     'FRIEND_REQUEST', 
                     {msg}
