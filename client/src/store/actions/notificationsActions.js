@@ -8,20 +8,12 @@ export const colorNavbar = () =>{
     }   
 }
 
-// Uncolor navbar if read notification 
 export const uncolorNavbar = (uid) =>{
-    return (dispatch) =>{
-        axios.put(`http://localhost:5000/notifs/${uid}`).then(response =>{
-            dispatch({type: 'READ_NOTIFS', notifs: response.data});
-        });
+    return async (dispatch) =>{
+        const response = await axios.put(`http://localhost:5000/notifs/${uid}`)
+        dispatch({type: 'READ_NOTIFS', notifs: response.data});
     }
 }
-// export const uncolorNavbar = async (uid) =>{
-//     return (dispatch) =>{
-//         const response = await axios.put(`http://localhost:5000/notifs/${uid}`)
-//         dispatch({type: 'READ_NOTIFS', notifs: response.data});
-//     }
-// }
 
 // Remove a notification from the list of notifs for a user
 export const removeNotification = (notifId, list) => {
