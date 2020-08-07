@@ -13,14 +13,12 @@
     background-color: blue;
     border: none;
     cursor: pointer;
-    margin-top: 0.9px;
   }
 
 
 
   .To button:hover{
     background-color: blue;
-    
   }
 
   .To button:focus{
@@ -40,15 +38,13 @@
   }
 
   .To input{
-    
     padding: 14px;
-    margin-top: 1px;
     margin-bottom: 0px;
     margin-right: 0px;
     font-size: 17px;
     width: 385px;
     height: 59.5px;
-    background-color: lightgray;
+    background-color: gray;
+    color: white;
     border: none;
-    
   }
