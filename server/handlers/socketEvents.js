@@ -1,8 +1,4 @@
-const {User, Notification} = require('../dbschema');
-
-const {declineReq, acceptReq, changeFriendStatus} = require('./friends');
-
-const axios = require('axios');
+const {declineReq, acceptReq, changeFriendStatus, getOnlineFriends} = require('./friends');
 
 const active = {};
 
@@ -16,6 +12,7 @@ module.exports = (io) => {
 
         // DISCONNECT FROM SERVER --- delete socket id
         socket.on("DISCONNECT", data =>{
+            console.log(data.uid);
             delete active[data.uid];
         });
         
@@ -28,13 +25,14 @@ module.exports = (io) => {
 
             const {receiverId} = data;
             
-            io.sockets.to(active[data.senderId]).emit(
-                'ACCEPT_REQUEST', 
-                {toastId: receiverId}
-            ); 
+            if(msg){
+                io.sockets.to(active[data.senderId]).emit(
+                    'ACCEPT_REQUEST', 
+                    {toastId: receiverId}
+                ); 
+            }
         });
 
-    
         socket.on("CHANGE_FRIEND_STATUS", async data =>{
             const msg = await changeFriendStatus(data)
 
@@ -46,6 +44,15 @@ module.exports = (io) => {
                     {toastId: uid}
                 );
             }
+        });
+
+        socket.on('GET_ONLINE_FRIENDS', async data =>{
+            const friends = await getOnlineFriends(data, active);
+
+            io.sockets.to(active[data.uid]).emit(
+                'GET_ONLINE_FRIENDS',
+                {friends}
+            );
         });
     });
 }

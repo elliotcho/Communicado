@@ -7,34 +7,14 @@ class ProfileCard extends Component {
         return(
             <div>
                 <div class="card m-b-30"></div>
-                    {/*
-                    <div class="card-header bg-white">
-                        <h5 class="card-title text-black mb-0">Social Profile</h5>
-                    </div>
-                    */}
-                    <div class="card-body">
+                    <div className="card-body">
                         
-                            
-                            <div class="row">
-                                <div class="col-3">
-                                    
-                                        <i class="mdi mdi-star font-24"></i>
-                                    
+                            <div className ='row'>
+                                <div class="img-container col-12">
+                                    <img src={avatar} alt="user-profile" className="rounded-circle"></img>
+                                    <span class="activeIcon"></span>
                                 </div>
-                                <div class="col-6">
-                                    
-                                        <img src={avatar} alt="user-profile" class="rounded-circle img-fluid"></img>
-                                        <span class="activeIcon"></span>
-                                   
-                                    
-                                </div>
-                                <div class="col-3">
-                                    
-                                        <i class="mdi mdi-dots-horizontal font-24"></i>
-                                    
-                                </div>
-                            
-                        </div>
+                            </div>
                         
                             <div class="row">
                                 <div class="col-12">

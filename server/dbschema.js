@@ -18,6 +18,7 @@ const NotifSchema = new schema({
     content: String,
     read: Boolean,
     senderId: String,
+    receiverId: String, 
     date: Date
 });
 

@@ -2,12 +2,29 @@
 import axios from 'axios';
 
 // Finds all users in the database that match a given name
-export const findUsers = (name) => {
+export const findUsers = (name, uid) => {
     return (dispatch) => {
+        const config = {headers: {'Content-Type': 'application/json'}};
+
+        axios.post('http://localhost:5000/findusers', {name: name.trim(), uid, findFriends: false}, config).then(response=>{
+            dispatch({type: 'USERS_FOUND', users: response.data.users});
+        });
+    }
+}
+
+export const clearUsers = () =>{
+    return (dispatch) =>{
+        dispatch({type: 'CLEAR_USERS'});
+    }
+}
+
+export const findFriends = (name, uid) =>{
+    return (dispatch) =>{
         const config = {headers: {'Content-Type': 'application/json'}}
 
-        axios.post('http://localhost:5000/findusers', {name: name.trim()}, config).then(response=>{
-            dispatch({type: 'USERS_FOUND', users: response.data.users});
+        axios.post('http://localhost:5000/findusers', {name: name.trim(), uid, findFriends: true}, config).then(response=>{
+            console.log(response.data.users);
+            dispatch({type: 'FRIENDS_FOUND', friends: response.data.users});
         });
     }
 }
@@ -30,5 +47,15 @@ export const removeFriend = (friendId, friends) =>{
         }
 
         dispatch({type: 'REMOVE_FRIEND', friends});
+    }
+}
+
+export const updateOnlineFriends = (friends) =>{
+    return (dispatch) =>{
+        dispatch({
+            type: 'LOAD_ONLINE_FRIENDS',
+            active: friends[0],
+            inactive: friends[1]
+        });
     }
 }

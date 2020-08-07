@@ -82,7 +82,7 @@ class FoundFriendCard extends Component {
         const {imgURL, status} = this.state;
 
         return (
-            <div className="FoundFriendCard card col-lg-2 col-sm-4 col-6">
+            <div className="FoundFriendCard card col-lg-2 col-sm-4 col-6 mb-2">
                 <img src={imgURL} className="card-img" alt="user icon" id="userIcon"/>
                 <div className="card-body">
                     <h5 className="card-title text-center">
@@ -92,9 +92,9 @@ class FoundFriendCard extends Component {
 
                 {uid !== _id ?
                 (<div className="card-footer text-center" onClick = {this.handleClick}>
-                        {status === 'Add Friend'? <i className="fas fa-user-plus"></i>:
-                        status === 'Pending'? <i className ='fas fa-user-clock'/> :
-                        <i className ='fa fa-check'/> 
+                        {status === 'Add Friend'? <i className="fas fa-user-plus mb-2"></i>:
+                        status === 'Pending'? <i className ='fas fa-user-clock mb-2'/> :
+                        <i className ='fa fa-check mb-2'/> 
                         }      
                 </div>)
                 :null 

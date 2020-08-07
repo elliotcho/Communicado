@@ -1,4 +1,9 @@
-const initState = {users: [], friends: []};
+const initState = {
+    users: [], 
+    friends: [],
+    active: [],
+    inactive: []
+};
 
 // Reducer for friend actions
 const friendsReducer = (state=initState, action) =>{
@@ -9,6 +14,22 @@ const friendsReducer = (state=initState, action) =>{
                 ...state,
                 // Update users for all found users
                 users: [...action.users]
+            }
+        case 'CLEAR_USERS':
+            return{
+                ...state,
+                users: []
+            }
+        case "LOAD_ONLINE_FRIENDS":
+            return{
+                ...state,
+                active: [...action.active],
+                inactive: [...action.inactive]
+            }
+        case "FRIENDS_FOUND":
+            return{
+                ...state,
+                friends: [...action.friends]
             }
         case 'REMOVE_FRIEND':
             return{

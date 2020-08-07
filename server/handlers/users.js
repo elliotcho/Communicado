@@ -1,4 +1,4 @@
-const {User} = require('../dbschema');
+const {User, Notification} = require('../dbschema');
 
 // Login function for user based on credentials
 // result is result of query, query is example User.findOne({})
@@ -153,19 +153,71 @@ const changePwd = (req, res) =>{
 
 
 //delete
-const deleteUser = (req,res) =>{
+const deleteUser = async  (req,res) =>{
     const {uid} = req.body
-    console.log(uid)
-    User.deleteOne({_id: uid}).then(()=>{
-        res.json({msg: 'Account is being deleted, press ok to continue.'});
 
-    })
+    const user = await User.findOne({_id: uid});
+
+    const userFriends = await User.find({_id: {$in: user.friends}});
+
+    const sentNotifs = await Notification.find({senderId: uid});
+
+
+    //delete all the notifications that other users have received from this one
+    for(let i=0;i<sentNotifs.length;i++){
+        const receiver = await User.findOne({_id: sentNotifs[i].receiverId});
+
+        const receiverNotifs = receiver.notifs;
+
+        for(let j =0;j<receiverNotifs.length;j++){
+            let found = false;
+
+            if(receiverNotifs[j].senderId === uid){
+                receiverNotifs.splice(j, 1);
+
+                found = true;
+
+                break;
+            }
+
+            if(found){break;}
+        }
+
+        await User.updateOne({_id: sentNotifs[i].receiverId}, {notifs: receiverNotifs});
+    }
+
+    await Notification.deleteMany({senderId: uid});
+
+    //iterate through all of the deleted user's friends
+    for(let i=0;i<userFriends.length;i++){
+        for(let j=0;j<userFriends[i].friends.length;j++){
+            let found =  false;
+
+            //remove the deleted user's id from their former friends' lists
+            if(userFriends[i].friends[j] === uid){
+                userFriends[i].friends.splice(j, 1);
+                
+                found = true;
+                
+                await User.updateOne({_id: userFriends[i]._id}, {friends: userFriends[i].friends});
+                
+                break;
+            }
+
+            if(found){break;}
+        }
+    }
+    
+    await User.deleteOne({_id: uid});
+
+    res.json({msg: 'Account is being deleted, press ok to continue.'});
+
 }
 
 // Find all users based on a given name
 // Used to find new friends to add
-const findUsers = (req, res) =>{
-    let {name} = req.body;
+const findUsers = async (req, res) =>{
+    let {name, uid, findFriends} = req.body;
     // No users found
     if(name.length === 0){
         res.json({msg: "No users found"});
@@ -184,29 +236,39 @@ const findUsers = (req, res) =>{
     else{
         listOfNames.push(name.toLowerCase());
     }
-    // Find all users and filter name
-    User.find({}).then(result => {
-        const users = [];
-        for(let i=0;i<result.length;i++){
-            let userNames = `${result[i].firstName} ${result[i].lastName}`.split(" ");
-            
-            for(let j=0;j<userNames.length;j++){
-                let found = false;
-                // Convert names of all users to lowercase when comparing 
-                // If matching, add to array of found users
-                for(let k=0;k<listOfNames.length;k++){
-                    if(userNames[j].toLowerCase().startsWith(listOfNames[k])){
-                        users.push(result[i]);
-                        found = true;
-                        break;
-                    }
-                }
 
-                if(found){break;}
+    let result;
+
+    if(findFriends){
+        let user = await User.findOne({_id: uid});
+        result = await User.find({_id: {$in: user.friends}});
+    }
+
+    else{
+        result = await User.find({});
+    }
+
+    // Find all users and filter name
+    const users = [];
+    for(let i=0;i<result.length;i++){
+        let userNames = `${result[i].firstName} ${result[i].lastName}`.split(" ");
+            
+        for(let j=0;j<userNames.length;j++){
+            let found = false;
+            // Convert names of all users to lowercase when comparing 
+            // If matching, add to array of found users
+            for(let k=0;k<listOfNames.length;k++){
+                if(userNames[j].toLowerCase().startsWith(listOfNames[k])){
+                    users.push(result[i]);
+                    found = true;
+                    break;
+                }
             }
+
+            if(found){break;}
         }
-        res.json({users, msg: "Success, here are your users"});
-    }).catch(e => console.log(e));
+    }
+    res.json({users, msg: "Success, here are your users"});
 }
 
 const getFriends = (req, res) =>{

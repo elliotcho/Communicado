@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
+import {io} from '../App';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {uncolorNavbar} from '../store/actions/notificationsActions';
 import {Link} from 'react-router-dom';
 import './Navbar.css'
-
-import socket from 'socket.io-client';
 
 class Navbar extends Component {
     constructor(){
@@ -16,8 +15,6 @@ class Navbar extends Component {
     // Function to signout user, making sure they cannot go back and still be logged in
     signOut(e) {
         e.preventDefault();
-
-        const io = socket('http://localhost:5000');
 
         io.emit('DISCONNECT', {uid: this.props.uid});
 
@@ -60,7 +57,10 @@ class Navbar extends Component {
                                 </li>
                                 <li>
                                     <Link onClick= {this.toNotifs} to='/notifications' className={notifColor}>
-                                        <a href='/notifications' className="nav-link d-inline-block d-md-none">Notifications</a>
+                                        <a href='/notifications' className={`nav-link d-inline-block d-md-none ${notifColor}`}>
+                                            Notifications
+                                        </a>
+
                                         <i className ="fas fa-bell"></i>
                                     </Link>
                                 </li>
