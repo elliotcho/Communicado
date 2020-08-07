@@ -12,6 +12,15 @@ export const findUsers = (name, uid) => {
     }
 }
 
+// export const findUsers = async (name, uid) => {
+//     return (dispatch) => {
+//         const config = {headers: {'Content-Type': 'application/json'}};
+
+//         const response = await axios.post('http://localhost:5000/findusers', {name: name.trim(), uid, findFriends: false}, config)
+//         dispatch({type: 'USERS_FOUND', users: response.data.users});
+//     }
+// }
+
 export const clearUsers = () =>{
     return (dispatch) =>{
         dispatch({type: 'CLEAR_USERS'});
@@ -29,13 +38,31 @@ export const findFriends = (name, uid) =>{
     }
 }
 
+// export const findFriends = async (name, uid) =>{
+//     return (dispatch) =>{
+//         const config = {headers: {'Content-Type': 'application/json'}}
+
+//         const reponse = await axios.post('http://localhost:5000/findusers', {name: name.trim(), uid, findFriends: true}, config)
+//         console.log(response.data.users);
+//         dispatch({type: 'FRIENDS_FOUND', friends: response.data.users});
+//     }
+// }
+
+
 export const loadFriends = (uid) =>{
-    return (dispatch) =>{
+    return (dispatch) => {
         axios.get(`http://localhost:5000/friends/${uid}`).then(response =>{
             dispatch({type: 'LOAD_FRIENDS', friends: response.data});
         });
     }
 }
+
+// export const loadFriends = async (uid) =>{
+//     return (dispatch) =>{
+//         const response = await axios.get(`http://localhost:5000/friends/${uid}`)
+//         dispatch({type: 'LOAD_FRIENDS', friends: response.data});
+//     }
+// }
 
 export const removeFriend = (friendId, friends) =>{
     return (dispatch) => {

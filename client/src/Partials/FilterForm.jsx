@@ -16,15 +16,12 @@ class FilterForm extends Component {
         this.setState({ [evt.target.name] : evt.target.value });
     }
 
+    // Trim result on submit and findFriends from props with given query
     handleSubmit(e){
         e.preventDefault();
-
         const {friendQuery} = this.state;
-
         if(friendQuery.trim() === "") { return; }
-
         const {findFriends, uid} = this.props;
-
         findFriends(friendQuery, uid);
     }
 
