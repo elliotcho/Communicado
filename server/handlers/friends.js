@@ -93,8 +93,8 @@ const acceptReq = async (data) => {
                     break;
                 }
             }
+
             await User.updateOne({_id: senderId}, {friends: senderFriends, notifs: senderNotifs});
-            
             return `${firstName} ${lastName} ${msg}`;
         }
     }
@@ -195,7 +195,7 @@ const changeFriendStatus = async (data) => {
                 }
             }
 
-            for(let i=0;i<oldNotifs.length;i++){
+            for (let i=0; i<oldNotifs.length;i++){
                 if(oldNotifs[i].senderId ===uid && oldNotifs[i].acceptFriendRequest){
 
                     

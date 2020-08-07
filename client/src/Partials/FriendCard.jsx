@@ -2,21 +2,21 @@ import React, { Component } from 'react'
 import {io} from '../App';
 import './FriendCard.css'
 
+// Friend card to be rendered on friends page for each friend
 class FriendCard extends Component {
     constructor(props){
         super(props);
-
+        // Init state
         this.state = {
             imgURL: null
         }
-
         this.deleteFriend = this.deleteFriend.bind(this);
     }
 
+    // load image of user after initial render
+    // R: --- Async/await, method for retrieving pic?
     componentDidMount(){
-        //load image of user after initial render
         const {_id} = this.props.user;
-
         const data = {action: 'load', uid: _id};
         const config={'Content-Type': 'application/json'};
         
@@ -28,22 +28,19 @@ class FriendCard extends Component {
             this.setState({imgURL: URL.createObjectURL(file)});
         });
     }
-
+    // Delete friend function from props store that asks user to confirm
     deleteFriend(){
         const {_id, firstName, lastName} = this.props.user;
-
         if(!window.confirm(`Are you sure you want to unfriend ${firstName} ${lastName}?`));
-
         const {uid, friends, removeFriend} = this.props;
-
         removeFriend(_id, friends);
-
+        // Emit change of friend status to server so that Add Friend is next option
         io.emit("CHANGE_FRIEND_STATUS", {status: "Friends", uid, friendId: _id});
     }
 
     render() {
+        // Destructure
         const {imgURL} = this.state;
-
         const {firstName, lastName} = this.props.user;
 
         return (

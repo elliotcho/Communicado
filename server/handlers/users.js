@@ -1,7 +1,6 @@
 const {User, Notification} = require('../dbschema');
 
 // Login function for user based on credentials
-// result is result of query, query is example User.findOne({})
 const login = (req,res) => {
     // Find user based on email
     User.findOne({email: req.body.email}).then(result => {

@@ -13,35 +13,32 @@ class Notifications extends Component{
     // After first render, remove highlighted icon and destructure props
     componentDidMount(){
         const {uid, uncolorNavbar} = this.props;
-        
         uncolorNavbar(uid);
     }
 
+    // Every new socket notif, listen for new notification
+    // R: --- More elaboration? 
     componentDidUpdate(prevProps){
         const {newNotif} = this.props;
-
         if(prevProps.newNotif !== newNotif && newNotif!==false){   
             window.location.reload();
         }
     }
 
+    // Delete a notification using actions from store
     deleteNotif(id){
-        const {
-            notifs, 
-            removeNotification
-        } = this.props;
-
+        const { notifs, removeNotification } = this.props;
         removeNotification(id, notifs);
     }
 
     render(){
         // read notifications for current user
         const {uid, notifs} = this.props;
+
         // Create list of notifications
         const list = notifs.map(notif =>
             <NotificationCard key={notif._id} notif = {notif} uid={uid} deleteNotif={this.deleteNotif}/>
         );
-
 
         return(
             <div className="notifs">
@@ -51,7 +48,9 @@ class Notifications extends Component{
 
                 <h4>Latest</h4>
 
-                {list.length ===0? <h3 className='text-center my-4'>You have no notifications</h3>: list}
+                {list.length === 0 
+                ? <h3 className='text-center my-4'> You have no notifications </h3>
+                : list }
             </div>
         )
     }
@@ -65,6 +64,7 @@ const mapStateToProps = (state) =>{
         newNotif: state.notifs.newNotif
     }
 }
+
 // Methods for notifications to use after mounting
 const mapDispatchToProps = (dispatch) =>{
     return{

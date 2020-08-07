@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {signUp} from '../../store/actions/authActions';
 import './Signup.css'
 
+
 class Signup extends Component {
     constructor(props) {
         super(props);
@@ -28,12 +29,11 @@ class Signup extends Component {
         this.props.signUp(this.state);
     }
 
-
     render() {
+        // If UID, send user to home page
         if(this.props.uid){
             return <Redirect exact to='/'/>
         }
-
         return(
             <div className="Signup">
                 <form className="Signup-form" onSubmit={this.handleSubmit}>
