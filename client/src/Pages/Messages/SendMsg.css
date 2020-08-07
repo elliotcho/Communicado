@@ -1,0 +1,31 @@
+ .msg{
+    position: absolute;
+    bottom:0px;
+    width: 100%;
+}
+
+.msg input{
+    padding: 15px 20px;
+    box-sizing: border-box;
+    background: #eee;
+    border: 0;
+    display: block;
+    width: 100%;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    font-family: Nunito;
+    font-size: 16px;
+   
+}
+
+.msg button{
+    background: #036055;
+    color: #fff;
+    font-size: 18px;
+    border: 0;
+    padding: 12px 0;
+    width: 100%;
+    border-radius: 0 0 2px 2px;
+    cursor: pointer;
+    
+}
