@@ -5,67 +5,38 @@ import {io} from '../../App';
 import {getUserInfo, loadProfilePic, changeProfilePic} from '../../store/actions/profileActions';
 import {findUsers, clearUsers} from '../../store/actions/friendsActions';
 import './Home.css';
+import HomeFind from './HomeFind'
 import OnlineFriend from './OnlineFriend'
 import ProfileCard from './ProfileCard'
 import SearchProfileCard from './SearchProfileCard'
 
+
 class Home extends Component{
-    constructor(){
-        super();
-
-        this.state = {
-            query: ''
-        };
-
-        this.searchUsers = this.searchUsers.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+    constructor(props){
+        super(props);
         this.toSettings = this.toSettings.bind(this);
     }
 
     // After init render, read userID and get info + picture to display
     componentDidMount(){
         const {uid} = this.props;
-
         this.props.getUserInfo(uid);
-
         this.props.loadProfilePic(uid);
-
         io.emit('GET_ONLINE_FRIENDS', {uid});
     }
-
-    searchUsers(e){
-        this.setState({[e.target.id]: e.target.value});
-    }
-
-    // Change profile picture
-    // handleChange(e){
-    //     this.props.changeProfilePic(this.props.uid, e.target.files[0]);
-    // }
 
     toSettings(){
         this.props.history.push('/settings');
     }
 
-    handleSubmit(e){
-        e.preventDefault();
-
-        const {uid} = this.props;
-
-        const {query} = this.state;
-
-        if(query.trim() === ''){
-            return;
-        }
-
-        this.props.findUsers(query, uid);
-    }
-
+    // Clear users when moving pages
     componentWillUnmount(){
         this.props.clearUsers();
     }
 
-    render(){
-        if(!this.props.uid){
+    render() {
+        // If no UID, send user to Login page
+        if (!this.props.uid) {
             return <Redirect to='/'/>
         }
 
@@ -79,58 +50,18 @@ class Home extends Component{
             <OnlineFriend key = {user._id} user={user} status={'offline'}/>
         );
 
+        const {uid, findUsers} = this.props;
+
         return(
             <div className='home'>
                 <div className="container-fluid">
                     <div class="row">
                         <div class="col"></div>
-                        <div class="col-lg-3">
-                            <div class="card text-center h-100">
-                                <div class="card-header">
-                                <h1 >Search For Friends</h1>
-                                </div>
-                                <div class="card-body">
-                    
-                                    <form onSubmit = {this.handleSubmit}>
-                                        <input 
-                                            id='query' 
-                                            type="text" 
-                                            class="form-control" 
-                                            placeholder="Search Names" 
-                                            onChange={this.searchUsers}
-                                            value = {this.state.query}
-                                        />    
-                                    </form>
-
-                                    {users.map(user =>
-                                        <SearchProfileCard key={user._id} user={user}/>      
-                                    )}               
-                                </div>
-                                <div class="card-footer fill">
-                                    
-                    
-                                </div>
-                            </div>      
-                        </div>     
-                        <div class="col-lg-4">
-                            <div class="card text-center h-100">
-                                <div class="card-header">
-                                    <h1>My Profile</h1>
-                                </div>
-                                <div class="card-body">
-
-                                    <ProfileCard />
-
-                                    <br></br>
-                                    <button class="btn whiteButton btn-lg" onClick={this.toSettings}>Account Settings</button>
-                                    <button class="btn whiteButton btn-lg">Edit Profile</button>
-                                </div>
-                                <div class="card-footer fill">
-                                
-                                    
-                                </div>
-                            </div>      
-                        </div>       
+                        
+                        <HomeFind uid={uid} findUsers={findUsers}/>    
+                        
+                        <ProfileCard />
+     
                         <div class="col-lg-3">
                             <div class="card text-center h-100">
                                 <div class="card-header">
@@ -156,10 +87,6 @@ class Home extends Component{
 
                     </div>
                 </div>
-
-                <footer>
-    
-                </footer>
             </div>
         )
     }

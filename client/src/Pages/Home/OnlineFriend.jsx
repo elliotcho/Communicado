@@ -3,43 +3,40 @@ import './OnlineFriend.css'
 import loading from './loading.jpg';
 
 class OnlineFriend extends Component {
-    constructor(){
-        super();
-
-        this.state ={
-            imgURL: null
-        };
+    constructor(props){
+        super(props);
+        this.state ={ imgURL: null };
     }
 
-    componentDidMount(){
+    // After init render, load users data
+    async componentDidMount() {
         const {_id} = this.props.user;
 
         const config = {'content-type': 'application/json'};
-
         const data = {action: 'load', uid: _id};
 
-        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        .then(response =>response.blob())
-        .then(file =>{
-            // Set state of imgURL to display senders IMG
-            this.setState({imgURL: URL.createObjectURL(file)});
-        });
+        // Fetch profile picture for friend
+        const response = await fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
+        const file = await response.blob()
+
+        // Set state of imgURL to display senders IMG
+        this.setState({imgURL: URL.createObjectURL(file)});
     }
 
     render() {
+        // Destructuring
         const {firstName, lastName} = this.props.user;
-
         const {imgURL} = this.state;
-
         const {status} = this.props;
 
         let displayColor;
 
-        if(status === 'online'){
+        // Online icon
+        if(status === 'online') {
             displayColor = 'activeIconOn';
         }
-
-        else{
+        // Offline icon
+        else {
             displayColor = 'activeIconOff';
         }
 
