@@ -3,6 +3,7 @@ import {toast} from 'react-toastify';
 import ToastMsg from '../Partials/ToastMsg';
 import 'react-toastify/dist/ReactToastify.css';
 
+// R: -- ELLIOT/GUGSA
 export const handleSocketEvents = (io, colorNavbar, updateOnlineFriends) =>{
     io.on('FRIEND_REQUEST', data =>{
         const {toastId} = data;
