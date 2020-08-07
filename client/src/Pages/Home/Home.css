@@ -1,163 +1,81 @@
 .home{
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: lightgray;
-    overflow: auto;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: lightgray;
+  overflow: auto;
 }
 
 .home .message{
-    margin-top: 15px;
-    max-width: 800px;
-    padding: 15px;
-    border: solid gray;
-    background: white;
-    cursor: pointer;
+  margin-top: 15px;
+  max-width: 800px;
+  padding: 15px;
+  border: solid gray;
+  background: white;
+  cursor: pointer;
 }
 
 .home .message:hover{
-    border-color: royalblue;
-    background: #e8e8e8;
+  border-color: royalblue;
+  background: #e8e8e8;
 }
 
 .home .message h3{
-    font-weight: 600;
-    font-family: 'Nunito Sans';
-    color: #313131;
+  font-weight: 600;
+  font-family: 'Nunito Sans';
+  color: #313131;
 }
 
 .home .message .date{
-    font-family: 'Trebuchet MS';
-    color: #525252;
-    margin-left: 2px;
+  font-family: 'Trebuchet MS';
+  color: #525252;
+  margin-left: 2px;
 }
 
 .home .message .content{
-    font-family: 'Segoe UI';
-    margin: 2px;
-    font-size: 20px;
+  font-family: 'Segoe UI';
+  margin: 2px;
+  font-size: 20px;
 }
 
 .home .profileCard{
-    margin-top: 50px;
-    margin-right: 20px;
-    margin-bottom: 70px;
-    padding: 20px;
-    height: auto;
-    background: lightblue;
-    text-align: center;
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.45);
+  margin-top: 50px;
+  margin-right: 20px;
+  margin-bottom: 70px;
+  padding: 20px;
+  height: auto;
+  background: lightblue;
+  text-align: center;
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.45);
 }
 
 .home .profileCard h2{
-    margin-top: 10px;
-    margin-right: 10px;
-    font-family: 'Nunito Sans';
+  margin-top: 10px;
+  margin-right: 10px;
+  font-family: 'Nunito Sans';
 }
 
 .home .profileCard .profilePic{
-    margin: 30px auto;
-    margin-left: 3px;
-    width: 250px;
-    height: 250px;
-    border: solid royalblue;
-    border-radius: 50%;
+  margin: 30px auto;
+  margin-left: 3px;
+  width: 250px;
+  height: 250px;
+  border: solid royalblue;
+  border-radius: 50%;
 }
 
 .home .profileCard label{
-    cursor: pointer;
-    outline: none;
-    border: none;
-    font-family: 'Nunito Sans';
-    margin-right: 10px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  font-family: 'Nunito Sans';
+  margin-right: 10px;
 }
 
 .home .profileCard label:focus{
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .home footer{
-    margin-top: 50px;
+  margin-top: 50px;
 }
-
-.home .panel-heading {
-    color: #fff !important;
-    background-color: royalblue !important;
-    padding: 25px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-
-  .home .panel {
-    border: 1px solid royalblue; 
-    border-radius:0 !important;
-    transition: box-shadow 0.5s;
-  }
-  .home .panel:hover {
-    box-shadow: 5px 0px 40px rgba(0,0,0, .2);
-  }
-
-  .home .container{
-    padding: 60px 
-  }
-  
-
-  .home .panel-footer {
-    background-color: white !important;
-  }
-  .home .panel-footer h3 {
-    font-size: 32px;
-  }
-  .home .panel-footer h4 {
-    color: #aaa;
-    font-size: 14px;
-  }
-  .home .panel-footer .btn {
-    margin: 15px 4px;
-  }
-  
-  .blueButton {
-    background-color: royalblue;
-    color: #fff;
-  }
-  .whiteButton {
-    background-color: #fff;
-    color: royalblue;
-    border: 1px solid royalblue;
-  }
-
-  .home .panel-footer .btn .blueButton:hover {
-    border: 1px solid royalblue;
-    background-color: #fff !important;
-    color: royalblue;
-  }
-
- .whiteButton:hover {
-    
-    background-color: royalblue !important;
-    color: white;
-  }
-
-
-
-  .slideanim {visibility:hidden;}
-  .slide {
-    animation-name: slide;
-    -webkit-animation-name: slide;
-    animation-duration: 1s;
-    -webkit-animation-duration: 1s;
-    visibility: visible;
-  }
-
-  @media screen and (max-width: 768px) {
-    .col-lg-4 {
-      text-align: center;
-      margin: 25px 0;
-    }
- }
-
-
-

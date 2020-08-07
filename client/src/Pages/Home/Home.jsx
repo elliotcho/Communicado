@@ -3,8 +3,6 @@ import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getUserInfo, loadProfilePic, changeProfilePic} from '../../store/actions/profileActions';
 import './Home.css';
-import OnlineFriend from './OnlineFriend'
-import ProfileCard from './ProfileCard'
 import loading from './loading.jpg';
 
 class Home extends Component{
@@ -37,67 +35,7 @@ class Home extends Component{
             <div className='home'>
                 <div className="container-fluid">
                     <div className="row">
-                    <div class="col"></div>
-                    <div class="col-lg-3">
-                        <div class="panel panel-default text-center">
-                            <div class="panel-heading">
-                            <h1>Search For Friends</h1>
-                            </div>
-                            <div class="panel-body">
-
-
-
                         
-
-
-          
-                            
-                            </div>
-                                <div class="panel-footer">
-                                    <h3>temp</h3>
-                                    <h4>temp</h4>
-                    
-                            </div>
-                        </div>      
-                    </div>     
-                    <div class="col-lg-4">
-                        <div class="panel panel-default text-center">
-                            <div class="panel-heading">
-                                <h1>My Profile</h1>
-                            </div>
-                            <div class="panel-body">
-
-                                <ProfileCard />
-                                
-
-                            </div>
-                            <div class="panel-footer">
-                                
-                                <button class="btn blueButton btn-lg">Account Settings</button>
-                                <button class="btn whiteButton btn-lg">Edit Biography</button>
-                            </div>
-                        </div>      
-                    </div>       
-                    <div class="col-lg-3">
-                        <div class="panel panel-default text-center">
-                            <div class="panel-heading">
-                                <h1>Active Friends</h1>
-                            </div>
-                            <div class="panel-body">
-                                <OnlineFriend />
-                                <OnlineFriend />
-                                <OnlineFriend />
-
-                            </div>
-                            <div class="panel-footer">
-
-                            </div>
-                        </div>      
-                    </div> 
-                    <div class="col"></div>   
-
-
-                        {/*
                         <div className="col-sm-12 col-md-7">
                             <section className='message'>
                                 <h3>Gugsa Challa</h3>
@@ -114,7 +52,6 @@ class Home extends Component{
                                 <label htmlFor='upload' className='btn-lg btn-primary ml-3'>Change Profile Pic</label>
                             </div>
                         </div>
-                        */}
                     </div>
                 </div>
 
