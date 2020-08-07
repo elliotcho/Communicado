@@ -28,3 +28,13 @@
     border-radius: 0 0 2px 2px;
     cursor: pointer;
 }
+
+.msg button:focus{
+    box-shadow: none;
+    outline: none;
+}
+
+.msg input:focus{
+    box-shadow: none;
+    outline: none;
+}
