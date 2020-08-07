@@ -29,3 +29,13 @@
     cursor: pointer;
     
 }
+
+.msg button:focus{
+    box-shadow: none;
+    outline: none;
+}
+
+.msg input:focus{
+    box-shadow: none;
+    outline: none;
+}

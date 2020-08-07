@@ -1,3 +1,7 @@
+.To {
+  
+}
+
 .To button {
     float: left;
     display: block;
@@ -9,11 +13,25 @@
     background-color: blue;
     border: none;
     cursor: pointer;
-    margin-top: 1.5px;
+    margin-top: 0.9px;
   }
+
+
 
   .To button:hover{
     background-color: blue;
+    
+  }
+
+  .To button:focus{
+    box-shadow: none;
+    outline: none;
+    
+  }
+
+  .To input:focus{
+    box-shadow: none;
+    outline: none;
     
   }
   
@@ -22,14 +40,15 @@
   }
 
   .To input{
-    float: right;
+    
     padding: 14px;
-    margin-top: 1.5px;
+    margin-top: 1px;
     margin-bottom: 0px;
     margin-right: 0px;
     font-size: 17px;
     width: 385px;
     height: 59.5px;
+    background-color: lightgray;
     border: none;
     
   }
