@@ -13,7 +13,7 @@
     background-color: blue;
     border: none;
     cursor: pointer;
-    margin-top: 0.9px;
+    
   }
 
 
@@ -42,13 +42,13 @@
   .To input{
     
     padding: 14px;
-    margin-top: 1px;
+    color:white;
     margin-bottom: 0px;
     margin-right: 0px;
     font-size: 17px;
     width: 385px;
     height: 59.5px;
-    background-color: lightgray;
+    background-color: gray;
     border: none;
     
   }

@@ -70,7 +70,7 @@ class App extends Component{
                <Switch>
                {/* Router that switches paths based on route */}
                   <Route exact path='/' render = {()=> uid? <Home uid ={uid}/>: <Login uid ={uid}/>}/>
-                  <Route path='/messages' component={Messages}/>
+                  <Route path='/messages' render={()=><Messages uid={uid}/>}/>
                   <Route path='/signup' render ={() => <Signup uid ={uid}/>}/>
                   <Route path='/settings' component = {Settings}/>
                   <Route path='/friends' component = {Friends}/>
