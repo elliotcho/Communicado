@@ -29,8 +29,8 @@ class Home extends Component{
             return <Redirect to='/'/>
         }
 
-        const {active, users, firstName, lastName, imgURL, uid, findUsers} = this.props;
-
+        const {active, users, firstName, lastName, imgURL, uid, findUsers, dateCreated} = this.props;
+      
         return (
             <div className='home'>
                 {/* Make container 100% height of the 92vh from css */}
@@ -42,7 +42,6 @@ class Home extends Component{
                         <HomeFind uid={uid} findUsers={findUsers} users={users}/>    
                         <ProfileCard uid={uid} firstName={firstName} lastName={lastName} imgURL={imgURL}/>
                         <OnlineFriendList active={active}/>
-
                         <div class="col"></div>
 
                     </div>
@@ -57,6 +56,7 @@ const mapStateToProps = (state) => {
         uid: state.auth.uid,
         firstName: state.profile.firstName,
         lastName: state.profile.lastName,
+        dateCreated: state.profile.dateCreated,
         imgURL: state.profile.imgURL,
         active: state.friends.active,
         users: state.friends.users

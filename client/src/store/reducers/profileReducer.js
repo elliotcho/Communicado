@@ -7,7 +7,8 @@ const profileReducer = (state = initState, action) => {
             return {
                 ...state, 
                 firstName: action.firstName, 
-                lastName: action.lastName
+                lastName: action.lastName,
+                dateCreated: action.dateCreated
             }
         // Load user profile picture
         case "LOAD_PROFILE_PIC":

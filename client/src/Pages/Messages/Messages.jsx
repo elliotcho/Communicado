@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import Navbar from '../../Partials/Navbar';
+import {connect} from 'react-redux';
+
+import {
+    updateRecipients
+} from '../../store/actions/messagesActions';
+
 import MessageList from './MessageList'
 import ExpandChat from './ExpandChat';
 import './Messages.css'
 import SendMsg from './SendMsg'
 import ComposeMsg from './ComposeMsg'
+
 class Messages extends Component {
 
     constructor(){
@@ -30,7 +36,12 @@ class Messages extends Component {
     render() {
         const {isHidden}= this.state;
 
-        const {uid} = this.props;
+        const {
+            uid,
+            queryResults,
+            updateRecipients,
+            recipients
+        } = this.props;
 
         return (
             <div className="Messages">
@@ -42,7 +53,16 @@ class Messages extends Component {
 
                         <div className="expandChat-container col-8">
                             
-                            {isHidden? <ComposeMsg uid={uid}/>: <ExpandChat/>}
+                            {isHidden? 
+                                (<ComposeMsg 
+                                    uid={uid}
+                                    queryResults = {queryResults}
+                                    updateRecipients = {updateRecipients}
+                                    recipients = {recipients}
+                                />)
+                                : <ExpandChat/>
+                            }
+                            
                             <SendMsg/>
                         </div>
                     </div>
@@ -51,4 +71,18 @@ class Messages extends Component {
         )
     }
 }
-export default Messages;
+
+const mapStateToProps = (state) => {
+    return{
+        queryResults: state.messages.queryResults,
+        recipients: state.messages.recipients
+    }   
+}
+
+const mapDispatchToProps = (dispatch) =>{
+    return{
+        updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));}
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Messages);
