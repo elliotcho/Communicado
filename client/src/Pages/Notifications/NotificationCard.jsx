@@ -5,6 +5,8 @@ import moment from 'moment';
 import {io} from '../../App';
 import './NotificationCard.css'
 
+// Notification cards that will be rendered in Notifications for each one
+// R: -- ELLIOT!! status changes, asycn/await, 
 class NotificationCard extends Component {
     constructor(props) {
         super(props);
@@ -17,15 +19,16 @@ class NotificationCard extends Component {
         }
         this.handleRequest = this.handleRequest.bind(this);
     }
-    // Mount component with usersID 
+
+    // Mount component with users ID 
     componentDidMount(){
         // Get sender ID from notif to fetch their data and render
         const {senderId} = this.props.notif;
-
         const {uid} = this.props;
-
         const config = {'Content-Type': 'application/json'};
+
         // Get fName and lName of user who sent notification 
+        // R: --- Async, Await?!
         axios.post('http://localhost:5000/userinfo', {uid: senderId}, {headers: config}).then(response =>{
             const {firstName, lastName} = response.data;
             // Store names in state of Card
@@ -33,6 +36,7 @@ class NotificationCard extends Component {
                 firstName, lastName
             });
         });
+
         // Load data of sender
         const data = {action: 'load', uid: senderId};
         // Fetch from server functional route using post with stringified data
@@ -47,6 +51,7 @@ class NotificationCard extends Component {
             this.setState({status: response.data.status});
         });
     }
+
     handleRequest(eventType){
         const {uid, deleteNotif} = this.props;
         const {_id, senderId} = this.props.notif;

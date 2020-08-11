@@ -1,30 +1,58 @@
 import React,{Component} from 'react';
+import {connect} from 'react-redux';
+import {io} from '../../App';
+import UserComposedTo from './UserComposedTo';
 import "./ComposeMsg.css";
-import io from '../../App'
+
 
 class ComposeMsg extends Component{
-    
-constructor(){
-    super()
-    this.handleKeyDown= this.handleKeyDown.bind(this)
-}
-handleKeyDown(e){
-    io.emit('GET_RECIPENTS', {
+    constructor(){
+        super();
+        this.handleChange= this.handleChange.bind(this);
+    }
+
+    handleChange(e){
+        const {uid} = this.props;
+
         
-    })
-}
+
+        io.emit('GET_RECIPIENTS', {
+            uid, name: e.target.value
+        });
+    }
+    
+
 
     render(){
+        const {queryResults} = this.props;
+
         return(
             <div>
                 <header>
                     <div className='To'>
-                    
-                    <input  onKeyDown ={this.handleKeyDown} type="text" placeholder="To..."></input>
+                        <input 
+                            type="text" 
+                            placeholder="To..."
+                            onChange = {this.handleChange}
+                        />
                     </div>
                </header>
+
+               {queryResults.map(user =>
+                    <UserComposedTo 
+                        key={user._id}
+                        user = {user}
+                    />
+               )}
             </div>
         )
     }
 }
-export default ComposeMsg
+
+const mapStateToProps = (state) => {
+    return{
+        queryResults: state.messages.queryResults
+    }   
+}
+
+export default connect(mapStateToProps)(ComposeMsg);

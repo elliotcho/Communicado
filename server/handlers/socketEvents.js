@@ -1,10 +1,11 @@
 const {declineReq, acceptReq, changeFriendStatus, getOnlineFriends} = require('./friends');
 
+const {getRecipients} = require('./messages');
+
 const active = {};
 
 module.exports = (io) => {
     io.on('connection', socket => {
-
         // JOIN SERVER --- store socket id
         socket.on('JOIN_SERVER', data =>{
             active[data.uid] = socket.id;
@@ -12,7 +13,6 @@ module.exports = (io) => {
 
         // DISCONNECT FROM SERVER --- delete socket id
         socket.on("DISCONNECT", data =>{
-            console.log(data.uid);
             delete active[data.uid];
         });
         
@@ -52,6 +52,17 @@ module.exports = (io) => {
             io.sockets.to(active[data.uid]).emit(
                 'GET_ONLINE_FRIENDS',
                 {friends}
+            );
+        });
+
+        socket.on('GET_RECIPIENTS', async data =>{
+            const queryResult = await getRecipients(data);
+            
+            const {uid} = data;
+
+            io.sockets.to(active[uid]).emit(
+                'GET_RECIPIENTS'
+                ,{queryResult}
             );
         });
     });

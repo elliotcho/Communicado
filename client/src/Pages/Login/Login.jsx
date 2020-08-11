@@ -4,10 +4,11 @@ import {connect} from 'react-redux';
 import {login} from '../../store/actions/authActions';
 import './Login.css';
 
-class Login extends Component{
-    constructor(){
-        super();
-        // Login variables
+// Login page of simple credential requirements
+class Login extends Component {
+    constructor(props){
+        super(props);
+        // Login state
         this.state = {
             email: '',
             password: ''
@@ -21,12 +22,14 @@ class Login extends Component{
     toSignup(){
         this.props.history.push('/signup');
     }
+
     // Update state for each letter change in the form
     handleChange(e){
         this.setState({
             [e.target.name]: e.target.value
         });
     }
+
     // try to login using the state variables when submitted
     handleSubmit(e){
         e.preventDefault();
@@ -34,12 +37,14 @@ class Login extends Component{
     }
 
     render(){
+        // If there is a UID, show home screen 
         if(this.props.uid){
             return <Redirect to='/'/>
         }
 
         return(
             <div className='login text-white'>
+                {/* Login navbar of site descriptions */}
                  <nav className='navbar'>
                     <h2 className='navbar-brand ml-3 mt-2'>Communicado</h2>
 
@@ -50,11 +55,12 @@ class Login extends Component{
                     <div className='collapse navbar-collapse text-center' id='message'>
                         <ul className='navbar-nav'>
                             Communicado is a full stack messaging application created using the MERN stack,
-                            GraphQL, and styled using Bootstrap 
+                            Socket.io and styled using Bootstrap4 
                         </ul>
                     </div>
                 </nav>
 
+                {/* Form of credentials */}
                 <form className='mb-5' onSubmit={this.handleSubmit}>
                     <h1 className='ml-2 mb-5'>Sign in</h1>
                     {/* Email */}
@@ -79,13 +85,14 @@ class Login extends Component{
                     />
                     {/* Submit btn */}
                     <button className='btn btn-success btn-lg'>Login</button>
-
+                    {/* Link to signup page */}
                     <p onClick={this.toSignup} className='mt-4 ml-2'>Don't have an account? Sign up here!</p>
                 </form>
             </div>
         )
     }
 }
+
 // Add login function from redux store to attempt user login based on credentials
 const mapDispatchToProps = (dispatch) => {
     return {

@@ -2,14 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getUserInfo, changeUserName, changePwd, deleteUser} from '../../store/actions/profileActions';
 import {Redirect} from 'react-router-dom';
-
 import './Settings.css';
 
-
-
+// Settings Page
 class Settings extends Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         // Form variables
         this.state={
             firstName: '',
@@ -25,13 +23,15 @@ class Settings extends Component{
         this.changePwd=this.changePwd.bind(this);
         this.deleteUser= this.deleteUser.bind(this);
     }
+
     // After init render, retrieve userID
     componentDidMount(){
         this.props.getUserInfo(this.props.uid);
     }
+
     // Show additional form to change password
     showForm(){
-        let {hidePwd} = this.state;
+        let { hidePwd } = this.state;
         this.setState({
             hidePwd: !hidePwd
         });
@@ -42,55 +42,65 @@ class Settings extends Component{
             [e.target.id]: e.target.value
         });
     }
+
     // Change a users name once submitted
     changeName(e){
+         
         e.preventDefault();
-        const {uid, changeUserName} =this.props;
-        const {firstName, lastName} =this.state;
-        // Empties state
-        this.setState({
-            firstName: "",
-            lastName:""
-        });
+
+        // Destructure 
+        const {uid, changeUserName} = this.props;
+        const {firstName, lastName} = this.state;
+
+        // Empty state
+        this.setState({firstName: "",lastName:""});
+
         // Change name based on what is given in redux client store
         changeUserName(uid, firstName, lastName);
     }
+
     // Change password 
     changePwd(e){
         e.preventDefault();
 
+        // Destructure
         const {uid} = this.props;
-        const  {currPwd, newPwd, confirmPwd} =this.state;
-        // Empties state
+        const  {currPwd, newPwd, confirmPwd} = this.state;
+
+        // Empty state
         this.setState({
             currPwd: "",
             newPwd: "", 
             confirmPwd: ""
         })
+
         // Change password based on what is given in redux client store
         this.props.changePwd(uid, currPwd, newPwd, confirmPwd);
     }
 
+    // Delete User - Prompts user to confirm account deletion
     deleteUser(e){
         e.preventDefault();
 
+        // Show window to delete
         if(!window.confirm("Are you sure you want to delete your account?")){
             return;
         }
 
+        // If yes, delete
         const {uid} = this.props;
-        
-        this.props.deleteUser(uid);
-        
+        this.props.deleteUser(uid);  
     }
 
     render(){
+        // If no user, go to Login
         if(!this.props.uid){
             return <Redirect to = '/'/>
         }
 
+        // Destructure
         const {hidePwd, firstName, lastName, currPwd, newPwd, confirmPwd} = this.state;
-
+        // Variable to show if form is hidden or not
         let formStyle = hidePwd? {display: 'none'}: {display: 'block'}; 
 
         return(
@@ -134,6 +144,7 @@ class Settings extends Component{
     }
 }
 
+// Map variables to state from store
 const mapStateToProps = (state) =>{
     return {
         uid: state.auth.uid,
@@ -142,6 +153,7 @@ const mapStateToProps = (state) =>{
     }
 };
 
+// Map functions to props from store
 const mapDispatchToProps = (dispatch) => {
     return {
         getUserInfo: (uid) => {dispatch(getUserInfo(uid));},

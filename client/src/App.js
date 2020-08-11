@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {colorNavbar} from './store/actions/notificationsActions';
 import {updateOnlineFriends} from './store/actions/friendsActions';
+import {getRecipients} from './store/actions/messagesActions';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import Home from './Pages/Home/Home';
@@ -27,7 +28,8 @@ class App extends Component{
       handleSocketEvents(
          io, 
          props.colorNavbar,
-         props.updateOnlineFriends
+         props.updateOnlineFriends,
+         props.getRecipients
       );
    }
 
@@ -70,7 +72,7 @@ class App extends Component{
                <Switch>
                {/* Router that switches paths based on route */}
                   <Route exact path='/' render = {()=> uid? <Home uid ={uid}/>: <Login uid ={uid}/>}/>
-                  <Route path='/messages' render={()=><Messages uid={uid}/>}/>
+                  <Route path='/messages' render={() => <Messages uid={uid}/>}/>
                   <Route path='/signup' render ={() => <Signup uid ={uid}/>}/>
                   <Route path='/settings' component = {Settings}/>
                   <Route path='/friends' component = {Friends}/>
@@ -94,7 +96,8 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = (dispatch) => {
     return {
         colorNavbar: () => {dispatch(colorNavbar());},
-        updateOnlineFriends: (friends) => {dispatch(updateOnlineFriends(friends));}
+        updateOnlineFriends: (friends) => {dispatch(updateOnlineFriends(friends));},
+        getRecipients: (queryResults) => {dispatch(getRecipients(queryResults));}
     }
 }
 

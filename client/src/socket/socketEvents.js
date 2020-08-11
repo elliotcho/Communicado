@@ -3,7 +3,8 @@ import {toast} from 'react-toastify';
 import ToastMsg from '../Partials/ToastMsg';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const handleSocketEvents = (io, colorNavbar, updateOnlineFriends) =>{
+// R: -- ELLIOT/GUGSA
+export const handleSocketEvents = (io, colorNavbar, updateOnlineFriends, getRecipients) =>{
     io.on('FRIEND_REQUEST', data =>{
         const {toastId} = data;
 
@@ -14,7 +15,7 @@ export const handleSocketEvents = (io, colorNavbar, updateOnlineFriends) =>{
             position: toast.POSITION.BOTTOM_RIGHT
         });
     });
-    //  
+    
     io.on("ACCEPT_REQUEST", data =>{
         const {toastId} = data;
 
@@ -28,5 +29,9 @@ export const handleSocketEvents = (io, colorNavbar, updateOnlineFriends) =>{
 
     io.on('GET_ONLINE_FRIENDS', data =>{
         updateOnlineFriends(data.friends);
+    });
+
+    io.on('GET_RECIPIENTS', data =>{
+        getRecipients(data.queryResult);
     });
 }

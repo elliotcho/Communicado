@@ -5,22 +5,24 @@ import './FoundFriendCard.css'
 
 import {io} from '../App';
 
+// Found friend card displayed in the FindForm to show possible new friends
 class FoundFriendCard extends Component {
     constructor(props){
         super(props);
 
+        // Initial placeholder state
         this.state = {
             imgURL: "//placehold.it/10",
             status: 'Add Friend'
         }
-        
         this.handleClick = this.handleClick.bind(this);
     }
+
     // Once rendered, load img of user from DB
+    // R: --- Async, Await
     componentDidMount(){
         const {_id} = this.props.user;
         const {uid} = this.props;
-
         const data = {action: 'load', uid: _id};
         const config={'Content-Type': 'application/json'};
         
@@ -39,35 +41,31 @@ class FoundFriendCard extends Component {
 
     // Send friend request to client when user clicks btn to add friend
     handleClick(){
+        // Destructure
         const {status} = this.state;
-
         const {uid} = this.props;
-
         const {_id, firstName, lastName} = this.props.user;
 
+        // Add Friend button
         if(status === 'Add Friend'){
             io.emit("CHANGE_FRIEND_STATUS", {status, uid, friendId: _id});
-
             this.setState({
                 status: 'Pending'
             });
         }
-
+        // Pending Button
         else if(status === 'Pending'){
             io.emit("CHANGE_FRIEND_STATUS", {status, uid, friendId: _id});
-
             this.setState({
                 status: 'Add Friend'
             });
         }
-
-        else{
+        // Already friends. If clicked, will delete friend from friend list if user confirms
+        else {
             if(!window.confirm(`Are you sure you want to unfriend ${firstName} ${lastName}?`)){
                 return;
             }
-            
             io.emit("CHANGE_FRIEND_STATUS", {status, uid, friendId: _id});
-
             this.setState({
                 status: 'Add Friend'
             });
@@ -75,10 +73,9 @@ class FoundFriendCard extends Component {
     }
 
     render() {
+        // Destructure
         const {_id, firstName, lastName} = this.props.user;
-
         const {uid} = this.props;
-        
         const {imgURL, status} = this.state;
 
         return (
@@ -97,7 +94,7 @@ class FoundFriendCard extends Component {
                         <i className ='fa fa-check mb-2'/> 
                         }      
                 </div>)
-                :null 
+                : null 
                 }
             </div>
         )

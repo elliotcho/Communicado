@@ -21,17 +21,15 @@ class FindForm extends Component {
         this.setState({ [evt.target.name] : evt.target.value })
     }
 
+    // Function that finds all users from the DB
     globalSearch(e) {
         e.preventDefault();
-
         if(this.state.nameQuery.trim() === "") { return; }
-
         const {findUsers, uid} = this.props;
-
         const {nameQuery} = this.state;
-
         findUsers(nameQuery, uid);
     }
+
     // Function that shows the hidden row when form is submit
     showResults() {
         let row = document.getElementById("resultsContainer")
@@ -43,7 +41,7 @@ class FindForm extends Component {
             row.style.display = "none";
         }
     }
-
+    // Clear users when deleting
     componentWillUnmount(){
         this.props.clearUsers();
     }

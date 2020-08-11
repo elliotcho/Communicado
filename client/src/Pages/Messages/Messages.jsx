@@ -27,11 +27,10 @@ class Messages extends Component {
         
     }
 
-
-
-
     render() {
-        const {isHidden}= this.state
+        const {isHidden}= this.state;
+
+        const {uid} = this.props;
 
         return (
             <div className="Messages">
@@ -43,7 +42,7 @@ class Messages extends Component {
 
                         <div className="expandChat-container col-8">
                             
-                            {isHidden? <ComposeMsg/>: <ExpandChat/>}
+                            {isHidden? <ComposeMsg uid={uid}/>: <ExpandChat/>}
                             <SendMsg/>
                         </div>
                     </div>
