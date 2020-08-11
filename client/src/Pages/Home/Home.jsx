@@ -51,6 +51,8 @@ class Home extends Component{
         );
 
         const {uid, findUsers} = this.props;
+        const profilePic = this.props.loadProfilePic(uid);
+        const {firstName, lastName, imgURL, dateCreated} = this.props;
 
         return(
             <div className='home'>
@@ -60,7 +62,7 @@ class Home extends Component{
                         
                         <HomeFind uid={uid} findUsers={findUsers}/>    
                         
-                        <ProfileCard />
+                        <ProfileCard firstName={firstName} lastName={lastName} imgURL={imgURL} created={dateCreated}/>
      
                         <div class="col-lg-3">
                             <div class="card text-center h-100">
@@ -97,10 +99,13 @@ const mapStateToProps = (state) => {
         uid: state.auth.uid,
         firstName: state.profile.firstName,
         lastName: state.profile.lastName,
+        dateCreated: state.profile.dateCreated,
         imgURL: state.profile.imgURL,
         active: state.friends.active,
         inactive: state.friends.inactive,
         users: state.friends.users
+        
+        
     }
 };
 

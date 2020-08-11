@@ -1,9 +1,26 @@
 import React, { Component } from 'react'
 import './ProfileCard.css'
 import avatar from './obama.jpg';
+import loading from './loading.jpg';
+import moment from 'moment';
 
 // Component that shows a Users profile card on the home page
 class ProfileCard extends Component {
+
+
+    constructor(props){
+        super(props);
+        this.state ={};
+    }
+
+    async componentDidMount() {
+        
+
+
+       
+    }
+
+
     render() {
         return (
             <div className="ProfileCard col-lg-4">
@@ -19,12 +36,12 @@ class ProfileCard extends Component {
                         <div className="row">
                             {/* User Img */}
                             <div className="img-fluid col-12 my-4">
-                                <img src={avatar} alt="user-profile" className="rounded-circle userIMG" />
+                                <img src={this.props.imgURL? this.props.imgURL: loading} alt="user-profile" className="rounded-circle userIMG" />
                             </div>
 
                             {/* User Name */}
                             <div className="col-12 mb-4">
-                                <h2>Barack Obama</h2>
+                                <h2>{this.props.firstName} {this.props.lastName}</h2>
                             </div>
 
                             {/* Number of friends */}
@@ -34,7 +51,7 @@ class ProfileCard extends Component {
 
                             {/* Date Joined */}
                             <div className="col-12 mb-3">
-                                <h4 className="text-muted">Joined _____ days ago</h4>
+                                <h4 className="text-muted">Joined {moment(this.props.created).calendar()}</h4>
                             </div>
                         </div>
 
