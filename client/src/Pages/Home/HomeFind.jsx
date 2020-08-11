@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import SearchProfileCard from './SearchProfileCard'
 
 class HomeFind extends Component {
     constructor(props) {
@@ -54,9 +55,10 @@ class HomeFind extends Component {
                                 onChange={this.handleChange}
                             />
                         </form> 
-                        {/* {users.map(user =>
+                        {/* For each user found, render new Profile Card */}
+                        {this.props.users.map(user =>
                             <SearchProfileCard key={user._id} user={user}/>      
-                        )} */}
+                        )}
                     </div>
                 </div>
             </div>

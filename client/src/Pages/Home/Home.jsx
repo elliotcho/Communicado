@@ -6,27 +6,16 @@ import {getUserInfo, loadProfilePic, changeProfilePic} from '../../store/actions
 import {findUsers, clearUsers} from '../../store/actions/friendsActions';
 import './Home.css';
 import HomeFind from './HomeFind'
-import OnlineFriend from './OnlineFriend'
 import ProfileCard from './ProfileCard'
-import SearchProfileCard from './SearchProfileCard'
-
+import OnlineFriendList from './OnlineFriendList'
 
 class Home extends Component{
-    constructor(props){
-        super(props);
-        this.toSettings = this.toSettings.bind(this);
-    }
-
     // After init render, read userID and get info + picture to display
     componentDidMount(){
         const {uid} = this.props;
         this.props.getUserInfo(uid);
         this.props.loadProfilePic(uid);
         io.emit('GET_ONLINE_FRIENDS', {uid});
-    }
-
-    toSettings(){
-        this.props.history.push('/settings');
     }
 
     // Clear users when moving pages
@@ -40,50 +29,21 @@ class Home extends Component{
             return <Redirect to='/'/>
         }
 
-        const {active, inactive, users} = this.props;
+        const {active, users, firstName, lastName, imgURL, uid, findUsers} = this.props;
 
-        const onlineFriends = active.map(user =>
-            <OnlineFriend key={user._id} user={user} status={'online'}/>
-        );
-
-        const offlineFriends = inactive.map(user =>
-            <OnlineFriend key = {user._id} user={user} status={'offline'}/>
-        );
-
-        const {uid, findUsers} = this.props;
-
-        return(
+        return (
             <div className='home'>
-                <div className="container-fluid">
-                    <div class="row">
+                {/* Make container 100% height of the 92vh from css */}
+                <div className="container-fluid h-100">
+                    <div class="row homeRow">
+                        
                         <div class="col"></div>
-                        
-                        <HomeFind uid={uid} findUsers={findUsers}/>    
-                        
-                        <ProfileCard />
-     
-                        <div class="col-lg-3">
-                            <div class="card text-center h-100">
-                                <div class="card-header">
-                                    <h1>Online Friends</h1>
-                                </div>
-                                    <div class="card-body">
-                                        {onlineFriends}
 
-                                </div>
-                                <div class="card-heading">
-                                    <h1>Offline Friends</h1>
-                                </div>
-                                    <div class="card-body">
-                                       {offlineFriends}
-                                    </div>
-                                    <div class="card-footer fill">
-                                
-                                    </div>  
-                                </div>
-                                  
-                        </div> 
-                        <div class="col"></div>   
+                        <HomeFind uid={uid} findUsers={findUsers} users={users}/>    
+                        <ProfileCard uid={uid} firstName={firstName} lastName={lastName} imgURL={imgURL}/>
+                        <OnlineFriendList active={active}/>
+
+                        <div class="col"></div>
 
                     </div>
                 </div>
@@ -99,7 +59,6 @@ const mapStateToProps = (state) => {
         lastName: state.profile.lastName,
         imgURL: state.profile.imgURL,
         active: state.friends.active,
-        inactive: state.friends.inactive,
         users: state.friends.users
     }
 };
