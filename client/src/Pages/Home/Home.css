@@ -5,6 +5,10 @@
   overflow: auto;
 }
 
+.homeRow {
+  height: 100%;
+}
+
 .cardTitle {
   color: #fff;
   background-color: royalblue;
