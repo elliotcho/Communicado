@@ -3,6 +3,7 @@ import {io} from '../../App';
 import UserComposedTo from './UserComposedTo';
 import "./ComposeMsg.css";
 
+
 class ComposeMsg extends Component{
     constructor(){
         super();
@@ -49,6 +50,8 @@ class ComposeMsg extends Component{
         }
     }
     
+
+
     render(){
         const {queryResults, recipients} = this.props;
 

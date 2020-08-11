@@ -6,7 +6,6 @@ const active = {};
 
 module.exports = (io) => {
     io.on('connection', socket => {
-
         // JOIN SERVER --- store socket id
         socket.on('JOIN_SERVER', data =>{
             active[data.uid] = socket.id;
@@ -58,7 +57,7 @@ module.exports = (io) => {
 
         socket.on('GET_RECIPIENTS', async data =>{
             const queryResult = await getRecipients(data);
-
+            
             const {uid} = data;
 
             io.sockets.to(active[uid]).emit(
