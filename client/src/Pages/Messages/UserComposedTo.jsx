@@ -26,12 +26,14 @@ class UserComposedTo extends Component{
     }
 
     render(){
+        const {addRecipient, user} = this.props;
+
         const {firstName, lastName} = this.props.user;
 
         const {imgURL} = this.state;
 
         return(
-            <div>
+            <div style={{cursor: 'pointer'}} onClick={() => {addRecipient(user)}}>
                 <img src={imgURL? imgURL: loading}
                     style = {{height: '50px', width: '50px'}}
                 />

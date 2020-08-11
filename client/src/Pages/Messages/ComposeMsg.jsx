@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import {connect} from 'react-redux';
 import {io} from '../../App';
 import UserComposedTo from './UserComposedTo';
 import "./ComposeMsg.css";
@@ -7,32 +6,70 @@ import "./ComposeMsg.css";
 class ComposeMsg extends Component{
     constructor(){
         super();
+
+        this.state = {
+            composedTo: ''
+        }
+
         this.handleChange= this.handleChange.bind(this);
+        this.addRecipient = this.addRecipient.bind(this);
+        this.deleteRecipient = this.deleteRecipient.bind(this);
     }
 
     handleChange(e){
         const {uid} = this.props;
 
-        if(e.target.value.trim() === ""){
-            return;
-        }
-
         io.emit('GET_RECIPIENTS', {
             uid, name: e.target.value
         });
+
+        this.setState({composedTo: e.target.value});
+    }
+
+    addRecipient(user){
+        const {uid, recipients, updateRecipients} = this.props;
+
+        this.setState({composedTo: ''});
+
+        io.emit('GET_RECIPIENTS', {
+            uid, name: ''
+        });
+
+        updateRecipients([...recipients, user]);
+    }
+
+    deleteRecipient(e){
+        const {recipients, updateRecipients} = this.props;
+
+        const {composedTo} = this.state;
+
+        if(e.keyCode === 8 && composedTo === '' && recipients.length > 0){
+            recipients.pop();
+            updateRecipients(recipients);
+        }
     }
     
     render(){
-        const {queryResults} = this.props;
+        const {queryResults, recipients} = this.props;
+
+        const {composedTo} = this.state;
 
         return(
             <div>
                 <header>
                     <div className='To'>
+                        {recipients.map(user =>
+                            <div key={user._id} className='d-inline-block'>
+                                {user.firstName} {user.lastName}
+                            </div>
+                        )}
+
                         <input 
                             type="text" 
                             placeholder="To..."
                             onChange = {this.handleChange}
+                            value = {composedTo}
+                            onKeyDown = {this.deleteRecipient}
                         />
                     </div>
                </header>
@@ -41,6 +78,7 @@ class ComposeMsg extends Component{
                     <UserComposedTo 
                         key={user._id}
                         user = {user}
+                        addRecipient = {this.addRecipient}
                     />
                )}
             </div>
@@ -48,10 +86,4 @@ class ComposeMsg extends Component{
     }
 }
 
-const mapStateToProps = (state) => {
-    return{
-        queryResults: state.messages.queryResults
-    }   
-}
-
-export default connect(mapStateToProps)(ComposeMsg);
+export default ComposeMsg;

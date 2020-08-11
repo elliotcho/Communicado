@@ -64,7 +64,7 @@ app.post('/changename', changeName);
 app.post('/changepwd', changePwd); 
 app.post('/findusers', findUsers);
 app.post('/deleteUser', deleteUser); 
-
+ 
 // Friend Functional Routes
 app.get('/friends/:uid', getFriends);
 app.post('/friends/status', getFriendStatus);

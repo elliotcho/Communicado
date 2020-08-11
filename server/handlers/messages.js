@@ -3,6 +3,10 @@ const {User} = require('../dbschema');
 const getRecipients = async (data) =>{
     const {uid, name} = data;
 
+    if(name.trim() === ''){
+        return [];
+    }
+
     const user = await User.findOne({_id: uid});
     const friends = await User.find({_id: {$in: user.friends}});
 
