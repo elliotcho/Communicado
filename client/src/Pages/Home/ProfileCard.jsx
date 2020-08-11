@@ -1,65 +1,77 @@
 import React, { Component } from 'react'
 import './ProfileCard.css'
 import avatar from './obama.jpg';
+import loading from './loading.jpg';
+import moment from 'moment';
 
+// Component that shows a Users profile card on the home page
 class ProfileCard extends Component {
+
+
+    constructor(props){
+        super(props);
+        this.state ={};
+    }
+
+    async componentDidMount() {
+        
+
+
+       
+    }
+
+
     render() {
-        return(
-            <div>
-                <div class="card m-b-30"></div>
+        return (
+            <div className="ProfileCard col-lg-4">
+                <div className="card text-center d-flex justify-content-center homeCard w-100 h-100">
+
+                    {/* Card Header */}
+                    <div className="card-header rounded-0 cardTitle">
+                        <h1 className="display-4">My Profile</h1>
+                    </div>
+
+                    {/* Card Body */}
                     <div className="card-body">
-                        
-                            <div className ='row'>
-                                <div class="img-container col-12">
-                                    <img src={avatar} alt="user-profile" className="rounded-circle"></img>
-                                    <span class="activeIcon"></span>
-                                </div>
-                            </div>
-                        
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="xp-social-profile-title">
-                                        <h4 class="my-1 text-black">Bay Area, San Francisco, CA</h4>
-                                    </div>
-                                    <div class="xp-social-profile-subtitle">
-                                        <h3 class="mb-3 text-muted">Barack Obama</h3>
-                                    </div>
-                                    <div class="xp-social-profile-desc">
-                                        <p class="text-muted">44th President of the United States</p>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                        
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="xp-social-profile-media pt-3">
-                                        <h5 class="text-black my-1">45</h5>
-                                        <p class="mb-0 text-muted">Messages</p>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="xp-social-profile-followers pt-3">
-                                        <h5 class="text-black my-1">278</h5>
-                                        <p class="mb-0 text-muted">Friends</p>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="xp-social-profile-following pt-3">
-                                        <h5 class="text-black my-1">552</h5>
-                                        <p class="mb-0 text-muted">Days Joined</p>
-                                    </div>
-                                </div>
+                        <div className="row">
+                            {/* User Img */}
+                            <div className="img-fluid col-12 my-4">
+                                <img src={this.props.imgURL? this.props.imgURL: loading} alt="user-profile" className="rounded-circle userIMG" />
                             </div>
 
+                            {/* User Name */}
+                            <div className="col-12 mb-4">
+                                <h2>{this.props.firstName} {this.props.lastName}</h2>
+                            </div>
 
-                            
-                        
-                        
-                    </div>       
+                            {/* Number of friends */}
+                            <div className="col-12 mb-4">
+                                <h4 className="text-muted"> ______ friends</h4>
+                            </div>
+
+                            {/* Date Joined */}
+                            <div className="col-12 mb-3">
+                                <h4 className="text-muted">Joined {moment(this.props.created).calendar()}</h4>
+                            </div>
+                        </div>
+
+                        <br />
+                        {/* Button Row */}
+                        <div className="row btns">
+                            {/* Settings btn */}
+                            <div className="col-md-6 col-sm-12 mb-3">
+                                <button class="btn whiteButton btn-lg w-100">Settings</button>
+                            </div>
+                            {/* Profile button */}
+                            <div className="col-md-6 col-sm-12">
+                                <button class="btn whiteButton btn-lg w-100">Edit Profile</button>
+                            </div>
+                        </div>
+                    </div>                
                 </div>
+            </div>
         )
     }
 }
 
-export default ProfileCard
+export default ProfileCard;

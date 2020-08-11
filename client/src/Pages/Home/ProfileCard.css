@@ -1,63 +1,8 @@
-  .card-body .img-container{
-    text-align: center;
-    position: relative;
-  }
-  
-  .card-body img {
-    max-width:300px;
-    max-height:300px;
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
-  }
-  
-  .card-body .activeIcon {
-    position: absolute;
-    bottom: 0px;
-    left: 320x;
-    margin: 0px -20px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #ffffff;
-    background-color: #2bcd72;
-  }
-  
-  .card-body .text-black {
-      color: #555555 !important;
-  }
-  .card-body .mb-1, .card-body my-1 {
-      margin-bottom: .25rem!important;
-  }
-  .card-body .mt-1, .card-body .my-1 {
-      margin-top: .25rem!important;
-  }
-  .card-body .h5, .card-body h5 {
-      font-size: 4.25rem;
-  }
-  .card-body .h4, .card-body h4 {
-    padding: 8px;
-  }
-  .card-body .h3, .card-body h3 {
-
-    font-size: 3rem;
-    padding-top: 5px;
-  }
-
-  .card-body .card-header:first-child {
-      border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
-  }
-  .card-body .card-header {
-      border-bottom: 1px solid rgba(85, 85, 85, 0.05);
-  }
-  .card-body .bg-white {
-      background-color: limegreen !important;
-  }
-  
-  .card-body .card {
-      border: none;
-      box-shadow: 0 0 30px 0 rgba(200, 200, 200, 0.2);
-  }
-  .card-body .m-b-30 {
-      margin-bottom: 1px;
-  }
+/* control img size and make pic cover card */
+.userIMG {
+  max-width:300px;
+  max-height:300px;
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+}
