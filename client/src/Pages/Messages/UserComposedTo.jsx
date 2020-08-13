@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import loading from './loading.jpg';
+import './UserComposedTo.css';
 
 class UserComposedTo extends Component{
     constructor(){
@@ -33,12 +34,12 @@ class UserComposedTo extends Component{
         const {imgURL} = this.state;
 
         return(
-            <div style={{cursor: 'pointer'}} onClick={() => {addRecipient(user)}}>
-                <img src={imgURL? imgURL: loading}
-                    style = {{height: '50px', width: '50px'}}
-                />
-
-                {firstName} {lastName}
+            <div className='user-composed-to' onClick={() => {addRecipient(user)}}>
+                <img src={imgURL? imgURL: loading} id='test' alt ='profile pic'/>
+                
+                <p>
+                    {firstName} {lastName}
+                </p>
             </div>
         )
     }

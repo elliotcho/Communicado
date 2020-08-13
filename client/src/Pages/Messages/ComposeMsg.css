@@ -1,8 +1,19 @@
-.To {
-  
+.composer{
+  font-family: 'Tahoma';
 }
 
-.To button {
+.composer .user-block{
+  background: #68bbee;
+  margin: 10px;
+  padding: 5px;
+  display: inline-block;
+}
+
+.recipients-container{
+  background: black;
+}
+
+.recipients-container button {
     float: left;
     display: block;
     color: black;
@@ -13,38 +24,34 @@
     background-color: blue;
     border: none;
     cursor: pointer;
-  }
+}
 
+.recipients-container button:hover{
+  background-color: blue;
+}
 
+.recipients-container button:focus{
+  box-shadow: none;
+  outline: none;
+}
 
-  .To button:hover{
-    background-color: blue;
-  }
-
-  .To button:focus{
-    box-shadow: none;
-    outline: none;
-    
-  }
-
-  .To input:focus{
-    box-shadow: none;
-    outline: none;
-    
-  }
+.recipients-container input:focus{
+  box-shadow: none;
+  outline: none;
+}
   
-  .To .fa-search{
-      color:white;
-  }
+.recipients-container .fa-search{
+  color:white;
+}
 
-  .To input{
-    padding: 14px;
-    margin-bottom: 0px;
-    margin-right: 0px;
-    font-size: 17px;
-    width: 385px;
-    height: 59.5px;
-    background-color: black;
-    color: white;
-    border: none;
-  }
+.recipients-container input{
+  padding: 14px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  font-size: 17px;
+  width: 385px;
+  height: 59.5px;
+  background-color: black;
+  color: white;
+  border: none;
+}

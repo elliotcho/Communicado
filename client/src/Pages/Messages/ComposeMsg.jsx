@@ -50,19 +50,17 @@ class ComposeMsg extends Component{
         }
     }
     
-
-
     render(){
         const {queryResults, recipients} = this.props;
 
         const {composedTo} = this.state;
 
         return(
-            <div>
+            <div className ='composer'>
                 <header>
-                    <div className='To'>
+                    <div className='recipients-container'>
                         {recipients.map(user =>
-                            <div key={user._id} className='d-inline-block'>
+                            <div key={user._id} className='user-block d-inline-block'>
                                 {user.firstName} {user.lastName}
                             </div>
                         )}

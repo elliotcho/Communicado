@@ -1,16 +1,6 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-// Message Schema, has sender and recipient ID
-const MessageSchema = new schema({
-    sender_id: String,
-    recipient_id: String,
-    timeSent: Date,
-    timeRead: Date,
-    body: String,
-    read: Boolean
-})
-
 // Notification Schema
 const NotifSchema = new schema({
     friendRequest: Boolean,
@@ -31,13 +21,33 @@ const UserSchema = new schema({
     dateCreated: Date, 
     profilePic: String,
     friends: [String],
-    notifs: [NotifSchema]
+    notifs: [NotifSchema],
+    chats: [String]
+});
+
+const MessageSchema = new mongoose.Schema({
+    senderId: String,
+    content: String,
+    timeSent: Date,
+    readBy: [String],
+    seenBy: [String]
+});
+
+const ChatSchema = new mongoose.Schema({
+    members: [String],
+    createdAt: Date,
+    createdBy: String,
+    messages: [MessageSchema],
+    timeOfLastMessage: Date
 });
 
 // Model objects after the schema and export
 const User = mongoose.model('user', UserSchema);
-const Message = mongoose.model('message', MessageSchema)
-const Notification = mongoose.model('notification', NotifSchema)
+const Notification = mongoose.model('notification', NotifSchema);
+const Message = mongoose.model('message', MessageSchema);
+const Chat = mongoose.model('chat', ChatSchema);
 
 exports.User = User;
 exports.Notification = Notification;
+exports.Message = Message;
+exports.Chat= Chat;

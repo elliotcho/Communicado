@@ -39,7 +39,8 @@ const signup = (req, res) => {
                     dateCreated: Date.now(),
                     profilePic: null,
                     friends: [],
-                    notifs: []
+                    notifs: [],
+                    chats: []
                 });
 
                 // Save user to DB and return it to access, along with confirmation msg
