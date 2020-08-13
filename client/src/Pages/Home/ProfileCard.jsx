@@ -15,10 +15,11 @@ class ProfileCard extends Component {
 
     async componentDidMount() {
         
-
-
        
     }
+
+
+    
 
 
     render() {
@@ -46,12 +47,13 @@ class ProfileCard extends Component {
 
                             {/* Number of friends */}
                             <div className="col-12 mb-4">
-                                <h4 className="text-muted"> ______ friends</h4>
+                                <h4 className="text-muted"> {this.props.numFriends} friends</h4>
                             </div>
 
                             {/* Date Joined */}
                             <div className="col-12 mb-3">
                                 <h4 className="text-muted">Joined {moment(this.props.created).calendar()}</h4>
+                                
                             </div>
                         </div>
 

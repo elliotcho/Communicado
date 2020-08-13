@@ -2,7 +2,8 @@ const initState = {
     users: [], 
     friends: [],
     active: [],
-    inactive: []
+    inactive: [],
+    numFriends: 0
 };
 
 // Reducer for friend actions
@@ -40,6 +41,11 @@ const friendsReducer = (state=initState, action) =>{
             return{
                 ...state,
                 friends: [...action.friends]
+            }
+        case 'COUNT_FRIENDS':
+            return{
+                ...state,
+                numFriends: action.numFriends
             }
         default:
             return state;

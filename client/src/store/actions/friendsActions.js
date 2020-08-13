@@ -32,7 +32,16 @@ export const findFriends = (name, uid) =>{
 export const loadFriends = (uid) =>{
     return async (dispatch) =>{
         const response = await axios.get(`http://localhost:5000/friends/${uid}`)
+        
         dispatch({type: 'LOAD_FRIENDS', friends: response.data});
+    }
+}
+
+export const countFriends = (uid) =>{
+    return async (dispatch) =>{
+        const response = await axios.get(`http://localhost:5000/friends/${uid}`)
+        const friends = response.data;
+        dispatch({type: 'COUNT_FRIENDS', numFriends: friends.length});
     }
 }
 
