@@ -3,7 +3,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {io} from '../../App';
 import {getUserInfo, loadProfilePic, changeProfilePic} from '../../store/actions/profileActions';
-import {findUsers, clearUsers} from '../../store/actions/friendsActions';
+import {findUsers, clearUsers, loadFriends, countFriends} from '../../store/actions/friendsActions';
 import './Home.css';
 import HomeFind from './HomeFind'
 import ProfileCard from './ProfileCard'
@@ -15,6 +15,8 @@ class Home extends Component{
         const {uid} = this.props;
         this.props.getUserInfo(uid);
         this.props.loadProfilePic(uid);
+        this.props.loadFriends(uid);
+        this.props.countFriends(uid);
         io.emit('GET_ONLINE_FRIENDS', {uid});
     }
 
@@ -29,8 +31,9 @@ class Home extends Component{
             return <Redirect to='/'/>
         }
 
-        const {active, users, firstName, lastName, imgURL, uid, findUsers, dateCreated} = this.props;
+        const {active, users, firstName, lastName, imgURL, uid, findUsers, dateCreated, numFriends} = this.props;
       
+       
         return (
             <div className='home'>
                 {/* Make container 100% height of the 92vh from css */}
@@ -39,8 +42,8 @@ class Home extends Component{
                         
                         <div class="col"></div>
 
-                        <HomeFind uid={uid} findUsers={findUsers} users={users}/>    
-                        <ProfileCard uid={uid} firstName={firstName} lastName={lastName} imgURL={imgURL}/>
+                        <HomeFind uid={uid} findUsers={findUsers} users={users}/>     
+                        <ProfileCard uid={uid} firstName={firstName} lastName={lastName} imgURL={imgURL} numFriends={numFriends}/>
                         <OnlineFriendList active={active}/>
                         <div class="col"></div>
 
@@ -59,7 +62,8 @@ const mapStateToProps = (state) => {
         dateCreated: state.profile.dateCreated,
         imgURL: state.profile.imgURL,
         active: state.friends.active,
-        users: state.friends.users
+        users: state.friends.users,
+        numFriends: state.friends.numFriends
     }
 };
 
@@ -70,8 +74,10 @@ const mapDispatchToProps = (dispatch) => {
         loadProfilePic: (uid) => {dispatch(loadProfilePic(uid));},
         changeProfilePic: (uid, imgFile) => {dispatch(changeProfilePic(uid, imgFile));},
         findUsers: (name, uid) => {dispatch(findUsers(name, uid));},
-        clearUsers: () => {dispatch(clearUsers());}
+        clearUsers: () => {dispatch(clearUsers());},
+        loadFriends: (uid) =>  {dispatch(loadFriends(uid));},
+        countFriends: (uid) =>  {dispatch(countFriends(uid));},
     }
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home)); 
