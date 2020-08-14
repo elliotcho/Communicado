@@ -9,3 +9,9 @@ export const updateRecipients = (recipients) =>{
         dispatch({type: 'UPDATE_RECIPIENTS', recipients});
     }
 }
+
+export const clearComposer = () =>{
+    return (dispatch) =>{
+        dispatch({type: 'CLEAR_COMPOSER'});
+    }
+}

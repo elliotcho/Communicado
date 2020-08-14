@@ -3,7 +3,8 @@ import {withRouter, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import {
-    updateRecipients
+    updateRecipients,
+    clearComposer
 } from '../../store/actions/messagesActions';
 
 import MessageList from './MessageList'
@@ -36,7 +37,8 @@ class Messages extends Component {
             uid,
             queryResults,
             updateRecipients,
-            recipients
+            recipients,
+            clearComposer
         } = this.props;
 
         if(!uid){
@@ -72,6 +74,7 @@ class Messages extends Component {
                                     queryResults = {queryResults}
                                     updateRecipients = {updateRecipients}
                                     recipients = {recipients}
+                                    clearComposer = {clearComposer}
                                 />)
                                 : <ExpandChat/>
                             }
@@ -94,7 +97,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-        updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));}
+        updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));},
+        clearComposer: () => {dispatch(clearComposer());}
     }
 }
 
