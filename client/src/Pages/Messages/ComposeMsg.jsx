@@ -49,6 +49,10 @@ class ComposeMsg extends Component{
             updateRecipients(recipients);
         }
     }
+
+    componentWillUnmount(){
+        this.props.clearComposer();
+    }
     
     render(){
         const {queryResults, recipients} = this.props;
