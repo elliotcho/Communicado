@@ -1,40 +1,27 @@
- .msg{
-    position: absolute;
-    bottom:0px;
+ .send-msg{
+    position: fixed;
     width: 100%;
+    background: #6262b4;
+    bottom: 0;
+    padding: 15px;
+    font-family: 'Tahoma';
 }
 
-.msg input{
-    padding: 15px 20px;
-    box-sizing: border-box;
-    background: #eee;
-    border: 0;
-    display: block;
-    width: 100%;
-    background: #fff;
-    border-bottom: 1px solid #eee;
-    font-family: Nunito;
-    font-size: 16px;
-   
+.send-msg textarea{
+    position: relative;
+    top: 10px;
+    resize: none;
+    max-width: 50%;
+    display: inline-block;
+    overflow: none;
+    max-height: 200px;
 }
 
-.msg button{
-    background: #036055;
-    color: #fff;
-    font-size: 18px;
-    border: 0;
-    padding: 12px 0;
-    width: 100%;
-    border-radius: 0 0 2px 2px;
+.send-msg label{
+    position: relative;
+    font-size: 2rem;
+    margin-left: 3rem;
+    top: 3px;
     cursor: pointer;
-}
-
-.msg button:focus{
-    box-shadow: none;
-    outline: none;
-}
-
-.msg input:focus{
-    box-shadow: none;
-    outline: none;
+    color: lightgray;
 }

@@ -52,7 +52,7 @@ class Navbar extends Component {
                                 </li>
                                 
                                 <li>
-                                    <Link to='/messages' className="nav-link pr-lg-5">Messages</Link>
+                                    <Link to='/chat/new' className="nav-link pr-lg-5">Messages</Link>
                                 </li>
 
                                 <li>

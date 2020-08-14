@@ -1,3 +1,39 @@
+.Messages{
+    position: fixed;
+    width: 100%;
+}
+
 .Messages .container-fluid {
     padding: 0;
+}
+
+.compose{
+    position: relative;
+    background: lightgray;
+    height: 60px;
+    margin: 0;
+}
+  
+.compose h3{
+    display: inline-block;
+    text-align: left;
+    margin-left: 20px;
+    line-height: 60px;
+    vertical-align: bottom;
+    font-family: 'Helvetica';
+}
+  
+.compose .fa-paper-plane,
+.compose .fa-times{
+    color: blue;
+    cursor: pointer;
+    float: right;
+    font-size: 2rem;
+    margin: 12px;
+    margin-right: 20px;
+}
+
+.compose .fa-paper-plane:hover,
+.compose .fa-times:hover{
+    color: #6d6d6d;
 }

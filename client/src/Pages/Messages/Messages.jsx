@@ -1,64 +1,80 @@
 import React, { Component } from 'react';
+import {withRouter, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import {
-    updateRecipients
+    updateRecipients,
+    clearComposer
 } from '../../store/actions/messagesActions';
 
 import MessageList from './MessageList'
+import SearchMsgs from './SearchMsgs';
 import ExpandChat from './ExpandChat';
-import './Messages.css'
 import SendMsg from './SendMsg'
-import ComposeMsg from './ComposeMsg'
+import ComposeMsg from './ComposeMsg';
+import './Messages.css';
 
 class Messages extends Component {
-
     constructor(){
-        super()
-        this.state={
-            isHidden: false
-        }
-        this.ToggleHidden= this.ToggleHidden.bind(this)
+        super();
+        this.handleComposer = this.handleComposer.bind(this);
     }
 
+    handleComposer(){
+        const {id} = this.props.match.params;
 
-    ToggleHidden(){
-        const {isHidden} = this.state
-        //const isHidden= this.state.isHidden
+        if(id === 'new'){
+            this.props.history.push('/chat/home');
+        }
 
-        this.setState({
-            isHidden: !isHidden
-        })
-
-        
+        else{
+            this.props.history.push('/chat/new');
+        }
     }
 
     render() {
-        const {isHidden}= this.state;
-
         const {
             uid,
             queryResults,
             updateRecipients,
-            recipients
+            recipients,
+            clearComposer
         } = this.props;
+
+        if(!uid){
+            return <Redirect to ='/'/>
+        }
+
+        const chatId = this.props.match.params.id;
 
         return (
             <div className="Messages">
                 <div className="container-fluid">
                     <div className="row no-gutters">
                         <div className="col-4">
-                            <MessageList ToggleHidden= {this.ToggleHidden}/>
+                            <header className='compose'> 
+                                <h3>Messages</h3>
+                                
+                                
+                                {chatId === 'new'?
+                                    (<i className='fa fa-times' onClick={this.handleComposer}/>):
+                                    (<i className="fas fa-paper-plane" onClick={this.handleComposer}/>)
+                                }               
+                            </header>
+
+                            <SearchMsgs/>
+                            <MessageList/>
                         </div>
 
                         <div className="expandChat-container col-8">
                             
-                            {isHidden? 
+                            {chatId === 'new'? 
                                 (<ComposeMsg 
                                     uid={uid}
                                     queryResults = {queryResults}
                                     updateRecipients = {updateRecipients}
                                     recipients = {recipients}
+                                    clearComposer = {clearComposer}
                                 />)
                                 : <ExpandChat/>
                             }
@@ -81,8 +97,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-        updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));}
+        updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));},
+        clearComposer: () => {dispatch(clearComposer());}
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Messages);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Messages));

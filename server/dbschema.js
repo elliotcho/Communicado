@@ -25,7 +25,7 @@ const UserSchema = new schema({
     chats: [String]
 });
 
-const MessageSchema = new mongoose.Schema({
+const MessageSchema = new schema({
     senderId: String,
     content: String,
     timeSent: Date,
@@ -33,7 +33,7 @@ const MessageSchema = new mongoose.Schema({
     seenBy: [String]
 });
 
-const ChatSchema = new mongoose.Schema({
+const ChatSchema = new schema({
     members: [String],
     createdAt: Date,
     createdBy: String,
