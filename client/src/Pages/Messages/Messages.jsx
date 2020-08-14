@@ -12,6 +12,7 @@ import SearchMsgs from './SearchMsgs';
 import ExpandChat from './ExpandChat';
 import SendMsg from './SendMsg'
 import ComposeMsg from './ComposeMsg';
+
 import './Messages.css';
 
 class Messages extends Component {

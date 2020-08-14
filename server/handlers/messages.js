@@ -1,10 +1,15 @@
 const {User} = require('../dbschema');
 
 const getRecipients = async (data) =>{
-    const {uid, name} = data;
-
+    const {uid,recipients, name} = data;
+    const recipientIDs={}
+    
     if(name.trim() === ''){
         return [];
+    }
+
+    for(let i=0;i<recipients.length;i++){
+        recipientIDs[recipients[i]._id]=true
     }
 
     const user = await User.findOne({_id: uid});
@@ -22,7 +27,7 @@ const getRecipients = async (data) =>{
         
         let query = name.split(" ").join("").toLowerCase();
 
-        if((firstName + lastName).startsWith(query)){
+        if((firstName + lastName).startsWith(query) && !recipientIDs[friend._id]){
             result.push(friend);
             j++;
         }

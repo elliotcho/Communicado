@@ -18,10 +18,10 @@ class ComposeMsg extends Component{
     }
 
     handleChange(e){
-        const {uid} = this.props;
+        const {uid, recipients} = this.props;
 
         io.emit('GET_RECIPIENTS', {
-            uid, name: e.target.value
+            uid,recipients, name: e.target.value
         });
 
         this.setState({composedTo: e.target.value});
@@ -35,7 +35,6 @@ class ComposeMsg extends Component{
         io.emit('GET_RECIPIENTS', {
             uid, name: ''
         });
-
         updateRecipients([...recipients, user]);
     }
 
@@ -51,7 +50,7 @@ class ComposeMsg extends Component{
     }
 
     componentWillUnmount(){
-        this.props.clearComposer();
+        this.props.clearComposer()
     }
     
     render(){
