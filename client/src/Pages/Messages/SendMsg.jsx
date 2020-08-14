@@ -5,6 +5,7 @@ class SendMsg extends Component{
     constructor(){
         super();
         this.pressEnter = this.pressEnter.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     pressEnter(e){
@@ -31,16 +32,23 @@ class SendMsg extends Component{
         }
     }
 
+    handleSubmit(e) {
+        e.preventDefault()
+        
+        this.msg.value = ""
+    }
+
     render(){
         return(
             <div className= "send-msg">
-                <form ref = {ele => this.msgForm = ele}>
+                <form ref = {ele => this.msgForm = ele } onSubmit= {this.handleSubmit}>
                     <textarea
                         className =' form-control'
                         rows = '1'
                         placeholder = 'Type a message...'
                         ref = {ele => this.msg = ele}
-                        onKeyDown = {this.pressEnter}
+                        onKeyDown = {this.pressEnter} 
+
                     />
 
                     <label>
