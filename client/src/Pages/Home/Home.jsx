@@ -31,7 +31,7 @@ class Home extends Component{
             return <Redirect to='/'/>
         }
 
-        const {active, users, firstName, lastName, imgURL, uid, findUsers, dateCreated, numFriends} = this.props;
+        const {active, users, firstName, lastName, imgURL, uid, findUsers, dateCreated, numFriends, changeProfilePic} = this.props;
       
        
         return (
@@ -42,6 +42,7 @@ class Home extends Component{
                         
                         <div class="col"></div>
 
+
                         <HomeFind uid={uid} findUsers={findUsers} users={users}/>  
 
                         <ProfileCard 
@@ -51,8 +52,9 @@ class Home extends Component{
                             imgURL={imgURL} 
                             numFriends={numFriends}
                             dateCreated = {dateCreated}
+                            changeProfilePic={changeProfilePic}
                         />
-                        
+                      
                         <OnlineFriendList active={active}/>
                         <div class="col"></div>
 
@@ -62,6 +64,7 @@ class Home extends Component{
         )
     }
 }
+
 // Map all variables to props using redux
 const mapStateToProps = (state) => {
     return {
