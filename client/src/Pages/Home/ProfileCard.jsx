@@ -11,6 +11,7 @@ class ProfileCard extends Component {
         this.changeProfilePic = this.changeProfilePic.bind(this);
     }
 
+    // Changes the picture of a user with the input file provided using redux function from props
     changeProfilePic(evt) {
         evt.preventDefault();
         const imgURL = (evt.target.files[0])
