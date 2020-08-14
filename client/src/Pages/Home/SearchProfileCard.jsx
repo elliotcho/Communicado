@@ -83,8 +83,8 @@ class SearchProfileCard extends Component {
                     <div class="row sideBar-body">
                     
                         <div class="col-sm-3 sideBar-avatar">
-                            <div class="avatar-icon">
-                                <img src={imgURL? imgURL:loading}></img>
+                            <div>
+                                <img src={imgURL? imgURL:loading} class="avatar-icon"></img>
                             </div>
                         </div>
                         <div class="col-sm-9 sideBar-main">
@@ -103,7 +103,6 @@ class SearchProfileCard extends Component {
                                     }     
                                 </div>  
                         </div>
-                    
                     </div>
                 </div>
             </div>

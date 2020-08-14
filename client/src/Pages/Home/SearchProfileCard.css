@@ -1,70 +1,44 @@
+/* Card Body */
+.sideBar-body {
+  padding: 10px;
+  border-bottom: 2px solid #f7f7f7;
+  height: 100px;
+  cursor: default;
+}
+  
+.sideBar-body:hover {
+  background-color: #f2f2f2;
+}
+  
+/* Avator Icon */
+.avatar-icon {
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+}
+  
+.sideBar-name {
+  padding: 10px !important;
+}
+  
+.searchProfileCard .name-meta {
+  position: relative;
+  bottom: -20px;
+  font-size: 100%;
+  padding: 1% !important;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #000;
+}
+  
+.searchProfileCard .sideBar-time {
+  padding: 10px !important;
+  position: relative;
+  font-size: 12px;
+  bottom: 22px;
+}
 
-  
-  .searchProfileCard .sideBar {
-    padding: 0 !important;
-    margin: 0 !important;
-    background-color: #fff;
-    overflow-y: auto;
-    border: 1px solid #f7f7f7;
-    height: calc(100% - 120px);
-  }
-  
-  .searchProfileCard .sideBar-body {
-    position: relative;
-    padding: 10px !important;
-    border-bottom: 2px solid #f7f7f7;
-    height: 100px;
-    margin: 0 !important;
-    cursor: pointer;
-    
-  }
-  
-  .searchProfileCard .sideBar-body:hover {
-    background-color: #f2f2f2;
-  }
-  
-  .searchProfileCard .sideBar-avatar {
-    text-align: center;
-    padding: 0 !important;
-    
-  }
-  
-  .searchProfileCard .avatar-icon img {
-    border-radius: 50%;
-    height: 80px;
-    width: 80px;
-  }
-  
-  .searchProfileCard .sideBar-main {
-    padding: 0 !important;
-    
-
-  }
-  
-  .searchProfileCard .sideBar-main .row {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-  
-  .searchProfileCard .sideBar-name {
-    padding: 10px !important;
-  }
-  
-  .searchProfileCard .name-meta {
-    position: relative;
-    bottom: -20px;
-    font-size: 100%;
-    padding: 1% !important;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #000;
-  }
-  
-  .searchProfileCard .sideBar-time {
-    padding: 10px !important;
-    position: relative;
-    font-size: 12px;
-    bottom: 22px;
-    
-  }
+.searchProfileCard i {
+  cursor: pointer;
+}
