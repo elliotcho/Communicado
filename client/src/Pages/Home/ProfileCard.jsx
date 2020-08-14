@@ -52,7 +52,7 @@ class ProfileCard extends Component {
 
                             {/* Date Joined */}
                             <div className="col-12 mb-3">
-                                <h4 className="text-muted">Joined {moment(this.props.created).calendar()}</h4>
+                                <h4 className="text-muted">Joined {moment(this.props.dateCreated).calendar()}</h4>
                                 
                             </div>
                         </div>

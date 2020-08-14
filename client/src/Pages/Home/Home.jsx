@@ -42,8 +42,17 @@ class Home extends Component{
                         
                         <div class="col"></div>
 
-                        <HomeFind uid={uid} findUsers={findUsers} users={users}/>     
-                        <ProfileCard uid={uid} firstName={firstName} lastName={lastName} imgURL={imgURL} numFriends={numFriends}/>
+                        <HomeFind uid={uid} findUsers={findUsers} users={users}/>  
+
+                        <ProfileCard 
+                            uid={uid} 
+                            firstName={firstName} 
+                            lastName={lastName} 
+                            imgURL={imgURL} 
+                            numFriends={numFriends}
+                            dateCreated = {dateCreated}
+                        />
+                        
                         <OnlineFriendList active={active}/>
                         <div class="col"></div>
 
