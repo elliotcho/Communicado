@@ -33,6 +33,8 @@ class HomeFind extends Component {
 
 
     render() {
+        const {uid} = this.props;
+
         return (
             <div className="HomeFind col-lg-3">
                 <div className="card text-center d-flex justify-content-center homeCard w-100 h-100">
@@ -57,7 +59,7 @@ class HomeFind extends Component {
                         </form> 
                         {/* For each user found, render new Profile Card */}
                         {this.props.users.map(user =>
-                            <SearchProfileCard key={user._id} user={user}/>      
+                            <SearchProfileCard key={user._id} user={user} uid={uid}/>      
                         )}
                     </div>
                 </div>
