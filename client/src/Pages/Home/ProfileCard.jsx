@@ -1,26 +1,22 @@
 import React, { Component } from 'react'
-import './ProfileCard.css'
-import avatar from './obama.jpg';
 import loading from './loading.jpg';
 import moment from 'moment';
+import { Link } from 'react-router-dom'
+import './ProfileCard.css'
 
 // Component that shows a Users profile card on the home page
 class ProfileCard extends Component {
-
-
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state ={};
+        this.changeProfilePic = this.changeProfilePic.bind(this);
     }
 
-    async componentDidMount() {
-        
-       
+    changeProfilePic(evt) {
+        evt.preventDefault();
+        const imgURL = (evt.target.files[0])
+        const {changeProfilePic, uid} = this.props;
+        changeProfilePic(uid, imgURL);
     }
-
-
-    
-
 
     render() {
         return (
@@ -53,20 +49,41 @@ class ProfileCard extends Component {
                             {/* Date Joined */}
                             <div className="col-12 mb-3">
                                 <h4 className="text-muted">Joined {moment(this.props.created).calendar()}</h4>
-                                
                             </div>
+                            
                         </div>
 
                         <br />
                         {/* Button Row */}
-                        <div className="row btns">
+                        <div className="row btns d-flex justify-content-center align-items-center">
+                            
                             {/* Settings btn */}
                             <div className="col-md-6 col-sm-12 mb-3">
-                                <button class="btn whiteButton btn-lg w-100">Settings</button>
+                                <Link to='/settings'>
+                                <button class="btn whiteButton btn-lg w-100 h-100">
+                                        <label htmlFor="goToSettings" className="settingsLabel">
+                                            Settings
+                                        </label>
+                                </button> 
+                                </Link>     
                             </div>
+                            
                             {/* Profile button */}
-                            <div className="col-md-6 col-sm-12">
-                                <button class="btn whiteButton btn-lg w-100">Edit Profile</button>
+                            <div className="col-md-6 col-sm-12 mb-3">
+                                <button class="btn whiteButton btn-lg w-100 h-100">
+                                        <label htmlFor="upload" className="inputLabel">
+                                            Edit Picture
+                                        </label>
+                                        <input 
+                                            onChange={this.changeProfilePic}
+                                            className="fileInput"
+                                            id='upload'
+                                            type='file'
+                                            name='upload'
+                                            accept='jpg jpeg png'
+                                            style={{display: 'none'}}
+                                        />        
+                                </button>
                             </div>
                         </div>
                     </div>                
@@ -75,5 +92,6 @@ class ProfileCard extends Component {
         )
     }
 }
+
 
 export default ProfileCard;
