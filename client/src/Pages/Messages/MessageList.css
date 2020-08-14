@@ -2,57 +2,6 @@
     background-color: lightgray;
     height: 100vh;
     overflow-y: auto;
-    
-}
-
-.searchMsgList{
-    overflow: hidden;
-    margin-top: 2px;
-  
-}
-
-.searchMsgList button {
-    float: left;
-    display: block;
-    color: black;
-    text-align: center;
-    padding: 17.5px 24.3px;
-    text-decoration: none;
-    font-size: 17px;
-    background-color: blue;
-    border: none;
-    cursor: pointer;
-    margin-top: 1.5px;
-}
-
-.searchMsgList button:hover{
-  background-color: blue;    
-}
-
-.searchMsgList button:focus{
-  box-shadow: none;
-  outline: none;    
-}
-
-.searchMsgList input:focus{
-  box-shadow: none;
-  outline: none;
-}
-  
-.searchMsgList .fa-search{
-  color:white;
-}
-
-.searchMsgList input{
-  float: right;
-  padding: 14px;
-  margin-top: 1.5px;
-  margin-bottom: 0px;
-  margin-right: 0px;
-  font-size: 17px;
-  width: 385px;
-  height: 59.5px;
-  border: none;    
 }
 
 @media screen and (max-width: 600px) {

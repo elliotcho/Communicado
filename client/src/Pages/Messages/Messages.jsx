@@ -7,6 +7,7 @@ import {
 } from '../../store/actions/messagesActions';
 
 import MessageList from './MessageList'
+import SearchMsgs from './SearchMsgs';
 import ExpandChat from './ExpandChat';
 import SendMsg from './SendMsg'
 import ComposeMsg from './ComposeMsg';
@@ -55,10 +56,11 @@ class Messages extends Component {
                                 
                                 {chatId === 'new'?
                                     (<i className='fa fa-times' onClick={this.handleComposer}/>):
-                                    (<i className="fa fa-paper-plane-o" onClick={this.handleComposer}/>)
+                                    (<i className="fas fa-paper-plane" onClick={this.handleComposer}/>)
                                 }               
                             </header>
 
+                            <SearchMsgs/>
                             <MessageList/>
                         </div>
 
