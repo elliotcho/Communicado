@@ -10,7 +10,7 @@ const getRecipients = async (data) =>{
     const user = await User.findOne({_id: uid});
     const friends = await User.find({_id: {$in: user.friends}});
 
-    let j =0;
+    let j = 0;
 
     const result = [];
 
