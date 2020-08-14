@@ -16,14 +16,12 @@ const messagesReducer = (state=initState, action) =>{
                 ...state,
                 recipients: [...action.recipients]
             }
-        
         case 'CLEAR_COMPOSER':
-            return {
+            return{
                 ...state,
-                queryResults:[],
-                recipients:[]
+                queryResults: [],
+                recipients: []
             }
-
         default:
             return state;
     }
