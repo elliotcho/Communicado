@@ -69,15 +69,18 @@ class App extends Component{
             { /*If ID required for route, show Navbar*/}
             <BrowserRouter>   
                {uid? <Navbar newNotif = {newNotif}/>: null}
-               <Switch>
-               {/* Router that switches paths based on route */}
-                  <Route exact path='/' render = {()=> uid? <Home uid ={uid}/>: <Login uid ={uid}/>}/>
-                  <Route path='/chat/:id' render={() => <Messages uid={uid}/>}/>
-                  <Route path='/signup' render ={() => <Signup uid ={uid}/>}/>
-                  <Route path='/settings' component = {Settings}/>
-                  <Route path='/friends' component = {Friends}/>
-                  <Route path='/notifications' component={Notifications}/>
-               </Switch>
+
+               <div style = {uid? {marginTop: '70px'}: null}>
+                  <Switch>
+                  {/* Router that switches paths based on route */}
+                     <Route exact path='/' render = {()=> uid? <Home uid ={uid}/>: <Login uid ={uid}/>}/>
+                     <Route path='/chat/:id' render={() => <Messages uid={uid}/>}/>
+                     <Route path='/signup' render ={() => <Signup uid ={uid}/>}/>
+                     <Route path='/settings' component = {Settings}/>
+                     <Route path='/friends' component = {Friends}/>
+                     <Route path='/notifications' component={Notifications}/>
+                  </Switch>
+               </div>
                
                <ToastContainer/>
             </BrowserRouter>

@@ -54,7 +54,7 @@ class Messages extends Component {
                     <div className="row no-gutters">
                         <div className="col-4">
                             <header className='compose'> 
-                                <h3>Messages</h3>
+                                <h3>Chats</h3>
                                 
                                 
                                 {chatId === 'new'?

@@ -20,13 +20,13 @@
     opacity: 0.8;
 }
 
-.navbar-brand{
+.login .navbar-brand{
     font-size: 30px;
     color: #E8E8E8;
     font-family: 'Odibee Sans', cursive;
 }
 
-.navbar-toggler-icon{
+.login .navbar-toggler-icon{
     background-image: url('https://mdbootstrap.com/img/svg/hamburger1.svg?color=fff');
 }
 

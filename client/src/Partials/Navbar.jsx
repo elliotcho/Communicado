@@ -36,7 +36,7 @@ class Navbar extends Component {
         const notifColor = (newNotif) ? 'nav-link text-danger' : 'nav-link';
 
         return(
-            <div>
+            <div className ='navbar-container'>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed">
                     <div className="container-fluid">
                         <Link to='/' className="navbar-brand">Communicado</Link>
