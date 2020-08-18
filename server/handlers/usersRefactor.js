@@ -85,7 +85,7 @@ const handleProfilePic = (upload, fs, path) => async (req, res) => {
                 });
             }
             // Update user
-            await User.updateOne({_id: req.body.uid}, {profilePic: req.file.filename});
+            await User.updateOne({_id: req.body}, {profilePic: req.file.filename});
             res.json({msg: 'Success'});
         });
     } 
