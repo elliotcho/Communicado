@@ -18,6 +18,7 @@ mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Comm
 mongoose.connection.once('open', () => {
     console.log("Connected to Database");
 }).on('error', err => {console.log(err);});
+
 // Set up image storage into images folder
 const storage = multer.diskStorage({
     destination: './images',
@@ -55,6 +56,12 @@ const {
     getFriendStatus
 } = require('./handlers/notifications');
 
+const {
+    createChat,
+    getUserChats,
+    getMemberNames
+} = require('./handlers/messages');
+
 // User funtional routes 
 app.post('/', login)
 app.post('/signup', signup);
@@ -73,7 +80,12 @@ app.post('/friends/status', getFriendStatus);
 app.put('/notifs/:uid', readNotifs);
 app.get('/unreadnotifs/:uid', checkUnreadNotifs);
 
+//chat/message functional routes
+app.post('/chats/create', createChat);
+app.get('/chats/user/:uid', getUserChats);
+app.post('/chats/members', getMemberNames);
+
 //Specify localhost port number
 const server = app.listen(5000);
 
-require('./handlers/socketEvents')(socket(server));
+require('./handlers/socketEvents')(socket(server)); 

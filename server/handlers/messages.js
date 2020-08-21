@@ -1,4 +1,4 @@
-const {User} = require('../dbschema');
+const {User, Chat, Message} = require('../dbschema');
 
 const getRecipients = async (data) =>{
     const {uid,recipients, name} = data;
@@ -36,6 +36,91 @@ const getRecipients = async (data) =>{
     return result;
 }
 
+const createChat = async (req, res) =>{
+    const {uid, recipients, content} = req.body;
+
+    const members = recipients.map(user => user._id);
+
+    //add user creating the chat as a member
+    if(!members.includes(uid)){
+        members.push(uid);
+    }
+
+    const newMessage = new Message({
+        senderId: uid,
+        content,
+        timeSent: new Date(),
+        readBy: [uid],
+        seenBy: [uid]
+    });
+
+    const newChat = new Chat({
+        members,
+        createdAt: new Date(),
+        createdBy: uid,
+        messages: [newMessage],
+        timeOfLastMessage: new Date()
+    });
+
+    const chat = await newChat.save();
+
+    for(let i=0;i<members.length;i++){
+        const user = await User.findOne({_id: members[i]});
+
+        const {chats} = user;
+
+        await User.updateOne({_id: members[i]}, {chats: [...chats, chat._id]});
+    }
+
+    res.json({chatId: chat._id});
+}
+
+const getUserChats = async (req, res) =>{
+    const {uid} = req.params;
+
+    let userChats = [];
+
+    const user = await User.findOne({_id: uid});
+    const {chats} = user;
+
+    for(let i=0;i<chats.length;i++){
+        const chat = await Chat.findOne({_id: chats[i]});
+        userChats.push(chat);
+    }
+
+    res.json(userChats);
+}
+
+const getMemberNames = async (req, res) =>{
+    const {uid, chatId} = req.body;
+
+    let result = '';
+
+    const chat = await Chat.findOne({_id: chatId});
+    const {members} = chat;
+
+    members.splice(members.indexOf(uid), 1);
+    
+    for(let i=0;i<members.length;i++){
+        const user = await User.findOne({_id: members[i]});
+
+        const {firstName, lastName} = user;
+
+        if(i === members.length - 1){
+            result+=`${firstName} ${lastName}`;
+        }
+
+        else{
+            result+=`${firstName} ${lastName}, `;
+        }
+    }
+
+    res.json({memberNames: result});
+}
+
 module.exports = {
-    getRecipients
+    getRecipients,
+    createChat,
+    getUserChats,
+    getMemberNames
 }
