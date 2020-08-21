@@ -1,12 +1,6 @@
-.navbar-container{
-    position: fixed;
-    top: 0;
-    z-index: 1;
-    width: 100%;
-}
-
 .navbar {
     margin-bottom: 0 !important;
+    height: 8vh;
 }
 
 .navbar-brand {
@@ -23,8 +17,4 @@
 .navbar-nav .nav-link {
     margin-right: 24px;
     cursor: pointer;
-}
-
-nav {
-    margin-bottom: 8px;
 }
