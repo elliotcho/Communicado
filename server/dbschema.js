@@ -42,6 +42,7 @@ const ChatSchema = new schema({
 });
 
 // Model objects after the schema and export
+//Makes the schema into an object we can instantiate, Ex. const user = new User
 const User = mongoose.model('user', UserSchema);
 const Notification = mongoose.model('notification', NotifSchema);
 const Message = mongoose.model('message', MessageSchema);

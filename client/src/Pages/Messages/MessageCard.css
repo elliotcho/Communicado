@@ -2,6 +2,7 @@
     background-color: #DFDFDF;
     width: 100%;
     border-radius: 0;
+    cursor: pointer;
 }
 
 .MessageCard img {
