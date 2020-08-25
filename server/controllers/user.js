@@ -1,4 +1,5 @@
 const {User} = require('../models/user');
+const {Notification} = require('../models/notif');
 
 const {upload} = require('../app');
 const path = require('path');
@@ -177,6 +178,16 @@ exports.deleteUser = async  (req,res) =>{
     const userFriends = await User.find({_id: {$in: user.friends}});
     const sentNotifs = await Notification.find({senderId: uid});
 
+    //delete profile pic if it exists
+    const {profilePic} = user;
+    
+    if(profilePic !== null){
+        fs.unlink(path.join(__dirname, '../', `images/${profilePic}`), err =>{
+            if(err){
+                console.log(err);
+            }
+        });
+    }
 
     //delete all the notifications that other users have received from this one
     for(let i=0;i<sentNotifs.length;i++){

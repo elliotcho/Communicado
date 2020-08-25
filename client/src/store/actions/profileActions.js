@@ -86,7 +86,7 @@ export const changePwd = (uid, currPwd, newPwd, confirmPwd) => {
 export const deleteUser = (uid) =>{
     return async () =>{ 
         // Delete user from DB
-        const response = await axios.delete(`http://localhost:5000/${uid}`);
+        const response = await axios.delete(`http://localhost:5000/users/${uid}`);
         
         const {msg} =response.data;
         alert(msg);
