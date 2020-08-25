@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './MessageCard.css';
+import {withRouter} from 'react-router-dom';
 
 class MessageCard extends Component {
     constructor(){
@@ -8,6 +9,13 @@ class MessageCard extends Component {
         this.state = {
             memberNames: 'Loading Users...'
         }
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+
+    handleClick(){
+        const {chatId} = this.props;
+        this.props.history.push(`/chat/${chatId}`);
     }
 
     async componentDidMount(){
@@ -23,7 +31,7 @@ class MessageCard extends Component {
         const {memberNames} = this.state;
 
         return (
-            <div class="MessageCard card flex-row flex-wrap">
+            <div onClick={this.handleClick}class="MessageCard card flex-row flex-wrap">
                 <div class="card-header border-0">
                     <img src="//placehold.it/50" alt="profile pic" />
                 </div>
@@ -35,4 +43,4 @@ class MessageCard extends Component {
         )
     }
 }
-export default MessageCard;
+export default withRouter(MessageCard);
