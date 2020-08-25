@@ -6,7 +6,7 @@ const {declineReq, acceptReq, changeFriendStatus, getOnlineFriends} = require('.
 const {getRecipients, createChat} = require('./messages');
 
 const active = {};
-
+//io= socket(server) from app.js
 module.exports = (io) => {
     io.on('connection', socket => {
         // JOIN SERVER --- store socket id

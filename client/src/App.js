@@ -22,9 +22,9 @@ let io;
 class App extends Component{
    constructor(props){
       super(props);
-
+      //io only instantiated once and we dont want override this cnonnection
       io = socket('http://localhost:5000');
-
+      //importing all these socket.on events from server (socketEvents.js)
       handleSocketEvents(
          io, 
          props.colorNavbar,

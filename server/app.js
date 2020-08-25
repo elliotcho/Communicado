@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+//used for image uplaoding
 const multer=require('multer');
 const fs=require('fs');
 const path=require('path');
@@ -63,6 +64,7 @@ const {
 } = require('./handlers/messages');
 
 // User funtional routes 
+//if client makes post request to local host, run this function
 app.post('/', login)
 app.post('/signup', signup);
 app.post('/userinfo', getUserInfo);
@@ -88,4 +90,6 @@ app.post('/chats/members', getMemberNames);
 //Specify localhost port number
 const server = app.listen(5000);
 
-require('./handlers/socketEvents')(socket(server)); 
+
+//Here we pass socket server as a parameter to the arrow io function in socketEvents
+require('./handlers/socketEvents')(socket(server));
