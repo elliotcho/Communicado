@@ -13,11 +13,18 @@ import './ExpandChat.css';
 class ExpandChat extends Component{
     constructor(){
         super();
+
+        this.state = {
+            memberNames: 'Loading Users...'
+        }
+
         this.getMessages = this.getMessages.bind(this);
+        this.getMemberNames = this.getMemberNames.bind(this);
     }
 
     async componentDidMount(){
         await this.getMessages();
+        await this.getMemberNames();
     }
 
     async componentDidUpdate(prevProps){
@@ -25,6 +32,7 @@ class ExpandChat extends Component{
 
         if(chatId !== prevProps.chatId){
             await this.getMessages();
+            await this.getMemberNames();
         }
     }
 
@@ -37,8 +45,19 @@ class ExpandChat extends Component{
         this.props.setMsgsOnDisplay(messages);
     }
 
+    
+    async getMemberNames(){
+        const {uid, chatId} = this.props;
+
+        const response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId});
+        const {memberNames} = response.data;
+
+        this.setState({memberNames});
+    }
+
     render(){
         const {uid} = this.props;
+        const {memberNames} = this.state;
 
         const messages = this.props.msgsOnDisplay.map(msg =>
             <MessageBubble
@@ -54,11 +73,13 @@ class ExpandChat extends Component{
                <header>
                     <div className='profile'>
                         <img src = {avatar} className= 'profilePic'/>
-                        <h2>Gugsa</h2>
+                        <h2>{memberNames}</h2>
                     </div>
                </header>
 
-               {messages}
+                <section className = 'chat-box'>
+                    {messages}
+                </section>
             </div>
         )
     }

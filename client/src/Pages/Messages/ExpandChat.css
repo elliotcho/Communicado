@@ -6,10 +6,6 @@
     position: relative;
 }
 
-.expandChat header{
-    margin-bottom: 32px;
-}
-
 .expandChat .profile{
     width: 100%;
     background: #036055;
@@ -35,3 +31,7 @@
     font-size: 20px;
 }
 
+.expandChat .chat-box{
+    padding: 20px;
+    overflow-y: auto;
+}
