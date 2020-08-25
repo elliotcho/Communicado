@@ -22,8 +22,10 @@ let io;
 class App extends Component{
    constructor(props){
       super(props);
+      
       //io only instantiated once and we dont want override this cnonnection
       io = socket('http://localhost:5000');
+      
       //importing all these socket.on events from server (socketEvents.js)
       handleSocketEvents(
          io, 
@@ -31,29 +33,32 @@ class App extends Component{
          props.updateOnlineFriends,
          props.getRecipients
       );
+
+      this.getUnreadNotifs = this.getUnreadNotifs.bind(this);
    }
 
-   componentDidMount(){
+   async componentDidMount(){
       const {uid, colorNavbar} = this.props;
 
-      if(uid !== null){
-         axios.get(`http://localhost:5000/unreadnotifs/${uid}`).then(response=>{
-            if(response.data.unread){
-               colorNavbar();
-            }
-         });
+      if(uid){
+         this.getUnreadNotifs(uid, colorNavbar);
       }
    }
 
-   componentDidUpdate(prevProps){
+   async componentDidUpdate(prevProps){
       const {uid, colorNavbar} = this.props;
 
-      if(prevProps.uid !== uid){
-         axios.get(`http://localhost:5000/unreadnotifs/${uid}`).then(response=>{
-            if(response.data.unread){
-               colorNavbar();
-            }
-         });
+      if(uid && prevProps.uid !== uid){
+         this.getUnreadNotifs(uid, colorNavbar);
+      }
+   }
+
+   async getUnreadNotifs(uid, colorNavbar){
+      const response = await axios.get(`http://localhost:5000/notifs/unread/${uid}`);
+      const {unread} = response.data;
+
+      if(unread){
+         colorNavbar();
       }
    }
 

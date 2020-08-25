@@ -36,6 +36,6 @@ export const handleSocketEvents = (io, colorNavbar, updateOnlineFriends, getReci
     });
 
     io.on('NEW_MESSAGE', data =>{
-        const {chats, chatId} = data;
+        
     });
 }

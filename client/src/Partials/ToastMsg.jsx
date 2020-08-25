@@ -18,26 +18,19 @@ class ToastMsg extends Component{
     }
 
     // Load toast data with axios
-    componentDidMount(){
+    async componentDidMount(){
         const {toastId} = this.props;
 
-        const data = {action: 'load', uid: toastId};
-        const config={'Content-Type': 'application/json'};
-
-        axios.post('http://localhost:5000/userinfo', {uid: toastId}, {headers: config}).then(response =>{
-            this.setState({
-                firstName: response.data.firstName,
-                lastName: response.data.lastName
-            });
-        });
+        let response = await axios.get(`http://localhost:5000/users/${toastId}`);
+        const {firstName, lastName} = response.data;
         
-        // Fetch from server functional route using post with stringified data
-        // R: -- Async/Await
-        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        .then(response =>response.blob())
-        .then(file =>{
-            // Set state of imgURL to display
-            this.setState({imgURL: URL.createObjectURL(file)});
+        response = await fetch(`http://localhost:5000/users/profilepic/${toastId}`, {method: 'GET'});    
+        let file = await response.blob();
+
+        this.setState({
+            firstName,
+            lastName,
+            imgURL: URL.createObjectURL(file)
         });
     }
 

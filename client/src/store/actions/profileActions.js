@@ -8,14 +8,19 @@ export const getUserInfo = (uid) =>{
             headers: {'Content-Type': 'application/json'}
         }
         // Send post request to userInfo branch in server handlers
-        axios.post('http://localhost:5000/userinfo', {uid}, config).then(response =>{
-            const {firstName, lastName, dateCreated} = response.data;
-            dispatch({
-                type: "USER_INFO",
-                firstName,
-                lastName,
-                dateCreated
-            });
+        const response = await axios.get(`http://localhost:5000/users/${uid}`);
+        
+        const {
+            firstName, 
+            lastName, 
+            dateCreated
+        } = response.data;
+
+        dispatch({
+            type: "USER_INFO",
+            firstName,
+            lastName,
+            dateCreated
         });
     }
 }
@@ -23,11 +28,14 @@ export const getUserInfo = (uid) =>{
 // Load a users profile picture 
 export const loadProfilePic = (uid) =>{
     return async (dispatch) => {
-        const data = {action: 'load', uid};
-        const config={'Content-Type': 'application/json'};
+
         // Fetch from server functional route using post with stringified data
-        const response = await fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        let file = await response.blob()
+        const response = await fetch(`http://localhost:5000/users/profilepic/${uid}`, {
+            method: 'GET'
+        }); 
+        
+        let file = await response.blob();
+
         dispatch({type: "LOAD_PROFILE_PIC", imgURL: URL.createObjectURL(file)});
     }
 }
@@ -43,7 +51,8 @@ export const changeProfilePic = (uid, imgFile) => {
         const config = {headers: {'Content-Type': 'multipart/form-data'}};
         
         // Post new image and reload browser
-        const response = await axios.post('http://localhost:5000/profilepic', formData, config)
+        await axios.post('http://localhost:5000/users/profilepic', formData, config);
+        
         window.location.reload();
     }
 }
@@ -53,7 +62,7 @@ export const changeUserName = (uid, firstName, lastName) =>{
     return async (dispatch) => {
         const data = {uid, firstName, lastName}
         // Send all names, even if undefined, and handle in server routes
-        const response = await axios.post('http://localhost:5000/changename', data , {headers: {'content-type': 'application/json'}})
+        const response = await axios.post('http://localhost:5000/users/changename', data , {headers: {'content-type': 'application/json'}})
         const {_doc, msg} =response.data;
         if(_doc){
             dispatch({type: 'CHANGE_NAME', firstName: _doc.firstName, lastName: _doc.lastName})
@@ -67,7 +76,7 @@ export const changePwd = (uid, currPwd, newPwd, confirmPwd) => {
     return async () => {
         const data = {uid, currPwd, newPwd, confirmPwd}
         // Send post to server route to handle passwords and check if conditions met
-        const response = await axios.post('http://localhost:5000/changepwd', data, {headers:{'content-type': 'application/json'}});
+        const response = await axios.post('http://localhost:5000/users/changepwd', data, {headers:{'content-type': 'application/json'}});
         const {msg} = response.data;
         alert(msg);
     }
@@ -76,11 +85,12 @@ export const changePwd = (uid, currPwd, newPwd, confirmPwd) => {
 // Delete a User
 export const deleteUser = (uid) =>{
     return async () =>{ 
-        const data = {uid}
         // Delete user from DB
-        const response = await axios.post('http://localhost:5000/deleteUser', data,   {headers: {'content-type': 'application/json'}})
+        const response = await axios.delete(`http://localhost:5000/${uid}`);
+        
         const {msg} =response.data;
         alert(msg);
+        
         window.localStorage.clear();
         window.location.href='/';
     }

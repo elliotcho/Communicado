@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import axios from 'axios';
 import './OnlineFriend.css'
 import loading from './loading.jpg';
 
@@ -12,15 +13,15 @@ class OnlineFriend extends Component {
     async componentDidMount() {
         const {_id} = this.props.user;
 
-        const config = {'content-type': 'application/json'};
-        const data = {action: 'load', uid: _id};
-
         // Fetch profile picture for friend
-        const response = await fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        const file = await response.blob()
+        // Fetch from server functional route using get
+        const response = await fetch(`http://localhost:5000/users/profilepic/${_id}`, {method: 'GET'}); 
+        let file = await response.blob();
+        
+        this.setState({
+            imgURL: URL.createObjectURL(file)
+        });
 
-        // Set state of imgURL to display senders IMG
-        this.setState({imgURL: URL.createObjectURL(file)});
     }
 
     render() {
@@ -42,23 +43,23 @@ class OnlineFriend extends Component {
 
         return (
             <div className = "onlineFriend">
-                <div class="row sideBar-body">
+                <div className ="row sideBar-body">
                     
-                    <div class="col-sm-3 sideBar-avatar">
-                        <div class="avatar-icon">
+                    <div className ="col-sm-3 sideBar-avatar">
+                        <div className ="avatar-icon">
                             <img src={imgURL? imgURL: loading}></img>
-                            <span class={displayColor}></span>
+                            <span className = {displayColor}></span>
                         </div>
                     </div>
-                    <div class="col-sm-9 sideBar-main">
+                    <div className ="col-sm-9 sideBar-main">
                         
-                        <div class="col-sm-8 sideBar-name">
+                        <div className ="col-sm-8 sideBar-name">
                             
-                            <span class="name-meta">{firstName} {lastName}</span>
+                            <span className ="name-meta">{firstName} {lastName}</span>
                         </div>
-                        <div class="col-sm-4 float-right sideBar-time">
+                        <div className ="col-sm-4 float-right sideBar-time">
                             <br></br>
-                            <span class="time-meta float-right">Last Chatted 18:18</span>
+                            <span className ="time-meta float-right">Last Chatted 18:18</span>
                         </div>  
                         
                     </div>

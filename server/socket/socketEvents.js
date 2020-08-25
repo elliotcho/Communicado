@@ -1,9 +1,5 @@
-const {User} = require('../dbschema');
-
-const axios = require('axios');
-
 const {declineReq, acceptReq, changeFriendStatus, getOnlineFriends} = require('./friends');
-const {getRecipients, createChat} = require('./messages');
+const {getRecipients} = require('./chat');
 
 const active = {};
 //io= socket(server) from app.js

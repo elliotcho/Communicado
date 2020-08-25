@@ -2,7 +2,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 //used for image uplaoding
 const multer=require('multer');
-const fs=require('fs');
 const path=require('path');
 const cors=require('cors');
 const express = require('express');
@@ -28,7 +27,7 @@ const storage = multer.diskStorage({
     }
 });
 // Use multer to upload imgs
-const upload = multer({
+exports.upload = multer({
     storage,
     limits: {fileSize: 1000000000}
 }).single('image');
@@ -36,62 +35,13 @@ const upload = multer({
 app.use(bodyParser.json());
 app.use(cors());
 
-
-// User functions
-const { 
-    login, 
-    signup, 
-    getUserInfo,
-    handleProfilePic, 
-    changeName,
-    changePwd,
-    findUsers,
-    deleteUser,
-    getFriends
-} = require('./handlers/users');
-
-// Notification Functions
-const {
-    readNotifs,
-    checkUnreadNotifs,
-    getFriendStatus
-} = require('./handlers/notifications');
-
-const {
-    createChat,
-    getUserChats,
-    getMemberNames,
-    getChatMessages
-} = require('./handlers/messages');
-
-// User funtional routes 
-//if client makes post request to local host, run this function
-app.post('/', login)
-app.post('/signup', signup);
-app.post('/userinfo', getUserInfo);
-app.post('/profilepic', handleProfilePic(upload, fs, path));
-app.post('/changename', changeName);
-app.post('/changepwd', changePwd); 
-app.post('/findusers', findUsers);
-app.post('/deleteUser', deleteUser); 
- 
-// Friend Functional Routes
-app.get('/friends/:uid', getFriends);
-app.post('/friends/status', getFriendStatus);
-
-// Notification functional routes
-app.put('/notifs/:uid', readNotifs);
-app.get('/unreadnotifs/:uid', checkUnreadNotifs);
-
-//chat/message functional routes
-app.post('/chats/create', createChat);
-app.get('/chats/user/:uid', getUserChats);
-app.post('/chats/members', getMemberNames);
-app.get('/chats/messages/:chatId', getChatMessages);
+app.use('/users', require('./routes/user'));
+app.use('/notifs', require('./routes/notif'));
+app.use('/chats', require('./routes/chat'));
+app.use('/friends', require('./routes/friends')); 
 
 //Specify localhost port number
 const server = app.listen(5000);
 
-
 //Here we pass socket server as a parameter to the arrow io function in socketEvents
-require('./handlers/socketEvents')(socket(server));
+require('./socket/socketEvents')(socket(server));

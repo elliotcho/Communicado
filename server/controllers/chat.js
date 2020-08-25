@@ -1,42 +1,7 @@
-const {User, Chat, Message} = require('../dbschema');
+const {User} = require('../models/user');
+const {Message, Chat} = require('../models/chat');
 
-const getRecipients = async (data) =>{
-    const {uid,recipients, name} = data;
-    const recipientIDs={}
-    
-    if(name.trim() === ''){
-        return [];
-    }
-
-    for(let i=0;i<recipients.length;i++){
-        recipientIDs[recipients[i]._id]=true
-    }
-
-    const user = await User.findOne({_id: uid});
-    const friends = await User.find({_id: {$in: user.friends}});
-
-    let j = 0;
-
-    const result = [];
-
-    for(let i=0;i<friends.length && j<4;i++){
-        const friend = await User.findOne({_id: friends[i]._id});
-
-        let firstName = friend.firstName.split(" ").join("").toLowerCase();
-        let lastName = friend.lastName.split(" ").join("").toLowerCase();
-        
-        let query = name.split(" ").join("").toLowerCase();
-
-        if((firstName + lastName).startsWith(query) && !recipientIDs[friend._id]){
-            result.push(friend);
-            j++;
-        }
-    }
-
-    return result;
-}
-
-const createChat = async (req, res) =>{
+exports.createChat = createChat = async (req, res) =>{
     const {uid, recipients, content} = req.body;
 
     const members = recipients.map(user => user._id);
@@ -75,7 +40,7 @@ const createChat = async (req, res) =>{
     res.json({chatId: chat._id});
 }
 
-const getUserChats = async (req, res) =>{
+exports.getUserChats = async (req, res) =>{
     const {uid} = req.params;
 
     let userChats = [];
@@ -93,7 +58,7 @@ const getUserChats = async (req, res) =>{
     res.json(userChats);
 }
 
-const getMemberNames = async (req, res) =>{
+exports.getMemberNames =  async (req, res) =>{
     const {uid, chatId} = req.body;
 
     let result = '';
@@ -120,7 +85,7 @@ const getMemberNames = async (req, res) =>{
     res.json({memberNames: result});
 }
 
-const getChatMessages = async (req, res) =>{
+exports.getChatMessages = async (req, res) =>{
     const {chatId} = req.params;
 
     if(chatId !== 'home' && chatId !== 'new'){
@@ -129,12 +94,4 @@ const getChatMessages = async (req, res) =>{
     
         res.json(messages);
     }
-}
-
-module.exports = {
-    getRecipients,
-    createChat,
-    getUserChats,
-    getMemberNames,
-    getChatMessages
 }
