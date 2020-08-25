@@ -1,7 +1,8 @@
 const initState = {
     queryResults: [],
     recipients: [],
-    chats: []
+    chats: [],
+    msgsOnDisplay: []
 };
 
 // Reducer for friend actions
@@ -27,6 +28,11 @@ const messagesReducer = (state=initState, action) =>{
             return{
                 ...state,
                 chats: [...action.chats]
+            }
+        case 'SET_MESSAGES_ON_DISPLAY':
+            return{
+                ...state,
+                msgsOnDisplay: [...action.messages]
             }
         default:
             return state;

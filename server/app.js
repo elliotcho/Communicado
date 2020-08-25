@@ -59,7 +59,8 @@ const {
 const {
     createChat,
     getUserChats,
-    getMemberNames
+    getMemberNames,
+    getChatMessages
 } = require('./handlers/messages');
 
 // User funtional routes 
@@ -84,6 +85,7 @@ app.get('/unreadnotifs/:uid', checkUnreadNotifs);
 app.post('/chats/create', createChat);
 app.get('/chats/user/:uid', getUserChats);
 app.post('/chats/members', getMemberNames);
+app.get('/chats/messages/:chatId', getChatMessages);
 
 //Specify localhost port number
 const server = app.listen(5000);

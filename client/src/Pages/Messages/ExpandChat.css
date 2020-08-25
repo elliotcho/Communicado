@@ -4,7 +4,10 @@
     background: #f1f0e8;
     font-family: 'Helvetica';
     position: relative;
-    
+}
+
+.expandChat header{
+    margin-bottom: 32px;
 }
 
 .expandChat .profile{
