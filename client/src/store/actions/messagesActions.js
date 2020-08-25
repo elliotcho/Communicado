@@ -26,3 +26,9 @@ export const loadChats = (uid) =>{
         dispatch({type: 'LOAD_CHATS', chats});
     }
 }
+
+export const setMsgsOnDisplay = (messages) =>{
+    return (dispatch) =>{
+        dispatch({type: 'SET_MESSAGES_ON_DISPLAY', messages});
+    }
+}

@@ -14,12 +14,29 @@ import ExpandChat from './ExpandChat';
 import SendMsg from './SendMsg'
 import ComposeMsg from './ComposeMsg';
 
+import axios from 'axios';
 import './Messages.css';
 
 class Messages extends Component {
     constructor(){
         super();
         this.handleComposer = this.handleComposer.bind(this);
+    }
+
+    async componentDidMount(){
+        const chatId = this.props.match.params.id;
+        const {uid} = this.props;
+
+        const response = await axios.get(`http://localhost:5000/chats/user/${uid}`);
+        const chats = response.data;
+
+        if(chats.length !== 0 && chatId !== 'new'){
+            this.props.history.push(`/chat/${chats[0]._id}`);
+        }
+
+        else{
+            this.props.history.push('/chat/new');
+        }
     }
 
     handleComposer(){
@@ -42,7 +59,7 @@ class Messages extends Component {
             recipients,
             chats,
             clearComposer,
-            loadChats
+            loadChats,
         } = this.props;
 
         if(!uid){
@@ -85,7 +102,7 @@ class Messages extends Component {
                                     recipients = {recipients}
                                     clearComposer = {clearComposer}
                                 />)
-                                : <ExpandChat/>
+                                : <ExpandChat chatId = {chatId}/>
                             }
                             
                             <SendMsg 
@@ -105,7 +122,7 @@ const mapStateToProps = (state) => {
     return{
         queryResults: state.messages.queryResults,
         recipients: state.messages.recipients,
-        chats: state.messages.chats
+        chats: state.messages.chats,
     }   
 }
 

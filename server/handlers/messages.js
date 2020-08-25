@@ -88,6 +88,8 @@ const getUserChats = async (req, res) =>{
         userChats.push(chat);
     }
 
+    userChats.sort((a, b) => b.timeOfLastMessage - a.timeOfLastMessage);
+
     res.json(userChats);
 }
 
@@ -118,9 +120,21 @@ const getMemberNames = async (req, res) =>{
     res.json({memberNames: result});
 }
 
+const getChatMessages = async (req, res) =>{
+    const {chatId} = req.params;
+
+    if(chatId !== 'home' && chatId !== 'new'){
+        const chat = await Chat.findOne({_id: chatId});
+        const {messages} = chat;
+    
+        res.json(messages);
+    }
+}
+
 module.exports = {
     getRecipients,
     createChat,
     getUserChats,
-    getMemberNames
+    getMemberNames,
+    getChatMessages
 }
