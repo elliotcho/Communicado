@@ -80,7 +80,7 @@ class Messages extends Component {
                                 : <ExpandChat/>
                             }
                             
-                            <SendMsg/>
+                            <SendMsg chatid={chatId}/>
                         </div>
                     </div>
                 </div>
