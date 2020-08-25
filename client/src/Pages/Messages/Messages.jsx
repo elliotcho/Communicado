@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 
 import {
     updateRecipients,
-    clearComposer
+    clearComposer,
+    loadChats
 } from '../../store/actions/messagesActions';
 
 import MessageList from './MessageList'
@@ -39,7 +40,9 @@ class Messages extends Component {
             queryResults,
             updateRecipients,
             recipients,
-            clearComposer
+            chats,
+            clearComposer,
+            loadChats
         } = this.props;
 
         if(!uid){
@@ -64,7 +67,12 @@ class Messages extends Component {
                             </header>
 
                             <SearchMsgs/>
-                            <MessageList/>
+
+                            <MessageList 
+                                uid = {uid} 
+                                chats = {chats}
+                                loadChats = {loadChats}
+                            />
                         </div>
 
                         <div className="expandChat-container col-8">
@@ -80,7 +88,11 @@ class Messages extends Component {
                                 : <ExpandChat/>
                             }
                             
-                            <SendMsg chatid={chatId}/>
+                            <SendMsg 
+                                uid = {uid}
+                                chatId = {chatId}
+                                recipients = {recipients}
+                            />
                         </div>
                     </div>
                 </div>
@@ -92,14 +104,16 @@ class Messages extends Component {
 const mapStateToProps = (state) => {
     return{
         queryResults: state.messages.queryResults,
-        recipients: state.messages.recipients
+        recipients: state.messages.recipients,
+        chats: state.messages.chats
     }   
 }
 
 const mapDispatchToProps = (dispatch) =>{
     return{
         updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));},
-        clearComposer: () => {dispatch(clearComposer());}
+        clearComposer: () => {dispatch(clearComposer());},
+        loadChats: (uid) => {dispatch(loadChats(uid));}
     }
 }
 

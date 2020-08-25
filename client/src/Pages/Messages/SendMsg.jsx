@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
+import axios from 'axios';
+import {io} from '../../App';
 import './SendMsg.css';
 
 class SendMsg extends Component{
@@ -32,10 +35,31 @@ class SendMsg extends Component{
         }
     }
 
-    handleSubmit(e) {
-        e.preventDefault()
+    async handleSubmit(e) {
+        e.preventDefault();
+
+        const {chatId, recipients, uid} = this.props;
+
+        const content = this.msg.value;
+
+        //handles empty input 
+        if(content.trim() === ""){return;}
+
+        if(chatId === 'new'){
+            const response = await axios.post('http://localhost:5000/chats/create', {recipients, uid, content});
+            const {chatId} = response.data;
+
+            //io.emit('CREATE_CHAT', {chatId, recipients});
+
+            this.props.history.push(`/chat/${chatId}`);
+        }
+
+        else{
+
+        }
         
-        this.msg.value = ""
+        //reset textarea value to empty string
+        this.msg.value = "";
     }
 
     render(){
@@ -60,4 +84,4 @@ class SendMsg extends Component{
     }
 }
 
-export default SendMsg;
+export default withRouter(SendMsg);

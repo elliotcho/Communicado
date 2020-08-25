@@ -1,6 +1,9 @@
-const {declineReq, acceptReq, changeFriendStatus, getOnlineFriends} = require('./friends');
+const {User} = require('../dbschema');
 
-const {getRecipients} = require('./messages');
+const axios = require('axios');
+
+const {declineReq, acceptReq, changeFriendStatus, getOnlineFriends} = require('./friends');
+const {getRecipients, createChat} = require('./messages');
 
 const active = {};
 //io= socket(server) from app.js
@@ -54,7 +57,7 @@ module.exports = (io) => {
                 {friends}
             );
         });
-
+  
         socket.on('GET_RECIPIENTS', async data =>{
             const queryResult = await getRecipients(data);
             
@@ -62,8 +65,27 @@ module.exports = (io) => {
 
             io.sockets.to(active[uid]).emit(
                 'GET_RECIPIENTS'
-                ,{queryResult}
+                ,{queryResult} 
             );
+        });
+
+        socket.on('CREATE_CHAT', async data =>{
+            // const result = await createChat(data);
+
+            // const members = result[0];
+            // const chatId = result[1];
+
+            // for(let i=0;i<members.length;i++){
+            //     const user = await User.findOne({_id: members[i]});
+
+            //     const response = await axios.get(`http://localhost:5000/chats/user/${user._id}`);
+            //     const chats = response.data;
+
+            //     io.sockets.to(active[members[i]]).emit(
+            //         'NEW_MESSAGE',
+            //         {chats, chatId}
+            //     );
+            // }
         });
     });
 }

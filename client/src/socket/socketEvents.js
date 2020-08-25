@@ -34,4 +34,8 @@ export const handleSocketEvents = (io, colorNavbar, updateOnlineFriends, getReci
     io.on('GET_RECIPIENTS', data =>{
         getRecipients(data.queryResult);
     });
+
+    io.on('NEW_MESSAGE', data =>{
+        const {chats, chatId} = data;
+    });
 }

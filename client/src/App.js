@@ -70,7 +70,7 @@ class App extends Component{
             <BrowserRouter>   
                {uid? <Navbar newNotif = {newNotif}/>: null}
 
-               <div style = {uid? {marginTop: '55px'}: null}>
+               <div>
                   <Switch>
                   {/* Router that switches paths based on route */}
                      <Route exact path='/' render = {()=> uid? <Home uid ={uid}/>: <Login uid ={uid}/>}/>
