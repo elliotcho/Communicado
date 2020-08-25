@@ -13,4 +13,6 @@ const NotifSchema = new schema({
 });
 
 const Notification = mongoose.model('notification', NotifSchema);
+
+exports.NotifSchema = NotifSchema;
 exports.Notification = Notification;
