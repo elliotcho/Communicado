@@ -29,9 +29,12 @@ class MessageCard extends Component {
 
     render() {
         const {memberNames} = this.state;
+        const {isActive} = this.props;
+
+        const cardClassName = (isActive)? 'active': ''
 
         return (
-            <div onClick={this.handleClick}class="MessageCard card flex-row flex-wrap">
+            <div onClick={this.handleClick} className={`MessageCard ${cardClassName} card flex-row flex-wrap`}>
                 <div class="card-header border-0">
                     <img src="//placehold.it/50" alt="profile pic" />
                 </div>

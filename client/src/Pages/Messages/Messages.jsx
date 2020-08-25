@@ -88,6 +88,7 @@ class Messages extends Component {
                             <MessageList 
                                 uid = {uid} 
                                 chats = {chats}
+                                chatId = {chatId}
                                 loadChats = {loadChats}
                             />
                         </div>
