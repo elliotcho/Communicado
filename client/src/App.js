@@ -3,7 +3,12 @@ import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {colorNavbar} from './store/actions/notificationsActions';
 import {updateOnlineFriends} from './store/actions/friendsActions';
-import {getRecipients} from './store/actions/messagesActions';
+
+import {
+   getRecipients,
+   loadChats
+} from './store/actions/messagesActions';
+
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import Home from './Pages/Home/Home';
@@ -31,7 +36,8 @@ class App extends Component{
          io, 
          props.colorNavbar,
          props.updateOnlineFriends,
-         props.getRecipients
+         props.getRecipients,
+         props.loadChats
       );
 
       this.getUnreadNotifs = this.getUnreadNotifs.bind(this);
@@ -105,7 +111,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         colorNavbar: () => {dispatch(colorNavbar());},
         updateOnlineFriends: (friends) => {dispatch(updateOnlineFriends(friends));},
-        getRecipients: (queryResults) => {dispatch(getRecipients(queryResults));}
+        getRecipients: (queryResults) => {dispatch(getRecipients(queryResults));},
+        loadChats: (uid) => {dispatch(loadChats(uid));}
     }
 }
 

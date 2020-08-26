@@ -56,7 +56,7 @@ class SendMsg extends Component{
 
             this.props.loadChats(uid);
 
-            io.emit('CREATE_CHAT', {chatId, recipients});
+            io.emit('CREATE_CHAT', {recipients, uid});
 
             this.props.history.push(`/chat/${chatId}`);
         }
