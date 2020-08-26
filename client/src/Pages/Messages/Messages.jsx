@@ -99,8 +99,8 @@ class Messages extends Component {
                                 (<ComposeMsg 
                                     uid={uid}
                                     queryResults = {queryResults}
-                                    updateRecipients = {updateRecipients}
                                     recipients = {recipients}
+                                    updateRecipients = {updateRecipients}
                                     clearComposer = {clearComposer}
                                 />)
                                 : <ExpandChat chatId = {chatId}/>
@@ -110,6 +110,7 @@ class Messages extends Component {
                                 uid = {uid}
                                 chatId = {chatId}
                                 recipients = {recipients}
+                                loadChats = {loadChats}
                             />
                         </div>
                     </div>

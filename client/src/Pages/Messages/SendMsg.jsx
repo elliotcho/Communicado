@@ -46,10 +46,17 @@ class SendMsg extends Component{
         if(content.trim() === ""){return;}
 
         if(chatId === 'new'){
+            //handles having no recipients
+            if(recipients.length === 0){
+                return;
+            }
+
             const response = await axios.post('http://localhost:5000/chats/create', {recipients, uid, content});
             const {chatId} = response.data;
 
-            //io.emit('CREATE_CHAT', {chatId, recipients});
+            this.props.loadChats(uid);
+
+            io.emit('CREATE_CHAT', {chatId, recipients});
 
             this.props.history.push(`/chat/${chatId}`);
         }
