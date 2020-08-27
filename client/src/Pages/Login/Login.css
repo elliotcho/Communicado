@@ -13,6 +13,10 @@
     user-select: none;
 }
 
+.login .navbar{
+    height: auto;
+}
+
 .login nav{
     max-width: 905px;
     margin: 0 auto;

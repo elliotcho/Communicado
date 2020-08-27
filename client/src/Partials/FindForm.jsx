@@ -51,7 +51,11 @@ class FindForm extends Component {
         const {uid} = this.props;
         // create card for each found user
         const foundUsers = this.props.users.map(user =>
-            <FoundFriendCard key={user._id} user = {user} uid ={uid}/>
+            <FoundFriendCard 
+                key={user._id} 
+                user = {user} 
+                uid ={uid}
+            />
         );
 
         return (

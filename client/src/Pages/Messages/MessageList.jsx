@@ -1,15 +1,30 @@
 import React, { Component } from 'react';
-import SearchMsgs from './SearchMsgs';
 import MessageCard from './MessageCard';
 import './MessageList.css'
 
-
 class MessageList extends Component {
+    componentDidMount(){
+        const {uid, loadChats} = this.props;
+        
+        loadChats(uid);
+    }
+
     render() {
+        const {uid} = this.props;
+        const chatOnDisplay = this.props.chatId;
+
+        const chats = this.props.chats.map(chat =>
+            <MessageCard
+                key = {chat._id}
+                chatId = {chat._id}
+                uid = {uid}
+                isActive = {chatOnDisplay === chat._id}
+            />
+        );
+
         return (
             <div className="MessageList">
-                <MessageCard/>
-                <MessageCard/>
+                {chats}
             </div>
         )
     }

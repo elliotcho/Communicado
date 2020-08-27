@@ -1,8 +1,10 @@
-const {User, Notification} = require('../dbschema');
+const {Notification} = require('../models/notif');
+const {User} = require('../models/user');
+
 const axios = require('axios');
 
 // Async Function to decline a friend request
-const declineReq = async (data) => {
+exports.declineReq = async (data) => {
     const {receiverId, senderId} = data;
     // Find receiver from ID
     const result = await User.findOne({_id: receiverId})
@@ -24,7 +26,7 @@ const declineReq = async (data) => {
 }
 
 // Async accept a friend request
-const acceptReq = async (data) => {
+exports.acceptReq = async (data) => {
     const {status, receiverId, senderId} = data;
     // Fetch status of friend request
     const response = await axios.post('http://localhost:5000/friends/status', {receiverId, senderId});
@@ -100,7 +102,7 @@ const acceptReq = async (data) => {
     }
 }
 
-const changeFriendStatus = async (data) => {
+exports.changeFriendStatus = async (data) => {
     const {uid, friendId, status} = data;
     // Fetch status of friend request
     const response = await axios.post('http://localhost:5000/friends/status', {senderId: uid, receiverId: friendId});
@@ -213,7 +215,7 @@ const changeFriendStatus = async (data) => {
     }
 }
 
-const getOnlineFriends = async (data, active) =>{
+exports.getOnlineFriends = async (data, active) =>{
     const {uid} = data;
 
     const activeFriends = [];
@@ -233,11 +235,4 @@ const getOnlineFriends = async (data, active) =>{
     }
 
     return [activeFriends, inactiveFriends];
-}
-
-module.exports = {
-    declineReq,
-    acceptReq,
-    changeFriendStatus,
-    getOnlineFriends
 }

@@ -3,7 +3,12 @@ import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {colorNavbar} from './store/actions/notificationsActions';
 import {updateOnlineFriends} from './store/actions/friendsActions';
-import {getRecipients} from './store/actions/messagesActions';
+
+import {
+   getRecipients,
+   loadChats
+} from './store/actions/messagesActions';
+
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import Home from './Pages/Home/Home';
@@ -22,38 +27,44 @@ let io;
 class App extends Component{
    constructor(props){
       super(props);
-
+      
+      //io only instantiated once and we dont want override this cnonnection
       io = socket('http://localhost:5000');
-
+      
+      //importing all these socket.on events from server (socketEvents.js)
       handleSocketEvents(
          io, 
          props.colorNavbar,
          props.updateOnlineFriends,
-         props.getRecipients
+         props.getRecipients,
+         props.loadChats
       );
+
+      this.getUnreadNotifs = this.getUnreadNotifs.bind(this);
    }
 
-   componentDidMount(){
+   async componentDidMount(){
       const {uid, colorNavbar} = this.props;
 
-      if(uid !== null){
-         axios.get(`http://localhost:5000/unreadnotifs/${uid}`).then(response=>{
-            if(response.data.unread){
-               colorNavbar();
-            }
-         });
+      if(uid){
+         this.getUnreadNotifs(uid, colorNavbar);
       }
    }
 
-   componentDidUpdate(prevProps){
+   async componentDidUpdate(prevProps){
       const {uid, colorNavbar} = this.props;
 
-      if(prevProps.uid !== uid){
-         axios.get(`http://localhost:5000/unreadnotifs/${uid}`).then(response=>{
-            if(response.data.unread){
-               colorNavbar();
-            }
-         });
+      if(uid && prevProps.uid !== uid){
+         this.getUnreadNotifs(uid, colorNavbar);
+      }
+   }
+
+   async getUnreadNotifs(uid, colorNavbar){
+      const response = await axios.get(`http://localhost:5000/notifs/unread/${uid}`);
+      const {unread} = response.data;
+
+      if(unread){
+         colorNavbar();
       }
    }
 
@@ -100,7 +111,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         colorNavbar: () => {dispatch(colorNavbar());},
         updateOnlineFriends: (friends) => {dispatch(updateOnlineFriends(friends));},
-        getRecipients: (queryResults) => {dispatch(getRecipients(queryResults));}
+        getRecipients: (queryResults) => {dispatch(getRecipients(queryResults));},
+        loadChats: (uid) => {dispatch(loadChats(uid));}
     }
 }
 

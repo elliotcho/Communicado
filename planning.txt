@@ -1,21 +1,27 @@
-Home page (all your chats? posts?)
-Messaging page (different state/props depending on which friend your messaging)
+Convo - [MessageBubbles]
+[MsgCards]
+SendMsg
 
-chat:{
+Global state:
+Recipients
 
-}
+SendMsg
+chatId will exist or 'new'
 
-message:{
-    _id: String,
-    sender _id: String
-    recipient _id: String
-    content: String
-    time_sent: Date 
-    time_read: Date
-    read: boolean
-}
+if(new): create 
+make message card with convo active
+add one new message card 
+render the Convo
 
-TODO:
-Eric: load profile pic
-Tariq: home page help / change cardbody in ProfileCard.css
-Gugsa: can keep designing
+else: message in chat
+if user is looking at that convo real time add bubble (emit read, so that others looking at chat saw you read)
+if user isn't on msg page color navbar
+if user is not on msg card bold text in card with new msg
+update message cards order
+
+
+                     routes   <-- view/client
+                        |
+db <--> models <--> controllers
+                        |
+                      socket  <-- view/client

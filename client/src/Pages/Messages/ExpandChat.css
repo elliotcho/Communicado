@@ -4,7 +4,6 @@
     background: #f1f0e8;
     font-family: 'Helvetica';
     position: relative;
-    
 }
 
 .expandChat .profile{
@@ -32,3 +31,7 @@
     font-size: 20px;
 }
 
+.expandChat .chat-box{
+    padding: 20px;
+    overflow-y: auto;
+}

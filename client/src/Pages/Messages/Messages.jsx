@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 
 import {
     updateRecipients,
-    clearComposer
+    clearComposer,
+    loadChats
 } from '../../store/actions/messagesActions';
 
 import MessageList from './MessageList'
@@ -13,12 +14,29 @@ import ExpandChat from './ExpandChat';
 import SendMsg from './SendMsg'
 import ComposeMsg from './ComposeMsg';
 
+import axios from 'axios';
 import './Messages.css';
 
 class Messages extends Component {
     constructor(){
         super();
         this.handleComposer = this.handleComposer.bind(this);
+    }
+
+    async componentDidMount(){
+        const chatId = this.props.match.params.id;
+        const {uid} = this.props;
+
+        const response = await axios.get(`http://localhost:5000/chats/user/${uid}`);
+        const chats = response.data;
+
+        if(chats.length !== 0 && chatId !== 'new'){
+            this.props.history.push(`/chat/${chats[0]._id}`);
+        }
+
+        else{
+            this.props.history.push('/chat/new');
+        }
     }
 
     handleComposer(){
@@ -39,7 +57,9 @@ class Messages extends Component {
             queryResults,
             updateRecipients,
             recipients,
-            clearComposer
+            chats,
+            clearComposer,
+            loadChats,
         } = this.props;
 
         if(!uid){
@@ -64,7 +84,13 @@ class Messages extends Component {
                             </header>
 
                             <SearchMsgs/>
-                            <MessageList/>
+
+                            <MessageList 
+                                uid = {uid} 
+                                chats = {chats}
+                                chatId = {chatId}
+                                loadChats = {loadChats}
+                            />
                         </div>
 
                         <div className="expandChat-container col-8">
@@ -73,14 +99,19 @@ class Messages extends Component {
                                 (<ComposeMsg 
                                     uid={uid}
                                     queryResults = {queryResults}
-                                    updateRecipients = {updateRecipients}
                                     recipients = {recipients}
+                                    updateRecipients = {updateRecipients}
                                     clearComposer = {clearComposer}
                                 />)
-                                : <ExpandChat/>
+                                : <ExpandChat chatId = {chatId}/>
                             }
                             
-                            <SendMsg/>
+                            <SendMsg 
+                                uid = {uid}
+                                chatId = {chatId}
+                                recipients = {recipients}
+                                loadChats = {loadChats}
+                            />
                         </div>
                     </div>
                 </div>
@@ -92,14 +123,16 @@ class Messages extends Component {
 const mapStateToProps = (state) => {
     return{
         queryResults: state.messages.queryResults,
-        recipients: state.messages.recipients
+        recipients: state.messages.recipients,
+        chats: state.messages.chats,
     }   
 }
 
 const mapDispatchToProps = (dispatch) =>{
     return{
         updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));},
-        clearComposer: () => {dispatch(clearComposer());}
+        clearComposer: () => {dispatch(clearComposer());},
+        loadChats: (uid) => {dispatch(loadChats(uid));}
     }
 }
 

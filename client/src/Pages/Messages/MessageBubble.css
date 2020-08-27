@@ -1,0 +1,45 @@
+.msg-container{
+    display: flex;
+    width: 100%;
+}
+
+.msg-container img{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    margin-top: 10px;
+}
+
+.msg-container .msg{
+    max-width: 400px;
+    padding: 1rem 1.4rem;
+    border-radius: 0.9rem;
+    font-size: 15px;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    width: auto;
+}
+
+.msg-container .read{
+    float: right;
+}
+
+.msg-container .read img{
+    float: right;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-left: 7px;
+    cursor: auto;
+}
+
+.msg-container .msg.msg-r{
+    background: turquoise;
+    margin-left: auto;
+    margin-right: 2rem;
+}
+
+.msg-container .msg.msg-l{
+    background: lightgray;
+    margin-left: 2rem;
+    margin-right: auto;
+}
