@@ -62,7 +62,7 @@ class SendMsg extends Component{
         }
 
         else{
-
+         
         }
         
         //reset textarea value to empty string

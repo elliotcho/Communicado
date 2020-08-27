@@ -1,7 +1,7 @@
 const {User} = require('../models/user');
 const {Message, Chat} = require('../models/chat');
 
-exports.createChat = createChat = async (req, res) =>{
+exports.createChat = async (req, res) =>{
     const {uid, recipients, content} = req.body;
 
     const members = recipients.map(user => user._id);
@@ -94,4 +94,13 @@ exports.getChatMessages = async (req, res) =>{
     
         res.json(messages);
     }
+}
+
+exports.getChatPic = async (req, res) =>{
+    const {uid, chatId} = req.body;
+
+    const chat = await Chat.findOne({_id: chatId});
+    const {members} = chat;
+
+    res.json({members: members.filter(id => id !== uid)});
 }
