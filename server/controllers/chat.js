@@ -19,9 +19,6 @@ exports.sendMessage = async(req,res) =>{
     res.json(Chat.messages);
 }
 
-
-
-
 exports.createChat = async (req, res) =>{
     const {uid, recipients, content} = req.body;
 
@@ -115,4 +112,13 @@ exports.getChatMessages = async (req, res) =>{
     
         res.json(messages);
     }
+}
+
+exports.getChatPic = async (req, res) =>{
+    const {uid, chatId} = req.body;
+
+    const chat = await Chat.findOne({_id: chatId});
+    const {members} = chat;
+
+    res.json({members: members.filter(id => id !== uid)});
 }

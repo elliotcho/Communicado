@@ -63,8 +63,6 @@ class SendMsg extends Component{
 
         else{
             const response = await axios.post('http://localhost:5000/chats/send',{recipients, uid, content,chatId});
-            //const messages = response.data;    
-            //this.props.loadChats(uid);
         }
         
         //reset textarea value to empty string
