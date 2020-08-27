@@ -1,7 +1,28 @@
 const {User} = require('../models/user');
 const {Message, Chat} = require('../models/chat');
 
-exports.createChat = createChat = async (req, res) =>{
+exports.sendMessage = async(req,res) =>{
+    const {uid, content, chatId} = req.body;
+    
+    const chat = await Chat.findOne({_id:chatId});
+    const newMessage = new Message({
+        senderId: uid,
+        content,
+        timeSent: new Date(),
+        readBy: [uid],
+        seenBy: [uid]
+    });
+    const {messages} = chat;
+    messages.push(newMessage);
+    //first parameter finds what we are looking for second parameter is the new thing we are adding for whatever we found with first parametr
+    await Chat.updateOne({_id:chatId},{messages});
+    res.json(Chat.messages);
+}
+
+
+
+
+exports.createChat = async (req, res) =>{
     const {uid, recipients, content} = req.body;
 
     const members = recipients.map(user => user._id);
