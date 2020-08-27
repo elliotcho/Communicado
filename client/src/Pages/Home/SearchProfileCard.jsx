@@ -20,21 +20,18 @@ class SearchProfileCard extends Component {
         const {_id} = this.props.user;
         const {uid} = this.props;
 
-        const config = {'content-type': 'application/json'};
+        const config = {headers: {'content-type': 'application/json'}};
 
-        const data = {action: 'load', uid: _id};
+        let response = await fetch(`http://localhost:5000/users/profilepic/${_id}`, {method: 'GET'}); 
+        const file = await response.blob();
 
-        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        .then(response =>response.blob())
-        .then(file =>{
-            // Set state of imgURL to display senders IMG
-            this.setState({imgURL: URL.createObjectURL(file)});
-        });
-
-        const response = await axios.post('http://localhost:5000/friends/status', {receiverId: _id, senderId: uid}, {headers: config});
+        response = await axios.post('http://localhost:5000/friends/status', {receiverId: _id, senderId: uid}, config);
         const {status} = response.data;
 
-        this.setState({status});
+        this.setState({
+            status,
+            imgURL: URL.createObjectURL(file)
+        });
     }
 
     // Send friend request to client when user clicks btn to add friend
@@ -72,9 +69,7 @@ class SearchProfileCard extends Component {
 
     render() {
         const {firstName, lastName, _id} = this.props.user;
-
         const {uid} = this.props;
-
         const {imgURL, status} = this.state;
 
         return(
@@ -95,11 +90,11 @@ class SearchProfileCard extends Component {
                                 
                                 <div class="col-sm-3 float-right sideBar-time">
                                     {uid !== _id ?
-                                        <div onClick = {this.handleClick}>
-                                            {(status === 'Add Friend'? <i className="fas fa-user-plus mb-2"></i>:
+                                        (<div onClick = {this.handleClick}>
+                                            {status === 'Add Friend'? <i className="fas fa-user-plus mb-2"></i>:
                                             status === 'Pending'? <i className ='fas fa-user-clock mb-2'/> :
-                                            <i className ='fa fa-check mb-2'/>)}
-                                        </div>: null
+                                            <i className ='fa fa-check mb-2'/>}
+                                        </div>): null
                                     }     
                                 </div>  
                         </div>

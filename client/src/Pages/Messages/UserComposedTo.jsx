@@ -10,20 +10,13 @@ class UserComposedTo extends Component{
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         const {_id} = this.props.user;
 
-        const data = {action: 'load', uid: _id};
+        let response = await fetch(`http://localhost:5000/users/profilepic/${_id}`, {method: 'GET'}); 
+        const file = await response.blob();
 
-        const config = {'content-type': 'application/json'};
-
-        // Fetch from server functional route using post with stringified data
-        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        .then(response =>response.blob())
-        .then(file =>{
-            // Set state of imgURL to display senders IMG
-            this.setState({imgURL: URL.createObjectURL(file)});
-        });
+        this.setState({imgURL: URL.createObjectURL(file)});
     }
 
     render(){

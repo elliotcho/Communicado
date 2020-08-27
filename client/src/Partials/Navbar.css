@@ -1,6 +1,6 @@
 .navbar {
     margin-bottom: 0 !important;
-    height: 8vh;
+    min-height: 8vh;
 }
 
 .navbar-brand {

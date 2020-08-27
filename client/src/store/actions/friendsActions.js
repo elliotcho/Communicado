@@ -6,7 +6,8 @@ export const findUsers = (name, uid) => {
     return async (dispatch) => {
         const config = {headers: {'Content-Type': 'application/json'}};
 
-        const response = await axios.post('http://localhost:5000/findusers', {name: name.trim(), uid, findFriends: false}, config)
+        const response = await axios.post('http://localhost:5000/users/search', {name: name.trim(), uid, findFriends: false}, config);
+
         dispatch({type: 'USERS_FOUND', users: response.data.users});
     }
 }
@@ -23,7 +24,8 @@ export const findFriends = (name, uid) =>{
     return async (dispatch) =>{
         const config = {headers: {'Content-Type': 'application/json'}}
 
-        const response = await axios.post('http://localhost:5000/findusers', {name: name.trim(), uid, findFriends: true}, config)
+        const response = await axios.post('http://localhost:5000/users/search', {name: name.trim(), uid, findFriends: true}, config);
+
         dispatch({type: 'FRIENDS_FOUND', friends: response.data.users});
     }
 }
@@ -31,7 +33,7 @@ export const findFriends = (name, uid) =>{
 
 export const loadFriends = (uid) =>{
     return async (dispatch) =>{
-        const response = await axios.get(`http://localhost:5000/friends/${uid}`)
+        const response = await axios.get(`http://localhost:5000/friends/${uid}`);
         
         dispatch({type: 'LOAD_FRIENDS', friends: response.data});
     }

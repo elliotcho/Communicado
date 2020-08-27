@@ -14,24 +14,27 @@ class FriendCard extends Component {
     }
 
     // load image of user after initial render
-    // R: --- Async/await, method for retrieving pic?
-    componentDidMount(){
+    async componentDidMount(){
         const {_id} = this.props.user;
-        const data = {action: 'load', uid: _id};
-        const config={'Content-Type': 'application/json'};
+    
+        const response = await fetch(`http://localhost:5000/users/profilepic/${_id}`, {
+            method: 'GET'
+        }); 
+    
+        let file = await response.blob();
         
-        // Fetch from server functional route using post with stringified data
-        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        .then(response =>response.blob())
-        .then(file =>{
-            // Set state of imgURL to display
-            this.setState({imgURL: URL.createObjectURL(file)});
+        this.setState({
+            imgURL: URL.createObjectURL(file)
         });
     }
     // Delete friend function from props store that asks user to confirm
     deleteFriend(){
         const {_id, firstName, lastName} = this.props.user;
-        if(!window.confirm(`Are you sure you want to unfriend ${firstName} ${lastName}?`));
+
+        if(!window.confirm(`Are you sure you want to unfriend ${firstName} ${lastName}?`)){
+            return;
+        }
+        
         const {uid, friends, removeFriend} = this.props;
         removeFriend(_id, friends);
         // Emit change of friend status to server so that Add Friend is next option

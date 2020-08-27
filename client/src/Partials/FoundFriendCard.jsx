@@ -19,23 +19,21 @@ class FoundFriendCard extends Component {
     }
 
     // Once rendered, load img of user from DB
-    // R: --- Async, Await
-    componentDidMount(){
+    async componentDidMount(){
         const {_id} = this.props.user;
         const {uid} = this.props;
-        const data = {action: 'load', uid: _id};
-        const config={'Content-Type': 'application/json'};
+     
+        const config={headers: {'Content-Type': 'application/json'}};
         
-        // Fetch from server functional route using post with stringified data
-        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        .then(response =>response.blob())
-        .then(file =>{
-            // Set state of imgURL to display
-            this.setState({imgURL: URL.createObjectURL(file)});
-        });
+        let response = await fetch(`http://localhost:5000/users/profilepic/${_id}`, {method: 'GET'});    
+        let file = await response.blob();
 
-        axios.post('http://localhost:5000/friends/status', {receiverId: _id, senderId: uid}, {headers: config}).then(response =>{
-            this.setState({status: response.data.status});
+        response = await axios.post('http://localhost:5000/friends/status', {receiverId: _id, senderId: uid}, config);
+        const {status} = response.data;
+      
+        this.setState({
+            status, 
+            imgURL: URL.createObjectURL(file)
         });
     }
 
@@ -65,7 +63,9 @@ class FoundFriendCard extends Component {
             if(!window.confirm(`Are you sure you want to unfriend ${firstName} ${lastName}?`)){
                 return;
             }
+
             io.emit("CHANGE_FRIEND_STATUS", {status, uid, friendId: _id});
+            
             this.setState({
                 status: 'Add Friend'
             });
@@ -93,9 +93,7 @@ class FoundFriendCard extends Component {
                         status === 'Pending'? <i className ='fas fa-user-clock mb-2'/> :
                         <i className ='fa fa-check mb-2'/> 
                         }      
-                </div>)
-                : null 
-                }
+                </div>): null}
             </div>
         )
     }

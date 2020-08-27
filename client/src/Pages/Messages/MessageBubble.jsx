@@ -11,18 +11,13 @@ class MessageBubble extends Component{
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         const {senderId} = this.props;
-        const data = {action: 'load', uid: senderId};
-        const config = {'content-type': 'application/json'};
 
-        // Fetch from server functional route using post with stringified data
-        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        .then(response =>response.blob())
-        .then(file =>{
-            // Set state of imgURL to display senders IMG
-            this.setState({senderImgURL: URL.createObjectURL(file)});
-        });
+        let response = await fetch(`http://localhost:5000/users/profilepic/${senderId}`, {method: 'GET'}); 
+        const file = await response.blob();
+   
+        this.setState({senderImgURL: URL.createObjectURL(file)});
     }
 
     render(){
