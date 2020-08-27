@@ -4,7 +4,15 @@ import ToastMsg from '../Partials/ToastMsg';
 import 'react-toastify/dist/ReactToastify.css';
 
 // R: -- ELLIOT/GUGSA
-export const handleSocketEvents = (io, colorNavbar, updateOnlineFriends, getRecipients) =>{
+export const handleSocketEvents = 
+    (
+        io, 
+        colorNavbar, 
+        updateOnlineFriends, 
+        getRecipients,
+        loadChats
+    ) =>{
+    
     io.on('FRIEND_REQUEST', data =>{
         const {toastId} = data;
 
@@ -33,5 +41,9 @@ export const handleSocketEvents = (io, colorNavbar, updateOnlineFriends, getReci
 
     io.on('GET_RECIPIENTS', data =>{
         getRecipients(data.queryResult);
+    });
+
+    io.on('CHAT_CREATED', data =>{
+        loadChats(data.uid);
     });
 }

@@ -10,6 +10,7 @@ import './NotificationCard.css'
 class NotificationCard extends Component {
     constructor(props) {
         super(props);
+
         // State that will control user elements of notif
         this.state = {
             firstName: "",
@@ -17,39 +18,43 @@ class NotificationCard extends Component {
             imgURL: null, 
             status: ''
         }
+
         this.handleRequest = this.handleRequest.bind(this);
     }
 
     // Mount component with users ID 
-    componentDidMount(){
+    async componentDidMount(){
         // Get sender ID from notif to fetch their data and render
         const {senderId} = this.props.notif;
         const {uid} = this.props;
-        const config = {'Content-Type': 'application/json'};
+        
+        const config = {headers: {'Content-Type': 'application/json'}};
 
         // Get fName and lName of user who sent notification 
-        // R: --- Async, Await?!
-        axios.post('http://localhost:5000/userinfo', {uid: senderId}, {headers: config}).then(response =>{
-            const {firstName, lastName} = response.data;
-            // Store names in state of Card
-            this.setState({
-                firstName, lastName
-            });
+        let response = await axios.get(`http://localhost:5000/users/${senderId}`);
+        const {firstName, lastName} = response.data;
+
+        this.setState({
+            firstName, 
+            lastName
         });
 
-        // Load data of sender
-        const data = {action: 'load', uid: senderId};
-        // Fetch from server functional route using post with stringified data
-        fetch('http://localhost:5000/profilepic', {method: 'POST', headers:  config , body: JSON.stringify(data)}) 
-        .then(response =>response.blob())
-        .then(file =>{
-            // Set state of imgURL to display senders IMG
-            this.setState({imgURL: URL.createObjectURL(file)});
+        //get profile picture of the sender
+        response = await fetch(`http://localhost:5000/users/profilepic/${senderId}`, {
+            method: 'GET'
+        }); 
+    
+        let file = await response.blob();
+        
+        this.setState({
+            imgURL: URL.createObjectURL(file)
         });
 
-        axios.post('http://localhost:5000/friends/status', {receiverId: uid, senderId}, {headers: config}).then(response =>{
-            this.setState({status: response.data.status});
-        });
+        //get friend status with the notif sender
+        response = await axios.post('http://localhost:5000/friends/status', {receiverId: uid, senderId}, config);
+        const {status} = response.data;
+
+        this.setState({status});
     }
 
     handleRequest(eventType){

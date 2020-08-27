@@ -1,9 +1,8 @@
 const {declineReq, acceptReq, changeFriendStatus, getOnlineFriends} = require('./friends');
-
-const {getRecipients} = require('./messages');
+const {getRecipients} = require('./chat');
 
 const active = {};
-
+//io= socket(server) from app.js
 module.exports = (io) => {
     io.on('connection', socket => {
         // JOIN SERVER --- store socket id
@@ -54,7 +53,7 @@ module.exports = (io) => {
                 {friends}
             );
         });
-
+  
         socket.on('GET_RECIPIENTS', async data =>{
             const queryResult = await getRecipients(data);
             
@@ -62,8 +61,22 @@ module.exports = (io) => {
 
             io.sockets.to(active[uid]).emit(
                 'GET_RECIPIENTS'
-                ,{queryResult}
+                ,{queryResult} 
             );
+        });
+
+        socket.on('CREATE_CHAT', async data =>{
+            const {recipients, uid} = data;
+
+            for(let i=0;i<recipients.length;i++){
+                const id =recipients[i]._id;
+
+                if(id !== uid){
+                    io.sockets.to(active[id]).emit(
+                        'CHAT_CREATED', {uid: id}
+                    );
+                }
+            }
         });
     });
 }

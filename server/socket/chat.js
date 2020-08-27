@@ -1,6 +1,6 @@
-const {User} = require('../dbschema');
+const {User} = require('../models/user');
 
-const getRecipients = async (data) =>{
+exports.getRecipients = async (data) =>{
     const {uid,recipients, name} = data;
     const recipientIDs={}
     
@@ -34,8 +34,4 @@ const getRecipients = async (data) =>{
     }
 
     return result;
-}
-
-module.exports = {
-    getRecipients
 }

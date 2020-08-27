@@ -10,7 +10,7 @@ export const colorNavbar = () =>{
 
 export const uncolorNavbar = (uid) =>{
     return async (dispatch) =>{
-        const response = await axios.put(`http://localhost:5000/notifs/${uid}`)
+        const response = await axios.put(`http://localhost:5000/notifs/read/${uid}`)
         dispatch({type: 'READ_NOTIFS', notifs: response.data});
     }
 }
