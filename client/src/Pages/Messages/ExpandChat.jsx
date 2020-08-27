@@ -6,7 +6,7 @@ import {
 } from '../../store/actions/messagesActions'
 
 import MessageBubble from './MessageBubble';
-import avatar from './avatar.jpg';
+import loading from './loading.jpg';
 import axios from 'axios';
 import './ExpandChat.css';
 
@@ -15,7 +15,8 @@ class ExpandChat extends Component{
         super();
 
         this.state = {
-            memberNames: 'Loading Users...'
+            memberNames: 'Loading Users...',
+            imgURL: null
         }
 
         this.getMessages = this.getMessages.bind(this);
@@ -25,6 +26,7 @@ class ExpandChat extends Component{
     async componentDidMount(){
         await this.getMessages();
         await this.getMemberNames();
+        await this.getChatPic();
     }
 
     async componentDidUpdate(prevProps){
@@ -33,7 +35,26 @@ class ExpandChat extends Component{
         if(chatId !== prevProps.chatId){
             await this.getMessages();
             await this.getMemberNames();
+            await this.getChatPic();
         }
+    }
+
+    async getChatPic(){
+        const {chatId, uid} = this.props;
+
+        let response = await axios.post('http://localhost:5000/chats/chatpic', {uid, chatId});
+        const {members} = response.data;
+
+        //get the chat picture
+        response = await fetch(`http://localhost:5000/users/profilepic/${members[0]}`, {
+            method: 'GET'
+        }); 
+            
+        let file = await response.blob();
+
+        this.setState({
+            imgURL: URL.createObjectURL(file)
+        });
     }
 
     async getMessages(){
@@ -57,7 +78,8 @@ class ExpandChat extends Component{
 
     render(){
         const {uid} = this.props;
-        const {memberNames} = this.state;
+
+        const {memberNames, imgURL} = this.state;
 
         const messages = this.props.msgsOnDisplay.map(msg =>
             <MessageBubble
@@ -72,7 +94,7 @@ class ExpandChat extends Component{
             <div className ='expandChat'>
                <header>
                     <div className='profile'>
-                        <img src = {avatar} className= 'profilePic'/>
+                        <img src = {imgURL? imgURL : loading} className= 'profilePic'/>
                         <h2>{memberNames}</h2>
                     </div>
                </header>

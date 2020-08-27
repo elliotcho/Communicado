@@ -28,7 +28,7 @@ class MessageCard extends Component {
         response = await axios.post('http://localhost:5000/chats/chatpic', {uid, chatId});
         const {members} = response.data;
 
-        //get profile picture of the user on the card
+        //get the chat picture
         response = await fetch(`http://localhost:5000/users/profilepic/${members[0]}`, {
             method: 'GET'
         }); 
