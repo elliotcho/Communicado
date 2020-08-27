@@ -34,7 +34,7 @@ class SendMsg extends Component{
 
     handleSubmit(e) {
         e.preventDefault()
-        
+
         this.msg.value = ""
     }
 
