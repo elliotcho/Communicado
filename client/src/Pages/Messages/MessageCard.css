@@ -8,3 +8,7 @@
 .MessageCard img {
     border-radius: 50%;
 }
+
+.MessageCard.active{
+    background:whitesmoke;
+}

@@ -10,13 +10,14 @@ class MessageList extends Component {
     }
 
     render() {
-        const {uid} = this.props;
-
+        const {uid,chatId} = this.props;
+        const chatonDisplay = chatId
         const chats = this.props.chats.map(chat =>
             <MessageCard
                 key = {chat._id}
                 chatId = {chat._id}
                 uid = {uid}
+                isActive = {chatonDisplay===chat._id}
             />
         );
 
