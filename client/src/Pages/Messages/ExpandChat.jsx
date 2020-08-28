@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import {
-    setMsgsOnDisplay
+    setMsgsOnDisplay,
+    setChatIdOnDisplay
 } from '../../store/actions/messagesActions'
 
 import MessageBubble from './MessageBubble';
@@ -42,7 +43,7 @@ class ExpandChat extends Component{
     async getChatPic(){
         const {chatId, uid} = this.props;
 
-        let response = await axios.post('http://localhost:5000/chats/chatpic', {uid, chatId});
+        let response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
         const {members} = response.data;
 
         //get the chat picture
@@ -64,6 +65,7 @@ class ExpandChat extends Component{
         const messages = response.data;
 
         this.props.setMsgsOnDisplay(messages);
+        this.props.setChatIdOnDisplay(chatId);
     }
 
     
@@ -116,7 +118,8 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-        setMsgsOnDisplay: (messages) => {dispatch(setMsgsOnDisplay(messages));}
+        setMsgsOnDisplay: (messages) => {dispatch(setMsgsOnDisplay(messages));},
+        setChatIdOnDisplay: (chatId) => {dispatch(setChatIdOnDisplay(chatId));}
     }
 }
 

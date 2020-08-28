@@ -19,7 +19,7 @@ export const clearComposer = () =>{
 }
 
 export const loadChats = (uid) =>{
-    return async (dispatch) =>{
+    return async (dispatch, getState) =>{
         const response = await axios.get(`http://localhost:5000/chats/user/${uid}`);
         const chats = response.data;
 
@@ -30,5 +30,23 @@ export const loadChats = (uid) =>{
 export const setMsgsOnDisplay = (messages) =>{
     return (dispatch) =>{
         dispatch({type: 'SET_MESSAGES_ON_DISPLAY', messages});
+    }
+}
+
+export const setChatIdOnDisplay = (chatId) => {
+    return (dispatch) =>{
+        dispatch({type: 'SET_CHAT_ID_ON_DISPLAY', chatId});
+    }
+}
+
+export const handleNewMessage = (newMessage, chatId) =>{
+    return (dispatch, getState) => {
+        const state = getState();
+
+        const {chatIdOnDisplay} = state.messages;
+
+        if(chatIdOnDisplay === chatId){
+            dispatch({type: 'NEW_MESSAGE', newMessage});
+        }
     }
 }

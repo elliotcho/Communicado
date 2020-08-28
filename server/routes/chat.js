@@ -5,15 +5,15 @@ const {
     getUserChats,
     getMemberNames,
     getChatMessages,
-    sendMessage,
-    getChatPic,
+    createMessage,
+    getChatMemberIds
  } = require('../controllers/chat');
 
 router.post('/create', createChat);
 router.get('/user/:uid', getUserChats);
 router.post('/members', getMemberNames);
 router.get('/messages/:chatId', getChatMessages);
-router.post('/send', sendMessage);
-router.post('/chatpic', getChatPic);
+router.post('/message', createMessage);
+router.post('/memberids', getChatMemberIds);
 
 module.exports = router;
