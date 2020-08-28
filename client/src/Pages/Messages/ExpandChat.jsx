@@ -80,7 +80,8 @@ class ExpandChat extends Component{
 
     render(){
         const {uid} = this.props;
-
+        const typing = this.props.typingOnDisplay;
+        console.log(typing);
         const {memberNames, imgURL} = this.state;
 
         const messages = this.props.msgsOnDisplay.map(msg =>
@@ -112,7 +113,8 @@ class ExpandChat extends Component{
 const mapStateToProps = (state) =>{
     return{
         uid: state.auth.uid,
-        msgsOnDisplay: state.messages.msgsOnDisplay
+        msgsOnDisplay: state.messages.msgsOnDisplay,
+        typingOnDisplay: state.messages.typingOnDisplay
     }
 }
 
