@@ -58,6 +58,7 @@ class Messages extends Component {
             updateRecipients,
             recipients,
             chats,
+            typingOnDisplay,
             clearComposer,
             loadChats,
         } = this.props;
@@ -111,6 +112,7 @@ class Messages extends Component {
                                 uid = {uid}
                                 chatId = {chatId}
                                 recipients = {recipients}
+                                typingOnDisplay = {typingOnDisplay}
                                 loadChats = {loadChats}
                             />
                         </div>
@@ -126,6 +128,7 @@ const mapStateToProps = (state) => {
         queryResults: state.messages.queryResults,
         recipients: state.messages.recipients,
         chats: state.messages.chats,
+        typingOnDisplay: state.messages.typingOnDisplay
     }   
 }
 

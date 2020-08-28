@@ -58,12 +58,7 @@ export const handleIsTyping = (uid, chatId) =>{
         const {chatIdOnDisplay} = state.messages;
         
         if(chatIdOnDisplay === chatId){
-            const response = await axios.get(`http://localhost:5000/users/${uid}`);
-            const {firstName,lastName} = response.data;
-            
-            const msg = `${firstName} ${lastName} is typing...`;
-
-            dispatch({type: 'IS_TYPING', msg});
+            dispatch({type: 'IS_TYPING', uid});
         }
     }
 }

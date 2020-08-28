@@ -7,7 +7,7 @@ import {
 } from '../../store/actions/messagesActions'
 
 import MessageBubble from './MessageBubble';
-import loading from './loading.jpg';
+import TypingBubble from './TypingBubble';
 import axios from 'axios';
 import './ExpandChat.css';
 
@@ -87,9 +87,8 @@ class ExpandChat extends Component{
     }
 
     render(){
-        const {uid} = this.props;
-        const typing = this.props.typingOnDisplay;
-        console.log(typing);
+        const {uid, typingOnDisplay} = this.props;
+       
         const {memberNames, imgURL} = this.state;
 
         const messages = this.props.msgsOnDisplay.map(msg =>
@@ -101,13 +100,18 @@ class ExpandChat extends Component{
             />
         );
 
-        /*const imgs = imgURL.map(i => (
-            <img src = {i} className= 'profilePic'/>
-        ))
-        */
+        console.log(typingOnDisplay)
+
+        const typing = typingOnDisplay.map(id =>
+            <TypingBubble
+                key = {id}
+                uid = {id}
+            />
+        );
+
         const chatPics = []
         for(let i=0; i<imgURL.length;i++){
-            chatPics.push(<img src={imgURL[i]} alt="profile pic" className = "profilePic"/>)
+            chatPics.push(<img key={i} src={imgURL[i]} alt="profile pic" className = "profilePic"/>)
         }
 
         return(
@@ -121,6 +125,7 @@ class ExpandChat extends Component{
 
                 <section className = 'chat-box'>
                     {messages}
+                    {typing}
                 </section>
             </div>
         )

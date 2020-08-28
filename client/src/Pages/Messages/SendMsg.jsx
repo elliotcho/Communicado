@@ -16,15 +16,16 @@ class SendMsg extends Component{
 
     async handleTyping(e){
         const text = e.target.value;
-        const {uid,chatId}= this.props;
-        const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
 
-        const {members} = response.data;
-        
+        const {uid, chatId, typingOnDisplay} = this.props;
+ 
 
-        io.emit("IS_TYPING", {uid,chatId,members});
+        if(!typingOnDisplay.includes(uid)){       
+            const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
+            const {members} = response.data;
 
-        
+            io.emit("IS_TYPING", {uid, chatId, members});
+        }       
     }
 
     pressEnter(e){
