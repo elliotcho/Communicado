@@ -98,7 +98,7 @@ module.exports = (io) => {
                 }
                 
                 io.sockets.to(active[members[i]]).emit(
-                    'Is_TYPING', {chatId, uid}
+                    'IS_TYPING', {chatId, uid}
                 );
 
                 
