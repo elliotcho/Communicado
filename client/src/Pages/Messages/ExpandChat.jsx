@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import {
-    setMsgsOnDisplay,
-    setChatIdOnDisplay
+    setMsgsOnDisplay
 } from '../../store/actions/messagesActions'
 
 import MessageBubble from './MessageBubble';
@@ -17,7 +16,7 @@ class ExpandChat extends Component{
 
         this.state = {
             memberNames: 'Loading Users...',
-            imgURL: null
+            imgURL: []
         }
 
         this.getMessages = this.getMessages.bind(this);
@@ -45,16 +44,26 @@ class ExpandChat extends Component{
 
         let response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
         const {members} = response.data;
+        
+        const size = Math.min(members.length, 2);
+       
+        const chatPics = [];
 
-        //get the chat picture
-        response = await fetch(`http://localhost:5000/users/profilepic/${members[0]}`, {
-            method: 'GET'
-        }); 
-            
-        let file = await response.blob();
+        // //get the chat picture
+
+        console.log(chatPics.length)
+        for(let i=0;i<size;i++){
+            response = await fetch(`http://localhost:5000/users/profilepic/${members[i]}`, {
+                method: 'GET'
+            }); 
+
+            let file = await response.blob();
+
+            chatPics.push(URL.createObjectURL(file));
+        }
 
         this.setState({
-            imgURL: URL.createObjectURL(file)
+            imgURL: chatPics
         });
     }
 
@@ -65,7 +74,6 @@ class ExpandChat extends Component{
         const messages = response.data;
 
         this.props.setMsgsOnDisplay(messages);
-        this.props.setChatIdOnDisplay(chatId);
     }
 
     
@@ -92,11 +100,20 @@ class ExpandChat extends Component{
             />
         );
 
+        /*const imgs = imgURL.map(i => (
+            <img src = {i} className= 'profilePic'/>
+        ))
+        */
+        const chatPics = []
+        for(let i=0; i<imgURL.length;i++){
+            chatPics.push(<img src={imgURL[i]} alt="profile pic" className = "profilePic"/>)
+        }
+
         return(
             <div className ='expandChat'>
                <header>
                     <div className='profile'>
-                        <img src = {imgURL? imgURL : loading} className= 'profilePic'/>
+                        {chatPics.length === 0 ? "//placehold.it/50" : chatPics}
                         <h2>{memberNames}</h2>
                     </div>
                </header>
@@ -118,8 +135,7 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-        setMsgsOnDisplay: (messages) => {dispatch(setMsgsOnDisplay(messages));},
-        setChatIdOnDisplay: (chatId) => {dispatch(setChatIdOnDisplay(chatId));}
+        setMsgsOnDisplay: (messages) => {dispatch(setMsgsOnDisplay(messages));}
     }
 }
 
