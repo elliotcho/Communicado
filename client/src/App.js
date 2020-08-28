@@ -7,7 +7,8 @@ import {updateOnlineFriends} from './store/actions/friendsActions';
 import {
    getRecipients,
    loadChats,
-   handleNewMessage
+   handleNewMessage,
+   handleIsTyping
 } from './store/actions/messagesActions';
 
 import Login from './Pages/Login/Login';
@@ -39,7 +40,8 @@ class App extends Component{
          props.updateOnlineFriends,
          props.getRecipients,
          props.loadChats,
-         props.handleNewMessage
+         props.handleNewMessage,
+         props.handleIsTyping
       );
 
       this.getUnreadNotifs = this.getUnreadNotifs.bind(this);
@@ -115,6 +117,7 @@ const mapDispatchToProps = (dispatch) => {
         updateOnlineFriends: (friends) => {dispatch(updateOnlineFriends(friends));},
         getRecipients: (queryResults) => {dispatch(getRecipients(queryResults));},
         loadChats: (uid) => {dispatch(loadChats(uid));},
+        handleIsTyping: (uid,chatId) =>{dispatch(handleIsTyping(uid,chatId));},
         handleNewMessage: (newMessage, chatId) => {dispatch(handleNewMessage(newMessage, chatId));}
     }
 }

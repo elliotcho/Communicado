@@ -88,5 +88,23 @@ module.exports = (io) => {
                 );
             }
         });
+
+        socket.on('IS_TYPING',data =>{
+            const {uid, members,chatId} = data;
+
+            for(let i=0;i<members.length;i++){
+                if(members[i]===uid){
+                    continue;
+                }
+                
+                io.sockets.to(active[members[i]]).emit(
+                    'Is_TYPING', {chatId, uid}
+                );
+
+                
+            }
+            
+        })
+
     });
 }
