@@ -1,10 +1,12 @@
 const {User} = require('../models/user');
 const {Message, Chat} = require('../models/chat');
 
-exports.sendMessage = async(req,res) =>{
+exports.createMessage = async (req,res) =>{
     const {uid, content, chatId} = req.body;
     
     const chat = await Chat.findOne({_id:chatId});
+    const {messages} = chat;
+
     const newMessage = new Message({
         senderId: uid,
         content,
@@ -12,11 +14,13 @@ exports.sendMessage = async(req,res) =>{
         readBy: [uid],
         seenBy: [uid]
     });
-    const {messages} = chat;
+
     messages.push(newMessage);
+    
     //first parameter finds what we are looking for second parameter is the new thing we are adding for whatever we found with first parametr
-    await Chat.updateOne({_id:chatId},{messages});
-    res.json(Chat.messages);
+    await Chat.updateOne({_id:chatId},{messages, timeOfLastMessage: newMessage.timeSent});
+    
+    res.json(newMessage);
 }
 
 exports.createChat = async (req, res) =>{
@@ -114,7 +118,7 @@ exports.getChatMessages = async (req, res) =>{
     }
 }
 
-exports.getChatPic = async (req, res) =>{
+exports.getChatMemberIds = async (req, res) =>{
     const {uid, chatId} = req.body;
 
     const chat = await Chat.findOne({_id: chatId});

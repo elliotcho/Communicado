@@ -52,7 +52,7 @@ class SendMsg extends Component{
             }
 
             const response = await axios.post('http://localhost:5000/chats/create', {recipients, uid, content});
-            const {chatId} = response.data;
+            const {chatId} = response.data; 
 
             this.props.loadChats(uid);
 
@@ -62,7 +62,15 @@ class SendMsg extends Component{
         }
 
         else{
-            const response = await axios.post('http://localhost:5000/chats/send',{recipients, uid, content,chatId});
+             let response = await axios.post('http://localhost:5000/chats/message',{uid, content,chatId});
+             const newMessage = response.data;
+
+             response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
+             const {members} = response.data;
+           
+             io.emit('NEW_MESSAGE', {newMessage, members: [...members, uid], chatId});
+
+             this.props.loadChats(uid);
         }
         
         //reset textarea value to empty string

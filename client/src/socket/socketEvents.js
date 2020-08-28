@@ -10,7 +10,8 @@ export const handleSocketEvents =
         colorNavbar, 
         updateOnlineFriends, 
         getRecipients,
-        loadChats
+        loadChats,
+        handleNewMessage
     ) =>{
     
     io.on('FRIEND_REQUEST', data =>{
@@ -45,5 +46,11 @@ export const handleSocketEvents =
 
     io.on('CHAT_CREATED', data =>{
         loadChats(data.uid);
+    });
+
+    io.on('NEW_MESSAGE', data =>{
+        const {newMessage, chatId} = data;
+
+        handleNewMessage(newMessage, chatId);
     });
 }

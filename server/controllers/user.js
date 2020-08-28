@@ -32,7 +32,7 @@ exports.signUp = async (req, res) => {
 
     const user = await User.findOne({email});
 
-    //Check if emaiil is already being used by another user in DB
+    //Check if email is already being used by another user in DB
     if(user !== null){
         res.json({msg: 'Email is already being used by another account'});
     }

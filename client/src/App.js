@@ -6,7 +6,8 @@ import {updateOnlineFriends} from './store/actions/friendsActions';
 
 import {
    getRecipients,
-   loadChats
+   loadChats,
+   handleNewMessage
 } from './store/actions/messagesActions';
 
 import Login from './Pages/Login/Login';
@@ -37,7 +38,8 @@ class App extends Component{
          props.colorNavbar,
          props.updateOnlineFriends,
          props.getRecipients,
-         props.loadChats
+         props.loadChats,
+         props.handleNewMessage
       );
 
       this.getUnreadNotifs = this.getUnreadNotifs.bind(this);
@@ -112,7 +114,8 @@ const mapDispatchToProps = (dispatch) => {
         colorNavbar: () => {dispatch(colorNavbar());},
         updateOnlineFriends: (friends) => {dispatch(updateOnlineFriends(friends));},
         getRecipients: (queryResults) => {dispatch(getRecipients(queryResults));},
-        loadChats: (uid) => {dispatch(loadChats(uid));}
+        loadChats: (uid) => {dispatch(loadChats(uid));},
+        handleNewMessage: (newMessage, chatId) => {dispatch(handleNewMessage(newMessage, chatId));}
     }
 }
 

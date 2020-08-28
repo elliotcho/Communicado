@@ -7,7 +7,7 @@ export const login = (credentials) => {
         const data = {...credentials};
         // Send login as json and check if login is successful
         const response = await axios.post('http://localhost:5000/users/login', data, {headers: {'Content-Type': 'application/json'}})
-        const {msg, uid} = response.data;
+        const {msg, uid} = response.data; 
 
         if(msg==='Success'){
             dispatch({type: 'LOGIN_SUCCESS', uid});
