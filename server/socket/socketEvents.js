@@ -78,5 +78,15 @@ module.exports = (io) => {
                 }
             }
         });
+
+        socket.on('NEW_MESSAGE', data => {
+            const {chatId, members, newMessage} = data;
+
+            for(let i =0;i<members.length;i++){
+                io.sockets.to(active[members[i]]).emit(
+                    'NEW_MESSAGE', {chatId, newMessage}
+                );
+            }
+        });
     });
 }

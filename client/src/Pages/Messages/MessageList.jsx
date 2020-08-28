@@ -12,13 +12,14 @@ class MessageList extends Component {
     render() {
         const {uid} = this.props;
         const chatOnDisplay = this.props.chatId;
-
-        const chats = this.props.chats.map(chat =>
+        
+        const chats = this.props.chats.map(chat => 
             <MessageCard
                 key = {chat._id}
                 chatId = {chat._id}
                 uid = {uid}
                 isActive = {chatOnDisplay === chat._id}
+                lastMsg = {chat.messages[chat.messages.length -1]}
             />
         );
 

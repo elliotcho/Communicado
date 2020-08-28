@@ -8,7 +8,7 @@ class MessageCard extends Component {
         super();
         this.state = {
             memberNames: 'Loading Users...',
-            imgURL: null
+            imgURL: [],
         }
         this.handleClick = this.handleClick.bind(this);
     }
@@ -22,41 +22,68 @@ class MessageCard extends Component {
     async componentDidMount(){
         const {uid, chatId} = this.props;
 
-        // Fetch members Names in groupchat 
-        let response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId});
+        let response = await axios.post('http://localhost:5000/chats/members', {uid, chatId});
         const {memberNames} = response.data;
 
-        response = await axios.post('http://localhost:5000/chats/chatpic', {uid, chatId});
+        response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
         const {members} = response.data;
 
-        //get the chat picture
-        response = await fetch(`http://localhost:5000/users/profilepic/${members[0]}`, {
-            method: 'GET'
-        }); 
-            
-        let file = await response.blob();
+        const size = Math.min(members.length, 2);
+        const chatPics = [];
+
+        // //get the chat picture
+        for(let i=0;i<size;i++){
+            response = await fetch(`http://localhost:5000/users/profilepic/${members[i]}`, {
+                method: 'GET'
+            }); 
+
+            let file = await response.blob();
+
+            chatPics.push(URL.createObjectURL(file));
+        }
 
         this.setState({
             memberNames,
-            imgURL: URL.createObjectURL(file)
+            imgURL: chatPics
         });
+        
+        /*
+        if(imgURL.length >= 2) {
+            this.setState({imgURL: imgURL[1]})
+        }
+
+        else if(imgURL.length === 0) {
+            this.setState({imgURL: "//placehold.it/50"})
+        }
+        else if(imgURL.length === 1){
+            this.setState({imgURL: imgURL[0]})
+        }
+        */
+        
     }
 
     render() {
         const {memberNames, imgURL} = this.state;
         
-        const {isActive} = this.props;
+        const {isActive, lastMsg} = this.props;
 
         const cardClassName = (isActive)? 'active': ''
+
+        const chatPics = []
+        for(let i=0; i<imgURL.length;i++){
+            chatPics.push(<img src={imgURL[i]} alt="profile pic" style={{marginLeft: `-${i * 15}px`}}/>)
+        }
 
         return (
             <div onClick={this.handleClick} className={`MessageCard ${cardClassName} card flex-row flex-wrap`}>
                 <div class="card-header border-0">
-                    <img src={imgURL?  imgURL : "//placehold.it/50"} alt="profile pic" />
+
+                {chatPics}
+
                 </div>
-                <div class="card-block px-2">
-                    <h3 class="card-title">{memberNames}</h3>
-                    <p class="card-text">Message</p>
+                <div className="card-block px-2">
+                    <h3 className="card-title">{memberNames}</h3>
+                    <p className="card-text text-muted">{lastMsg.content}</p>
                 </div>
             </div>
         )
