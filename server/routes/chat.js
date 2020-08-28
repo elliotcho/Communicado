@@ -5,7 +5,7 @@ const {
     getUserChats,
     getMemberNames,
     getChatMessages,
-    sendMessage
+    sendMessage,
     getChatPic
  } = require('../controllers/chat');
 
