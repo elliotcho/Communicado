@@ -81,13 +81,8 @@ class Navbar extends Component {
                             </li>
                         </ul>
                     </div>
-<<<<<<< HEAD
-                </nav>
-            // </div>
-=======
                 </div>
             </nav>
->>>>>>> upstream/master
         )
     }
 }

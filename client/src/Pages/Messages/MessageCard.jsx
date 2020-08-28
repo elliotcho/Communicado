@@ -22,9 +22,11 @@ class MessageCard extends Component {
     async componentDidMount(){
         const {uid, chatId} = this.props;
 
+        // Fetch members Names in groupchat 
         let response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId});
         const {memberNames} = response.data;
 
+        // 
         response = await axios.post('http://localhost:5000/chats/chatpic', {uid, chatId});
         const {members} = response.data;
 
