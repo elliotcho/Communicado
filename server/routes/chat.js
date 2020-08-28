@@ -5,8 +5,8 @@ const {
     getUserChats,
     getMemberNames,
     getChatMessages,
-    sendMessage
-    getChatPic
+    sendMessage,
+    getChatPic,
  } = require('../controllers/chat');
 
 router.post('/create', createChat);
