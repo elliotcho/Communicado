@@ -91,7 +91,7 @@ module.exports = (io) => {
 
         socket.on('IS_TYPING',data =>{
             const {uid, members,chatId} = data;
-
+            
             for(let i=0;i<members.length;i++){
                 io.sockets.to(active[members[i]]).emit(
                     'IS_TYPING', {chatId, uid}

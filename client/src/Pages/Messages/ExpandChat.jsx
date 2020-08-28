@@ -99,13 +99,11 @@ class ExpandChat extends Component{
                 content = {msg.content}
             />
         );
-
-        console.log(typingOnDisplay)
-
         const typing = typingOnDisplay.map(id =>
             <TypingBubble
                 key = {id}
                 uid = {id}
+                show = {id !== uid}
             />
         );
 

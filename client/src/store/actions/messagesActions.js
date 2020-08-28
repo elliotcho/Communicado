@@ -58,7 +58,7 @@ export const handleIsTyping = (uid, chatId) =>{
         const {chatIdOnDisplay} = state.messages;
         
         if(chatIdOnDisplay === chatId){
-            dispatch({type: 'IS_TYPING', uid});
+            dispatch({type: 'IS_TYPING', typingId: uid});
         }
     }
 }

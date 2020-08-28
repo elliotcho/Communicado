@@ -19,12 +19,11 @@ class SendMsg extends Component{
 
         const {uid, chatId, typingOnDisplay} = this.props;
  
-
         if(!typingOnDisplay.includes(uid)){       
             const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
             const {members} = response.data;
 
-            io.emit("IS_TYPING", {uid, chatId, members});
+            io.emit("IS_TYPING", {uid, chatId, members: [...members, uid]});
         }       
     }
 

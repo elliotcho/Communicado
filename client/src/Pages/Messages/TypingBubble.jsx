@@ -14,23 +14,25 @@ class TypingBubble extends Component{
     }
 
     async componentDidMount(){
-        const {uid} = this.props;
+        const {uid, show} = this.props;
 
-        let response = await axios.get(`http://localhost:5000/users/${uid}`);
-        const {firstName, lastName} = response;
+        if(show){
+            let response = await axios.get(`http://localhost:5000/users/${uid}`);
+            const {firstName, lastName} = response.data;
 
-        //get profile picture of the user typing
-        response = await fetch(`http://localhost:5000/users/profilepic/${uid}`, {
-            method: 'GET'
-        }); 
+            //get profile picture of the user typing
+            response = await fetch(`http://localhost:5000/users/profilepic/${uid}`, {
+                method: 'GET'
+            }); 
         
-        let file = await response.blob();
+            let file = await response.blob();
 
-        this.setState({
-            firstName,
-            lastName,
-            imgURL: URL.createObjectURL(file)
-        });
+            this.setState({
+                firstName,
+                lastName,
+                imgURL: URL.createObjectURL(file)
+            });
+        }
     }
 
     render(){
@@ -41,10 +43,12 @@ class TypingBubble extends Component{
             height: '50px'
         }
 
+        const show = (this.props.show)? '': 'none';
+
         return(
-            <div>
+            <div style={{display: show}}>
                 <img src = {imgURL? imgURL: loading} alt = 'profile pic' style={style}/>
-                {firstName} {lastName} is typing...
+                <p>{firstName} {lastName} is typing...</p>
             </div>
         )   
     }

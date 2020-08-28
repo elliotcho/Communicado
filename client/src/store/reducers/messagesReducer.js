@@ -50,7 +50,7 @@ const messagesReducer = (state=initState, action) =>{
         case 'IS_TYPING':
             return{
                 ...state,
-                typingOnDisplay : [...state.typingOnDisplay, action.uid]
+                typingOnDisplay : [...state.typingOnDisplay, action.typingId]
             }
         default:
             return state;
