@@ -28,3 +28,6 @@ Client uses routes
 Routes activates controllers
 Controllers read/write from db using models 
 Controllers send response back to client
+
+
+store (global state) --> components --> actions --> reducer --> store (global state)

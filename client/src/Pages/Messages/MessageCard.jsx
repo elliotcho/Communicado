@@ -25,7 +25,7 @@ class MessageCard extends Component {
         let response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId});
         const {memberNames} = response.data;
 
-        response = await axios.post('http://localhost:5000/chats/chatpic', {uid, chatId});
+        response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
         const {members} = response.data;
 
         //get the chat picture
