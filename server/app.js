@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 //used for image uplaoding
@@ -9,7 +10,7 @@ const app = express();
 const socket = require('socket.io');
 
 //connect to database
-mongoose.connect('mongodb+srv://elliot:pwd@cluster0-rga5i.azure.mongodb.net/Communicado?retryWrites=true&w=majority', {
+mongoose.connect(process.env.DATABASE, {
     useUnifiedTopology: true,
     useNewUrlParser: true
 }); 
@@ -41,7 +42,7 @@ app.use('/chats', require('./routes/chat'));
 app.use('/friends', require('./routes/friends')); 
 
 //Specify localhost port number
-const server = app.listen(5000);
+const server = app.listen(process.env.PORT);
 
 //Here we pass socket server as a parameter to the arrow io function in socketEvents
 require('./socket/socketEvents')(socket(server));

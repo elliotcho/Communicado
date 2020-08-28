@@ -20,8 +20,11 @@ if user is not on msg card bold text in card with new msg
 update message cards order
 
 
-                     routes   <-- view/client
+                     routes   <-- view/client --> socket(5000)
                         |
-db <--> models <--> controllers
-                        |
-                      socket  <-- view/client
+db <--> models <--> controllers  
+
+Client uses routes
+Routes activates controllers
+Controllers read/write from db using models 
+Controllers send response back to client

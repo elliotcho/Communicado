@@ -90,6 +90,7 @@ class Messages extends Component {
                                 chats = {chats}
                                 chatId = {chatId}
                                 loadChats = {loadChats}
+                                chatId = {chatId}
                             />
                         </div>
 
