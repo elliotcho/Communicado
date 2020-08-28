@@ -2,6 +2,7 @@
   width: 100%;
   background: lightgray;
   overflow: auto;
+  height: 92vh;
 }
 
 .homeRow {
