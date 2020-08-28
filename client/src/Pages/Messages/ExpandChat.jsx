@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import {
-    setMsgsOnDisplay
+    setMsgsOnDisplay,
+    setChatIdOnDisplay
 } from '../../store/actions/messagesActions'
 
 import MessageBubble from './MessageBubble';
@@ -50,8 +51,6 @@ class ExpandChat extends Component{
         const chatPics = [];
 
         // //get the chat picture
-
-        console.log(chatPics.length)
         for(let i=0;i<size;i++){
             response = await fetch(`http://localhost:5000/users/profilepic/${members[i]}`, {
                 method: 'GET'
@@ -74,6 +73,7 @@ class ExpandChat extends Component{
         const messages = response.data;
 
         this.props.setMsgsOnDisplay(messages);
+        this.props.setChatIdOnDisplay(chatId);
     }
 
     
@@ -137,7 +137,8 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-        setMsgsOnDisplay: (messages) => {dispatch(setMsgsOnDisplay(messages));}
+        setMsgsOnDisplay: (messages) => {dispatch(setMsgsOnDisplay(messages));},
+        setChatIdOnDisplay: (chatId) => {dispatch(setChatIdOnDisplay(chatId));}
     }
 }
 

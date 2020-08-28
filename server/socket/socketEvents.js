@@ -96,15 +96,11 @@ module.exports = (io) => {
                 if(members[i]===uid){
                     continue;
                 }
-                
+
                 io.sockets.to(active[members[i]]).emit(
-                    'Is_TYPING', {chatId, uid}
+                    'IS_TYPING', {chatId, uid}
                 );
-
-                
             }
-            
         })
-
     });
 }

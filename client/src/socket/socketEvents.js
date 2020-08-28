@@ -56,8 +56,8 @@ export const handleSocketEvents =
     });
 
     io.on('IS_TYPING', data =>{
-        const {uid,chatId} = data;
-    
+        const {uid, chatId} = data;
+
         handleIsTyping(uid,chatId);
     })
 }
