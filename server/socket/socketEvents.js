@@ -79,7 +79,7 @@ module.exports = (io) => {
             }
         });
 
-        socket.on('NEW_MESSAGE', async data => {
+        socket.on('NEW_MESSAGE', data => {
             const {chatId, members, newMessage} = data;
 
             for(let i =0;i<members.length;i++){

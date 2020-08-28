@@ -44,7 +44,7 @@ export const handleNewMessage = (newMessage, chatId) =>{
         const state = getState();
 
         const {chatIdOnDisplay} = state.messages;
-
+    
         if(chatIdOnDisplay === chatId){
             dispatch({type: 'NEW_MESSAGE', newMessage});
         }

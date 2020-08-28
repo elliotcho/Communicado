@@ -22,29 +22,31 @@ class MessageCard extends Component {
     async componentDidMount(){
         const {uid, chatId} = this.props;
 
-        const {imgURL} = this.state;
-
         let response = await axios.post('http://localhost:5000/chats/members', {uid, chatId});
         const {memberNames} = response.data;
 
         response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
         const {members} = response.data;
 
-        //get the chat picture
-        for(let i=0;i<2;i++){
-            response = await fetch(`http://localhost:5000/users/profilepic/${members[i]}`, {
-            method: 'GET'
-        }); 
-  
-        let file = await response.blob();
+        const size = Math.min(members.length, 2);
+        const chatPics = [];
 
-        let img = URL.createObjectURL(file)
+        // //get the chat picture
+        for(let i=0;i<size;i++){
+            response = await fetch(`http://localhost:5000/users/profilepic/${members[i]}`, {
+                method: 'GET'
+            }); 
+
+            let file = await response.blob();
+
+            chatPics.push(URL.createObjectURL(file));
+        }
 
         this.setState({
             memberNames,
-            imgURL: [...this.state.imgURL, img]
+            imgURL: chatPics
         });
-        }
+        
         /*
         if(imgURL.length >= 2) {
             this.setState({imgURL: imgURL[1]})
