@@ -13,7 +13,7 @@ class Navbar extends Component {
         this.signOut = this.signOut.bind(this);
         this.toNotifs = this.toNotifs.bind(this);
     }
-
+    
     // Function to signout user, making sure they cannot go back and still be logged in
     signOut(e) {
         e.preventDefault();
@@ -98,6 +98,5 @@ const mapDispatchToProps = (dispatch) => {
         uncolorNavbar: () => {dispatch(uncolorNavbar());}
     }
 }
-
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

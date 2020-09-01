@@ -27,16 +27,33 @@ class Messages extends Component {
         const chatId = this.props.match.params.id;
         const {uid} = this.props;
 
-        const response = await axios.get(`http://localhost:5000/chats/user/${uid}`);
-        const chats = response.data;
+        this.axiosCancelSource = axios.CancelToken.source();
 
-        if(chats.length !== 0 && chatId !== 'new'){
-            this.props.history.push(`/chat/${chats[0]._id}`);
+        try{
+            const response = await axios.get(`http://localhost:5000/chats/user/${uid}`, {
+                cancelToken: this.axiosCancelSource
+            });
+        
+            const chats = response.data;
+
+            if(chats.length !== 0 && chatId !== 'new'){
+                this.props.history.push(`/chat/${chats[0]._id}`);
+            }
+
+            else{
+                this.props.history.push('/chat/new');
+            }
         }
 
-        else{
-            this.props.history.push('/chat/new');
+        catch(err){
+            if(axios.Cancel(err)){
+                console.log("Request cancelled");
+            }
         }
+    }
+
+    componentWillUnmount(){
+        this.axiosCancelSource.cancel('Request cancelled')
     }
 
     handleComposer(){
