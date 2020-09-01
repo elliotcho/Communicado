@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {io} from '../App';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {uncolorNavbar} from '../store/actions/notificationsActions';
 import {Link} from 'react-router-dom';
 import './Navbar.css'
 
@@ -32,8 +31,13 @@ class Navbar extends Component {
     // Return navbar using bootstrap4 and React-Router links
     render() {
         // Destructure and determine nav notification colour
-        const {newNotif} = this.props;
+        const {newNotif, unseenChats} = this.props;
+        
         const notifColor = (newNotif) ? 'nav-link text-danger' : 'nav-link';
+
+        const msgColor = (unseenChats) ? 
+            'nav-link text-danger pr-lg-5' : 
+            'nav-link pr-lg-5';
 
         return(
             <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed">
@@ -51,7 +55,7 @@ class Navbar extends Component {
                             </li>
                                 
                             <li>
-                                <Link to='/chat/home' className="nav-link pr-lg-5">Messages</Link>
+                                <Link to='/chat/home' className = {msgColor}>Messages</Link>
                             </li>
 
                             <li>
@@ -89,14 +93,9 @@ class Navbar extends Component {
 
 const mapStateToProps = (state) =>{
     return{
-        uid: state.auth.uid
+        uid: state.auth.uid,
+        unseenChats: state.messages.unseenChats
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return{
-        uncolorNavbar: () => {dispatch(uncolorNavbar());}
-    }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));
+export default withRouter(connect(mapStateToProps)(Navbar));

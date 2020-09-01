@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {uncolorNavbar, removeNotification} from '../../store/actions/notificationsActions';
+import {uncolorNotif, removeNotification} from '../../store/actions/notificationsActions';
 import './Notifications.css'
 import NotificationCard from './NotificationCard';
 
@@ -13,7 +13,7 @@ class Notifications extends Component{
     // After first render, remove highlighted icon and destructure props
     componentDidMount(){
         const {uid, uncolorNavbar} = this.props;
-        uncolorNavbar(uid);
+        uncolorNotif(uid);
     }
 
     // Every new socket notif, listen for new notification
@@ -68,7 +68,7 @@ const mapStateToProps = (state) =>{
 // Methods for notifications to use after mounting
 const mapDispatchToProps = (dispatch) =>{
     return{
-        uncolorNavbar: (uid) => {dispatch(uncolorNavbar(uid));},
+        uncolorNotif: (uid) => {dispatch(uncolorNotif(uid));},
         removeNotification: (notifId, notifs) => {dispatch(removeNotification(notifId, notifs));}
     }
 }

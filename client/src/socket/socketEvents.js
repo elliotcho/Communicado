@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export const handleSocketEvents = 
     (
         io, 
-        colorNavbar, 
+        colorNotif, 
         updateOnlineFriends, 
         getRecipients,
         loadChats,
@@ -19,7 +19,7 @@ export const handleSocketEvents =
     io.on('FRIEND_REQUEST', data =>{
         const {toastId} = data;
 
-        colorNavbar();
+        colorNotif();
 
         toast.info(<ToastMsg toastId = {toastId} msg ={'sent you a friend request!'}/>,{
             draggable: false,
@@ -30,7 +30,7 @@ export const handleSocketEvents =
     io.on("ACCEPT_REQUEST", data =>{
         const {toastId} = data;
 
-        colorNavbar();
+        colorNotif();
 
         toast.success(<ToastMsg toastId={toastId} msg={'accepted your friend request!'}/>, {
             draggable: false,
