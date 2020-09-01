@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import './OnlineFriend.css'
 import loading from './loading.jpg';
 
@@ -47,7 +46,7 @@ class OnlineFriend extends Component {
                     
                     <div className ="col-sm-3 sideBar-avatar">
                         <div className ="avatar-icon">
-                            <img src={imgURL? imgURL: loading}></img>
+                            <img src={imgURL? imgURL: loading} alt="avatar"></img>
                             <span className = {displayColor}></span>
                         </div>
                     </div>

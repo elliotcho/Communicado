@@ -56,8 +56,8 @@ class ExpandChat extends Component{
                 method: 'GET'
             }); 
 
+            // 
             let file = await response.blob();
-
             chatPics.push(URL.createObjectURL(file));
         }
 
@@ -66,9 +66,12 @@ class ExpandChat extends Component{
         });
     }
 
-    async getMessages(){
+
+    async getMessages() {
+        // Destructure
         const {chatId} = this.props;
 
+        // Get messages for a given chatID
         const response = await axios.get(`http://localhost:5000/chats/messages/${chatId}`);
         const messages = response.data;
 
@@ -78,11 +81,12 @@ class ExpandChat extends Component{
 
     
     async getMemberNames(){
+        // Destructure
         const {uid, chatId} = this.props;
-
+        // Get member names for a chatID
         const response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId});
         const {memberNames} = response.data;
-
+        // Set state of the member names
         this.setState({memberNames});
     }
 

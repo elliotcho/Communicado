@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import {io} from '../../App';
 import './SendMsg.css';
-import { handleSocketEvents } from '../../socket/socketEvents';
+// import { handleSocketEvents } from '../../socket/socketEvents';
 
 class SendMsg extends Component{
     constructor(){
@@ -15,7 +15,7 @@ class SendMsg extends Component{
 
 
     async handleTyping(e){
-        const text = e.target.value;
+        // const text = e.target.value;
 
         const {uid, chatId, typingOnDisplay} = this.props;
  
