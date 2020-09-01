@@ -8,6 +8,7 @@ import { handleSocketEvents } from '../../socket/socketEvents';
 class SendMsg extends Component{
     constructor(){
         super();
+        
         this.pressEnter = this.pressEnter.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTyping = this.handleTyping.bind(this);
@@ -15,8 +16,10 @@ class SendMsg extends Component{
 
 
     async handleTyping(e){
+        //let typing= true;
         const text = e.target.value;
-
+        //if(text.trim()==="") typing = false;
+        
         const {uid, chatId, typingOnDisplay} = this.props;
  
 
