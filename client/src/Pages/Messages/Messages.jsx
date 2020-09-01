@@ -5,7 +5,8 @@ import {connect} from 'react-redux';
 import {
     updateRecipients,
     clearComposer,
-    loadChats
+    loadChats,
+    seeChats
 } from '../../store/actions/messagesActions';
 
 import MessageList from './MessageList'
@@ -25,7 +26,7 @@ class Messages extends Component {
 
     async componentDidMount(){
         const chatId = this.props.match.params.id;
-        const {uid} = this.props;
+        const {uid, seeChats} = this.props;
 
         this.cancelSource = axios.CancelToken.source();
         
@@ -35,6 +36,7 @@ class Messages extends Component {
             });
             
             const chats = response.data;
+            seeChats(uid);
 
             if(chats.length !== 0 && chatId !== 'new'){
                 this.props.history.push(`/chat/${chats[0]._id}`);
@@ -51,6 +53,14 @@ class Messages extends Component {
             if (axios.isCancel(err)) {
                 console.log('Request canceled', err.message);
             } 
+        }
+    }
+
+    componentDidUpdate(){
+        const {uid, seeChats, unseenChats} = this.props;
+
+        if(unseenChats){
+            seeChats(uid);
         }
     }
 
@@ -147,7 +157,8 @@ const mapStateToProps = (state) => {
         queryResults: state.messages.queryResults,
         recipients: state.messages.recipients,
         chats: state.messages.chats,
-        typingOnDisplay: state.messages.typingOnDisplay
+        typingOnDisplay: state.messages.typingOnDisplay,
+        unseenChats: state.messages.unseenChats
     }   
 }
 
@@ -155,7 +166,8 @@ const mapDispatchToProps = (dispatch) =>{
     return{
         updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));},
         clearComposer: () => {dispatch(clearComposer());},
-        loadChats: (uid) => {dispatch(loadChats(uid));}
+        loadChats: (uid) => {dispatch(loadChats(uid));},
+        seeChats: (uid) => {dispatch(seeChats(uid));}
     }
 }
 

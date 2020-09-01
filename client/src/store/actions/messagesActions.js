@@ -19,7 +19,7 @@ export const clearComposer = () =>{
 }
 
 export const loadChats = (uid) =>{
-    return async (dispatch, getState) =>{
+    return async (dispatch) =>{
         const response = await axios.get(`http://localhost:5000/chats/user/${uid}`);
         const chats = response.data;
 
@@ -60,5 +60,21 @@ export const handleIsTyping = (uid, chatId) =>{
         if(chatIdOnDisplay === chatId){
             dispatch({type: 'IS_TYPING', typingId: uid});
         }
+    }
+}
+
+export const getUnseenChats = (uid) => {
+    return async (dispatch) => {
+        const response = await axios.get(`http://localhost:5000/chats/unseen/${uid}`);
+        const {unseen} = response.data;
+
+        dispatch({type: 'UNSEEN_CHATS', unseen});
+    }
+}
+
+export const seeChats = (uid) => {
+    return async (dispatch) => {
+        await axios.put(`http://localhost:5000/chats/seechats/${uid}`);
+        dispatch({type: 'SEE_CHATS'});
     }
 }

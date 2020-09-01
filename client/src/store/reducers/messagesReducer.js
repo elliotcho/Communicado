@@ -4,7 +4,8 @@ const initState = {
     chats: [],
     msgsOnDisplay: [],
     typingOnDisplay: [],
-    chatIdOnDisplay: null
+    chatIdOnDisplay: null,
+    unseenChats: false
 };
 
 // Reducer for friend actions
@@ -51,6 +52,16 @@ const messagesReducer = (state=initState, action) =>{
             return{
                 ...state,
                 typingOnDisplay : [...state.typingOnDisplay, action.typingId]
+            }
+        case 'UNSEEN_CHATS':
+            return{
+                ...state,
+                unseenChats: action.unseen
+            }
+        case 'SEE_CHATS':
+            return{
+                ...state,
+                unseenChats: false
             }
         default:
             return state;
