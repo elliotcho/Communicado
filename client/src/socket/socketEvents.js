@@ -1,25 +1,18 @@
 import React from 'react';
+import {colorNotif} from '../store/actions/notificationsActions';
+import {updateOnlineFriends} from '../store/actions/friendsActions';
+import * as msgActions from '../store/actions/messagesActions';
 import {toast} from 'react-toastify';
 import ToastMsg from '../Partials/ToastMsg';
 import 'react-toastify/dist/ReactToastify.css';
 
 // R: -- ELLIOT/GUGSA
-export const handleSocketEvents = 
-    (
-        io, 
-        colorNotif, 
-        updateOnlineFriends, 
-        getRecipients,
-        loadChats,
-        handleNewMessage,
-        handleIsTyping,
-        handleStopTyping
-    ) =>{
+export const handleSocketEvents = (io, dispatch) =>{
     
     io.on('FRIEND_REQUEST', data =>{
         const {toastId} = data;
 
-        colorNotif();
+        dispatch(colorNotif());
 
         toast.info(<ToastMsg toastId = {toastId} msg ={'sent you a friend request!'}/>,{
             draggable: false,
@@ -30,7 +23,7 @@ export const handleSocketEvents =
     io.on("ACCEPT_REQUEST", data =>{
         const {toastId} = data;
 
-        colorNotif();
+        dispatch(colorNotif());
 
         toast.success(<ToastMsg toastId={toastId} msg={'accepted your friend request!'}/>, {
             draggable: false,
@@ -39,32 +32,37 @@ export const handleSocketEvents =
     });
 
     io.on('GET_ONLINE_FRIENDS', data =>{
-        updateOnlineFriends(data.friends);
+        dispatch(updateOnlineFriends(data.friends));
     });
 
     io.on('GET_RECIPIENTS', data =>{
-        getRecipients(data.queryResult);
+        const {getRecipients} =msgActions;
+        dispatch(getRecipients(data.queryResult));
     });
 
     io.on('CHAT_CREATED', data =>{
-        loadChats(data.uid);
+        const{loadChats}=msgActions;
+        dispatch(loadChats(data.uid));
     });
 
     io.on('NEW_MESSAGE', data =>{
         const {newMessage, chatId} = data;
+        const {handleNewMessage} = msgActions
 
-        handleNewMessage(newMessage, chatId);
+        dispatch(handleNewMessage(newMessage, chatId));
     });
 
     io.on('IS_TYPING', data =>{
         const {uid, chatId} = data;
-
-        handleIsTyping(uid,chatId);
+        const {handleIsTyping} = msgActions;
+        
+        dispatch(handleIsTyping(uid,chatId));
     });
 
     io.on('STOP_TYPING', data =>{
         const {uid, chatId} = data;
-        
-        handleStopTyping(uid,chatId);
+        const {handleStopTyping} = msgActions
+
+        dispatch(handleStopTyping(uid,chatId));
     });
 }

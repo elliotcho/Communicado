@@ -72,6 +72,7 @@ export const handleStopTyping = (uid, chatId) =>{
         if(chatIdOnDisplay === chatId){
             dispatch({type: 'STOP_TYPING', typingId: uid});
         }
+    }
 }
 
 export const getUnseenChats = (uid) => {

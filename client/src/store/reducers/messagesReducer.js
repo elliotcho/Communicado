@@ -60,6 +60,7 @@ const messagesReducer = (state=initState, action) =>{
             return{
                 ...state,
                 typingOnDisplay: [...state.typingOnDisplay]
+            }
         case 'UNSEEN_CHATS':
             return{
                 ...state,

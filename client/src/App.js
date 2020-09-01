@@ -2,17 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {colorNotif} from './store/actions/notificationsActions';
-import {updateOnlineFriends} from './store/actions/friendsActions';
-
-import {
-   getRecipients,
-   loadChats,
-   handleNewMessage,
-   handleIsTyping,
-   handleStopTyping,
-   getUnseenChats
-} from './store/actions/messagesActions';
-
+import {getUnseenChats} from './store/actions/messagesActions';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import Home from './Pages/Home/Home';
@@ -36,16 +26,7 @@ class App extends Component{
       io = socket('http://localhost:5000');
       
       //importing all these socket.on events from server (socketEvents.js)
-      handleSocketEvents(
-         io, 
-         props.colorNotif,
-         props.updateOnlineFriends,
-         props.getRecipients,
-         props.loadChats,
-         props.handleNewMessage,
-         props.handleIsTyping,
-         props.handleStopTyping
-      );
+      handleSocketEvents(io, props.dispatch);
 
       this.getUnreadNotifs = this.getUnreadNotifs.bind(this);
       this.getUnseenChats = this.getUnseenChats.bind(this);
@@ -61,10 +42,10 @@ class App extends Component{
    }
 
    async componentDidUpdate(prevProps){
-      const {uid, colorNavbar} = this.props;
+      const {uid, colorNotif} = this.props;
 
       if(uid && prevProps.uid !== uid){
-         this.getUnreadNotifs(uid, colorNavbar);
+         this.getUnreadNotifs(uid, colorNotif);
          this.getUnseenChats();
       }
    }
@@ -125,13 +106,8 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = (dispatch) => {
     return {
         colorNotif: () => {dispatch(colorNotif());},
-        updateOnlineFriends: (friends) => {dispatch(updateOnlineFriends(friends));},
-        getRecipients: (queryResults) => {dispatch(getRecipients(queryResults));},
-        loadChats: (uid) => {dispatch(loadChats(uid));},
-        handleIsTyping: (uid,chatId) =>{dispatch(handleIsTyping(uid,chatId));},
-        handleStopTyping: (uid,chatId) =>{dispatch(handleStopTyping(uid,chatId));},
-        handleNewMessage: (newMessage, chatId) => {dispatch(handleNewMessage(newMessage, chatId));},
-        getUnseenChats: (uid) => {dispatch(getUnseenChats(uid));}
+        getUnseenChats: (uid) => {dispatch(getUnseenChats(uid));},
+        dispatch
     }
 }
 

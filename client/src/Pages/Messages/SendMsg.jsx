@@ -28,7 +28,6 @@ class SendMsg extends Component{
         }
         
         
- 
         if(!typingOnDisplay.includes(uid)){       
             const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
             const {members} = response.data;
