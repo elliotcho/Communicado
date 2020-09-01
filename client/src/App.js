@@ -9,6 +9,7 @@ import {
    loadChats,
    handleNewMessage,
    handleIsTyping,
+   handleStopTyping,
    getUnseenChats
 } from './store/actions/messagesActions';
 
@@ -42,7 +43,8 @@ class App extends Component{
          props.getRecipients,
          props.loadChats,
          props.handleNewMessage,
-         props.handleIsTyping
+         props.handleIsTyping,
+         props.handleStopTyping
       );
 
       this.getUnreadNotifs = this.getUnreadNotifs.bind(this);
@@ -127,6 +129,7 @@ const mapDispatchToProps = (dispatch) => {
         getRecipients: (queryResults) => {dispatch(getRecipients(queryResults));},
         loadChats: (uid) => {dispatch(loadChats(uid));},
         handleIsTyping: (uid,chatId) =>{dispatch(handleIsTyping(uid,chatId));},
+        handleStopTyping: (uid,chatId) =>{dispatch(handleStopTyping(uid,chatId));},
         handleNewMessage: (newMessage, chatId) => {dispatch(handleNewMessage(newMessage, chatId));},
         getUnseenChats: (uid) => {dispatch(getUnseenChats(uid));}
     }

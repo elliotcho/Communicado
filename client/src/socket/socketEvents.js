@@ -12,7 +12,8 @@ export const handleSocketEvents =
         getRecipients,
         loadChats,
         handleNewMessage,
-        handleIsTyping
+        handleIsTyping,
+        handleStopTyping
     ) =>{
     
     io.on('FRIEND_REQUEST', data =>{
@@ -59,5 +60,11 @@ export const handleSocketEvents =
         const {uid, chatId} = data;
 
         handleIsTyping(uid,chatId);
-    })
+    });
+
+    io.on('STOP_TYPING', data =>{
+        const {uid, chatId} = data;
+        
+        handleStopTyping(uid,chatId);
+    });
 }

@@ -53,6 +53,13 @@ const messagesReducer = (state=initState, action) =>{
                 ...state,
                 typingOnDisplay : [...state.typingOnDisplay, action.typingId]
             }
+        case 'STOP_TYPING':
+            for(let i=0;i<state.typingOnDisplay.length;i++){
+                if(state.typingOnDisplay[i]===action.typingId) state.typingOnDisplay.splice(i,1);
+            }
+            return{
+                ...state,
+                typingOnDisplay: [...state.typingOnDisplay]
         case 'UNSEEN_CHATS':
             return{
                 ...state,

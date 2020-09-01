@@ -61,6 +61,17 @@ export const handleIsTyping = (uid, chatId) =>{
             dispatch({type: 'IS_TYPING', typingId: uid});
         }
     }
+};
+
+export const handleStopTyping = (uid, chatId) =>{
+    return async (dispatch, getState) => {
+        const state = getState();
+
+        const {chatIdOnDisplay} = state.messages;
+        
+        if(chatIdOnDisplay === chatId){
+            dispatch({type: 'STOP_TYPING', typingId: uid});
+        }
 }
 
 export const getUnseenChats = (uid) => {
