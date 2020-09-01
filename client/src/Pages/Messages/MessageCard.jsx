@@ -71,7 +71,7 @@ class MessageCard extends Component {
 
         const chatPics = []
         for(let i=0; i<imgURL.length;i++){
-            chatPics.push(<img src={imgURL[i]} alt="profile pic" style={{marginLeft: `-${i * 15}px`}}/>)
+            chatPics.push(<img key={i} src={imgURL[i]} alt="profile pic" style={{marginLeft: `-${i * 15}px`}}/>)
         }
 
         return (

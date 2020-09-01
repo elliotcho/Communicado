@@ -11,7 +11,8 @@ export const handleSocketEvents =
         updateOnlineFriends, 
         getRecipients,
         loadChats,
-        handleNewMessage
+        handleNewMessage,
+        handleIsTyping
     ) =>{
     
     io.on('FRIEND_REQUEST', data =>{
@@ -53,4 +54,10 @@ export const handleSocketEvents =
 
         handleNewMessage(newMessage, chatId);
     });
+
+    io.on('IS_TYPING', data =>{
+        const {uid, chatId} = data;
+
+        handleIsTyping(uid,chatId);
+    })
 }

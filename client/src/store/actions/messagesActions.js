@@ -44,9 +44,21 @@ export const handleNewMessage = (newMessage, chatId) =>{
         const state = getState();
 
         const {chatIdOnDisplay} = state.messages;
-    
+
         if(chatIdOnDisplay === chatId){
             dispatch({type: 'NEW_MESSAGE', newMessage});
+        }
+    }
+}
+
+export const handleIsTyping = (uid, chatId) =>{
+    return async (dispatch, getState) => {
+        const state = getState();
+
+        const {chatIdOnDisplay} = state.messages;
+        
+        if(chatIdOnDisplay === chatId){
+            dispatch({type: 'IS_TYPING', typingId: uid});
         }
     }
 }

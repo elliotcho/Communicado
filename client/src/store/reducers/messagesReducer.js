@@ -3,6 +3,7 @@ const initState = {
     recipients: [],
     chats: [],
     msgsOnDisplay: [],
+    typingOnDisplay: [],
     chatIdOnDisplay: null
 };
 
@@ -44,6 +45,12 @@ const messagesReducer = (state=initState, action) =>{
             return{
                 ...state,
                 msgsOnDisplay: [...state.msgsOnDisplay, action.newMessage]
+            }
+        
+        case 'IS_TYPING':
+            return{
+                ...state,
+                typingOnDisplay : [...state.typingOnDisplay, action.typingId]
             }
         default:
             return state;

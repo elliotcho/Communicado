@@ -7,7 +7,7 @@ import {
 } from '../../store/actions/messagesActions'
 
 import MessageBubble from './MessageBubble';
-import loading from './loading.jpg';
+import TypingBubble from './TypingBubble';
 import axios from 'axios';
 import './ExpandChat.css';
 
@@ -17,7 +17,7 @@ class ExpandChat extends Component{
 
         this.state = {
             memberNames: 'Loading Users...',
-            imgURL: null
+            imgURL: []
         }
 
         this.getMessages = this.getMessages.bind(this);
@@ -45,16 +45,24 @@ class ExpandChat extends Component{
 
         let response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
         const {members} = response.data;
+        
+        const size = Math.min(members.length, 2);
+       
+        const chatPics = [];
 
-        //get the chat picture
-        response = await fetch(`http://localhost:5000/users/profilepic/${members[0]}`, {
-            method: 'GET'
-        }); 
-            
-        let file = await response.blob();
+        // //get the chat picture
+        for(let i=0;i<size;i++){
+            response = await fetch(`http://localhost:5000/users/profilepic/${members[i]}`, {
+                method: 'GET'
+            }); 
+
+            let file = await response.blob();
+
+            chatPics.push(URL.createObjectURL(file));
+        }
 
         this.setState({
-            imgURL: URL.createObjectURL(file)
+            imgURL: chatPics
         });
     }
 
@@ -79,8 +87,8 @@ class ExpandChat extends Component{
     }
 
     render(){
-        const {uid} = this.props;
-
+        const {uid, typingOnDisplay} = this.props;
+       
         const {memberNames, imgURL} = this.state;
 
         const messages = this.props.msgsOnDisplay.map(msg =>
@@ -91,18 +99,31 @@ class ExpandChat extends Component{
                 content = {msg.content}
             />
         );
+        const typing = typingOnDisplay.map(id =>
+            <TypingBubble
+                key = {id}
+                uid = {id}
+                show = {id !== uid}
+            />
+        );
+
+        const chatPics = []
+        for(let i=0; i<imgURL.length;i++){
+            chatPics.push(<img key={i} src={imgURL[i]} alt="profile pic" className = "profilePic"/>)
+        }
 
         return(
             <div className ='expandChat'>
                <header>
                     <div className='profile'>
-                        <img src = {imgURL? imgURL : loading} className= 'profilePic'/>
+                        {chatPics.length === 0 ? "//placehold.it/50" : chatPics}
                         <h2>{memberNames}</h2>
                     </div>
                </header>
 
                 <section className = 'chat-box'>
                     {messages}
+                    {typing}
                 </section>
             </div>
         )
@@ -112,7 +133,8 @@ class ExpandChat extends Component{
 const mapStateToProps = (state) =>{
     return{
         uid: state.auth.uid,
-        msgsOnDisplay: state.messages.msgsOnDisplay
+        msgsOnDisplay: state.messages.msgsOnDisplay,
+        typingOnDisplay: state.messages.typingOnDisplay
     }
 }
 

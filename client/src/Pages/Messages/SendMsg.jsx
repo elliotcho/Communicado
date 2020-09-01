@@ -3,12 +3,28 @@ import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import {io} from '../../App';
 import './SendMsg.css';
+import { handleSocketEvents } from '../../socket/socketEvents';
 
 class SendMsg extends Component{
     constructor(){
         super();
         this.pressEnter = this.pressEnter.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleTyping = this.handleTyping.bind(this);
+    }
+
+
+    async handleTyping(e){
+        const text = e.target.value;
+
+        const {uid, chatId, typingOnDisplay} = this.props;
+ 
+        if(!typingOnDisplay.includes(uid)){       
+            const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
+            const {members} = response.data;
+
+            io.emit("IS_TYPING", {uid, chatId, members: [...members, uid]});
+        }       
     }
 
     pressEnter(e){
@@ -87,7 +103,7 @@ class SendMsg extends Component{
                         placeholder = 'Type a message...'
                         ref = {ele => this.msg = ele}
                         onKeyDown = {this.pressEnter} 
-
+                        onChange = {this.handleTyping}
                     />
 
                     <label>
