@@ -27,13 +27,13 @@ class Messages extends Component {
         const chatId = this.props.match.params.id;
         const {uid} = this.props;
 
-        this.axiosCancelSource = axios.CancelToken.source();
-
+        this.cancelSource = axios.CancelToken.source();
+        
         try{
             const response = await axios.get(`http://localhost:5000/chats/user/${uid}`, {
-                cancelToken: this.axiosCancelSource
+                cancelToken: this.cancelSource.token
             });
-        
+            
             const chats = response.data;
 
             if(chats.length !== 0 && chatId !== 'new'){
@@ -46,14 +46,16 @@ class Messages extends Component {
         }
 
         catch(err){
-            if(axios.Cancel(err)){
-                console.log("Request cancelled");
-            }
+            console.log(err)
+
+            if (axios.isCancel(err)) {
+                console.log('Request canceled', err.message);
+            } 
         }
     }
 
     componentWillUnmount(){
-        this.axiosCancelSource.cancel('Request cancelled')
+        this.cancelSource.cancel();
     }
 
     handleComposer(){
