@@ -3,7 +3,6 @@ import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import {io} from '../../App';
 import './SendMsg.css';
-import { handleSocketEvents } from '../../socket/socketEvents';
 
 class SendMsg extends Component{
     constructor(){
