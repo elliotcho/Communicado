@@ -97,6 +97,22 @@ module.exports = (io) => {
                     'IS_TYPING', {chatId, uid}
                 );
             }
-        })
+        });
+
+        socket.on('STOP_TYPING',data =>{
+            const {uid, members,chatId} = data;
+            
+            for(let i=0;i<members.length;i++){
+                io.sockets.to(active[members[i]]).emit(
+                    'STOP_TYPING', {chatId, uid}
+                );
+            }
+        });
+
+
     });
+
+
+
+
 }

@@ -8,6 +8,7 @@ import {
 
 import MessageBubble from './MessageBubble';
 import TypingBubble from './TypingBubble';
+import loading from './loading.jpg';
 import axios from 'axios';
 import './ExpandChat.css';
 
@@ -120,7 +121,11 @@ class ExpandChat extends Component{
             <div className ='expandChat'>
                <header>
                     <div className='profile'>
-                        {chatPics.length === 0 ? "//placehold.it/50" : chatPics}
+                        {chatPics.length === 0 ? 
+                            <img src ={loading} alt='loading' className ='profilePic'/> : 
+                            chatPics
+                        }
+                        
                         <h2>{memberNames}</h2>
                     </div>
                </header>

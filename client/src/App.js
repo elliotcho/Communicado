@@ -1,16 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import {colorNavbar} from './store/actions/notificationsActions';
-import {updateOnlineFriends} from './store/actions/friendsActions';
-
-import {
-   getRecipients,
-   loadChats,
-   handleNewMessage,
-   handleIsTyping
-} from './store/actions/messagesActions';
-
+import {colorNotif} from './store/actions/notificationsActions';
+import {getUnseenChats} from './store/actions/messagesActions';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import Home from './Pages/Home/Home';
@@ -34,17 +26,10 @@ class App extends Component{
       io = socket('http://localhost:5000');
       
       //importing all these socket.on events from server (socketEvents.js)
-      handleSocketEvents(
-         io, 
-         props.colorNavbar,
-         props.updateOnlineFriends,
-         props.getRecipients,
-         props.loadChats,
-         props.handleNewMessage,
-         props.handleIsTyping
-      );
+      handleSocketEvents(io, props.dispatch);
 
       this.getUnreadNotifs = this.getUnreadNotifs.bind(this);
+      this.getUnseenChats = this.getUnseenChats.bind(this);
    }
 
    async componentDidMount(){
@@ -52,24 +37,31 @@ class App extends Component{
 
       if(uid){
          this.getUnreadNotifs(uid, colorNavbar);
+         this.getUnseenChats();
       }
    }
 
    async componentDidUpdate(prevProps){
-      const {uid, colorNavbar} = this.props;
+      const {uid, colorNotif} = this.props;
 
       if(uid && prevProps.uid !== uid){
-         this.getUnreadNotifs(uid, colorNavbar);
+         this.getUnreadNotifs(uid, colorNotif);
+         this.getUnseenChats();
       }
    }
 
-   async getUnreadNotifs(uid, colorNavbar){
+   async getUnreadNotifs(uid, colorNotif){
       const response = await axios.get(`http://localhost:5000/notifs/unread/${uid}`);
       const {unread} = response.data;
 
       if(unread){
-         colorNavbar();
+         colorNotif();
       }
+   }
+
+   getUnseenChats(){
+      const {uid, getUnseenChats} = this.props;
+      getUnseenChats(uid);
    }
 
    render(){
@@ -113,12 +105,9 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        colorNavbar: () => {dispatch(colorNavbar());},
-        updateOnlineFriends: (friends) => {dispatch(updateOnlineFriends(friends));},
-        getRecipients: (queryResults) => {dispatch(getRecipients(queryResults));},
-        loadChats: (uid) => {dispatch(loadChats(uid));},
-        handleIsTyping: (uid,chatId) =>{dispatch(handleIsTyping(uid,chatId));},
-        handleNewMessage: (newMessage, chatId) => {dispatch(handleNewMessage(newMessage, chatId));}
+        colorNotif: () => {dispatch(colorNotif());},
+        getUnseenChats: (uid) => {dispatch(getUnseenChats(uid));},
+        dispatch
     }
 }
 

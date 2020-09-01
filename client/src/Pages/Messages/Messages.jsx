@@ -5,7 +5,8 @@ import {connect} from 'react-redux';
 import {
     updateRecipients,
     clearComposer,
-    loadChats
+    loadChats,
+    seeChats
 } from '../../store/actions/messagesActions';
 
 import MessageList from './MessageList'
@@ -25,18 +26,46 @@ class Messages extends Component {
 
     async componentDidMount(){
         const chatId = this.props.match.params.id;
-        const {uid} = this.props;
+        const {uid, seeChats} = this.props;
 
-        const response = await axios.get(`http://localhost:5000/chats/user/${uid}`);
-        const chats = response.data;
+        this.cancelSource = axios.CancelToken.source();
+        
+        try{
+            const response = await axios.get(`http://localhost:5000/chats/user/${uid}`, {
+                cancelToken: this.cancelSource.token
+            });
+            
+            const chats = response.data;
+            seeChats(uid);
 
-        if(chats.length !== 0 && chatId !== 'new'){
-            this.props.history.push(`/chat/${chats[0]._id}`);
+            if(chats.length !== 0 && chatId !== 'new'){
+                this.props.history.push(`/chat/${chats[0]._id}`);
+            }
+
+            else{
+                this.props.history.push('/chat/new');
+            }
         }
 
-        else{
-            this.props.history.push('/chat/new');
+        catch(err){
+            console.log(err)
+
+            if (axios.isCancel(err)) {
+                console.log('Request canceled', err.message);
+            } 
         }
+    }
+
+    componentDidUpdate(){
+        const {uid, seeChats, unseenChats} = this.props;
+
+        if(unseenChats){
+            seeChats(uid);
+        }
+    }
+
+    componentWillUnmount(){
+        this.cancelSource.cancel();
     }
 
     handleComposer(){
@@ -128,7 +157,8 @@ const mapStateToProps = (state) => {
         queryResults: state.messages.queryResults,
         recipients: state.messages.recipients,
         chats: state.messages.chats,
-        typingOnDisplay: state.messages.typingOnDisplay
+        typingOnDisplay: state.messages.typingOnDisplay,
+        unseenChats: state.messages.unseenChats
     }   
 }
 
@@ -136,7 +166,8 @@ const mapDispatchToProps = (dispatch) =>{
     return{
         updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));},
         clearComposer: () => {dispatch(clearComposer());},
-        loadChats: (uid) => {dispatch(loadChats(uid));}
+        loadChats: (uid) => {dispatch(loadChats(uid));},
+        seeChats: (uid) => {dispatch(seeChats(uid));}
     }
 }
 

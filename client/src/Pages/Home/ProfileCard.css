@@ -1,9 +1,7 @@
 /* control img size and make pic cover card */
 .userIMG {
-  max-width:300px;
-  max-height:300px;
-  width: 300px;
-  height: 300px;
+  width: 230px;
+  height: 230px;
   object-fit: cover;
 }
 

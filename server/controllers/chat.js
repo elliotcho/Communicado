@@ -126,3 +126,43 @@ exports.getChatMemberIds = async (req, res) =>{
 
     res.json({members: members.filter(id => id !== uid)});
 }
+
+exports.checkForUnseenChats = async (req, res) => {
+    const {uid} = req.params;
+
+    const user = await User.findOne({_id: uid});
+    const {chats} = user;
+
+    let unseen = false;
+
+    for(let i=0;i<chats.length;i++){
+        const chat = await Chat.findOne({_id: chats[i]});
+        const {messages} = chat;
+
+        const n = messages.length;
+
+        unseen |= !messages[n-1].seenBy.includes(uid);
+    }
+
+    res.json({unseen});
+}
+
+exports.seeChats = async (req, res) =>{
+    const {uid} = req.params;
+
+    const user = await User.findOne({_id: uid});
+    const {chats} = user;
+
+    for(let i=0;i<chats.length;i++){
+        const chat = await Chat.findOne({_id: chats[i]});
+        const {messages} = chat;
+
+        const n = messages.length;
+
+        messages[n-1].seenBy.push(uid);
+
+        await Chat.updateOne({_id: chats[i]}, {messages});
+    }
+
+    res.json({msg: "Chats seen"});
+}

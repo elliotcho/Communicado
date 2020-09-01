@@ -45,21 +45,7 @@ class MessageCard extends Component {
         this.setState({
             memberNames,
             imgURL: chatPics
-        });
-        
-        /*
-        if(imgURL.length >= 2) {
-            this.setState({imgURL: imgURL[1]})
-        }
-
-        else if(imgURL.length === 0) {
-            this.setState({imgURL: "//placehold.it/50"})
-        }
-        else if(imgURL.length === 1){
-            this.setState({imgURL: imgURL[0]})
-        }
-        */
-        
+        });   
     }
 
     render() {
@@ -83,7 +69,15 @@ class MessageCard extends Component {
                 </div>
                 <div className="card-block px-2">
                     <h3 className="card-title">{memberNames}</h3>
-                    <p className="card-text text-muted">{lastMsg.content}</p>
+
+                    {isActive?
+                        (<p className="card-text text-muted">
+                            {lastMsg.content}
+                        </p>):
+                        (<p className="card-text">
+                            <strong>{lastMsg.content}</strong>
+                        </p>)
+                    }
                 </div>
             </div>
         )

@@ -2,13 +2,13 @@
 import axios from 'axios';
 
 // Colour the navbar
-export const colorNavbar = () =>{
+export const colorNotif = () =>{
     return (dispatch) => {
         dispatch({type: 'INCOMING_NOTIF', newNotif: true});
     }   
 }
 
-export const uncolorNavbar = (uid) =>{
+export const uncolorNotif = (uid) =>{
     return async (dispatch) =>{
         const response = await axios.put(`http://localhost:5000/notifs/read/${uid}`)
         dispatch({type: 'READ_NOTIFS', notifs: response.data});

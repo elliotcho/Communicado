@@ -58,8 +58,6 @@
   visibility: visible;
 }
 
-
-
 @media screen and (max-width: 768px) {
   .home .col-lg-4 {
     text-align: center;
