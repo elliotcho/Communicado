@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as msgActions from '../../store/actions/messagesActions';
 import axios from 'axios';
 import './MessageCard.css';
 import {withRouter} from 'react-router-dom';
@@ -7,6 +8,7 @@ class MessageCard extends Component {
     constructor(){
         super();
         this.state = {
+            isRead: true,
             memberNames: 'Loading Users...',
             imgURL: [],
         }
@@ -20,7 +22,8 @@ class MessageCard extends Component {
     }
 
     async componentDidMount(){
-        const {uid, chatId} = this.props;
+        const {uid, chatId, lastMsg, isActive, dispatch} = this.props;
+        const {readChat} = msgActions;
 
         let response = await axios.post('http://localhost:5000/chats/members', {uid, chatId});
         const {memberNames} = response.data;
@@ -42,14 +45,27 @@ class MessageCard extends Component {
             chatPics.push(URL.createObjectURL(file));
         }
 
+        const isRead = await dispatch(readChat(chatId, uid, lastMsg, isActive));
+      
         this.setState({
             memberNames,
-            imgURL: chatPics
+            imgURL: chatPics,
+            isRead
         });   
     }
 
+    async componentDidUpdate(prevProps){
+        const {chatId, uid, lastMsg, isActive, dispatch} = this.props;
+        const {readChat} =msgActions;
+
+        if(prevProps.isActive !== isActive){
+            const isRead = await dispatch(readChat(chatId, uid, lastMsg, isActive));
+            this.setState({isRead});
+        }
+    }
+
     render() {
-        const {memberNames, imgURL} = this.state;
+        const {memberNames, imgURL, isRead} = this.state;
         
         const {isActive, lastMsg} = this.props;
 
@@ -70,7 +86,7 @@ class MessageCard extends Component {
                 <div className="card-block px-2">
                     <h3 className="card-title">{memberNames}</h3>
 
-                    {isActive?
+                    {isActive || isRead?
                         (<p className="card-text text-muted">
                             {lastMsg.content}
                         </p>):

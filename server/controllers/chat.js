@@ -166,3 +166,22 @@ exports.seeChats = async (req, res) =>{
 
     res.json({msg: "Chats seen"});
 }
+
+exports.readChat = async (req, res) => {
+    const {chatId, uid} = req.body;
+
+    const chat = await Chat.findOne({_id: chatId});
+    const {messages} = chat;
+
+    for(let i = 0; i < messages.length; i++){
+        if(messages[i].readBy.includes(uid)){
+            continue;
+        }
+
+        messages[i].readBy.push(uid);
+    }
+
+    await Chat.updateOne({_id: chatId}, {messages});
+
+    res.json({msg: 'Success'});
+}

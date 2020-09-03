@@ -1,4 +1,5 @@
 // Authentication actions for a user
+import * as types from '../constants/actionTypes';
 import axios from 'axios';
 
 // User login given a set of credentials
@@ -10,12 +11,16 @@ export const login = (credentials) => {
         const {msg, uid} = response.data; 
 
         if(msg==='Success'){
-            dispatch({type: 'LOGIN_SUCCESS', uid});
+            dispatch({type: types.LOGIN_SUCCESS, uid});
         }
         else {
             alert(msg);
         }
     }
+}
+
+export const helloword = () => {
+    return 2;
 }
 
 // User signup function with given credentals
@@ -32,7 +37,7 @@ export const signUp = (credentials) => {
             // Use axios to post message to server
             const response = await axios.post('http://localhost:5000/users/signup', data, config)
             if (response.data.msg === 'Success') {
-                dispatch({type:'SIGNUP_SUCCESS', uid: response.data.uid});
+                dispatch({type: types.SIGNUP_SUCCESS, uid: response.data.uid});
             } else {
                alert(response.data.msg)
             }

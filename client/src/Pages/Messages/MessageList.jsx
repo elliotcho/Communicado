@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MessageCard from './MessageCard';
 import './MessageList.css'
+import { readChat } from '../../store/actions/messagesActions';
 
 class MessageList extends Component {
     componentDidMount(){
@@ -10,7 +11,7 @@ class MessageList extends Component {
     }
 
     render() {
-        const {uid} = this.props;
+        const {uid, dispatch} = this.props;
         const chatOnDisplay = this.props.chatId;
         
         const chats = this.props.chats.map(chat => 
@@ -20,6 +21,7 @@ class MessageList extends Component {
                 uid = {uid}
                 isActive = {chatOnDisplay === chat._id}
                 lastMsg = {chat.messages[chat.messages.length -1]}
+                dispatch = {dispatch}
             />
         );
 
@@ -30,4 +32,5 @@ class MessageList extends Component {
         )
     }
 }
+
 export default MessageList;

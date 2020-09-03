@@ -12,7 +12,7 @@ class Notifications extends Component{
 
     // After first render, remove highlighted icon and destructure props
     componentDidMount(){
-        const {uid, uncolorNavbar} = this.props;
+        const {uid, uncolorNotif} = this.props;
         uncolorNotif(uid);
     }
 
