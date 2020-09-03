@@ -44,7 +44,7 @@ class App extends Component{
    async componentDidUpdate(prevProps){
       const {uid, colorNotif} = this.props;
 
-      if(uid && prevProps.uid !== uid){
+      if(uid){
          this.getUnreadNotifs(uid, colorNotif);
          this.getUnseenChats();
       }
@@ -53,7 +53,7 @@ class App extends Component{
    async getUnreadNotifs(uid, colorNotif){
       const response = await axios.get(`http://localhost:5000/notifs/unread/${uid}`);
       const {unread} = response.data;
-
+      
       if(unread){
          colorNotif();
       }

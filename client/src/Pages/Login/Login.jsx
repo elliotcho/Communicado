@@ -8,11 +8,13 @@ import './Login.css';
 class Login extends Component {
     constructor(props){
         super(props);
+        
         // Login state
         this.state = {
             email: '',
             password: ''
         }
+
         this.toSignup=this.toSignup.bind(this);
         this.handleChange=this.handleChange.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
@@ -25,15 +27,16 @@ class Login extends Component {
 
     // Update state for each letter change in the form
     handleChange(e){
-        this.setState({
-            [e.target.name]: e.target.value
-        });
+        this.setState({[e.target.name]: e.target.value});
     }
 
     // try to login using the state variables when submitted
     handleSubmit(e){
         e.preventDefault();
-        this.props.login(this.state);
+        
+        const {dispatch} = this.props;
+
+        dispatch(login(this.state));
     }
 
     render(){
@@ -63,6 +66,7 @@ class Login extends Component {
                 {/* Form of credentials */}
                 <form className='mb-5' onSubmit={this.handleSubmit}>
                     <h1 className='ml-2 mb-5'>Sign in</h1>
+                    
                     {/* Email */}
                     <input type='email' 
                            name ='email'
@@ -73,6 +77,7 @@ class Login extends Component {
                            placeholder='Your email here' 
                            required
                     />
+                    
                     {/* Password */}
                     <input type='password' 
                            name='password'
@@ -83,10 +88,16 @@ class Login extends Component {
                            placeholder='Your password here' 
                            required
                     />
+                    
                     {/* Submit btn */}
-                    <button className='btn btn-success btn-lg'>Login</button>
+                    <button className='btn btn-success btn-lg'>
+                        Login
+                    </button>
+
                     {/* Link to signup page */}
-                    <p onClick={this.toSignup} className='mt-4 ml-2'>Don't have an account? Sign up here!</p>
+                    <p onClick={this.toSignup} className='mt-4 ml-2'>
+                        Don't have an account? Sign up here!
+                    </p>
                 </form>
             </div>
         )
@@ -94,10 +105,6 @@ class Login extends Component {
 }
 
 // Add login function from redux store to attempt user login based on credentials
-const mapDispatchToProps = (dispatch) => {
-    return {
-        login: (credentials) => {dispatch(login(credentials));}
-    }
-};
+const mapDispatchToProps = (dispatch) => ({dispatch});
 
 export default withRouter(connect(null, mapDispatchToProps)(Login));

@@ -1,3 +1,5 @@
+import * as types from '../constants/actionTypes';
+
 // Set initial ID to null or check if window has 1 saved
 const initState = {
     uid: null || window.localStorage.getItem('uid')
@@ -10,13 +12,13 @@ const authReducer = (state = initState, action) =>{
     // Switch based on which action was received after request from server
     switch(action.type){
         // Successful login
-        case "LOGIN_SUCCESS":
+        case types.LOGIN_SUCCESS:
             return {
                 ...state,
                 uid: action.uid
             }
         // successful Signup
-        case "SIGNUP_SUCCESS":
+        case types.SIGNUP_SUCCESS:
             return{
                 ...state,
                 uid: action.uid

@@ -23,12 +23,15 @@ class ExpandChat extends Component{
 
         this.getMessages = this.getMessages.bind(this);
         this.getMemberNames = this.getMemberNames.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
     }
 
     async componentDidMount(){
         await this.getMessages();
         await this.getMemberNames();
         await this.getChatPic();
+
+        this.handleScroll();
     }
 
     async componentDidUpdate(prevProps){
@@ -38,6 +41,8 @@ class ExpandChat extends Component{
             await this.getMessages();
             await this.getMemberNames();
             await this.getChatPic();
+
+            this.handleScroll();
         }
     }
 
@@ -87,6 +92,10 @@ class ExpandChat extends Component{
         this.setState({memberNames});
     }
 
+    handleScroll(){
+        this.chatBox.scrollTop = this.chatBox.scrollHeight;
+    }
+
     render(){
         const {uid, typingOnDisplay} = this.props;
        
@@ -126,7 +135,7 @@ class ExpandChat extends Component{
                     </div>
                </header>
 
-                <section className = 'chat-box'>
+                <section className = 'chat-box' ref = {ele => this.chatBox = ele}>
                     {messages}
                     {typing}
                 </section>

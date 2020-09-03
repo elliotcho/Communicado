@@ -90,3 +90,32 @@ export const seeChats = (uid) => {
         dispatch({type: 'SEE_CHATS'});
     }
 }
+
+export const readChat = (chatId, uid, lastMsg, isActive) => {
+    return async (dispatch, getState) => {
+        if(isActive){
+            await axios.post(`http://localhost:5000/chats/readchat`, {chatId, uid});
+
+            const state = getState();
+            const {chats} = state.messages;
+    
+            for(let i = 0; i < chats.length; i++){
+                if(chats[i]._id === chatId){
+                    const {messages} = chats[i];
+                    const n = messages.length;
+    
+                    messages[n - 1].readBy.push(uid);
+                    
+                    break;
+                }
+            }
+    
+            dispatch({
+                type: 'LOAD_CHATS',
+                chats
+            });
+        }
+
+        return lastMsg.readBy.includes(uid);
+    }
+}
