@@ -33,10 +33,10 @@ class App extends Component{
    }
 
    async componentDidMount(){
-      const {uid, colorNavbar} = this.props;
+      const {uid, colorNotif} = this.props;
 
       if(uid){
-         this.getUnreadNotifs(uid, colorNavbar);
+         this.getUnreadNotifs(uid, colorNotif);
          this.getUnseenChats();
       }
    }

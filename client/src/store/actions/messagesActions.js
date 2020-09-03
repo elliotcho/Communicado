@@ -55,9 +55,9 @@ export const handleIsTyping = (uid, chatId) =>{
     return async (dispatch, getState) => {
         const state = getState();
 
-        const {chatIdOnDisplay} = state.messages;
+        const {chatIdOnDisplay, typingOnDisplay} = state.messages;
         
-        if(chatIdOnDisplay === chatId){
+        if(chatIdOnDisplay === chatId && !typingOnDisplay.includes(uid)){
             dispatch({type: 'IS_TYPING', typingId: uid});
         }
     }

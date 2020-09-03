@@ -34,7 +34,7 @@ class ExpandChat extends Component{
     async componentDidUpdate(prevProps){
         const {chatId} = this.props;
 
-        if(chatId !== prevProps.chatId){
+        if(chatId !== prevProps.chatId && chatId !== "new"){
             await this.getMessages();
             await this.getMemberNames();
             await this.getChatPic();

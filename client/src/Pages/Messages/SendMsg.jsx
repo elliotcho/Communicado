@@ -4,6 +4,7 @@ import axios from 'axios';
 import {io} from '../../App';
 import './SendMsg.css';
 
+let timeOut = []
 class SendMsg extends Component{
     constructor(){
         super();
@@ -20,12 +21,27 @@ class SendMsg extends Component{
         //let typing= true;
         const text = e.target.value;
         const {uid, chatId, typingOnDisplay} = this.props;
+        
         if(text.trim()===""){
+            
             const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
             const {members} = response.data;
 
             io.emit("STOP_TYPING", {uid, chatId, members: [...members, uid]});
         }
+        
+        timeOut.forEach(t => clearTimeout(t));
+        timeOut = []
+        const tO = setTimeout(async () => {
+            clearTimeout(tO)
+            const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
+            const {members} = response.data;
+
+            io.emit("STOP_TYPING", {uid, chatId, members: [...members, uid]});
+        }, 5000)
+
+        timeOut.push(tO)
+        
         
         
         if(!typingOnDisplay.includes(uid)){       
