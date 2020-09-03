@@ -19,11 +19,11 @@ class SendMsg extends Component{
 
     async handleTyping(e){
         //let typing= true;
+        setTimeout(function Time(){ return true }, 3000)
         const text = e.target.value;
         const {uid, chatId, typingOnDisplay} = this.props;
         
-        if(text.trim()===""){
-            
+        if(text.trim()===""){            
             const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
             const {members} = response.data;
 
