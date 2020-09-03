@@ -55,9 +55,9 @@ export const handleIsTyping = (uid, chatId) =>{
     return async (dispatch, getState) => {
         const state = getState();
 
-        const {chatIdOnDisplay} = state.messages;
+        const {chatIdOnDisplay, typingOnDisplay} = state.messages;
         
-        if(chatIdOnDisplay === chatId){
+        if(chatIdOnDisplay === chatId && !typingOnDisplay.includes(uid)){
             dispatch({type: 'IS_TYPING', typingId: uid});
         }
     }
@@ -88,5 +88,34 @@ export const seeChats = (uid) => {
     return async (dispatch) => {
         await axios.put(`http://localhost:5000/chats/seechats/${uid}`);
         dispatch({type: 'SEE_CHATS'});
+    }
+}
+
+export const readChat = (chatId, uid, lastMsg, isActive) => {
+    return async (dispatch, getState) => {
+        if(isActive){
+            await axios.post(`http://localhost:5000/chats/readchat`, {chatId, uid});
+
+            const state = getState();
+            const {chats} = state.messages;
+    
+            for(let i = 0; i < chats.length; i++){
+                if(chats[i]._id === chatId){
+                    const {messages} = chats[i];
+                    const n = messages.length;
+    
+                    messages[n - 1].readBy.push(uid);
+                    
+                    break;
+                }
+            }
+    
+            dispatch({
+                type: 'LOAD_CHATS',
+                chats
+            });
+        }
+
+        return lastMsg.readBy.includes(uid);
     }
 }

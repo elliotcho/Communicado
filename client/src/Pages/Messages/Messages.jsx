@@ -90,6 +90,7 @@ class Messages extends Component {
             typingOnDisplay,
             clearComposer,
             loadChats,
+            dispatch
         } = this.props;
 
         if(!uid){
@@ -121,6 +122,7 @@ class Messages extends Component {
                                 chatId = {chatId}
                                 loadChats = {loadChats}
                                 chatId = {chatId}
+                                dispatch = {dispatch}
                             />
                         </div>
 
@@ -167,7 +169,8 @@ const mapDispatchToProps = (dispatch) =>{
         updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));},
         clearComposer: () => {dispatch(clearComposer());},
         loadChats: (uid) => {dispatch(loadChats(uid));},
-        seeChats: (uid) => {dispatch(seeChats(uid));}
+        seeChats: (uid) => {dispatch(seeChats(uid));},
+        dispatch
     }
 }
 
