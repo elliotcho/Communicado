@@ -107,6 +107,7 @@ class ExpandChat extends Component{
                 uid = {uid}
                 senderId = {msg.senderId}
                 content = {msg.content}
+                readBy = {msg.readBy}
             />
         );
         const typing = typingOnDisplay.map(id =>
