@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import './SearchProfileCard.css';
 import loading from '../../images/loading.jpg';
 import {io} from '../../App';
+import './SearchProfileCard.css';
 
 class SearchProfileCard extends Component {
     constructor(){
