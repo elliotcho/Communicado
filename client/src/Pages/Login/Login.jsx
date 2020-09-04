@@ -40,8 +40,11 @@ class Login extends Component {
     }
 
     render(){
+        const {email, password} = this.state;
+        const {uid} = this.props;
+
         // If there is a UID, show home screen 
-        if(this.props.uid){
+        if(uid){
             return <Redirect to='/'/>
         }
 
@@ -57,8 +60,9 @@ class Login extends Component {
 
                     <div className='collapse navbar-collapse text-center' id='message'>
                         <ul className='navbar-nav'>
-                            Communicado is a full stack messaging application created using the MERN stack,
-                            Socket.io and styled using Bootstrap4 
+                            Communicado is a full stack messaging application 
+                            created using the MERN stack, Socket.io 
+                            and styled using Bootstrap4 
                         </ul>
                     </div>
                 </nav>
@@ -70,7 +74,7 @@ class Login extends Component {
                     {/* Email */}
                     <input type='email' 
                            name ='email'
-                           value ={this.state.email} 
+                           value ={email} 
                            onChange={this.handleChange}
                            minLength='6' 
                            maxLength='50' 
@@ -81,7 +85,7 @@ class Login extends Component {
                     {/* Password */}
                     <input type='password' 
                            name='password'
-                           value ={this.state.password} 
+                           value ={password} 
                            onChange={this.handleChange}
                            minLength='6' 
                            maxLength='50' 

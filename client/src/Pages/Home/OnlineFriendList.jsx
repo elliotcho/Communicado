@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
-import OnlineFriend from './OnlineFriend'
+import React, { Component } from 'react';
+import OnlineFriend from './OnlineFriend';
 
 class OnlineFriendList extends Component {
     render() {
         const {active} = this.props;
+
         const onlineFriends = active.map(user =>
-            <OnlineFriend key={user._id} user={user} status={'online'}/>
+            <OnlineFriend key={user._id} user={user}/>
         );
 
         return (
@@ -14,17 +15,19 @@ class OnlineFriendList extends Component {
                     
                     {/* Card Header */}
                     <div className="card-header rounded-0 cardTitle">
-                        <h1 className="display-4">Online Friends</h1>
+                        <h1 className="display-4">
+                            Online Friends
+                        </h1>
                     </div>
 
                     {/* Card Body - List of online friends from props */}
                     <div className="card-body">
                         {onlineFriends}
                     </div>
-
                 </div>
             </div>
         )
     }
 }
+
 export default OnlineFriendList; 

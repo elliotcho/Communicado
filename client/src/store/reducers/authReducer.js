@@ -9,6 +9,7 @@ const initState = {
 const authReducer = (state = initState, action) =>{
     if(state.uid){window.localStorage.setItem('uid', state.uid);}
     if(action.uid){window.localStorage.setItem('uid', action.uid);}
+    
     // Switch based on which action was received after request from server
     switch(action.type){
         // Successful login

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import loading from './loading.jpg';
+import loading from '../../images/loading.jpg';
 import './UserComposedTo.css';
 
 class UserComposedTo extends Component{

@@ -144,7 +144,7 @@ exports.checkForUnseenChats = async (req, res) => {
         unseen |= !messages[n-1].seenBy.includes(uid);
     }
 
-    res.json({unseen});
+    res.json({unseen}); 
 }
 
 exports.seeChats = async (req, res) =>{

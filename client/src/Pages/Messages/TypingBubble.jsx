@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import loading from './loading.jpg';
+import loading from '../../images/loading.jpg';
 import axios from 'axios';
 
 class TypingBubble extends Component{
