@@ -8,7 +8,7 @@ import {
 
 import MessageBubble from './MessageBubble';
 import TypingBubble from './TypingBubble';
-import loading from './loading.jpg';
+import loading from '../../images/loading.jpg';
 import axios from 'axios';
 import './ExpandChat.css';
 

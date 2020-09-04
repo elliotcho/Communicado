@@ -1,5 +1,5 @@
 import React, { Component} from 'react'
-import loading from './loading.jpg';
+import loading from '../../images/loading.jpg';
 import axios from 'axios';
 import moment from 'moment';
 import {io} from '../../App';

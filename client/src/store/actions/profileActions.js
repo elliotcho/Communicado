@@ -1,43 +1,38 @@
-// Actions for users to interact with their profile and update any settings
+import * as types from '../constants/actionTypes';
 import axios from 'axios';
+
+const config = {headers: {'Content-Type': 'multipart/form-data'}};
 
 // Get user profile info
 export const getUserInfo = (uid) =>{
     return async (dispatch) => {
-        const config = {
-            headers: {'Content-Type': 'application/json'}
-        }
         // Send post request to userInfo branch in server handlers
         const response = await axios.get(`http://localhost:5000/users/${uid}`);
         
         const {
+            dateCreated,
             firstName, 
-            lastName, 
-            dateCreated
+            lastName 
         } = response.data;
 
         dispatch({
-            type: "USER_INFO",
+            type: types.GET_USER_INFO,
+            dateCreated,
             firstName,
-            lastName,
-            dateCreated
+            lastName
         });
     }
 }
 
 // Load a users profile picture 
-export const loadProfilePic = (uid) =>{
-    return async (dispatch) => {
-
-        // Fetch from server functional route using post with stringified data
-        const response = await fetch(`http://localhost:5000/users/profilepic/${uid}`, {
-            method: 'GET'
-        }); 
+export const loadProfilePic = async (uid) =>{
+    const response = await fetch(`http://localhost:5000/users/profilepic/${uid}`, {
+        method: 'GET'
+    }); 
         
-        let file = await response.blob();
+    let file = await response.blob();
 
-        dispatch({type: "LOAD_PROFILE_PIC", imgURL: URL.createObjectURL(file)});
-    }
+    return URL.createObjectURL(file);
 }
 
 // Changes a users profile picture based on the given image
@@ -48,8 +43,6 @@ export const changeProfilePic = (uid, imgFile) => {
         formData.append('uid',  uid);
         formData.append('image', imgFile);
     
-        const config = {headers: {'Content-Type': 'multipart/form-data'}};
-        
         // Post new image and reload browser
         await axios.post('http://localhost:5000/users/profilepic', formData, config);
         

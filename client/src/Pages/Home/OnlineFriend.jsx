@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import './OnlineFriend.css'
-import loading from './loading.jpg';
+import loading from '../../images/loading.jpg';
 
 class OnlineFriend extends Component {
     constructor(props){

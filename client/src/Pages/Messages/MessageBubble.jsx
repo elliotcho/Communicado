@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import loading from './loading.jpg';
+import loading from '../../images/loading.jpg';
 import './MessageBubble.css';
 
 class MessageBubble extends Component{
@@ -38,7 +38,7 @@ class MessageBubble extends Component{
                         <div>
                             {content}
                         </div>
-                </div>
+                    </div>
 
                     {msgPosition === 'msg-r'? 
                         <img src = {senderImgURL? senderImgURL: loading} alt ='profile pic'/>:

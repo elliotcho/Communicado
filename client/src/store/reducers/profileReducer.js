@@ -1,20 +1,22 @@
-const initState={imgURL: null};
+import * as types from '../constants/actionTypes';
+
+const initState={
+    firstName: '',
+    lastName: '',
+    dateCreated: '',
+    imgURL: null
+};
+
 // Reducer for all profile actions
 const profileReducer = (state = initState, action) => {
     switch(action.type){
         // Get user info
-        case "USER_INFO":
+        case types.GET_USER_INFO:
             return {
                 ...state, 
                 firstName: action.firstName, 
                 lastName: action.lastName,
                 dateCreated: action.dateCreated
-            }
-        // Load user profile picture
-        case "LOAD_PROFILE_PIC":
-            return{
-                ...state,
-                imgURL: action.imgURL
             }
         // Change user name based on given names
         case "CHANGE_NAME":
