@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {removeFriend} from '../store/actions/friendsActions';
 import {io} from '../App';
 import './FriendCard.css'
 
@@ -35,8 +36,9 @@ class FriendCard extends Component {
             return;
         }
         
-        const {uid, friends, removeFriend} = this.props;
-        removeFriend(_id, friends);
+        const {uid, friends, dispatch} = this.props;
+        
+        dispatch(removeFriend(_id, friends));
         // Emit change of friend status to server so that Add Friend is next option
         io.emit("CHANGE_FRIEND_STATUS", {status: "Friends", uid, friendId: _id});
     }

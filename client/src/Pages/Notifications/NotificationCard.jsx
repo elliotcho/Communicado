@@ -1,6 +1,7 @@
-import React, { Component} from 'react'
+import React, { Component} from 'react';
+import {getUserData, loadProfilePic} from '../../store/actions/profileActions';
+import {getFriendStatus} from '../../store/actions/friendsActions';
 import loading from '../../images/loading.jpg';
-import axios from 'axios';
 import moment from 'moment';
 import {io} from '../../App';
 import './NotificationCard.css'
@@ -28,46 +29,33 @@ class NotificationCard extends Component {
         const {senderId} = this.props.notif;
         const {uid} = this.props;
         
-        const config = {headers: {'Content-Type': 'application/json'}};
-
         // Get fName and lName of user who sent notification 
-        let response = await axios.get(`http://localhost:5000/users/${senderId}`);
-        const {firstName, lastName} = response.data;
+        const user = await getUserData(senderId);
+        const imgURL = await loadProfilePic(senderId);
+        const status = await getFriendStatus(uid, senderId);
 
         this.setState({
-            firstName, 
-            lastName
+            firstName: user.firstName, 
+            lastName: user.lastName,
+            imgURL,
+            status
         });
-
-        //get profile picture of the sender
-        response = await fetch(`http://localhost:5000/users/profilepic/${senderId}`, {
-            method: 'GET'
-        }); 
-    
-        let file = await response.blob();
-        
-        this.setState({
-            imgURL: URL.createObjectURL(file)
-        });
-
-        //get friend status with the notif sender
-        response = await axios.post('http://localhost:5000/friends/status', {receiverId: uid, senderId}, config);
-        const {status} = response.data;
-
-        this.setState({status});
     }
 
     handleRequest(eventType){
-        const {uid, deleteNotif} = this.props;
-        const {_id, senderId} = this.props.notif;
-
         const {status} = this.state;
+        const {_id, senderId} = this.props.notif;
+        const {uid, deleteNotif} = this.props;
 
         // Delete notification once clicked
         deleteNotif(_id);
 
          // Send io event type to handle request of accept or decline
-        io.emit(eventType , {status, receiverId: uid, senderId});
+        io.emit(eventType , {
+            status, 
+            receiverId: uid, 
+            senderId
+        });
     }
 
     render() {
@@ -80,7 +68,11 @@ class NotificationCard extends Component {
                 <div className="row d-flex justify-content-center text-left align-items-center">
                     <div className="col-2 text-center">
                         {/* While loading for img, display placeholer */}
-                        <img src={imgURL ? imgURL : loading} className="img-fluid avatar" alt="tester" />
+                        <img 
+                            src={imgURL ? imgURL : loading} 
+                            className="img-fluid avatar" 
+                            alt="tester" 
+                        />
                     </div>
 
                     {/* Notif body: name, content and date */}

@@ -24,6 +24,11 @@ export const getUserInfo = (uid) =>{
     }
 }
 
+export const getUserData = async (uid) => {
+    const response = await axios.get(`http://localhost:5000/users/${uid}`);
+    return response.data;
+}
+
 // Load a users profile picture 
 export const loadProfilePic = async (uid) =>{
     const response = await fetch(`http://localhost:5000/users/profilepic/${uid}`, {

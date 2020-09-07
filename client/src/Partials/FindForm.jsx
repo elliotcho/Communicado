@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import FoundFriendCard from './FoundFriendCard'
-import './FindForm.css'
+import React, { Component } from 'react';
+import {findUsers, clearUsers} from '../store/actions/friendsActions';
+import FoundFriendCard from './FoundFriendCard';
+import './FindForm.css';
 
 // Component that allows a user to type a name and finds all users
 class FindForm extends Component {
@@ -24,10 +25,15 @@ class FindForm extends Component {
     // Function that finds all users from the DB
     globalSearch(e) {
         e.preventDefault();
-        if(this.state.nameQuery.trim() === "") { return; }
-        const {findUsers, uid} = this.props;
+        
+        if(this.state.nameQuery.trim() === "") { 
+            return; 
+        }
+
+        const {uid, dispatch} = this.props;
         const {nameQuery} = this.state;
-        findUsers(nameQuery, uid);
+
+        dispatch(findUsers(nameQuery, uid));
     }
 
     // Function that shows the hidden row when form is submit
@@ -43,7 +49,7 @@ class FindForm extends Component {
     }
     // Clear users when deleting
     componentWillUnmount(){
-        this.props.clearUsers();
+        this.props.dispatch(clearUsers());
     }
 
     // Use BS4 to display form in jumbotron

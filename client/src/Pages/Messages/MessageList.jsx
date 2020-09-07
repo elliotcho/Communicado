@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import MessageCard from './MessageCard';
-import './MessageList.css'
-import { readChat } from '../../store/actions/messagesActions';
+import './MessageList.css';
 
 class MessageList extends Component {
     componentDidMount(){

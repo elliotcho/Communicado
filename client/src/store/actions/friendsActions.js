@@ -1,11 +1,18 @@
 // Actions regarding friends such as find all users or find all friends
 import axios from 'axios';
 
+const config = {headers: {'Content-Type': 'application/json'}};
+
+export const getFriendStatus  = async (receiverId, senderId) => {
+    const data = {receiverId, senderId};
+    const response = await axios.post('http://localhost:5000/friends/status', data, config);
+    return response.data.status;
+}
+
 // Finds all users in the database that match a given name
 export const findUsers = (name, uid) => {
     return async (dispatch) => {
-        const config = {headers: {'Content-Type': 'application/json'}};
-
+       
         const response = await axios.post('http://localhost:5000/users/search', {name: name.trim(), uid, findFriends: false}, config);
 
         dispatch({type: 'USERS_FOUND', users: response.data.users});
