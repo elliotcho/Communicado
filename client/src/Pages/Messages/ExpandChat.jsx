@@ -1,15 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-
-import {
-    setMsgsOnDisplay,
-    setChatIdOnDisplay
-} from '../../store/actions/messagesActions'
-
+import * as msgActions from '../../store/actions/messagesActions';
+import {loadProfilePic} from '../../store/actions/profileActions';
 import MessageBubble from './MessageBubble';
 import TypingBubble from './TypingBubble';
 import loading from '../../images/loading.jpg';
-import axios from 'axios';
 import './ExpandChat.css';
 
 class ExpandChat extends Component{
@@ -18,19 +13,15 @@ class ExpandChat extends Component{
 
         this.state = {
             memberNames: 'Loading Users...',
-            imgURL: []
+            chatPics: []
         }
 
-        this.getMessages = this.getMessages.bind(this);
-        this.getMemberNames = this.getMemberNames.bind(this);
+        this.onConvoUpdate = this.onConvoUpdate.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
     }
 
     async componentDidMount(){
-        await this.getMessages();
-        await this.getMemberNames();
-        await this.getChatPic();
-
+        await this.onConvoUpdate();
         this.handleScroll();
     }
 
@@ -38,58 +29,31 @@ class ExpandChat extends Component{
         const {chatId} = this.props;
 
         if(chatId !== prevProps.chatId && chatId !== "new"){
-            await this.getMessages();
-            await this.getMemberNames();
-            await this.getChatPic();
-
+            await this.onConvoUpdate();
             this.handleScroll();
         }
     }
 
-    async getChatPic(){
-        const {chatId, uid} = this.props;
+    async onConvoUpdate(){
+        const {chatId, uid, dispatch} = this.props;
 
-        let response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
-        const {members} = response.data;
-        
-        const size = Math.min(members.length, 2);
-       
-        const chatPics = [];
+        const{
+            getChatPics,
+            getMemberNames,
+            setChatIdOnDisplay,
+            setMsgsOnDisplay
+        } = msgActions;
 
-        // //get the chat picture
-        for(let i=0;i<size;i++){
-            response = await fetch(`http://localhost:5000/users/profilepic/${members[i]}`, {
-                method: 'GET'
-            }); 
+        dispatch(setChatIdOnDisplay(chatId));
+        dispatch(setMsgsOnDisplay(chatId));
 
-            let file = await response.blob();
-
-            chatPics.push(URL.createObjectURL(file));
-        }
+        const chatPics = await getChatPics(chatId, uid, loadProfilePic);
+        const memberNames = await getMemberNames(chatId, uid);
 
         this.setState({
-            imgURL: chatPics
+            chatPics,
+            memberNames
         });
-    }
-
-    async getMessages(){
-        const {chatId} = this.props;
-
-        const response = await axios.get(`http://localhost:5000/chats/messages/${chatId}`);
-        const messages = response.data;
-
-        this.props.setMsgsOnDisplay(messages);
-        this.props.setChatIdOnDisplay(chatId);
-    }
-
-    
-    async getMemberNames(){
-        const {uid, chatId} = this.props;
-
-        const response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId});
-        const {memberNames} = response.data;
-
-        this.setState({memberNames});
     }
 
     handleScroll(){
@@ -98,8 +62,7 @@ class ExpandChat extends Component{
 
     render(){
         const {uid, typingOnDisplay} = this.props;
-       
-        const {memberNames, imgURL} = this.state;
+        const {memberNames, chatPics} = this.state;
 
         const messages = this.props.msgsOnDisplay.map(msg =>
             <MessageBubble
@@ -109,35 +72,35 @@ class ExpandChat extends Component{
                 content = {msg.content}
             />
         );
-        const typing = typingOnDisplay.map(id =>
-            <TypingBubble
-                key = {id}
-                uid = {id}
-                show = {id !== uid}
-            />
-        );
-
-        const chatPics = []
-        for(let i=0; i<imgURL.length;i++){
-            chatPics.push(<img key={i} src={imgURL[i]} alt="profile pic" className = "profilePic"/>)
-        }
 
         return(
             <div className ='expandChat'>
                <header>
                     <div className='profile'>
-                        {chatPics.length === 0 ? 
-                            <img src ={loading} alt='loading' className ='profilePic'/> : 
-                            chatPics
-                        }
+                        {chatPics.map((pic, i) =>
+                            <img 
+                                key={i} 
+                                src={pic? pic : loading} 
+                                alt="profile pic" 
+                                className = "profilePic"
+                            />
+                        )}
                         
-                        <h2>{memberNames}</h2>
+                        <h2>
+                            {memberNames}
+                        </h2>
                     </div>
                </header>
 
                 <section className = 'chat-box' ref = {ele => this.chatBox = ele}>
                     {messages}
-                    {typing}
+                    {typingOnDisplay.map(id =>
+                        <TypingBubble
+                            key = {id}
+                            uid = {id}
+                            show = {id !== uid}
+                        />
+                    )}
                 </section>
             </div>
         )
@@ -152,11 +115,6 @@ const mapStateToProps = (state) =>{
     }
 }
 
-const mapDispatchToProps = (dispatch) =>{
-    return{
-        setMsgsOnDisplay: (messages) => {dispatch(setMsgsOnDisplay(messages));},
-        setChatIdOnDisplay: (chatId) => {dispatch(setChatIdOnDisplay(chatId));}
-    }
-}
+const mapDispatchToProps = (dispatch) => ({dispatch});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpandChat);

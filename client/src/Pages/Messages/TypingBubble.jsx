@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
+import {getUserData, loadProfilePic} from '../../store/actions/profileActions';
 import loading from '../../images/loading.jpg';
-import axios from 'axios';
 
 class TypingBubble extends Component{
     constructor(){
@@ -17,20 +17,13 @@ class TypingBubble extends Component{
         const {uid, show} = this.props;
 
         if(show){
-            let response = await axios.get(`http://localhost:5000/users/${uid}`);
-            const {firstName, lastName} = response.data;
-
-            //get profile picture of the user typing
-            response = await fetch(`http://localhost:5000/users/profilepic/${uid}`, {
-                method: 'GET'
-            }); 
-        
-            let file = await response.blob();
+            const user = await getUserData(uid);
+            const imgURL = await loadProfilePic(uid);
 
             this.setState({
-                firstName,
-                lastName,
-                imgURL: URL.createObjectURL(file)
+                firstName: user.firstName,
+                lastName: user.lastName,
+                imgURL
             });
         }
     }
@@ -47,7 +40,12 @@ class TypingBubble extends Component{
 
         return(
             <div style={{display: show}}>
-                <img src = {imgURL? imgURL: loading} alt = 'profile pic' style={style}/>
+                <img 
+                    src = {imgURL? imgURL: loading} 
+                    alt = 'profile pic' 
+                    style={style}
+                />
+
                 <p>{firstName} {lastName} is typing...</p>
             </div>
         )   

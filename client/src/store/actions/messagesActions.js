@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const config = {headers: {'content-type': 'application/json'}};
+
 export const getRecipients = (queryResults) =>{
     return (dispatch) =>{
         dispatch({type: 'GET_QUERY_RESULTS', queryResults});
@@ -18,6 +20,8 @@ export const clearComposer = () =>{
     }
 }
 
+
+
 export const loadChats = (uid) =>{
     return async (dispatch) =>{
         const response = await axios.get(`http://localhost:5000/chats/user/${uid}`);
@@ -27,9 +31,15 @@ export const loadChats = (uid) =>{
     }
 }
 
-export const setMsgsOnDisplay = (messages) =>{
-    return (dispatch) =>{
-        dispatch({type: 'SET_MESSAGES_ON_DISPLAY', messages});
+export const setMsgsOnDisplay = (chatId) =>{
+    return async (dispatch) =>{
+        const response = await axios.get(`http://localhost:5000/chats/messages/${chatId}`);
+        const messages = response.data;
+
+        dispatch({
+            type: 'SET_MESSAGES_ON_DISPLAY', 
+            messages
+        });
     }
 }
 
@@ -94,7 +104,7 @@ export const seeChats = (uid) => {
 export const readChat = (chatId, uid, lastMsg, isActive) => {
     return async (dispatch, getState) => {
         if(isActive){
-            await axios.post(`http://localhost:5000/chats/readchat`, {chatId, uid});
+            await axios.post(`http://localhost:5000/chats/readchat`, {chatId, uid}, config);
 
             const state = getState();
             const {chats} = state.messages;
@@ -118,4 +128,33 @@ export const readChat = (chatId, uid, lastMsg, isActive) => {
 
         return lastMsg.readBy.includes(uid);
     }
+}
+
+export const getChatPics = async (chatId, uid, loadProfilePic) => {
+        const members = await getMemberIds(chatId, uid);
+
+        const size = Math.min(members.length, 2);
+        const chatPics = [];
+
+        for(let i=0;i<size;i++){
+            const id = members[i];
+
+            const imgURL = await loadProfilePic(id);
+
+            chatPics.push(imgURL);
+        }
+
+        return chatPics;
+}
+
+export const getMemberNames = async (chatId, uid) => {
+    const response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId}, config);
+    const memberNames = response.data.memberNames;
+    return memberNames;
+}
+
+export const getMemberIds = async (chatId, uid) => {
+    const response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
+    const memberIds = response.data.members;
+    return memberIds;
 }

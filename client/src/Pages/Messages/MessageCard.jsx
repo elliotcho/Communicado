@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import * as msgActions from '../../store/actions/messagesActions';
-import axios from 'axios';
-import './MessageCard.css';
 import {withRouter} from 'react-router-dom';
+import * as msgActions from '../../store/actions/messagesActions';
+import {loadProfilePic} from '../../store/actions/profileActions';
+import loading from '../../images/loading.jpg';
+import './MessageCard.css';
 
 class MessageCard extends Component {
     constructor(){
@@ -10,8 +11,9 @@ class MessageCard extends Component {
         this.state = {
             isRead: true,
             memberNames: 'Loading Users...',
-            imgURL: [],
+            chatPics: [],
         }
+
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -22,34 +24,16 @@ class MessageCard extends Component {
     }
 
     async componentDidMount(){
-        const {uid, chatId, lastMsg, isActive, dispatch} = this.props;
-        const {readChat} = msgActions;
-
-        let response = await axios.post('http://localhost:5000/chats/members', {uid, chatId});
-        const {memberNames} = response.data;
-
-        response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
-        const {members} = response.data;
-
-        const size = Math.min(members.length, 2);
-        const chatPics = [];
-
-        // //get the chat picture
-        for(let i=0;i<size;i++){
-            response = await fetch(`http://localhost:5000/users/profilepic/${members[i]}`, {
-                method: 'GET'
-            }); 
-
-            let file = await response.blob();
-
-            chatPics.push(URL.createObjectURL(file));
-        }
+        const {chatId, uid, lastMsg, isActive, dispatch} = this.props;
+        const {readChat, getChatPics, getMemberNames} = msgActions;
 
         const isRead = await dispatch(readChat(chatId, uid, lastMsg, isActive));
-      
+        const chatPics = await getChatPics(chatId, uid, loadProfilePic);
+        const memberNames = await getMemberNames(chatId, uid);
+    
         this.setState({
             memberNames,
-            imgURL: chatPics,
+            chatPics,
             isRead
         });   
     }
@@ -60,31 +44,36 @@ class MessageCard extends Component {
 
         if(prevProps.isActive !== isActive){
             const isRead = await dispatch(readChat(chatId, uid, lastMsg, isActive));
-            this.setState({isRead});
+            
+            this.setState({
+                isRead
+            });
         }
     }
 
     render() {
-        const {memberNames, imgURL, isRead} = this.state;
-        
+        const {memberNames, chatPics, isRead} = this.state;
         const {isActive, lastMsg} = this.props;
 
         const cardClassName = (isActive)? 'active': ''
 
-        const chatPics = []
-        for(let i=0; i<imgURL.length;i++){
-            chatPics.push(<img key={i} src={imgURL[i]} alt="profile pic" style={{marginLeft: `-${i * 15}px`}}/>)
-        }
-
         return (
             <div onClick={this.handleClick} className={`MessageCard ${cardClassName} card flex-row flex-wrap`}>
                 <div class="card-header border-0">
-
-                {chatPics}
-
+                    {chatPics.map((pic, i) =>
+                        <img
+                            key = {i}
+                            src = {pic? pic: loading}
+                            alt = 'proflie pic'
+                            style={{marginLeft: `-${i * 15}px`}}
+                        />
+                    )}
                 </div>
+
                 <div className="card-block px-2">
-                    <h3 className="card-title">{memberNames}</h3>
+                    <h3 className="card-title">
+                        {memberNames}
+                    </h3>
 
                     {isActive || isRead?
                         (<p className="card-text text-muted">
@@ -99,4 +88,5 @@ class MessageCard extends Component {
         )
     }
 }
+
 export default withRouter(MessageCard);

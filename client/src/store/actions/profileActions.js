@@ -1,10 +1,8 @@
 import * as types from '../constants/actionTypes';
 import axios from 'axios';
 
-const config = {headers: {'Content-Type': 'multipart/form-data'}};
-
 // Get user profile info
-export const getUserInfo = (uid) =>{
+export const getAccountData = (uid) =>{
     return async (dispatch) => {
         // Send post request to userInfo branch in server handlers
         const response = await axios.get(`http://localhost:5000/users/${uid}`);
@@ -43,6 +41,8 @@ export const loadProfilePic = async (uid) =>{
 // Changes a users profile picture based on the given image
 export const changeProfilePic = (uid, imgFile) => {
     return async () => {
+        const config = {headers: {'Content-Type': 'multipart/form-data'}};
+
         const formData = new FormData();
 
         formData.append('uid',  uid);

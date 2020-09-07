@@ -62,6 +62,9 @@ class NotificationCard extends Component {
         // Destructure state and props
         const {imgURL, firstName, lastName} = this.state;
         const {content, date, friendRequest} = this.props.notif;
+
+        const acceptRequest = () => {this.handleRequest("ACCEPT_REQUEST")};
+        const declineRequest = () => {this.handleRequest("DECLINE_REQUEST")};
      
         return (
             <div className="NotificationCard card">
@@ -79,27 +82,34 @@ class NotificationCard extends Component {
                     <div className="col-5 NotificationCard-body">
                         <h2 className="NotificationCard-msg">
                             <strong className="NotificationCard-name">{firstName} {lastName} </strong>
-                            <span className="NotificationCard-content">{content}</span>
+                            
+                            <span className="NotificationCard-content">
+                                {content}
+                            </span>
                         </h2>
-                        <h5 className="text-muted">Sent {moment(date).calendar()}</h5>
+                        
+                        <h5 className="text-muted">
+                            Sent {moment(date).calendar()}
+                        </h5>
                     </div>
                    
                     {
                         friendRequest?
                         (
-                            [<div className = "accept col-1 d-inline-block" key ='check-button'>
-                                {/* Accept friend request */}
-                                <i className="fas fa-check-square" onClick = {() => {this.handleRequest("ACCEPT_REQUEST")}}></i>
-                            </div>
-                            ,<div className ='reject col-1 d-inline-block' key='x-button'>
-                                {/* Reject friend Request */}
-                                <i className="fas fa-times-circle" onClick = {() => {this.handleRequest("DECLINE_REQUEST")}}></i>
-                            </div>]
-                        )
-                        :[
-                          <div className='col-1 d-inline-block' key='block1'/>
-                         ,<div className='col-1 d-inline-block' key='block2'/>
-                         ]
+                            [
+                                <div className = "accept col-1 d-inline-block" key ='check-button'>
+                                    <i className="fas fa-check-square" onClick = {acceptRequest}/>
+                                </div>,
+                                
+                                <div className ='reject col-1 d-inline-block' key='x-button'>
+                                    <i className="fas fa-times-circle" onClick = {declineRequest}/>
+                                </div>
+                            ]
+                        ):
+                        [
+                          <div className='col-1 d-inline-block' key='block1'/>,
+                          <div className='col-1 d-inline-block' key='block2'/>
+                        ]
                     }
                 </div>
             </div>

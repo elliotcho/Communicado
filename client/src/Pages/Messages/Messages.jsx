@@ -3,8 +3,6 @@ import {withRouter, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import {
-    updateRecipients,
-    clearComposer,
     loadChats,
     seeChats
 } from '../../store/actions/messagesActions';
@@ -83,12 +81,10 @@ class Messages extends Component {
     render() {
         const {
             uid,
-            queryResults,
-            updateRecipients,
+            queryResults,        
             recipients,
             chats,
             typingOnDisplay,
-            clearComposer,
             loadChats,
             dispatch
         } = this.props;
@@ -132,8 +128,7 @@ class Messages extends Component {
                                     uid={uid}
                                     queryResults = {queryResults}
                                     recipients = {recipients}
-                                    updateRecipients = {updateRecipients}
-                                    clearComposer = {clearComposer}
+                                    dispatch = {dispatch}
                                 />)
                                 : <ExpandChat chatId = {chatId}/>
                             }
@@ -165,8 +160,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-        updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));},
-        clearComposer: () => {dispatch(clearComposer());},
         loadChats: (uid) => {dispatch(loadChats(uid));},
         seeChats: (uid) => {dispatch(seeChats(uid));},
         dispatch
