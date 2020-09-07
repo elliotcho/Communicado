@@ -22,12 +22,22 @@ export const clearComposer = () =>{
 
 
 
-export const loadChats = (uid) =>{
+export const loadChats = (uid, cancelSource = null) =>{
     return async (dispatch) =>{
-        const response = await axios.get(`http://localhost:5000/chats/user/${uid}`);
+        const route = `http://localhost:5000/chats/user/${uid}`;
+
+        const response = (cancelSource)? 
+            await axios.get(route, {cancelToken: cancelSource.token}):
+            await axios.get(route);
+        
         const chats = response.data;
 
-        dispatch({type: 'LOAD_CHATS', chats});
+        dispatch({
+            type: 'LOAD_CHATS', 
+            chats
+        });
+    
+        return chats;
     }
 }
 
@@ -157,4 +167,16 @@ export const getMemberIds = async (chatId, uid) => {
     const response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
     const memberIds = response.data.members;
     return memberIds;
+}
+
+export const createChat = async (uid, recipients, content) => {
+    const response = await axios.post('http://localhost:5000/chats/create', {uid, recipients, content}, config);
+    const {chatId} = response.data; 
+    return chatId;
+}
+
+export const sendMessage = async (chatId, uid, content) =>{
+    const response = await axios.post('http://localhost:5000/chats/message',{chatId, uid, content}, config);
+    const newMessage = response.data;
+    return newMessage;
 }

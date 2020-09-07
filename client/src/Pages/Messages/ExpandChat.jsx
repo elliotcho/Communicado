@@ -22,7 +22,6 @@ class ExpandChat extends Component{
 
     async componentDidMount(){
         await this.onConvoUpdate();
-        this.handleScroll();
     }
 
     async componentDidUpdate(prevProps){
@@ -30,7 +29,6 @@ class ExpandChat extends Component{
 
         if(chatId !== prevProps.chatId && chatId !== "new"){
             await this.onConvoUpdate();
-            this.handleScroll();
         }
     }
 
