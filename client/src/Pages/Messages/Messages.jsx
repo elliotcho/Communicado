@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {withRouter, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {loadChats, seeChats} from '../../store/actions/messagesActions';
+import * as msgActions from '../../store/actions/messagesActions';
 import MessageCard from './MessageCard';
 import SearchMsgs from './SearchMsgs';
 import ExpandChat from './ExpandChat';
@@ -18,7 +18,9 @@ class Messages extends Component {
 
     async componentDidMount(){
         const chatId = this.props.match.params.id;
+
         const {uid, dispatch} = this.props;
+        const {loadChats, seeChats} = msgActions;
 
         this.cancelSource = axios.CancelToken.source();
         
@@ -35,14 +37,20 @@ class Messages extends Component {
     }
 
     componentDidUpdate(){
-        const {uid, seeChats, unseenChats} = this.props;
+        const {uid, dispatch, unseenChats} = this.props;
+        const {seeChats} = msgActions;
 
         if(unseenChats){
-            seeChats(uid);
+            dispatch(seeChats(uid));
         }
     }
 
     componentWillUnmount(){
+        const {dispatch} = this.props;
+        const {clearChats} = msgActions;
+
+        dispatch(clearChats());
+
         this.cancelSource.cancel();
     }
 

@@ -219,7 +219,6 @@ exports.getOnlineFriends = async (data, active) =>{
     const {uid} = data;
 
     const activeFriends = [];
-    const inactiveFriends = [];
 
     const user = await User.findOne({_id: uid});
     const friends = await User.find({_id: {$in: user.friends}});
@@ -228,11 +227,7 @@ exports.getOnlineFriends = async (data, active) =>{
         if(active[friends[i]._id]){
             activeFriends.push(friends[i]);
         }
-
-        else{
-            inactiveFriends.push(friends[i]);
-        }
     }
 
-    return [activeFriends, inactiveFriends];
+    return activeFriends;
 }

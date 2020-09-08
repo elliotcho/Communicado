@@ -1,3 +1,5 @@
+import * as types from '../constants/actionTypes';
+
 const initState = {
     queryResults: [],
     recipients: [],
@@ -11,65 +13,66 @@ const initState = {
 // Reducer for friend actions
 const messagesReducer = (state=initState, action) =>{
     switch(action.type){
-        case 'GET_QUERY_RESULTS':
+        case types.LOAD_COMPOSER_RESULTS:
             return{
                 ...state,
                 queryResults: [...action.queryResults]
             }
-        case 'UPDATE_RECIPIENTS':
+        case types.UPDATE_RECIPIENTS:
             return{
                 ...state,
                 recipients: [...action.recipients]
             }
-        case 'CLEAR_COMPOSER':
+        case types.CLEAR_COMPOSER:
             return{
                 ...state,
                 queryResults: [],
                 recipients: []
             }
-        case 'LOAD_CHATS':
+        case types.LOAD_CHATS:
             return{
                 ...state,
                 chats: [...action.chats]
             }
-        case 'SET_MESSAGES_ON_DISPLAY':
+        case types.SEE_CHATS:
             return{
                 ...state,
-                msgsOnDisplay: [...action.messages]
+                unseenChats: false
             }
-        case 'SET_CHAT_ID_ON_DISPLAY':
+        case types.CLEAR_CHATS:
             return{
                 ...state,
-                chatIdOnDisplay: action.chatId
+                chats: []
             }
-        case 'NEW_MESSAGE':
-            return{
-                ...state,
-                msgsOnDisplay: [...state.msgsOnDisplay, action.newMessage]
-            }
-        
-        case 'IS_TYPING':
-            return{
-                ...state,
-                typingOnDisplay : [...state.typingOnDisplay, action.typingId]
-            }
-        case 'STOP_TYPING':
-            for(let i=0;i<state.typingOnDisplay.length;i++){
-                if(state.typingOnDisplay[i]===action.typingId) state.typingOnDisplay.splice(i,1);
-            }
-            return{
-                ...state,
-                typingOnDisplay: [...state.typingOnDisplay]
-            }
-        case 'UNSEEN_CHATS':
+        case types.LOAD_UNSEEN_CHATS:
             return{
                 ...state,
                 unseenChats: action.unseen
             }
-        case 'SEE_CHATS':
+        case types.IS_TYPING:
             return{
                 ...state,
-                unseenChats: false
+                typingOnDisplay : [...state.typingOnDisplay, action.typingId]
+            }
+        case types.STOP_TYPING:
+            return{
+                ...state,
+                typingOnDisplay: [...action.typingOnDisplay]
+            }
+        case types.SET_CHAT_ID:
+            return{
+                ...state,
+                chatIdOnDisplay: action.chatId
+            }
+        case types.LOAD_MESSAGES:
+            return{
+                ...state,
+                msgsOnDisplay: [...action.messages]
+            }
+        case types.NEW_MESSAGE:
+            return{
+                ...state,
+                msgsOnDisplay: [...state.msgsOnDisplay, action.newMessage]
             }
         default:
             return state;
