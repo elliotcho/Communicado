@@ -38,12 +38,19 @@ class FindForm extends Component {
 
     // Function that shows the hidden row when form is submit
     showResults() {
-        let row = document.getElementById("resultsContainer")
+        const {nameQuery} = this.state;
+        const row = document.getElementById("resultsContainer");
+
         // If query is just empty space, do not show block
-        if(this.state.nameQuery.trim() === "") { return; }
+        if(nameQuery.trim() === "") { 
+            return; 
+        }
+
         if (row.style.display === "none") {
             row.style.display = "block";
-        } else {
+        } 
+        
+        else {
             row.style.display = "none";
         }
     }
@@ -54,7 +61,9 @@ class FindForm extends Component {
 
     // Use BS4 to display form in jumbotron
     render() {
+        const {nameQuery} = this.state;
         const {uid} = this.props;
+
         // create card for each found user
         const foundUsers = this.props.users.map(user =>
             <FoundFriendCard 
@@ -67,7 +76,9 @@ class FindForm extends Component {
         return (
             <div className="jumbotron d-flex flex-column justify-content-center align-items-center mb-3">
                 <div className="row">
-                    <h2 className="FindForm-title">Search for new friends!</h2>
+                    <h2 className="FindForm-title">
+                        Search for new friends!
+                    </h2>
                 </div>
 
                 <div className="row FindForm-form">
@@ -75,14 +86,14 @@ class FindForm extends Component {
                         <input 
                             type = "text"
                             name = "nameQuery"
-                            value = {this.state.nameQuery}
+                            value = {nameQuery}
                             onChange = {this.handleChange}
                             placeholder = "Enter a users name"
                             className="FindForm-input"
                         />
                         
                         <button onClick = {this.showResults} className="FindForm-btn">
-                            <i className="fas fa-search FindForm-icon"></i>
+                            <i className="fas fa-search FindForm-icon"/>
                         </button>
                     </form>
                 </div>
@@ -90,7 +101,12 @@ class FindForm extends Component {
                 {/* Hidden container that displays when form is submitted */}
                 <div style={{display: 'none'}} id="resultsContainer">
                     <div className="row d-flex justify-content-center align-items-stretch" id="resultsRow">
-                        {foundUsers.length === 0 ? <h3>No Users Found</h3> : foundUsers}
+                        {foundUsers.length === 0 ? 
+                            (<h3>
+                                No Users Found
+                            </h3>) : 
+                            foundUsers
+                        }
                     </div>
                 </div>
             </div>

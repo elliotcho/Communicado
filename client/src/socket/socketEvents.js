@@ -37,11 +37,13 @@ export const handleSocketEvents = (io, dispatch) =>{
 
     io.on('GET_RECIPIENTS', data =>{
         const {getRecipients} =msgActions;
+        
         dispatch(getRecipients(data.queryResult));
     });
 
     io.on('CHAT_CREATED', data =>{
         const{loadChats}=msgActions;
+
         dispatch(loadChats(data.uid));
     });
 

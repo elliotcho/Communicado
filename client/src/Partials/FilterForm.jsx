@@ -7,7 +7,11 @@ import './FilterForm.css'
 class FilterForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { friendQuery: "" };
+
+        this.state = { 
+            friendQuery: "" 
+        };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -33,6 +37,8 @@ class FilterForm extends Component {
     }
 
     render() {
+        const {friendQuery} = this.state;
+
         return (
             <div className="row my-4 py-3 FilterForm">
                 <div className = "col-12 d-flex justify-content-center text-center">
@@ -41,7 +47,7 @@ class FilterForm extends Component {
                         <input 
                             type = "text"
                             name = "friendQuery"
-                            value = {this.state.friendQuery}
+                            value = {friendQuery}
                             onChange = {this.handleChange}
                             placeholder = "Name"
                             className="FilterForm-inp"
