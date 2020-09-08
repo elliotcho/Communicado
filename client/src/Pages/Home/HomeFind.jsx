@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import SearchProfileCard from './SearchProfileCard'
+import {findUsers} from '../../store/actions/friendsActions';
+import SearchProfileCard from './SearchProfileCard';
 
 class HomeFind extends Component {
     constructor(props) {
         super(props);
+
         this.state = { query: "" };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -19,7 +22,7 @@ class HomeFind extends Component {
         e.preventDefault();
 
         // Destructuring
-        const {uid} = this.props;
+        const {uid, dispatch} = this.props;
         const {query} = this.state;
 
         // If empty query, return
@@ -28,12 +31,12 @@ class HomeFind extends Component {
         }
 
         // If not empty, find Users based on query
-        this.props.findUsers(query, uid);
+        dispatch(findUsers(query, uid));
     }
 
-
     render() {
-        const {uid} = this.props;
+        const {uid, users} = this.props;
+        const {query} = this.state;
 
         return (
             <div className="HomeFind col-lg-3">
@@ -48,17 +51,18 @@ class HomeFind extends Component {
                     <div className="card-body">
                         <form className="HomeFind-form" onSubmit={this.handleSubmit}>
                             <input 
-                                id='query' 
-                                name="query"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search Name"
-                                value={this.state.query}
-                                onChange={this.handleChange}
+                                id = 'query' 
+                                name = "query"
+                                type = "text"
+                                className = "form-control"
+                                placeholder = "Search Name"
+                                value = {query}
+                                onChange = {this.handleChange}
                             />
                         </form> 
+
                         {/* For each user found, render new Profile Card */}
-                        {this.props.users.map(user =>
+                        {users.map(user =>
                             <SearchProfileCard key={user._id} user={user} uid={uid}/>      
                         )}
                     </div>

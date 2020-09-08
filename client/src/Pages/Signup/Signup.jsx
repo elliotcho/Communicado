@@ -4,12 +4,19 @@ import {connect} from 'react-redux';
 import {signUp} from '../../store/actions/authActions';
 import './Signup.css'
 
-
 class Signup extends Component {
     constructor(props) {
         super(props);
-        // Set initial state and bind all helper functions
-        this.state = { firstName: "", lastName: "", email: "", password: "", confirmPassword: ""};
+
+        // Set initialP state and bind all helper functions
+        this.state = { 
+            firstName: "", 
+            lastName: "", 
+            email: "", 
+            password: "", 
+            confirmPassword: ""
+        };
+        
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.toLogin = this.toLogin.bind(this);
@@ -19,30 +26,40 @@ class Signup extends Component {
     handleChange(evt) {
         this.setState({ [evt.target.name] : evt.target.value });
     }
+
     // Send user to login if link clicked
     toLogin() {
         this.props.history.push('/');
     }
+
     // Submit form and send to signUp mapped from client redux store
     handleSubmit(evt) {
         evt.preventDefault();
-        this.props.signUp(this.state);
+
+        const {dispatch} = this.props;
+
+        dispatch(signUp(this.state));
     }
 
     render() {
+        const {firstName, lastName, email, password, confirmPassword} = this.state;
+        const {uid} = this.props;
+
         // If UID, send user to home page
-        if(this.props.uid){
+        if(uid){
             return <Redirect exact to='/'/>
         }
+
         return(
             <div className="Signup">
                 <form className="Signup-form" onSubmit={this.handleSubmit}>
                     <h1 className="Signup-title">Communicado</h1>
                     <h3>Create a free account today!</h3>
+
                     <input 
                         type="text" 
                         name="firstName" 
-                        value={this.state.firstName} 
+                        value={firstName} 
                         onChange={this.handleChange}
                         minLength='2'
                         maxLength='30'
@@ -53,7 +70,7 @@ class Signup extends Component {
                     <input 
                         type="text" 
                         name="lastName" 
-                        value={this.state.lastName} 
+                        value={lastName} 
                         onChange={this.handleChange}
                         minLength='2'
                         maxLength='30'
@@ -66,7 +83,7 @@ class Signup extends Component {
                     <input 
                         type="email" 
                         name="email" 
-                        value={this.state.email} 
+                        value={email} 
                         onChange={this.handleChange}
                         minLength='6'
                         maxLength='50'
@@ -79,7 +96,7 @@ class Signup extends Component {
                     <input 
                         type="password" 
                         name="password" 
-                        value={this.state.password} 
+                        value={password} 
                         onChange={this.handleChange}
                         minLength='6'
                         maxLength='50'
@@ -90,7 +107,7 @@ class Signup extends Component {
                     <input 
                         type="password" 
                         name="confirmPassword" 
-                        value={this.state.confirmPassword} 
+                        value={confirmPassword} 
                         onChange={this.handleChange}
                         minLength='6'
                         maxLength='50'
@@ -100,18 +117,20 @@ class Signup extends Component {
 
                     <br/>
                     
-                    <button className="Signup-submit-btn">Create Account</button>
-                    <p onClick={this.toLogin} className="Signup-p">Already have an account? Sign in here</p>
+                    <button className="Signup-submit-btn">
+                        Create Account
+                    </button>
+
+                    <p onClick={this.toLogin} className="Signup-p">
+                        Already have an account? Sign in here
+                    </p>
                 </form>
             </div>
         ) 
     }
 }
+
 // Map signup from store into props for Signup
-const mapDispatchToProps = (dispatch) =>{
-    return{
-        signUp: (credentials) => {dispatch(signUp(credentials));}
-    }
-}
+const mapDispatchToProps = (dispatch) => ({dispatch});
 
 export default withRouter(connect(null, mapDispatchToProps)(Signup));

@@ -1,38 +1,42 @@
 import React, {Component} from 'react';
 import {Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
+import * as friendActions from '../../store/actions/friendsActions';
+import {getAccountData} from '../../store/actions/profileActions';
+import HomeFind from './HomeFind';
+import ProfileCard from './ProfileCard';
+import OnlineFriendList from './OnlineFriendList';
 import {io} from '../../App';
-import {getUserInfo, loadProfilePic, changeProfilePic} from '../../store/actions/profileActions';
-import {findUsers, clearUsers, loadFriends, countFriends} from '../../store/actions/friendsActions';
 import './Home.css';
-import HomeFind from './HomeFind'
-import ProfileCard from './ProfileCard'
-import OnlineFriendList from './OnlineFriendList'
 
 class Home extends Component{
     // After init render, read userID and get info + picture to display
     componentDidMount(){
-        const {uid} = this.props;
-        this.props.getUserInfo(uid);
-        this.props.loadProfilePic(uid);
-        this.props.loadFriends(uid);
-        this.props.countFriends(uid);
+        const {uid, dispatch} = this.props;
+        const {loadFriends, countFriends} = friendActions;
+        
+        dispatch(getAccountData(uid));
+        dispatch(loadFriends(uid));
+        dispatch(countFriends(uid));
+        
         io.emit('GET_ONLINE_FRIENDS', {uid});
     }
 
     // Clear users when moving pages
     componentWillUnmount(){
-        this.props.clearUsers();
+        const {dispatch} = this.props;
+        const {clearUsers} = friendActions;
+
+        dispatch(clearUsers());
     }
 
     render() {
+        const {uid, dispatch, firstName, lastName, dateCreated, active, users, numFriends} = this.props;
+
         // If no UID, send user to Login page
-        if (!this.props.uid) {
+        if (!uid) {
             return <Redirect to='/'/>
         }
-
-        const {active, users, firstName, lastName, imgURL, uid, findUsers, dateCreated, numFriends, changeProfilePic} = this.props;
-      
        
         return (
             <div className='home'>
@@ -42,22 +46,24 @@ class Home extends Component{
                         
                         <div class="col"></div>
 
-
-                        <HomeFind uid={uid} findUsers={findUsers} users={users}/>  
+                        <HomeFind 
+                            dispatch = {dispatch}
+                            uid={uid} 
+                            users={users}
+                        />  
 
                         <ProfileCard 
-                            uid={uid} 
-                            firstName={firstName} 
-                            lastName={lastName} 
-                            imgURL={imgURL} 
-                            numFriends={numFriends}
+                            uid = {uid} 
+                            firstName = {firstName} 
+                            lastName = {lastName} 
+                            numFriends = {numFriends}
                             dateCreated = {dateCreated}
-                            changeProfilePic={changeProfilePic}
+                            dispatch = {dispatch}
                         />
                       
-                        <OnlineFriendList active={active}/>
+                        <OnlineFriendList active = {active}/>
+                        
                         <div class="col"></div>
-
                     </div>
                 </div>
             </div>
@@ -72,7 +78,6 @@ const mapStateToProps = (state) => {
         firstName: state.profile.firstName,
         lastName: state.profile.lastName,
         dateCreated: state.profile.dateCreated,
-        imgURL: state.profile.imgURL,
         active: state.friends.active,
         users: state.friends.users,
         numFriends: state.friends.numFriends
@@ -80,16 +85,6 @@ const mapStateToProps = (state) => {
 };
 
 // Map all methods to props using redux
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getUserInfo: (uid) => {dispatch(getUserInfo(uid));},
-        loadProfilePic: (uid) => {dispatch(loadProfilePic(uid));},
-        changeProfilePic: (uid, imgFile) => {dispatch(changeProfilePic(uid, imgFile));},
-        findUsers: (name, uid) => {dispatch(findUsers(name, uid));},
-        clearUsers: () => {dispatch(clearUsers());},
-        loadFriends: (uid) =>  {dispatch(loadFriends(uid));},
-        countFriends: (uid) =>  {dispatch(countFriends(uid));},
-    }
-};
+const mapDispatchToProps = (dispatch) => ({dispatch});
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home)); 

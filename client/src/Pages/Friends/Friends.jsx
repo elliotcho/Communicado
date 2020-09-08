@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {findUsers, findFriends, clearUsers} from '../../store/actions/friendsActions';
 import FindForm from '../../Partials/FindForm'
 import FilterForm from '../../Partials/FilterForm'
 import FriendGrid from './FriendGrid'
@@ -9,23 +8,20 @@ import './Friends.css'
 // Friends Page composed of separate components in Partials that make up the page
 class Friends extends Component {
     render() {
-        const {findUsers, findFriends, clearUsers, users, uid} = this.props;
+        const {uid, users, dispatch} = this.props;
+        
         return (
             <div className="Friends">
                 <div className="container-fluid">
                     {/* Find new friends with jumbotron that has functionallity passed to it */}
-                    <FindForm 
-                        findUsers={findUsers} 
-                        clearUsers={clearUsers} 
-                        users={users} 
-                        uid={uid}
+                    <FindForm  
+                        uid = {uid}
+                        users = {users}
+                        dispatch = {dispatch}
                     />
 
                     {/* Form to filter a friends list */}
-                    <FilterForm 
-                        findFriends = {findFriends} 
-                        uid = {uid}
-                    />
+                    <FilterForm uid={uid} dispatch={dispatch}/>
 
                     {/* Grid of friendCards */}
                     <FriendGrid />
@@ -44,12 +40,6 @@ const mapStateToProps = (state) =>{
 }
 
 //puts actions into props - All the methods for props
-const mapDispatchToProps = (dispatch) =>{
-    return {
-        findUsers: (name, uid) => {dispatch(findUsers(name, uid));},
-        findFriends: (name, uid) => {dispatch(findFriends(name, uid));},
-        clearUsers: () => {dispatch(clearUsers());}
-    }
-}
+const mapDispatchToProps = (dispatch) => ({dispatch});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Friends);

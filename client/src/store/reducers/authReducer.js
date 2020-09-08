@@ -7,19 +7,13 @@ const initState = {
 
 // Setup reducer for authentication actions (signup and login)
 const authReducer = (state = initState, action) =>{
-    if(state.uid){window.localStorage.setItem('uid', state.uid);}
-    if(action.uid){window.localStorage.setItem('uid', action.uid);}
     // Switch based on which action was received after request from server
     switch(action.type){
         // Successful login
-        case types.LOGIN_SUCCESS:
+        case types.SIGNIN_SUCCESS:
+            window.localStorage.setItem('uid', action.uid);
+
             return {
-                ...state,
-                uid: action.uid
-            }
-        // successful Signup
-        case types.SIGNUP_SUCCESS:
-            return{
                 ...state,
                 uid: action.uid
             }

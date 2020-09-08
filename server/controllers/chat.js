@@ -121,10 +121,12 @@ exports.getChatMessages = async (req, res) =>{
 exports.getChatMemberIds = async (req, res) =>{
     const {uid, chatId} = req.body;
 
-    const chat = await Chat.findOne({_id: chatId});
-    const {members} = chat;
-
-    res.json({members: members.filter(id => id !== uid)});
+    if(chatId !== 'home'){
+        const chat = await Chat.findOne({_id: chatId});
+        const {members} = chat;
+    
+        res.json({members: members.filter(id => id !== uid)});
+    }
 }
 
 exports.checkForUnseenChats = async (req, res) => {
@@ -144,7 +146,7 @@ exports.checkForUnseenChats = async (req, res) => {
         unseen |= !messages[n-1].seenBy.includes(uid);
     }
 
-    res.json({unseen});
+    res.json({unseen}); 
 }
 
 exports.seeChats = async (req, res) =>{

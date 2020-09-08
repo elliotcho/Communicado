@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import {findFriends} from '../store/actions/friendsActions';
 import './FilterForm.css'
 
 // Class that creates form that filters through a friends list 
@@ -6,7 +7,11 @@ import './FilterForm.css'
 class FilterForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { friendQuery: "" };
+
+        this.state = { 
+            friendQuery: "" 
+        };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -19,13 +24,21 @@ class FilterForm extends Component {
     // Trim result on submit and findFriends from props with given query
     handleSubmit(e){
         e.preventDefault();
+        
         const {friendQuery} = this.state;
-        if(friendQuery.trim() === "") { return; }
-        const {findFriends, uid} = this.props;
-        findFriends(friendQuery, uid);
+        
+        if(friendQuery.trim() === "") { 
+            return; 
+        }
+        
+        const {uid, dispatch} = this.props;
+        
+        dispatch(findFriends(friendQuery, uid));
     }
 
     render() {
+        const {friendQuery} = this.state;
+
         return (
             <div className="row my-4 py-3 FilterForm">
                 <div className = "col-12 d-flex justify-content-center text-center">
@@ -34,7 +47,7 @@ class FilterForm extends Component {
                         <input 
                             type = "text"
                             name = "friendQuery"
-                            value = {this.state.friendQuery}
+                            value = {friendQuery}
                             onChange = {this.handleChange}
                             placeholder = "Name"
                             className="FilterForm-inp"

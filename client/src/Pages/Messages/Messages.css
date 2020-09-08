@@ -7,6 +7,12 @@
     padding: 0;
 }
 
+.Messages .MessageList {
+    background-color: lightgray;
+    height: 100vh;
+    overflow-y: auto;
+}
+
 .compose{
     position: relative;
     background: lightgray;

@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
-import {io} from '../../App';
+import {updateRecipients, clearComposer} from '../../store/actions/messagesActions';
 import UserComposedTo from './UserComposedTo';
+import {io} from '../../App';
 import "./ComposeMsg.css";
-
 
 class ComposeMsg extends Component{
     constructor(){
@@ -21,41 +21,44 @@ class ComposeMsg extends Component{
         const {uid, recipients} = this.props;
 
         io.emit('GET_RECIPIENTS', {
-            uid,recipients, name: e.target.value
+            uid,
+            recipients, 
+            name: e.target.value
         });
 
         this.setState({composedTo: e.target.value});
     }
 
     addRecipient(user){
-        const {uid, recipients, updateRecipients} = this.props;
+        const {uid, recipients, dispatch} = this.props;
 
-        this.setState({composedTo: ''});
+        dispatch(updateRecipients([...recipients, user]));
 
         io.emit('GET_RECIPIENTS', {
-            uid, name: ''
+            uid,
+            recipients: [],
+            name: ''
         });
-        updateRecipients([...recipients, user]);
+
+        this.setState({composedTo: ''});
     }
 
     deleteRecipient(e){
-        const {recipients, updateRecipients} = this.props;
-
+        const {recipients, dispatch} = this.props;
         const {composedTo} = this.state;
 
         if(e.keyCode === 8 && composedTo === '' && recipients.length > 0){
             recipients.pop();
-            updateRecipients(recipients);
+            dispatch(updateRecipients(recipients));
         }
     }
 
     componentWillUnmount(){
-        this.props.clearComposer()
+        this.props.dispatch(clearComposer());
     }
     
     render(){
         const {queryResults, recipients} = this.props;
-
         const {composedTo} = this.state;
 
         return(

@@ -1,43 +1,39 @@
-// Actions for users to interact with their profile and update any settings
+import * as types from '../constants/actionTypes';
 import axios from 'axios';
 
+const config = {headers: {'content-type': 'application/json'}};
+
 // Get user profile info
-export const getUserInfo = (uid) =>{
+export const getAccountData = (uid) =>{
     return async (dispatch) => {
-        const config = {
-            headers: {'Content-Type': 'application/json'}
-        }
         // Send post request to userInfo branch in server handlers
         const response = await axios.get(`http://localhost:5000/users/${uid}`);
         
-        const {
-            firstName, 
-            lastName, 
-            dateCreated
-        } = response.data;
+        const {firstName, lastName, dateCreated} = response.data;
 
         dispatch({
-            type: "USER_INFO",
+            type: types.GET_ACCOUNT_DATA,
+            dateCreated,
             firstName,
-            lastName,
-            dateCreated
+            lastName
         });
     }
 }
 
+export const getUserData = async (uid) => {
+    const response = await axios.get(`http://localhost:5000/users/${uid}`);
+    return response.data;
+}
+
 // Load a users profile picture 
-export const loadProfilePic = (uid) =>{
-    return async (dispatch) => {
-
-        // Fetch from server functional route using post with stringified data
-        const response = await fetch(`http://localhost:5000/users/profilepic/${uid}`, {
-            method: 'GET'
-        }); 
+export const loadProfilePic = async (uid) =>{
+    const response = await fetch(`http://localhost:5000/users/profilepic/${uid}`, {
+        method: 'GET'
+    }); 
         
-        let file = await response.blob();
+    let file = await response.blob();
 
-        dispatch({type: "LOAD_PROFILE_PIC", imgURL: URL.createObjectURL(file)});
-    }
+    return URL.createObjectURL(file);
 }
 
 // Changes a users profile picture based on the given image
@@ -47,11 +43,13 @@ export const changeProfilePic = (uid, imgFile) => {
 
         formData.append('uid',  uid);
         formData.append('image', imgFile);
+
+        const fdConfig = {
+            headers: {'Content-Type': 'multipart/form-data'}
+        };
     
-        const config = {headers: {'Content-Type': 'multipart/form-data'}};
-        
         // Post new image and reload browser
-        await axios.post('http://localhost:5000/users/profilepic', formData, config);
+        await axios.post('http://localhost:5000/users/profilepic', formData, fdConfig);
         
         window.location.reload();
     }
@@ -61,12 +59,19 @@ export const changeProfilePic = (uid, imgFile) => {
 export const changeUserName = (uid, firstName, lastName) =>{
     return async (dispatch) => {
         const data = {uid, firstName, lastName}
+
         // Send all names, even if undefined, and handle in server routes
-        const response = await axios.post('http://localhost:5000/users/changename', data , {headers: {'content-type': 'application/json'}})
+        const response = await axios.post('http://localhost:5000/users/changename', data , config);
         const {_doc, msg} =response.data;
+
         if(_doc){
-            dispatch({type: 'CHANGE_NAME', firstName: _doc.firstName, lastName: _doc.lastName})
+            dispatch({
+                type: types.CHANGE_ACCOUNT_NAME, 
+                firstName: _doc.firstName, 
+                lastName: _doc.lastName
+            });
         }
+
         alert(msg);
     }
 }
@@ -75,9 +80,11 @@ export const changeUserName = (uid, firstName, lastName) =>{
 export const changePwd = (uid, currPwd, newPwd, confirmPwd) => {
     return async () => {
         const data = {uid, currPwd, newPwd, confirmPwd}
+
         // Send post to server route to handle passwords and check if conditions met
-        const response = await axios.post('http://localhost:5000/users/changepwd', data, {headers:{'content-type': 'application/json'}});
+        const response = await axios.post('http://localhost:5000/users/changepwd', data, config);
         const {msg} = response.data;
+
         alert(msg);
     }
 }
@@ -87,8 +94,8 @@ export const deleteUser = (uid) =>{
     return async () =>{ 
         // Delete user from DB
         const response = await axios.delete(`http://localhost:5000/users/${uid}`);
-        
         const {msg} =response.data;
+        
         alert(msg);
         
         window.localStorage.clear();
