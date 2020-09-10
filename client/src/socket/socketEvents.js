@@ -47,11 +47,27 @@ export const handleSocketEvents = (io, dispatch) =>{
         dispatch(loadChats(data.uid));
     });
 
-    io.on('NEW_MESSAGE', data =>{
-        const {newMessage, chatId} = data;
-        const {handleNewMessage} = msgActions
+    io.on('NEW_MESSAGE', async data =>{
+        const {newMessage, chatId, uid} = data;
 
-        dispatch(handleNewMessage(newMessage, chatId));
+        const {
+            loadChats,
+            handleNewMessage, 
+            getMemberIds, 
+            getUnseenChats
+        } = msgActions
+
+        dispatch(loadChats(uid));
+        dispatch(getUnseenChats(uid));
+        dispatch(handleNewMessage(newMessage, chatId, uid));
+
+        const members = await getMemberIds(chatId, uid);
+
+        io.emit('READ_RECEIPTS', {
+            chatId, 
+            members,
+            uid
+        });
     });
 
     io.on('IS_TYPING', data =>{
@@ -66,5 +82,13 @@ export const handleSocketEvents = (io, dispatch) =>{
         const {handleStopTyping} = msgActions
 
         dispatch(handleStopTyping(uid,chatId));
+    });
+
+    io.on('READ_RECEIPTS', data => {
+        const {chatId, readerId} = data;
+
+        const {handleReadReceipts} = msgActions;
+
+        dispatch(handleReadReceipts(chatId, readerId));
     });
 }

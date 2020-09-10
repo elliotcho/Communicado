@@ -5,6 +5,7 @@ import {loadProfilePic} from '../../store/actions/profileActions';
 import MessageBubble from './MessageBubble';
 import TypingBubble from './TypingBubble';
 import loading from '../../images/loading.jpg';
+import {io} from '../../App';
 import './ExpandChat.css';
 
 class ExpandChat extends Component{
@@ -18,6 +19,7 @@ class ExpandChat extends Component{
 
         this.onConvoUpdate = this.onConvoUpdate.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
+        this.sendReadReceipt = this.sendReadReceipt.bind(this);
     }
 
     async componentDidMount(){
@@ -43,7 +45,8 @@ class ExpandChat extends Component{
         } = msgActions;
 
         dispatch(setChatIdOnDisplay(chatId));
-        dispatch(setMsgsOnDisplay(chatId));
+        dispatch(setMsgsOnDisplay(chatId, uid));
+        await this.sendReadReceipt();
 
         const chatPics = await getChatPics(chatId, uid, loadProfilePic);
         const memberNames = await getMemberNames(chatId, uid);
@@ -51,6 +54,19 @@ class ExpandChat extends Component{
         this.setState({
             chatPics,
             memberNames
+        });
+    }
+
+    async sendReadReceipt(){
+        const {chatId, uid} = this.props;
+        const {getMemberIds} = msgActions;
+
+        const members = await getMemberIds(chatId, uid);
+
+        io.emit('READ_RECEIPTS', {
+            chatId, 
+            members,
+            uid
         });
     }
 
@@ -68,6 +84,7 @@ class ExpandChat extends Component{
                 uid = {uid}
                 senderId = {msg.senderId}
                 content = {msg.content}
+                readBy = {[...msg.readBy]}
             />
         );
 

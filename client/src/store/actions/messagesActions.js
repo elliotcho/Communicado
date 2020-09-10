@@ -183,10 +183,18 @@ export const setChatIdOnDisplay = (chatId) => {
     }
 }
 
-export const setMsgsOnDisplay = (chatId) =>{
+export const setMsgsOnDisplay = (chatId, uid) =>{
     return async (dispatch) =>{
         const response = await axios.get(`http://localhost:5000/chats/messages/${chatId}`);
         const messages = response.data;
+
+        for(let i=0;i<messages.length;i++){
+            if(messages[i].readBy.includes(uid)){
+                continue;
+            }
+
+            messages[i].readBy.push(uid);
+        }
 
         dispatch({
             type: types.LOAD_MESSAGES, 
@@ -195,16 +203,60 @@ export const setMsgsOnDisplay = (chatId) =>{
     }
 }
 
-export const handleNewMessage = (newMessage, chatId) =>{
+export const handleNewMessage = (newMessage, chatId, uid) =>{
     return (dispatch, getState) => {
         const state = getState();
 
         const {chatIdOnDisplay} = state.messages;
 
         if(chatIdOnDisplay === chatId){
+            if(!newMessage.readBy.includes(uid)){
+                newMessage.readBy.push(uid);
+            }
+
             dispatch({
                 type: types.NEW_MESSAGE, 
                 newMessage
+            });
+        }
+    }
+}
+
+export const getReadReceipts = async (readBy, uid, getProfilePic) => {
+    const readReceipts = [];
+
+    for(let i=0;i<readBy.length;i++){
+        if(readBy[i] === uid){
+            continue;
+        }
+
+        const imgURL = await getProfilePic(readBy[i]);
+
+        readReceipts.push(imgURL);
+    }
+
+    return readReceipts;
+}
+
+export const handleReadReceipts = (chatId, readerId) => {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        const {chatIdOnDisplay, msgsOnDisplay} = state;
+        const messages = msgsOnDisplay;
+
+        if(chatIdOnDisplay === chatId){
+            for(let i =0;i<messages.length;i++){
+                if(messages[i].readBy.includes(readerId)){
+                    continue;
+                }
+
+                messages[i].readBy.push(readerId);
+            }
+
+            dispatch({
+                types: types.LOAD_MESSAGES,
+                messages
             });
         }
     }
