@@ -102,7 +102,8 @@ class Navbar extends Component {
 const mapStateToProps = (state) =>{
     return{
         uid: state.auth.uid,
-        unseenChats: state.messages.unseenChats
+        unseenChats: state.messages.unseenChats,
+        newNotif: state.notifs.newNotif
     }
 }
 

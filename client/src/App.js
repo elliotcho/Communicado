@@ -32,6 +32,7 @@ class App extends Component{
       const {uid, dispatch} = this.props;
 
       if(uid){
+         io.emit("JOIN_SERVER", {uid: this.props.uid});
          await this.checkForNavbarUpdates(uid, dispatch);
       }
    }
@@ -40,6 +41,7 @@ class App extends Component{
       const {uid, dispatch} = this.props;
 
       if(uid){
+         io.emit("JOIN_SERVER", {uid: this.props.uid});
          await this.checkForNavbarUpdates(uid, dispatch);
       }
    }
@@ -55,17 +57,13 @@ class App extends Component{
    }
 
    render(){
-      const {uid, newNotif} = this.props;
-
-      if(this.props.uid){
-         io.emit("JOIN_SERVER", {uid: this.props.uid});
-      }
+      const {uid} = this.props;
       
       return(
          <div>
             { /*If ID required for route, show Navbar*/}
             <BrowserRouter>   
-               {uid? <Navbar newNotif = {newNotif}/>: null}
+               {uid? <Navbar/>: null}
 
                <div>
                   <Switch>
@@ -89,7 +87,6 @@ class App extends Component{
 const mapStateToProps = (state) =>{
     return {
         uid: state.auth.uid,
-        newNotif: state.notifs.newNotif
     }
 }
 
