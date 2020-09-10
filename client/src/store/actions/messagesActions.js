@@ -203,7 +203,7 @@ export const setMsgsOnDisplay = (chatId, uid) =>{
     }
 }
 
-export const handleNewMessage = (newMessage, chatId, uid) =>{
+export const renderNewMessage = (newMessage, chatId, uid) =>{
     return (dispatch, getState) => {
         const state = getState();
 
@@ -242,7 +242,7 @@ export const handleReadReceipts = (chatId, readerId) => {
     return (dispatch, getState) => {
         const state = getState();
 
-        const {chatIdOnDisplay, msgsOnDisplay} = state;
+        const {chatIdOnDisplay, msgsOnDisplay} = state.messages;
         const messages = msgsOnDisplay;
 
         if(chatIdOnDisplay === chatId){
@@ -255,7 +255,7 @@ export const handleReadReceipts = (chatId, readerId) => {
             }
 
             dispatch({
-                types: types.LOAD_MESSAGES,
+                type: types.LOAD_MESSAGES,
                 messages
             });
         }

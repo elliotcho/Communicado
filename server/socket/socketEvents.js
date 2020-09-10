@@ -117,11 +117,11 @@ module.exports = (io) => {
             const {chatId, members, uid} = data;
 
             for(let i=0;i<members.length;i++){
-                const readerId = members[i];
+                const id = members[i];
 
-                io.sockets.to(active[readerId]).emit('READ_RECEIPTS',{
+                io.sockets.to(active[id]).emit('READ_RECEIPTS',{
                     chatId,
-                    readerId
+                    readerId: uid
                 });
             }
         }); 

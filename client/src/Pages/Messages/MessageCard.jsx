@@ -27,7 +27,7 @@ class MessageCard extends Component {
         const {chatId, uid, lastMsg, isActive, dispatch} = this.props;
         const {readChat, getChatPics, getMemberNames} = msgActions;
 
-        const isRead = await dispatch(readChat(chatId, uid, lastMsg, isActive));
+        const isRead = dispatch(readChat(chatId, uid, lastMsg, isActive));
         const chatPics = await getChatPics(chatId, uid, loadProfilePic);
         const memberNames = await getMemberNames(chatId, uid);
     

@@ -52,16 +52,18 @@ export const handleSocketEvents = (io, dispatch) =>{
 
         const {
             loadChats,
-            handleNewMessage, 
+            renderNewMessage, 
             getMemberIds, 
             getUnseenChats
         } = msgActions
 
         dispatch(loadChats(uid));
         dispatch(getUnseenChats(uid));
-        dispatch(handleNewMessage(newMessage, chatId, uid));
+        dispatch(renderNewMessage(newMessage, chatId, uid));
 
         const members = await getMemberIds(chatId, uid);
+
+        console.log(members)
 
         io.emit('READ_RECEIPTS', {
             chatId, 

@@ -86,16 +86,18 @@ class SendMsg extends Component{
         const {
             sendMessage, 
             loadChats,
-            getMemberIds
+            getMemberIds, 
+            renderNewMessage
         } = msgActions;
 
-
         const newMessage = await sendMessage(chatId, uid, content);
+        dispatch(renderNewMessage(newMessage, chatId, uid));
+
         const members = await getMemberIds(chatId, uid);
 
         io.emit('NEW_MESSAGE', {
             newMessage, 
-            members: [...members, uid], 
+            members: [...members], 
             chatId
         });
 
