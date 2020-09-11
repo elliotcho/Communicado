@@ -65,30 +65,30 @@ class Navbar extends Component {
 
                             <li>
                                 <Link to='/notifications' className={notifColor}>
-                                    <a href='/notifications' className={`nav-link d-inline-block d-md-none ${notifColor}`}>
+                                    <span className={`nav-link d-inline-block d-md-none ${notifColor}`}>
                                         Notifications
-                                    </a>
+                                    </span>
 
                                     <i className ="fas fa-bell"/>
                                 </Link>
                             </li>
                             <li>
                                 <Link to='/settings' className="nav-link">
-                                    <a href='/settings' className="nav-link d-inline-block d-md-none">
+                                    <span className="nav-link d-inline-block d-md-none">
                                         Settings
-                                    </a>
+                                    </span>
 
-                                    <i class="fas fa-user-cog"/>
+                                    <i className = "fas fa-user-cog"/>
                                 </Link>
                             </li>
 
                             <li>
-                                <Link to='/' onClick={this.signOut} class='nav-link'>
-                                    <a href='/' className="nav-link d-inline-block d-md-none">
+                                <Link to='/' onClick={this.signOut} className = 'nav-link'>
+                                    <span className="nav-link d-inline-block d-md-none">
                                         Logout
-                                    </a>
+                                    </span>
                                     
-                                    <i class="fas fa-sign-out-alt"/>
+                                    <i className = "fas fa-sign-out-alt"/>
                                 </Link>
                             </li>
                         </ul>

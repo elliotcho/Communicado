@@ -59,7 +59,7 @@ class MessageCard extends Component {
 
         return (
             <div onClick={this.handleClick} className={`MessageCard ${cardClassName} card flex-row flex-wrap`}>
-                <div class="card-header border-0">
+                <div className = "card-header border-0">
                     {chatPics.map((pic, i) =>
                         <img
                             key = {i}
