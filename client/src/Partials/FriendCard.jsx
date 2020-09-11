@@ -6,8 +6,8 @@ import './FriendCard.css'
 
 // Friend card to be rendered on friends page for each friend
 class FriendCard extends Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         // Init state
 
         this.state = {

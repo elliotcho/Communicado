@@ -85,6 +85,7 @@ class ExpandChat extends Component{
                 senderId = {msg.senderId}
                 content = {msg.content}
                 readBy = {[...msg.readBy]}
+                handleScroll = {this.handleScroll}
             />
         );
 
@@ -114,6 +115,7 @@ class ExpandChat extends Component{
                             key = {id}
                             uid = {id}
                             show = {id !== uid}
+                            handleScroll = {this.handleScroll}
                         />
                     )}
                 </section>

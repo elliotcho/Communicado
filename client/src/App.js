@@ -19,7 +19,7 @@ let io;
 
 class App extends Component{
    constructor(props){
-      super(props);
+      super();
       
       //io only instantiated once and we dont want override this cnonnection
       io = socket('http://localhost:5000');

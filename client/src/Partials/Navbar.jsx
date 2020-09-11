@@ -35,18 +35,18 @@ class Navbar extends Component {
         return(
             <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed">
                 <div className="container-fluid">
-                    <Link to='/' className="navbar-brand">
+                    <Link to ='/' className = "navbar-brand">
                         Communicado
                     </Link>
                         
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-                        <span className="navbar-toggler-icon"/>
+                    <button className = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#navbarResponsive">
+                        <span className = "navbar-toggler-icon"/>
                     </button>
 
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav ml-auto">
                             <li>
-                                <Link to='/' className="nav-link pr-lg-5">
+                                <Link to='/' className = "nav-link pr-lg-5">
                                     Home
                                 </Link>
                             </li>
@@ -58,13 +58,13 @@ class Navbar extends Component {
                             </li>
 
                             <li>
-                                <Link to='/friends' className="nav-link pr-lg-5">
+                                <Link to='/friends' className = "nav-link pr-lg-5">
                                     Friends
                                 </Link>
                             </li>
 
                             <li>
-                                <Link to='/notifications' className={notifColor}>
+                                <Link to='/notifications' className = {notifColor}>
                                     <span className={`nav-link d-inline-block d-md-none ${notifColor}`}>
                                         Notifications
                                     </span>
@@ -73,7 +73,7 @@ class Navbar extends Component {
                                 </Link>
                             </li>
                             <li>
-                                <Link to='/settings' className="nav-link">
+                                <Link to='/settings' className = "nav-link">
                                     <span className="nav-link d-inline-block d-md-none">
                                         Settings
                                     </span>

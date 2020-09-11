@@ -6,11 +6,10 @@ import moment from 'moment';
 import {io} from '../../App';
 import './NotificationCard.css'
 
-// Notification cards that will be rendered in Notifications for each one
-// R: -- ELLIOT!! status changes, asycn/await, 
+// Notification cards that will be rendered in Notifications for each one 
 class NotificationCard extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         // State that will control user elements of notif
         this.state = {

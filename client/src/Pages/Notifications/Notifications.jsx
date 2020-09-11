@@ -6,8 +6,8 @@ import './Notifications.css'
 import NotificationCard from './NotificationCard';
 
 class Notifications extends Component{
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.deleteNotif = this.deleteNotif.bind(this);
     }
 

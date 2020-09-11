@@ -17,12 +17,13 @@ class MessageBubble extends Component{
     }
 
     async componentDidMount(){
-        const {senderId} = this.props;
+        const {senderId, handleScroll} = this.props;
 
         const senderImgURL = await loadProfilePic(senderId);
         await this.loadReadReceipts();
    
         this.setState({senderImgURL});
+        handleScroll();
     }
 
     async componentDidUpdate(prevProps){

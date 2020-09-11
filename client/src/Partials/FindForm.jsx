@@ -6,8 +6,8 @@ import './FindForm.css';
 // Component that allows a user to type a name and finds all users
 class FindForm extends Component {
     // State - form query that user is entering
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.state = { 
             nameQuery: "" 

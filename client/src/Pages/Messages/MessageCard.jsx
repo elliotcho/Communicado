@@ -8,6 +8,7 @@ import './MessageCard.css';
 class MessageCard extends Component {
     constructor(){
         super();
+        
         this.state = {
             isRead: true,
             memberNames: 'Loading Users...',
