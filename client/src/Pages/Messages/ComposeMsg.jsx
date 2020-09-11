@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
-import {updateRecipients, clearComposer} from '../../store/actions/messagesActions';
+import * as msgActions from '../../store/actions/messagesActions';
+import ExpandChat from './ExpandChat';
 import UserComposedTo from './UserComposedTo';
 import {io} from '../../App';
 import "./ComposeMsg.css";
@@ -29,8 +30,22 @@ class ComposeMsg extends Component{
         this.setState({composedTo: e.target.value});
     }
 
-    addRecipient(user){
+    async addRecipient(user){
         const {uid, recipients, dispatch} = this.props;
+
+        const {
+            updateRecipients, 
+            checkIfChatExists, 
+            renderComposerChat
+        } = msgActions;
+
+        const chatId = (recipients.length === 0) ?
+                        await checkIfChatExists(uid, user._id):
+                        null;
+
+        if(chatId){
+            dispatch(renderComposerChat(chatId));
+        }
 
         dispatch(updateRecipients([...recipients, user]));
 
@@ -45,20 +60,29 @@ class ComposeMsg extends Component{
 
     deleteRecipient(e){
         const {recipients, dispatch} = this.props;
+        const {updateRecipients, clearComposerChat} = msgActions;
         const {composedTo} = this.state;
 
         if(e.keyCode === 8 && composedTo === '' && recipients.length > 0){
             recipients.pop();
+
+            if(recipients.length !== 1){
+                dispatch(clearComposerChat());
+            }
+
             dispatch(updateRecipients(recipients));
         }
     }
 
     componentWillUnmount(){
-        this.props.dispatch(clearComposer());
+        const {dispatch} = this.props;
+        const {clearComposer} = msgActions;
+
+        dispatch(clearComposer());
     }
     
     render(){
-        const {queryResults, recipients} = this.props;
+        const {queryResults, recipients, composerChatId} = this.props;
         const {composedTo} = this.state;
 
         return(
@@ -80,6 +104,11 @@ class ComposeMsg extends Component{
                         />
                     </div>
                </header>
+
+               {composerChatId? 
+                    <ExpandChat chatId = {composerChatId}/>:
+                    null
+               }
 
                {queryResults.map(user =>
                     <UserComposedTo 

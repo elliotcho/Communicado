@@ -21,6 +21,21 @@ export const updateRecipients = (recipients) =>{
     }
 }
 
+export const renderComposerChat = (chatId) => {
+    return (dispatch) => {
+        dispatch({
+            type: types.RENDER_COMPOSER_CHAT,
+            chatId
+        });
+    }
+}
+
+export const clearComposerChat = () => {
+    return (dispatch) => {
+        dispatch({type: types.CLEAR_COMPOSER_CHAT});
+    }
+}
+
 export const clearComposer = () =>{
     return (dispatch) =>{
         dispatch({type: types.CLEAR_COMPOSER});
@@ -260,4 +275,13 @@ export const handleReadReceipts = (chatId, readerId) => {
             });
         }
     }
+}
+
+export const checkIfChatExists = async (uid, memberId) => {
+    const data = {uid, memberId};
+
+    const response = await axios.post('http://localhost:5000/chats/exists', data, config);
+    const {chatId} = response.data;
+
+    return chatId;
 }
