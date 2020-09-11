@@ -75,7 +75,7 @@ class ExpandChat extends Component{
     }
 
     render(){
-        const {uid, typingOnDisplay} = this.props;
+        const {uid, typingOnDisplay, isComposerChat} = this.props;
         const {memberNames, chatPics} = this.state;
 
         const messages = this.props.msgsOnDisplay.map(msg =>
@@ -91,22 +91,23 @@ class ExpandChat extends Component{
 
         return(
             <div className ='expandChat'>
-               <header>
-                    <div className='profile'>
-                        {chatPics.map((pic, i) =>
-                            <img 
-                                key={i} 
-                                src={pic? pic : loading} 
-                                alt="profile pic" 
-                                className = "profilePic"
-                            />
-                        )}
+               {!isComposerChat? 
+                    (<header>
+                        <div className='profile'>
+                            {chatPics.map((pic, i) =>
+                                <img 
+                                    key={i} 
+                                    src={pic? pic : loading} 
+                                    alt="profile pic" 
+                                    className = "profilePic"
+                                />
+                            )}
                         
-                        <h2>
-                            {memberNames}
-                        </h2>
-                    </div>
-               </header>
+                            <h2>{memberNames}</h2>
+                        </div>
+                    </header>):
+                    null
+                }
 
                 <section className = 'chat-box' ref = {ele => this.chatBox = ele}>
                     {messages}

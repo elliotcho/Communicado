@@ -36,7 +36,8 @@ class ComposeMsg extends Component{
         const {
             updateRecipients, 
             checkIfChatExists, 
-            renderComposerChat
+            renderComposerChat,
+            clearComposerChat
         } = msgActions;
 
         const chatId = (recipients.length === 0) ?
@@ -45,6 +46,8 @@ class ComposeMsg extends Component{
 
         if(chatId){
             dispatch(renderComposerChat(chatId));
+        } else {
+            dispatch(clearComposerChat());
         }
 
         dispatch(updateRecipients([...recipients, user]));
@@ -58,18 +61,27 @@ class ComposeMsg extends Component{
         this.setState({composedTo: ''});
     }
 
-    deleteRecipient(e){
-        const {recipients, dispatch} = this.props;
-        const {updateRecipients, clearComposerChat} = msgActions;
+    async deleteRecipient(e){
+        const {uid, recipients, dispatch} = this.props;
+
+        const {
+            updateRecipients, 
+            checkIfChatExists,
+            renderComposerChat,
+            clearComposerChat
+        } = msgActions;
+
         const {composedTo} = this.state;
 
-        if(e.keyCode === 8 && composedTo === '' && recipients.length > 0){
-            recipients.pop();
-
-            if(recipients.length !== 1){
+        if(e.keyCode === 8 && composedTo === '' && recipients.length > 0){   
+            if(recipients.length !== 2){
                 dispatch(clearComposerChat());
+            } else{
+                const chatId = await checkIfChatExists(uid, recipients[0]._id);
+                dispatch(renderComposerChat(chatId));
             }
 
+            recipients.pop();
             dispatch(updateRecipients(recipients));
         }
     }
@@ -105,18 +117,20 @@ class ComposeMsg extends Component{
                     </div>
                </header>
 
+               <div className = 'results-list'>
+                    {queryResults.map(user =>
+                        <UserComposedTo 
+                            key={user._id}
+                            user = {user}
+                            addRecipient = {this.addRecipient}
+                        />
+                    )}
+               </div>
+
                {composerChatId? 
-                    <ExpandChat chatId = {composerChatId}/>:
+                    <ExpandChat chatId={composerChatId} isComposerChat={true}/>:
                     null
                }
-
-               {queryResults.map(user =>
-                    <UserComposedTo 
-                        key={user._id}
-                        user = {user}
-                        addRecipient = {this.addRecipient}
-                    />
-               )}
             </div>
         )
     }

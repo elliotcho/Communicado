@@ -1,9 +1,11 @@
 .user-composed-to{
-    max-width: 300px;
+    width: 300px;
+    background: white;
     cursor: pointer;
+    margin-left: 15px;
     border: solid black 1px;
     border-bottom: none;
-    margin-left: 15px;
+    border-top: none;
 }
 
 .user-composed-to:hover{
@@ -21,5 +23,5 @@
 
 .user-composed-to p{
   display: inline-block;
-  margin-left:10px;
+  margin-left:15px;
 }

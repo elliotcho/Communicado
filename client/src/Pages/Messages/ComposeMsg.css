@@ -9,6 +9,10 @@
   display: inline-block;
 }
 
+.composer .results-list{
+  position: absolute;
+}
+
 .recipients-container{
   background: black;
 }

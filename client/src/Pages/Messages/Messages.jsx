@@ -123,7 +123,10 @@ class Messages extends Component {
                                     composerChatId = {composerChatId}
                                     dispatch = {dispatch}
                                 />): 
-                                <ExpandChat chatId = {chatId}/>
+                                (<ExpandChat 
+                                    chatId={chatId} 
+                                    isComposerChat={false}
+                                />)
                             }
                             
                             <SendMsg 
