@@ -13,7 +13,9 @@ class SendMsg extends Component{
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleNewChat = this.handleNewChat.bind(this);
         this.handleExistingChat = this.handleExistingChat.bind(this);
-        this.handleTyping = this.handleTyping.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleIsTyping = this.handleIsTyping.bind(this);
+        this.handleStopTyping = this.handleStopTyping.bind(this);
     }
 
     pressEnter(e){
@@ -61,6 +63,7 @@ class SendMsg extends Component{
         }
 
         else{
+             await this.handleStopTyping();
              await this.handleExistingChat(content);
         }
         
@@ -104,34 +107,29 @@ class SendMsg extends Component{
         dispatch(loadChats(uid));
     }
 
-    async handleTyping(e){
-        //let typing= true;
-        const text = e.target.value;
-        const {uid, chatId, typingOnDisplay} = this.props;
-        
-        if(text.trim()===""){
-            const members = await msgActions.getMemberIds(chatId, uid);
-            
-            io.emit("STOP_TYPING", {
-                uid, 
-                chatId, 
-                members: [...members, uid]
-            });
+    async handleChange(e){
+        if(e.target.value.includes('\n')){
+            this.msg.dispatchEvent(new Event('keydown'));
+            return;
         }
+
+        if(e.target.value.trim() === ""){
+            await this.handleStopTyping();
+            return;
+        }
+
+        await this.handleIsTyping();
+    }
+
+    async handleIsTyping(){
+        const {uid, chatId, typingOnDisplay} = this.props;
         
         timeOuts.forEach(t => clearTimeout(t));
         timeOuts = []
 
         const tO = setTimeout(async () => {
             clearTimeout(tO)
-
-            const members = await msgActions.getMemberIds(chatId, uid);
-
-            io.emit("STOP_TYPING", {
-                chatId, 
-                uid, 
-                members: [...members, uid]
-            });
+            await this.handleStopTyping();
         }, 5000)
 
         timeOuts.push(tO)
@@ -141,10 +139,26 @@ class SendMsg extends Component{
 
             io.emit("IS_TYPING", {
                 chatId,
-                uid, 
-                members: [...members, uid]
+                members: [...members, uid],
+                uid
             });
         }       
+    }
+
+    async handleStopTyping(){
+        const {chatId, uid} = this.props;
+
+        const members = await msgActions.getMemberIds(chatId, uid);
+
+        io.emit("STOP_TYPING", {
+            chatId,
+            members: [...members, uid] ,
+            uid
+        });
+    }
+
+    async componentWillUnmount(){
+        await this.handleStopTyping();
     }
 
     render(){
@@ -157,7 +171,7 @@ class SendMsg extends Component{
                         placeholder = 'Type a message...'
                         ref = {ele => this.msg = ele}
                         onKeyDown = {this.pressEnter} 
-                        onChange = {this.handleTyping}
+                        onChange = {this.handleChange}
                     />
 
                     <label>
