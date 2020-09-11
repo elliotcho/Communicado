@@ -1,6 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
 import {removeFriend} from '../store/actions/friendsActions';
 import {loadProfilePic} from '../store/actions/profileActions';
+import {updateRecipients} from '../store/actions/messagesActions';
 import {io} from '../App';
 import './FriendCard.css'
 
@@ -15,6 +18,7 @@ class FriendCard extends Component {
         }
 
         this.deleteFriend = this.deleteFriend.bind(this);
+        this.messageFriend = this.messageFriend.bind(this);
     }
 
     // load image of user after initial render
@@ -25,6 +29,7 @@ class FriendCard extends Component {
 
         this.setState({imgURL});
     }
+
     // Delete friend function from props store that asks user to confirm
     deleteFriend(){
         const {_id, firstName, lastName} = this.props.user;
@@ -44,10 +49,26 @@ class FriendCard extends Component {
         });
     }
 
+    messageFriend(){
+        const {_id, firstName, lastName} = this.props.user;
+        const {dispatch} = this.props;
+
+
+        const friend = {
+            _id, 
+            firstName, 
+            lastName
+        };
+
+        dispatch(updateRecipients([friend]));
+
+        this.props.history.push('/chat/new');
+    }
+
     render() {
         // Destructure
-        const {imgURL} = this.state;
         const {firstName, lastName} = this.props.user;
+        const {imgURL} = this.state;
 
         return (
             <div className="col-lg-6 col-sm-12 d-flex justify-content-center">
@@ -72,7 +93,7 @@ class FriendCard extends Component {
                         </div>
 
                         <div className="col-1 msg">
-                            <i className="far fa-comment-dots"/>
+                            <i className="far fa-comment-dots" onClick = {this.messageFriend}/>
                         </div>
                     </div>
                 </div>
@@ -80,4 +101,13 @@ class FriendCard extends Component {
         )
     }
 }
-export default FriendCard;
+
+const mapStateToProps = (state) => {
+    return{
+        recipients: state.messages.recipients
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({dispatch});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FriendCard));
