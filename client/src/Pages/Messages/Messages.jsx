@@ -109,7 +109,7 @@ class Messages extends Component {
                             </header>
 
                             <div className ='MessageList'>
-                                <SearchMsgs/>
+                                <SearchMsgs uid={uid}/>
                                 {msgCards} 
                             </div>
                         </div>

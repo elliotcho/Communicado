@@ -73,7 +73,7 @@ class MessageBubble extends Component{
                             )}
                         </div>
                     </div>
-
+                  
                     {msgPosition === 'msg-r'? 
                         <img src = {senderImgURL? senderImgURL: loading} alt ='profile pic'/>:
                         null
