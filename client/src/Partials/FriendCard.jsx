@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {removeFriend} from '../store/actions/friendsActions';
 import {loadProfilePic} from '../store/actions/profileActions';
-import {updateRecipients} from '../store/actions/messagesActions';
+import {updateRecipients, checkIfChatExists} from '../store/actions/messagesActions';
 import {io} from '../App';
 import './FriendCard.css'
 
@@ -49,20 +49,23 @@ class FriendCard extends Component {
         });
     }
 
-    messageFriend(){
+    async messageFriend(){
         const {_id, firstName, lastName} = this.props.user;
-        const {dispatch} = this.props;
+        const {uid, dispatch} = this.props;
 
+        const chatId = await checkIfChatExists(uid, _id);
+    
+        if(chatId){
+            this.props.history.push(`/chat/${chatId}`);
+        }
 
-        const friend = {
-            _id, 
-            firstName, 
-            lastName
-        };
-
-        dispatch(updateRecipients([friend]));
-
-        this.props.history.push('/chat/new');
+        else{
+            const friend = {_id, firstName, lastName};
+    
+            dispatch(updateRecipients([friend]));
+    
+            this.props.history.push('/chat/new');
+        }
     }
 
     render() {
@@ -104,6 +107,7 @@ class FriendCard extends Component {
 
 const mapStateToProps = (state) => {
     return{
+        uid: state.auth.uid,
         recipients: state.messages.recipients
     }
 }

@@ -134,6 +134,7 @@ class Messages extends Component {
                                 chatId = {chatId}
                                 recipients = {recipients}
                                 typingOnDisplay = {typingOnDisplay}
+                                composerChatId = {composerChatId}
                                 dispatch ={dispatch}
                             />
                         </div>
