@@ -10,7 +10,8 @@ const {
     getChatMemberIds,
     checkForUnseenChats,
     seeChats,
-    readChat, 
+    readChat,
+    checkIfChatExists
  } = require('../controllers/chat');
 
 router.post('/create', createChat);
@@ -22,5 +23,6 @@ router.post('/memberids', getChatMemberIds);
 router.get('/unseen/:uid', checkForUnseenChats);
 router.put('/seechats/:uid', seeChats);
 router.post('/readchat', readChat);
+router.post('/exists', checkIfChatExists);
 
 module.exports = router;

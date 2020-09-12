@@ -7,7 +7,8 @@ const initState = {
     msgsOnDisplay: [],
     typingOnDisplay: [],
     chatIdOnDisplay: null,
-    unseenChats: false
+    unseenChats: false,
+    composerChatId: null
 };
 
 // Reducer for friend actions
@@ -23,11 +24,22 @@ const messagesReducer = (state=initState, action) =>{
                 ...state,
                 recipients: [...action.recipients]
             }
+        case types.RENDER_COMPOSER_CHAT:
+            return{
+                ...state,
+                composerChatId: action.chatId
+            } 
+        case types.CLEAR_COMPOSER_CHAT:
+            return{
+                ...state,
+                composerChatId: null
+            }
         case types.CLEAR_COMPOSER:
             return{
                 ...state,
                 queryResults: [],
-                recipients: []
+                recipients: [],
+                composerChatId: null
             }
         case types.LOAD_CHATS:
             return{

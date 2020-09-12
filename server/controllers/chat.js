@@ -188,3 +188,34 @@ exports.readChat = async (req, res) => {
     res.json({msg: 'Success'});
 }
 
+exports.checkIfChatExists = async (req, res) => {
+    const {uid, memberId} = req.body;
+
+    const user = await User.findOne({_id: uid});
+    const member = await User.findOne({_id: memberId});
+
+    const userChats = user.chats;
+    const memberChats = member.chats;
+
+    let chatId = null;
+    const map = {};
+
+    for(let i=0;i<userChats.length;i++){
+        map[userChats[i]] = true;
+    }
+
+    for(let j=0;j<memberChats.length;j++){
+        if(map[memberChats[j]]){
+            const chat = await Chat.findOne({_id: memberChats[j]});
+            const {members} = chat;
+
+            if(members.length === 2){
+                chatId = chat._id;
+            }
+
+            if(chatId){break;}
+        }
+    }
+
+    res.json({chatId});
+}

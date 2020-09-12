@@ -45,7 +45,7 @@ class SendMsg extends Component{
     async handleSubmit(e) {
         e.preventDefault();
 
-        const {chatId, recipients} = this.props;
+        const {chatId, composerChatId, recipients} = this.props;
         const content = this.msg.value;
 
         //handles empty input 
@@ -53,7 +53,7 @@ class SendMsg extends Component{
             return;
         }
 
-        if(chatId === 'new'){
+        if(chatId === 'new' && !composerChatId){
             //handles having no recipients
             if(recipients.length === 0){
                 return;
@@ -84,7 +84,7 @@ class SendMsg extends Component{
     }
 
     async handleExistingChat(content){
-        const {chatId, uid, dispatch} = this.props;
+        const {chatId, composerChatId, uid, dispatch} = this.props;
 
         const {
             sendMessage, 
@@ -93,18 +93,23 @@ class SendMsg extends Component{
             renderNewMessage
         } = msgActions;
 
-        const newMessage = await sendMessage(chatId, uid, content);
-        dispatch(renderNewMessage(newMessage, chatId, uid));
+        const currChatId = (composerChatId)? composerChatId: chatId;
 
-        const members = await getMemberIds(chatId, uid);
+        const newMessage = await sendMessage(currChatId, uid, content);
+        dispatch(renderNewMessage(newMessage, currChatId, uid));
+        dispatch(loadChats(uid));
+
+        const members = await getMemberIds(currChatId, uid);
 
         io.emit('NEW_MESSAGE', {
             newMessage, 
             members: [...members], 
-            chatId
+            chatId: currChatId
         });
 
-        dispatch(loadChats(uid));
+        if(currChatId !== chatId){
+            this.props.history.push(`/chat/${currChatId}`);
+        }
     }
 
     async handleChange(e){
@@ -122,8 +127,11 @@ class SendMsg extends Component{
     }
 
     async handleIsTyping(){
-        const {uid, chatId, typingOnDisplay} = this.props;
+        const {uid, chatId, composerChatId, typingOnDisplay} = this.props;
+        const{getMemberIds} = msgActions;
         
+        const currChatId = (composerChatId) ? composerChatId: chatId;
+
         timeOuts.forEach(t => clearTimeout(t));
         timeOuts = []
 
@@ -135,10 +143,10 @@ class SendMsg extends Component{
         timeOuts.push(tO)
         
         if(!typingOnDisplay.includes(uid)){       
-            const members = await msgActions.getMemberIds(chatId, uid);
+            const members = await getMemberIds(currChatId, uid);
 
             io.emit("IS_TYPING", {
-                chatId,
+                chatId: currChatId,
                 members: [...members, uid],
                 uid
             });
@@ -146,12 +154,15 @@ class SendMsg extends Component{
     }
 
     async handleStopTyping(){
-        const {chatId, uid} = this.props;
+        const {chatId, composerChatId, uid} = this.props;
+        const {getMemberIds} = msgActions;
 
-        const members = await msgActions.getMemberIds(chatId, uid);
+        const currChatId = (composerChatId) ? composerChatId: chatId;
+
+        const members = await getMemberIds(currChatId, uid);
 
         io.emit("STOP_TYPING", {
-            chatId,
+            chatId: currChatId,
             members: [...members, uid] ,
             uid
         });
