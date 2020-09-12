@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import {colorNotif} from './store/actions/notificationsActions';
+import {colorNotif, checkIfNotifsUnread} from './store/actions/notificationsActions';
 import {getUnseenChats} from './store/actions/messagesActions';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
@@ -12,7 +12,6 @@ import Notifications from './Pages/Notifications/Notifications.jsx';
 import Navbar from './Partials/Navbar';
 import Messages from './Pages/Messages/Messages'
 import socket from 'socket.io-client';
-import axios from 'axios';
 import {handleSocketEvents} from './socket/socketEvents';
 import {ToastContainer} from 'react-toastify';
 
@@ -20,62 +19,51 @@ let io;
 
 class App extends Component{
    constructor(props){
-      super(props);
+      super();
       
       //io only instantiated once and we dont want override this cnonnection
       io = socket('http://localhost:5000');
       
       //importing all these socket.on events from server (socketEvents.js)
       handleSocketEvents(io, props.dispatch);
-
-      this.getUnreadNotifs = this.getUnreadNotifs.bind(this);
-      this.getUnseenChats = this.getUnseenChats.bind(this);
    }
 
    async componentDidMount(){
-      const {uid, colorNotif} = this.props;
+      const {uid, dispatch} = this.props;
 
       if(uid){
-         this.getUnreadNotifs(uid, colorNotif);
-         this.getUnseenChats();
+         io.emit("JOIN_SERVER", {uid: this.props.uid});
+         await this.checkForNavbarUpdates(uid, dispatch);
       }
    }
 
-   async componentDidUpdate(prevProps){
-      const {uid, colorNotif} = this.props;
+   async componentDidUpdate(){
+      const {uid, dispatch} = this.props;
 
       if(uid){
-         this.getUnreadNotifs(uid, colorNotif);
-         this.getUnseenChats();
+         io.emit("JOIN_SERVER", {uid: this.props.uid});
+         await this.checkForNavbarUpdates(uid, dispatch);
       }
    }
 
-   async getUnreadNotifs(uid, colorNotif){
-      const response = await axios.get(`http://localhost:5000/notifs/unread/${uid}`);
-      const {unread} = response.data;
-      
-      if(unread){
-         colorNotif();
-      }
-   }
+   async checkForNavbarUpdates(uid, dispatch){
+      const unreadNotifs = await checkIfNotifsUnread(uid);
 
-   getUnseenChats(){
-      const {uid, getUnseenChats} = this.props;
-      getUnseenChats(uid);
+      if(unreadNotifs){
+         dispatch(colorNotif());
+      }
+
+      dispatch(getUnseenChats(uid));
    }
 
    render(){
-      const {uid, newNotif} = this.props;
-
-      if(this.props.uid){
-         io.emit("JOIN_SERVER", {uid: this.props.uid});
-      }
+      const {uid} = this.props;
       
       return(
          <div>
             { /*If ID required for route, show Navbar*/}
             <BrowserRouter>   
-               {uid? <Navbar newNotif = {newNotif}/>: null}
+               {uid? <Navbar/>: null}
 
                <div>
                   <Switch>
@@ -99,18 +87,10 @@ class App extends Component{
 const mapStateToProps = (state) =>{
     return {
         uid: state.auth.uid,
-        newNotif: state.notifs.newNotif
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        colorNotif: () => {dispatch(colorNotif());},
-        getUnseenChats: (uid) => {dispatch(getUnseenChats(uid));},
-        dispatch
-    }
-}
+const mapDispatchToProps = (dispatch) => ({dispatch});
 
 export {io};
-
 export default connect(mapStateToProps, mapDispatchToProps)(App);

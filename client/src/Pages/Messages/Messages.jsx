@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
 import {withRouter, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-
-import {
-    updateRecipients,
-    clearComposer,
-    loadChats,
-    seeChats
-} from '../../store/actions/messagesActions';
-
-import MessageList from './MessageList'
+import * as msgActions from '../../store/actions/messagesActions';
+import MessageCard from './MessageCard';
 import SearchMsgs from './SearchMsgs';
 import ExpandChat from './ExpandChat';
 import SendMsg from './SendMsg'
 import ComposeMsg from './ComposeMsg';
-
 import axios from 'axios';
 import './Messages.css';
 
@@ -26,45 +18,39 @@ class Messages extends Component {
 
     async componentDidMount(){
         const chatId = this.props.match.params.id;
-        const {uid, seeChats} = this.props;
+
+        const {uid, dispatch} = this.props;
+        const {loadChats, seeChats} = msgActions;
 
         this.cancelSource = axios.CancelToken.source();
         
-        try{
-            const response = await axios.get(`http://localhost:5000/chats/user/${uid}`, {
-                cancelToken: this.cancelSource.token
-            });
-            
-            const chats = response.data;
-            seeChats(uid);
+        const chats = await dispatch(loadChats(uid, this.cancelSource));
+        dispatch(seeChats(uid));
 
-            if(chats.length !== 0 && chatId !== 'new'){
-                this.props.history.push(`/chat/${chats[0]._id}`);
-            }
-
-            else{
-                this.props.history.push('/chat/new');
-            }
+        if(chats.length !== 0 && chatId !== 'new'){
+            this.props.history.push(`/chat/${chats[0]._id}`);
         }
 
-        catch(err){
-            console.log(err)
-
-            if (axios.isCancel(err)) {
-                console.log('Request canceled', err.message);
-            } 
+        else{
+            this.props.history.push('/chat/new');
         }
     }
 
     componentDidUpdate(){
-        const {uid, seeChats, unseenChats} = this.props;
+        const {uid, dispatch, unseenChats} = this.props;
+        const {seeChats} = msgActions;
 
         if(unseenChats){
-            seeChats(uid);
+            dispatch(seeChats(uid));
         }
     }
 
     componentWillUnmount(){
+        const {dispatch} = this.props;
+        const {clearChats} = msgActions;
+
+        dispatch(clearChats());
+
         this.cancelSource.cancel();
     }
 
@@ -83,13 +69,10 @@ class Messages extends Component {
     render() {
         const {
             uid,
-            queryResults,
-            updateRecipients,
+            queryResults,        
             recipients,
             chats,
             typingOnDisplay,
-            clearComposer,
-            loadChats,
             dispatch
         } = this.props;
 
@@ -99,6 +82,17 @@ class Messages extends Component {
 
         const chatId = this.props.match.params.id;
 
+        const msgCards =chats.map(chat =>
+            <MessageCard
+                key = {chat._id}
+                chatId = {chat._id}
+                uid = {uid}
+                isActive = {chatId === chat._id}
+                lastMsg = {chat.messages[chat.messages.length -1]}
+                dispatch = {dispatch}
+            />
+        );
+
         return (
             <div className="Messages">
                 <div className="container-fluid">
@@ -107,36 +101,27 @@ class Messages extends Component {
                             <header className='compose'> 
                                 <h3>Chats</h3>
                                 
-                                
                                 {chatId === 'new'?
                                     (<i className='fa fa-times' onClick={this.handleComposer}/>):
                                     (<i className="fas fa-paper-plane" onClick={this.handleComposer}/>)
                                 }               
                             </header>
 
-                            <SearchMsgs/>
-
-                            <MessageList 
-                                uid = {uid} 
-                                chats = {chats}
-                                chatId = {chatId}
-                                loadChats = {loadChats}
-                                chatId = {chatId}
-                                dispatch = {dispatch}
-                            />
+                            <div className ='MessageList'>
+                                <SearchMsgs uid={uid}/>
+                                {msgCards} 
+                            </div>
                         </div>
 
                         <div className="expandChat-container col-8">
-                            
                             {chatId === 'new'? 
                                 (<ComposeMsg 
                                     uid={uid}
                                     queryResults = {queryResults}
                                     recipients = {recipients}
-                                    updateRecipients = {updateRecipients}
-                                    clearComposer = {clearComposer}
-                                />)
-                                : <ExpandChat chatId = {chatId}/>
+                                    dispatch = {dispatch}
+                                />): 
+                                <ExpandChat chatId = {chatId}/>
                             }
                             
                             <SendMsg 
@@ -144,7 +129,7 @@ class Messages extends Component {
                                 chatId = {chatId}
                                 recipients = {recipients}
                                 typingOnDisplay = {typingOnDisplay}
-                                loadChats = {loadChats}
+                                dispatch ={dispatch}
                             />
                         </div>
                     </div>
@@ -164,14 +149,6 @@ const mapStateToProps = (state) => {
     }   
 }
 
-const mapDispatchToProps = (dispatch) =>{
-    return{
-        updateRecipients: (recipients) => {dispatch(updateRecipients(recipients));},
-        clearComposer: () => {dispatch(clearComposer());},
-        loadChats: (uid) => {dispatch(loadChats(uid));},
-        seeChats: (uid) => {dispatch(seeChats(uid));},
-        dispatch
-    }
-}
+const mapDispatchToProps = (dispatch) => ({dispatch});
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Messages));

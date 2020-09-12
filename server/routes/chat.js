@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+
 const { 
     createChat,
     getUserChats,
@@ -9,7 +10,7 @@ const {
     getChatMemberIds,
     checkForUnseenChats,
     seeChats,
-    readChat
+    readChat, 
  } = require('../controllers/chat');
 
 router.post('/create', createChat);

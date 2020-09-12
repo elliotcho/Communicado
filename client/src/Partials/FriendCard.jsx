@@ -1,66 +1,99 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {removeFriend} from '../store/actions/friendsActions';
+import {loadProfilePic} from '../store/actions/profileActions';
+import {updateRecipients} from '../store/actions/messagesActions';
 import {io} from '../App';
 import './FriendCard.css'
 
 // Friend card to be rendered on friends page for each friend
 class FriendCard extends Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         // Init state
+
         this.state = {
             imgURL: null
         }
+
         this.deleteFriend = this.deleteFriend.bind(this);
+        this.messageFriend = this.messageFriend.bind(this);
     }
 
     // load image of user after initial render
     async componentDidMount(){
         const {_id} = this.props.user;
     
-        const response = await fetch(`http://localhost:5000/users/profilepic/${_id}`, {
-            method: 'GET'
-        }); 
-    
-        let file = await response.blob();
-        
-        this.setState({
-            imgURL: URL.createObjectURL(file)
-        });
+        const imgURL = await loadProfilePic(_id);
+
+        this.setState({imgURL});
     }
+
     // Delete friend function from props store that asks user to confirm
     deleteFriend(){
         const {_id, firstName, lastName} = this.props.user;
+        const {uid, friends, dispatch} = this.props;
 
         if(!window.confirm(`Are you sure you want to unfriend ${firstName} ${lastName}?`)){
             return;
         }
         
-        const {uid, friends, removeFriend} = this.props;
-        removeFriend(_id, friends);
+        dispatch(removeFriend(_id, friends));
+
         // Emit change of friend status to server so that Add Friend is next option
-        io.emit("CHANGE_FRIEND_STATUS", {status: "Friends", uid, friendId: _id});
+        io.emit("CHANGE_FRIEND_STATUS", {
+            status: "Friends", 
+            uid, 
+            friendId: _id
+        });
+    }
+
+    messageFriend(){
+        const {_id, firstName, lastName} = this.props.user;
+        const {dispatch} = this.props;
+
+
+        const friend = {
+            _id, 
+            firstName, 
+            lastName
+        };
+
+        dispatch(updateRecipients([friend]));
+
+        this.props.history.push('/chat/new');
     }
 
     render() {
         // Destructure
-        const {imgURL} = this.state;
         const {firstName, lastName} = this.props.user;
+        const {imgURL} = this.state;
 
         return (
             <div className="col-lg-6 col-sm-12 d-flex justify-content-center">
                 <div className="FriendCard card bg-light mb-5">
                     <div className="row d-flex justify-content-center text-center no-gutters align-items-center">
                         <div className="col-3 d-flex justify-content-center">
-                            <img src={imgURL? imgURL: "//placehold.it/30"} className="img-fluid avatar" alt="tester" />
+                            <img 
+                                src={imgURL? imgURL: "//placehold.it/30"} 
+                                className="img-fluid avatar" 
+                                alt="tester" 
+                            />
                         </div>
+
                         <div className="col-7">
-                            <h3 className="card-title">{firstName} {lastName}</h3>
+                            <h3 className="card-title">
+                                {firstName} {lastName}
+                            </h3>
                         </div>
+
                         <div className="col-1 delete" onClick={this.deleteFriend}>
-                            <i className="fas fa-times"></i>
+                            <i className="fas fa-times"/>
                         </div>
+
                         <div className="col-1 msg">
-                            <i className="far fa-comment-dots"></i>
+                            <i className="far fa-comment-dots" onClick = {this.messageFriend}/>
                         </div>
                     </div>
                 </div>
@@ -68,4 +101,13 @@ class FriendCard extends Component {
         )
     }
 }
-export default FriendCard;
+
+const mapStateToProps = (state) => {
+    return{
+        recipients: state.messages.recipients
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({dispatch});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FriendCard));

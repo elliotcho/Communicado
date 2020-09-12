@@ -48,3 +48,8 @@
     margin-left: 2rem;
     margin-right: auto;
 }
+
+.read-receipts img{
+    width: 15px;
+    height: 15px;
+}

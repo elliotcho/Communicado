@@ -1,25 +1,23 @@
 import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {uncolorNotif, removeNotification} from '../../store/actions/notificationsActions';
 import './Notifications.css'
 import NotificationCard from './NotificationCard';
 
 class Notifications extends Component{
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.deleteNotif = this.deleteNotif.bind(this);
     }
 
-    // After first render, remove highlighted icon and destructure props
     componentDidMount(){
-        const {uid, uncolorNotif} = this.props;
-        uncolorNotif(uid);
+        this.props.dispatch(uncolorNotif(this.props.uid));
     }
 
-    // Every new socket notif, listen for new notification
-    // R: --- More elaboration? 
     componentDidUpdate(prevProps){
         const {newNotif} = this.props;
+
         if(prevProps.newNotif !== newNotif && newNotif!==false){   
             window.location.reload();
         }
@@ -27,17 +25,26 @@ class Notifications extends Component{
 
     // Delete a notification using actions from store
     deleteNotif(id){
-        const { notifs, removeNotification } = this.props;
-        removeNotification(id, notifs);
+        const { notifs, dispatch } = this.props;
+        dispatch(removeNotification(id, notifs));
     }
 
     render(){
         // read notifications for current user
         const {uid, notifs} = this.props;
 
+        if(!uid){
+            return <Redirect to ='/'/>
+        }
+
         // Create list of notifications
         const list = notifs.map(notif =>
-            <NotificationCard key={notif._id} notif = {notif} uid={uid} deleteNotif={this.deleteNotif}/>
+            <NotificationCard 
+                key={notif._id} 
+                notif = {notif} 
+                uid={uid} 
+                deleteNotif={this.deleteNotif}
+            />
         );
 
         return(
@@ -48,9 +55,12 @@ class Notifications extends Component{
 
                 <h4>Latest</h4>
 
-                {list.length === 0 
-                ? <h3 className='text-center my-4'> You have no notifications </h3>
-                : list }
+                {list.length === 0 ? 
+                    (<h3 className='text-center my-4'> 
+                        You have no notifications 
+                    </h3>): 
+                    list 
+                }
             </div>
         )
     }
@@ -66,11 +76,6 @@ const mapStateToProps = (state) =>{
 }
 
 // Methods for notifications to use after mounting
-const mapDispatchToProps = (dispatch) =>{
-    return{
-        uncolorNotif: (uid) => {dispatch(uncolorNotif(uid));},
-        removeNotification: (notifId, notifs) => {dispatch(removeNotification(notifId, notifs));}
-    }
-}
+const mapDispatchToProps = (dispatch) => ({dispatch});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

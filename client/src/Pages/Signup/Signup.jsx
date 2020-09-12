@@ -5,8 +5,8 @@ import {signUp} from '../../store/actions/authActions';
 import './Signup.css'
 
 class Signup extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         // Set initialP state and bind all helper functions
         this.state = { 

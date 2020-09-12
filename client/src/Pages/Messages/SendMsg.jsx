@@ -1,55 +1,21 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import axios from 'axios';
+import * as msgActions from '../../store/actions/messagesActions';
 import {io} from '../../App';
 import './SendMsg.css';
 
-let timeOut = []
+let timeOuts = []
+
 class SendMsg extends Component{
     constructor(){
         super();
-        this.state = {
-            typing: false
-        };
         this.pressEnter = this.pressEnter.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleTyping = this.handleTyping.bind(this);
-    }
-
-
-    async handleTyping(e){
-        //let typing= true;
-        setTimeout(function Time(){ return true }, 3000)
-        const text = e.target.value;
-        const {uid, chatId, typingOnDisplay} = this.props;
-        
-        if(text.trim()===""){            
-            const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
-            const {members} = response.data;
-
-            io.emit("STOP_TYPING", {uid, chatId, members: [...members, uid]});
-        }
-        
-        timeOut.forEach(t => clearTimeout(t));
-        timeOut = []
-        const tO = setTimeout(async () => {
-            clearTimeout(tO)
-            const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
-            const {members} = response.data;
-
-            io.emit("STOP_TYPING", {uid, chatId, members: [...members, uid]});
-        }, 5000)
-
-        timeOut.push(tO)
-        
-        
-        
-        if(!typingOnDisplay.includes(uid)){       
-            const response = await axios.post('http://localhost:5000/chats/memberids', {uid,chatId});
-            const {members} = response.data;
-
-            io.emit("IS_TYPING", {uid, chatId, members: [...members, uid]});
-        }       
+        this.handleNewChat = this.handleNewChat.bind(this);
+        this.handleExistingChat = this.handleExistingChat.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleIsTyping = this.handleIsTyping.bind(this);
+        this.handleStopTyping = this.handleStopTyping.bind(this);
     }
 
     pressEnter(e){
@@ -79,12 +45,13 @@ class SendMsg extends Component{
     async handleSubmit(e) {
         e.preventDefault();
 
-        const {chatId, recipients, uid} = this.props;
-
+        const {chatId, recipients} = this.props;
         const content = this.msg.value;
 
         //handles empty input 
-        if(content.trim() === ""){return;}
+        if(content.trim() === ""){
+            return;
+        }
 
         if(chatId === 'new'){
             //handles having no recipients
@@ -92,30 +59,106 @@ class SendMsg extends Component{
                 return;
             }
 
-            const response = await axios.post('http://localhost:5000/chats/create', {recipients, uid, content});
-            const {chatId} = response.data; 
-
-            this.props.loadChats(uid);
-
-            io.emit('CREATE_CHAT', {recipients, uid});
-
-            this.props.history.push(`/chat/${chatId}`);
+            await this.handleNewChat(content);
         }
 
         else{
-             let response = await axios.post('http://localhost:5000/chats/message',{uid, content,chatId});
-             const newMessage = response.data;
-
-             response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
-             const {members} = response.data;
-           
-             io.emit('NEW_MESSAGE', {newMessage, members: [...members, uid], chatId});
-
-             this.props.loadChats(uid);
+             await this.handleStopTyping();
+             await this.handleExistingChat(content);
         }
         
         //reset textarea value to empty string
         this.msg.value = "";
+    }
+
+    async handleNewChat(content){
+        const {uid, dispatch, recipients} = this.props;
+        const {createChat, loadChats} = msgActions;
+
+        const chatId = await createChat(uid, recipients, content);
+        dispatch(loadChats(uid));
+
+        io.emit('CREATE_CHAT', {recipients, uid});
+
+        this.props.history.push(`/chat/${chatId}`);
+    }
+
+    async handleExistingChat(content){
+        const {chatId, uid, dispatch} = this.props;
+
+        const {
+            sendMessage, 
+            loadChats,
+            getMemberIds, 
+            renderNewMessage
+        } = msgActions;
+
+        const newMessage = await sendMessage(chatId, uid, content);
+        dispatch(renderNewMessage(newMessage, chatId, uid));
+
+        const members = await getMemberIds(chatId, uid);
+
+        io.emit('NEW_MESSAGE', {
+            newMessage, 
+            members: [...members], 
+            chatId
+        });
+
+        dispatch(loadChats(uid));
+    }
+
+    async handleChange(e){
+        if(e.target.value.includes('\n')){
+            this.msg.dispatchEvent(new Event('keydown'));
+            return;
+        }
+
+        if(e.target.value.trim() === ""){
+            await this.handleStopTyping();
+            return;
+        }
+
+        await this.handleIsTyping();
+    }
+
+    async handleIsTyping(){
+        const {uid, chatId, typingOnDisplay} = this.props;
+        
+        timeOuts.forEach(t => clearTimeout(t));
+        timeOuts = []
+
+        const tO = setTimeout(async () => {
+            clearTimeout(tO)
+            await this.handleStopTyping();
+        }, 5000)
+
+        timeOuts.push(tO)
+        
+        if(!typingOnDisplay.includes(uid)){       
+            const members = await msgActions.getMemberIds(chatId, uid);
+
+            io.emit("IS_TYPING", {
+                chatId,
+                members: [...members, uid],
+                uid
+            });
+        }       
+    }
+
+    async handleStopTyping(){
+        const {chatId, uid} = this.props;
+
+        const members = await msgActions.getMemberIds(chatId, uid);
+
+        io.emit("STOP_TYPING", {
+            chatId,
+            members: [...members, uid] ,
+            uid
+        });
+    }
+
+    async componentWillUnmount(){
+        await this.handleStopTyping();
     }
 
     render(){
@@ -128,7 +171,7 @@ class SendMsg extends Component{
                         placeholder = 'Type a message...'
                         ref = {ele => this.msg = ele}
                         onKeyDown = {this.pressEnter} 
-                        onChange = {this.handleTyping}
+                        onChange = {this.handleChange}
                     />
 
                     <label>

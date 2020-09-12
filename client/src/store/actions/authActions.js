@@ -15,7 +15,7 @@ export const login = (credentials) => {
 
         if(msg==='Success'){
             dispatch({
-                type: types.LOGIN_SUCCESS, 
+                type: types.SIGNIN_SUCCESS, 
                 uid
             });
         }
@@ -38,7 +38,7 @@ export const signUp = (credentials) => {
 
         if (msg === 'Success') {
             dispatch({
-                type: types.SIGNUP_SUCCESS, 
+                type: types.SIGNIN_SUCCESS, 
                 uid
             });
         } 

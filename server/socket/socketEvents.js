@@ -83,9 +83,13 @@ module.exports = (io) => {
             const {chatId, members, newMessage} = data;
 
             for(let i =0;i<members.length;i++){
-                io.sockets.to(active[members[i]]).emit(
-                    'NEW_MESSAGE', {chatId, newMessage}
-                );
+                const uid = members[i];
+
+                io.sockets.to(active[members[i]]).emit('NEW_MESSAGE', {
+                    chatId, 
+                    newMessage,
+                    uid
+                });
             }
         });
 
@@ -109,10 +113,17 @@ module.exports = (io) => {
             }
         });
 
+        socket.on('READ_RECEIPTS', data => {
+            const {chatId, members, uid} = data;
 
+            for(let i=0;i<members.length;i++){
+                const id = members[i];
+
+                io.sockets.to(active[id]).emit('READ_RECEIPTS',{
+                    chatId,
+                    readerId: uid
+                });
+            }
+        }); 
     });
-
-
-
-
 }

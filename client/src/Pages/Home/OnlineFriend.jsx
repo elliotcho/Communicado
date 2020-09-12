@@ -4,8 +4,8 @@ import loading from '../../images/loading.jpg';
 import './OnlineFriend.css';
 
 class OnlineFriend extends Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
 
         this.state = { 
             imgURL: null 
@@ -31,7 +31,7 @@ class OnlineFriend extends Component {
                 <div className ="row sideBar-body">
                     <div className ="col-sm-3 sideBar-avatar">
                         <div className ="avatar-icon">
-                            <img src={imgURL? imgURL: loading}/>
+                            <img src={imgURL? imgURL: loading} alt = 'Profile Pic'/>
                             <span className = 'activeIconOn'/>
                         </div>
                     </div>

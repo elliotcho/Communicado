@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {loadProfilePic} from '../../store/actions/profileActions';
 import loading from '../../images/loading.jpg';
 import './UserComposedTo.css';
 
@@ -13,22 +14,23 @@ class UserComposedTo extends Component{
     async componentDidMount(){
         const {_id} = this.props.user;
 
-        let response = await fetch(`http://localhost:5000/users/profilepic/${_id}`, {method: 'GET'}); 
-        const file = await response.blob();
+        const imgURL =await loadProfilePic(_id);
 
-        this.setState({imgURL: URL.createObjectURL(file)});
+        this.setState({imgURL});
     }
 
     render(){
-        const {addRecipient, user} = this.props;
-
         const {firstName, lastName} = this.props.user;
-
+        const {addRecipient, user} = this.props;
         const {imgURL} = this.state;
 
         return(
             <div className='user-composed-to' onClick={() => {addRecipient(user)}}>
-                <img src={imgURL? imgURL: loading} id='test' alt ='profile pic'/>
+                <img 
+                    src={imgURL? imgURL: loading} 
+                    id='test' 
+                    alt ='profile pic'
+                />
                 
                 <p>
                     {firstName} {lastName}

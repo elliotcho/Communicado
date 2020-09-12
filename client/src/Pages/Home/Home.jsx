@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {getUserInfo} from '../../store/actions/profileActions';
 import * as friendActions from '../../store/actions/friendsActions';
+import {getAccountData} from '../../store/actions/profileActions';
 import HomeFind from './HomeFind';
 import ProfileCard from './ProfileCard';
 import OnlineFriendList from './OnlineFriendList';
@@ -15,7 +15,7 @@ class Home extends Component{
         const {uid, dispatch} = this.props;
         const {loadFriends, countFriends} = friendActions;
         
-        dispatch(getUserInfo(uid));
+        dispatch(getAccountData(uid));
         dispatch(loadFriends(uid));
         dispatch(countFriends(uid));
         

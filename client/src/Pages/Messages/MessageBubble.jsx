@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {getReadReceipts} from '../../store/actions/messagesActions';
+import {loadProfilePic} from '../../store/actions/profileActions';
 import loading from '../../images/loading.jpg';
 import './MessageBubble.css';
 
@@ -8,38 +10,45 @@ class MessageBubble extends Component{
 
         this.state={
             senderImgURL: null,
-            readImgURL: []
+            readReceipts: []
         }
+
+        this.loadReadReceipts = this.loadReadReceipts.bind(this);
     }
 
     async componentDidMount(){
-        const {senderId,uid,readBy} = this.props;
-        let imagesArr= [];
-        let response = await fetch(`http://localhost:5000/users/profilepic/${senderId}`, {method: 'GET'}); 
-        const file = await response.blob();
-        this.setState({senderImgURL: URL.createObjectURL(file)});
+        const {senderId, handleScroll} = this.props;
 
-        for(let i=0;i<readBy.length;i++){
-            if(readBy[i]!=senderId){
-                let readByPic = await fetch (`http://localhost:5000/users/profilepic/${readBy[i]}`, {method:'GET'});
-                const readByFile = await readByPic.blob();
-                imagesArr.push(URL.createObjectURL(readByFile));
-            }
-           
+        const senderImgURL = await loadProfilePic(senderId);
+        await this.loadReadReceipts();
+   
+        this.setState({senderImgURL});
+        handleScroll();
+    }
+
+    async componentDidUpdate(prevProps){
+        const {readBy} = this.props;
+
+        if(prevProps.readBy.length !== readBy.length){
+            await this.loadReadReceipts();
         }
-        this.setState({readImgURL: imagesArr});
-       
+    }
+
+    async loadReadReceipts(){
+        const {readBy, senderId} = this.props;
+        
+        const readReceipts = await getReadReceipts(readBy, senderId, loadProfilePic);
+
+        this.setState({readReceipts});
     }
 
     render(){
         const {uid, senderId, content} = this.props;
-        const {senderImgURL} = this.state;
+        const {senderImgURL, readReceipts} = this.state;
 
-        let read = this.state.readImgURL.map((profileUrl,i)=>{
-            return <img className="readImg" key={i}src={profileUrl?profileUrl:loading} alt="profile pic"></img>
-        });
-
-        const msgPosition = (uid === senderId)? 'msg-r': 'msg-l';
+        const msgPosition = (uid === senderId)? 
+            'msg-r': 
+            'msg-l';
 
         return(
             <div className ='row no-gutters'>
@@ -53,9 +62,15 @@ class MessageBubble extends Component{
                         <div>
                             {content}
                         </div>
-                      
-                        <div>
-                            {read}
+
+                        <div className = 'read-receipts'>
+                            {readReceipts.map((imgURL, i) => 
+                                <img
+                                    key = {i}
+                                    src = {imgURL}
+                                    alt = 'profile pic'
+                                />
+                            )}
                         </div>
                     </div>
                   

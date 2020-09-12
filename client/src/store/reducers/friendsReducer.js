@@ -1,8 +1,9 @@
+import * as types from '../constants/actionTypes';
+
 const initState = {
     users: [], 
     friends: [],
     active: [],
-    inactive: [],
     numFriends: 0
 };
 
@@ -10,42 +11,31 @@ const initState = {
 const friendsReducer = (state=initState, action) =>{
     switch(action.type){
         // Find all users
-        case "USERS_FOUND":
+        case types.USERS_FOUND:
             return{
                 ...state,
                 // Update users for all found users
                 users: [...action.users]
             }
-        case 'CLEAR_USERS':
+        case types.CLEAR_USER_SEARCH:
             return{
                 ...state,
                 users: []
             }
-        case "LOAD_ONLINE_FRIENDS":
-            return{
-                ...state,
-                active: [...action.active],
-                inactive: [...action.inactive]
-            }
-        case "FRIENDS_FOUND":
+        case types.UPDATE_FRIENDS:
             return{
                 ...state,
                 friends: [...action.friends]
             }
-        case 'REMOVE_FRIEND':
-            return{
-                ...state,
-                friends: [...action.friends]
-            }
-        case 'LOAD_FRIENDS':
-            return{
-                ...state,
-                friends: [...action.friends]
-            }
-        case 'COUNT_FRIENDS':
+        case types.COUNT_FRIENDS:
             return{
                 ...state,
                 numFriends: action.numFriends
+            }
+        case types.LOAD_ONLINE_FRIENDS:
+            return{
+                ...state,
+                active: [...action.active]
             }
         default:
             return state;
