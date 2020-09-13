@@ -9,6 +9,11 @@ let timeOuts = []
 class SendMsg extends Component{
     constructor(){
         super();
+
+        this.state = {
+            photo: null
+        }
+
         this.pressEnter = this.pressEnter.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleNewChat = this.handleNewChat.bind(this);
@@ -16,6 +21,7 @@ class SendMsg extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleIsTyping = this.handleIsTyping.bind(this);
         this.handleStopTyping = this.handleStopTyping.bind(this);
+        this.attachPhoto = this.attachPhoto.bind(this);
     }
 
     pressEnter(e){
@@ -48,13 +54,11 @@ class SendMsg extends Component{
         const {chatId, composerChatId, recipients} = this.props;
         const content = this.msg.value;
 
-        //handles empty input 
         if(content.trim() === ""){
             return;
         }
 
         if(chatId === 'new' && !composerChatId){
-            //handles having no recipients
             if(recipients.length === 0){
                 return;
             }
@@ -168,13 +172,26 @@ class SendMsg extends Component{
         });
     }
 
+    attachPhoto(e){
+        this.setState({photo: e.target.files});
+    }
+
     async componentWillUnmount(){
         await this.handleStopTyping();
     }
 
     render(){
+        const {photo} = this.state;
+
         return(
             <div className= "send-msg">
+                {photo? 
+                    (<div>
+                        {photo[0].name}
+                    </div>):
+                    null
+                }
+
                 <form ref = {ele => this.msgForm = ele } onSubmit= {this.handleSubmit}>
                     <textarea
                         className =' form-control'
@@ -185,9 +202,16 @@ class SendMsg extends Component{
                         onChange = {this.handleChange}
                     />
 
-                    <label>
+                    <label htmlFor ='msgPic'>
                         <i className = 'fas fa-file-image'/>
                     </label>
+
+                    <input 
+                        type = 'file'
+                        id = 'msgPic'
+                        accept = 'jpg jpeg png'
+                        onChange = {this.attachPhoto}
+                    />
                 </form>
             </div>
         )

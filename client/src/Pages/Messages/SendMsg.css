@@ -25,3 +25,11 @@
     cursor: pointer;
     color: lightgray;
 }
+
+.send-msg .fa-file-image:hover{
+    color: white;
+}
+
+.send-msg input[type='file']{
+    display: none;
+}
