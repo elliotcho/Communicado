@@ -22,6 +22,7 @@ class SendMsg extends Component{
         this.handleIsTyping = this.handleIsTyping.bind(this);
         this.handleStopTyping = this.handleStopTyping.bind(this);
         this.attachPhoto = this.attachPhoto.bind(this);
+        this.detachPhoto = this.detachPhoto.bind(this);
     }
 
     pressEnter(e){
@@ -176,6 +177,11 @@ class SendMsg extends Component{
         this.setState({photo: e.target.files});
     }
 
+    detachPhoto(){
+        document.getElementById('msgPic').value = "";
+        this.setState({photo: null});
+    }
+
     async componentWillUnmount(){
         await this.handleStopTyping();
     }
@@ -186,8 +192,10 @@ class SendMsg extends Component{
         return(
             <div className= "send-msg">
                 {photo? 
-                    (<div>
+                    (<div className = 'photo text-white d-inline-block'>
                         {photo[0].name}
+
+                        <i className = 'fas fa-times' onClick = {this.detachPhoto}/>
                     </div>):
                     null
                 }
