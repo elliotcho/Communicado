@@ -20,11 +20,15 @@ class OnlineFriend extends Component {
         const {uid} = this.props;
         const {_id} = this.props.user;
 
+        let timeOfLastMessage = null;
+
         const imgURL = await loadProfilePic(_id);
         const chatId = await checkIfChatExists(uid, _id);
 
-        const chat = await getChat(chatId);
-        const {timeOfLastMessage} = chat;
+        if(chatId){
+            const chat = await getChat(chatId);
+            timeOfLastMessage = chat.timeOfLastMessage;
+        }
 
         this.setState({
             imgURL, 
@@ -56,9 +60,12 @@ class OnlineFriend extends Component {
 
                         <div className ="col-sm-4 float-right sideBar-time">
                             <br/>
-                            <span className ="time-meta float-right">
-                                Last Chatted: {moment(timeOfLastMessage).calendar()}
-                            </span>
+                            {timeOfLastMessage? 
+                                (<span className ="time-meta float-right">
+                                    Last Chatted: {moment(timeOfLastMessage).calendar()}
+                                </span>):
+                                null
+                            }
                         </div>       
                     </div>
                 </div>
