@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const { 
+    getChat,
     createChat,
     getUserChats,
     getMemberNames,
@@ -13,6 +14,7 @@ const {
     checkIfChatExists
  } = require('../controllers/chat');
 
+ router.get('/:chatId', getChat);
 router.post('/create', createChat);
 router.get('/user/:uid', getUserChats);
 router.post('/members', getMemberNames);

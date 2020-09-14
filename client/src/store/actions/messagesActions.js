@@ -285,3 +285,8 @@ export const checkIfChatExists = async (uid, memberId) => {
 
     return chatId;
 }
+
+export const getChat = async (chatId) => {
+    const response = await axios.get(`http://localhost:5000/chats/${chatId}`);
+    return response.data;
+}

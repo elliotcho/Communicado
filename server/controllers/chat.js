@@ -1,6 +1,14 @@
 const {User} = require('../models/user');
 const {Message, Chat} = require('../models/chat');
 
+exports.getChat = async (req, res) => {
+    const {chatId} = req.params;
+
+    const chat = await Chat.findOne({_id: chatId});
+
+    res.json(chat);
+}
+
 exports.createMessage = async (req,res) =>{
     const {uid, content, chatId} = req.body;
     
