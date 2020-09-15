@@ -59,7 +59,6 @@ class OnlineFriend extends Component {
                         </div>
 
                         <div className ="col-sm-4 float-right sideBar-time">
-                            <br/>
                             {timeOfLastMessage? 
                                 (<span className ="time-meta float-right">
                                     Last Chatted: {moment(timeOfLastMessage).calendar()}
