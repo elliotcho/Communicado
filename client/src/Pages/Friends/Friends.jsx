@@ -12,7 +12,7 @@ class Friends extends Component {
         
         return (
             <div className="Friends">
-                <div className="container-fluid">
+                <div className="container-fluid p-0">
                     {/* Find new friends with jumbotron that has functionallity passed to it */}
                     <FindForm  
                         uid = {uid}
