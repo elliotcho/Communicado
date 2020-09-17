@@ -308,3 +308,4 @@ export const checkIfChatExists = async (uid, memberId) => {
 
     return chatId;
 }
+}
