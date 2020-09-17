@@ -7,7 +7,6 @@ class HomeFind extends Component {
         super();
 
         this.state = { query: "" };
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }

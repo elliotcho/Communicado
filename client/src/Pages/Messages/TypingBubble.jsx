@@ -32,12 +32,6 @@ class TypingBubble extends Component{
 
     render(){
         const {firstName, lastName, imgURL} = this.state;
-
-        const style = {
-            width: '50px',
-            height: '50px'
-        }
-
         const show = (this.props.show)? '': 'none';
 
         return(
@@ -45,10 +39,10 @@ class TypingBubble extends Component{
                 <img 
                     src = {imgURL? imgURL: loading} 
                     alt = 'profile pic' 
-                    style={style}
+                    className="profilePic"
                 />
 
-                <p>{firstName} {lastName} is typing...</p>
+                <p className="text-muted"> {firstName} {lastName} is typing... </p>
             </div>
         )   
     }

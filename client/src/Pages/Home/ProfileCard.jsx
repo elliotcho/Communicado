@@ -51,11 +51,11 @@ class ProfileCard extends Component {
                     <div className="card-body">
                         <div className="row">
                             {/* User Img */}
-                            <div className="img-fluid col-12 my-4">
+                            <div className="col-12 my-4">
                                 <img 
                                     src={imgURL? imgURL: loading} 
                                     alt="user-profile" 
-                                    className="rounded-circle userIMG" 
+                                    className="userIMG img-fluid mb-3" 
                                 />
                             </div>
 

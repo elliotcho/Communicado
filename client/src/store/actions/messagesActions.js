@@ -141,8 +141,18 @@ export const createChat = async (uid, recipients, content) => {
     return chatId;
 }
 
-export const sendMessage = async (chatId, uid, content) =>{
-    const response = await axios.post('http://localhost:5000/chats/message',{chatId, uid, content}, config);
+
+export const sendMessage = async (chatId, uid, content, image = null) =>{
+    const formData = new FormData();
+
+    formData.append('chatId', chatId);
+    formData.append('uid', uid);
+    formData.append('content', content); 
+    formData.append('image', image);  
+
+    const fdConfig = {headers:{'content-type': 'multipart/form-data'}};
+
+    const response = await axios.post('http://localhost:5000/chats/message', formData, fdConfig);
     const newMessage = response.data;
     return newMessage;
 }
@@ -277,7 +287,7 @@ export const handleReadReceipts = (chatId, readerId) => {
     }
 }
 
-export const  searchMessageCards = async (uid, text)=>{
+export const searchMessageCards = async (uid, text)=>{
     //alert("hjghg");
     const arr = [];
     let  chatMembers =[];
