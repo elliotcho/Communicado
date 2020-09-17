@@ -76,11 +76,11 @@ class FriendCard extends Component {
         return (
             <div className="col-lg-6 col-sm-12 d-flex justify-content-center">
                 <div className="FriendCard card bg-light mb-5">
-                    <div className="row d-flex justify-content-center text-center no-gutters align-items-center">
+                    <div className="row d-flex justify-content-center text-center no-gutters align-items-center h-100 w-100">
                         <div className="col-3 d-flex justify-content-center">
                             <img 
                                 src={imgURL? imgURL: "//placehold.it/30"} 
-                                className="img-fluid avatar" 
+                                className="img-fluid friendImg" 
                                 alt="tester" 
                             />
                         </div>
@@ -91,11 +91,11 @@ class FriendCard extends Component {
                             </h3>
                         </div>
 
-                        <div className="col-1 delete" onClick={this.deleteFriend}>
+                        <div className="col-1 delete pr-3" onClick={this.deleteFriend}>
                             <i className="fas fa-times"/>
                         </div>
 
-                        <div className="col-1 msg">
+                        <div className="col-1 msg pr-3">
                             <i className="far fa-comment-dots" onClick = {this.messageFriend}/>
                         </div>
                     </div>

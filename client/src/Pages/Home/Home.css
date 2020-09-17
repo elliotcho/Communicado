@@ -14,10 +14,12 @@
   color: #fff;
   background-color: royalblue;
   padding: 5px;
+  width: 100%;
 }
 
 .homeCard {
   border: 2px solid royalblue; 
+  border-top: none;
   border-radius: 0;
   transition: box-shadow 0.5s;
   overflow: hidden; 
@@ -27,28 +29,8 @@
   box-shadow: 5px 0px 40px rgba(0,0,0, 0.4);
 }
 
-.home .blueButton {
-  background-color: royalblue;
-  color: #fff;
-}
-.home .whiteButton {
-  background-color: #fff;
-  color: royalblue;
-  border: 1px solid royalblue;
-}
 
-.home .blueButton:hover {
-  border: 1px solid royalblue;
-  background-color: lightskyblue !important;
-  color: royalblue;
-}
-
-.home .whiteButton:hover {
-  
-  background-color: royalblue !important;
-  color: white;
-}
-
+/* R: --- Eric to explain */
 .home .slideanim {visibility:hidden;}
 .home .slide {
   animation-name: slide;
