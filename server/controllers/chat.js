@@ -1,9 +1,11 @@
 const {User} = require('../models/user');
 const {Message, Chat} = require('../models/chat');
 
+const parseFormData = require('parse-formdata');
 const upload = require('../app').msgPicUpload;
 const path = require('path');
 const fs = require('fs');
+const { parse } = require('path');
 
 exports.getChat = async (req, res) => {
     const {chatId} = req.params;
@@ -236,5 +238,7 @@ exports.checkIfChatExists = async (req, res) => {
 }
 
 exports.formDataTest = (req, res) => {
-    console.log(req.body);
+    parseFormData(req, (err, data) => {
+        console.log(data.fields);
+    });
 }

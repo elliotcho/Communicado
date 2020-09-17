@@ -141,8 +141,9 @@ export const createChat = async (uid, recipients, content) => {
     return chatId;
 }
 
-export const sendMessage = async (chatId, uid, content) =>{
+export const sendMessage = async (chatId, uid, content, image = null) =>{
     const formData = new FormData();
+
     formData.append('chatId', chatId);
     formData.append('uid', uid);
     formData.append('content', content);    
@@ -285,7 +286,7 @@ export const handleReadReceipts = (chatId, readerId) => {
     }
 }
 
-export const  searchMessageCards = async (uid, text)=>{
+export const searchMessageCards = async (uid, text)=>{
     //alert("hjghg");
     const arr = [];
     const response = await axios.get(`http://localhost:5000/chats/user/${uid}`); 
@@ -307,6 +308,7 @@ export const  searchMessageCards = async (uid, text)=>{
         }
     }
     return arr;
+}
 
 export const checkIfChatExists = async (uid, memberId) => {
     const data = {uid, memberId};

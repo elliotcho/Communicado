@@ -46,7 +46,6 @@ exports.msgPicUpload = multer({
     limits: {fileSize: 1000000000}
 }).single('image');
 
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 
