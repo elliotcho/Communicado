@@ -101,20 +101,20 @@ class SendMsg extends Component{
         const currChatId = (composerChatId)? composerChatId: chatId;
 
         const newMessage = await sendMessage(currChatId, uid, content);
-        // dispatch(renderNewMessage(newMessage, currChatId, uid));
-        // dispatch(loadChats(uid));
+        dispatch(renderNewMessage(newMessage, currChatId, uid));
+        dispatch(loadChats(uid));
 
-        // const members = await getMemberIds(currChatId, uid);
+        const members = await getMemberIds(currChatId, uid);
 
-        // io.emit('NEW_MESSAGE', {
-        //     newMessage, 
-        //     members: [...members], 
-        //     chatId: currChatId
-        // });
+        io.emit('NEW_MESSAGE', {
+            newMessage, 
+            members: [...members], 
+            chatId: currChatId
+        });
 
-        // if(currChatId !== chatId){
-        //     this.props.history.push(`/chat/${currChatId}`);
-        // }
+        if(currChatId !== chatId){
+            this.props.history.push(`/chat/${currChatId}`);
+        }
     }
 
     async handleChange(e){

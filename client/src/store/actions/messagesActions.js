@@ -146,15 +146,14 @@ export const sendMessage = async (chatId, uid, content, image = null) =>{
 
     formData.append('chatId', chatId);
     formData.append('uid', uid);
-    formData.append('content', content);  
-    formData.append('imgExists', image === null);
+    formData.append('content', content); 
     formData.append('image', image);  
 
     const fdConfig = {headers:{'content-type': 'multipart/form-data'}};
 
-    const response = await axios.post('http://localhost:5000/chats/test', formData, fdConfig);
-
-    return 0;
+    const response = await axios.post('http://localhost:5000/chats/message', formData, fdConfig);
+    const newMessage = response.data;
+    return newMessage;
 }
 
 export const getMemberIds = async (chatId, uid) => {

@@ -11,8 +11,7 @@ const {
     checkForUnseenChats,
     seeChats,
     readChat,
-    checkIfChatExists,
-    formDataTest
+    checkIfChatExists
  } = require('../controllers/chat');
 
  router.get('/:chatId', getChat);
@@ -26,7 +25,5 @@ router.get('/unseen/:uid', checkForUnseenChats);
 router.put('/seechats/:uid', seeChats);
 router.post('/readchat', readChat);
 router.post('/exists', checkIfChatExists);
-
-router.post('/test', formDataTest);
 
 module.exports = router;

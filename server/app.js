@@ -37,7 +37,7 @@ exports.profilePicUpload = multer({
 const msgPicStorage = multer.diskStorage({
     destination: './images/messages',
     filename: (req, file, cb) =>{
-        cb(null, 'MESSAGE-' + req.body.msgId + Date.now() + path.extname(file.originalname))
+        cb(null, 'MESSAGE-' + req.body.chatId + Date.now() + path.extname(file.originalname))
     }
 })
 

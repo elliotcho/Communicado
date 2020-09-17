@@ -5,7 +5,6 @@ const parseFormData = require('parse-formdata');
 const upload = require('../app').msgPicUpload;
 const path = require('path');
 const fs = require('fs');
-const { parse } = require('path');
 
 exports.getChat = async (req, res) => {
     const {chatId} = req.params;
@@ -15,8 +14,16 @@ exports.getChat = async (req, res) => {
     res.json(chat);
 }
 
-exports.createMessage = async (req,res) =>{
-    const {uid, content, chatId} = req.body;
+exports.createMessage = (req, res) => {
+    parseFormData(req, async (err, data) => {
+      
+        const newMessage = await createMessageUtil(data, null);
+        res.json(newMessage);
+    });
+}
+
+const createMessageUtil = async (data, image) =>{
+    const {uid, content, chatId} = data.fields;
     
     const chat = await Chat.findOne({_id:chatId});
     const {messages} = chat;
@@ -26,18 +33,15 @@ exports.createMessage = async (req,res) =>{
         content,
         timeSent: new Date(),
         readBy: [uid],
-        seenBy: [uid]
+        seenBy: [uid],
+        image
     });
 
     messages.push(newMessage);
     
-    /*
-        first parameter finds what we are looking for second parameter is 
-        the new thing we are adding for whatever we found with first parameter
-    */
     await Chat.updateOne({_id:chatId},{messages, timeOfLastMessage: newMessage.timeSent});
     
-    res.json(newMessage);
+    return newMessage;
 }
 
 exports.createChat = async (req, res) =>{
@@ -235,10 +239,4 @@ exports.checkIfChatExists = async (req, res) => {
     }
 
     res.json({chatId});
-}
-
-exports.formDataTest = (req, res) => {
-    parseFormData(req, (err, data) => {
-        console.log(data.fields);
-    });
 }
