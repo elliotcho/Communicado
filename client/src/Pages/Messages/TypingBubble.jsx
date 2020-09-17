@@ -14,7 +14,7 @@ class TypingBubble extends Component{
     }
 
     async componentDidMount(){
-        const {uid, show} = this.props;
+        const {uid, show, handleScroll} = this.props;
 
         if(show){
             const user = await getUserData(uid);
@@ -25,6 +25,8 @@ class TypingBubble extends Component{
                 lastName: user.lastName,
                 imgURL
             });
+
+            handleScroll();
         }
     }
 

@@ -5,8 +5,8 @@ import './FilterForm.css'
 // Class that creates form that filters through a friends list 
 // Takes up a row, goes in a container
 class FilterForm extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.state = { 
             friendQuery: "" 

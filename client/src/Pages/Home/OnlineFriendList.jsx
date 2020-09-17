@@ -3,10 +3,14 @@ import OnlineFriend from './OnlineFriend';
 
 class OnlineFriendList extends Component {
     render() {
-        const {active} = this.props;
+        const {uid, active} = this.props;
 
         const onlineFriends = active.map(user =>
-            <OnlineFriend key={user._id} user={user}/>
+            <OnlineFriend 
+                key={user._id} 
+                uid = {uid}
+                user={user}
+            />
         );
 
         return (

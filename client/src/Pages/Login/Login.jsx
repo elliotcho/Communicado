@@ -6,8 +6,8 @@ import './Login.css';
 
 // Login page of simple credential requirements
 class Login extends Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         
         // Login state
         this.state = {

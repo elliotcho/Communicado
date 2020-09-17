@@ -35,18 +35,18 @@ class Navbar extends Component {
         return(
             <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed">
                 <div className="container-fluid">
-                    <Link to='/' className="navbar-brand">
+                    <Link to ='/' className = "navbar-brand">
                         Communicado
                     </Link>
                         
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-                        <span className="navbar-toggler-icon"/>
+                    <button className = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#navbarResponsive">
+                        <span className = "navbar-toggler-icon"/>
                     </button>
 
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav ml-auto">
                             <li>
-                                <Link to='/' className="nav-link pr-lg-5">
+                                <Link to='/' className = "nav-link pr-lg-5">
                                     Home
                                 </Link>
                             </li>
@@ -58,37 +58,37 @@ class Navbar extends Component {
                             </li>
 
                             <li>
-                                <Link to='/friends' className="nav-link pr-lg-5">
+                                <Link to='/friends' className = "nav-link pr-lg-5">
                                     Friends
                                 </Link>
                             </li>
 
                             <li>
-                                <Link to='/notifications' className={notifColor}>
-                                    <a href='/notifications' className={`nav-link d-inline-block d-md-none ${notifColor}`}>
+                                <Link to='/notifications' className = {notifColor}>
+                                    <span className={`nav-link d-inline-block d-md-none ${notifColor}`}>
                                         Notifications
-                                    </a>
+                                    </span>
 
                                     <i className ="fas fa-bell"/>
                                 </Link>
                             </li>
                             <li>
-                                <Link to='/settings' className="nav-link">
-                                    <a href='/settings' className="nav-link d-inline-block d-md-none">
+                                <Link to='/settings' className = "nav-link">
+                                    <span className="nav-link d-inline-block d-md-none">
                                         Settings
-                                    </a>
+                                    </span>
 
-                                    <i class="fas fa-user-cog"/>
+                                    <i className = "fas fa-user-cog"/>
                                 </Link>
                             </li>
 
                             <li>
-                                <Link to='/' onClick={this.signOut} class='nav-link'>
-                                    <a href='/' className="nav-link d-inline-block d-md-none">
+                                <Link to='/' onClick={this.signOut} className = 'nav-link'>
+                                    <span className="nav-link d-inline-block d-md-none">
                                         Logout
-                                    </a>
+                                    </span>
                                     
-                                    <i class="fas fa-sign-out-alt"/>
+                                    <i className = "fas fa-sign-out-alt"/>
                                 </Link>
                             </li>
                         </ul>
@@ -102,7 +102,8 @@ class Navbar extends Component {
 const mapStateToProps = (state) =>{
     return{
         uid: state.auth.uid,
-        unseenChats: state.messages.unseenChats
+        unseenChats: state.messages.unseenChats,
+        newNotif: state.notifs.newNotif
     }
 }
 

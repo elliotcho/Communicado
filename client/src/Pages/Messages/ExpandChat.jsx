@@ -5,6 +5,7 @@ import {loadProfilePic} from '../../store/actions/profileActions';
 import MessageBubble from './MessageBubble';
 import TypingBubble from './TypingBubble';
 import loading from '../../images/loading.jpg';
+import {io} from '../../App';
 import './ExpandChat.css';
 
 class ExpandChat extends Component{
@@ -18,6 +19,7 @@ class ExpandChat extends Component{
 
         this.onConvoUpdate = this.onConvoUpdate.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
+        this.sendReadReceipt = this.sendReadReceipt.bind(this);
     }
 
     async componentDidMount(){
@@ -43,7 +45,8 @@ class ExpandChat extends Component{
         } = msgActions;
 
         dispatch(setChatIdOnDisplay(chatId));
-        dispatch(setMsgsOnDisplay(chatId));
+        dispatch(setMsgsOnDisplay(chatId, uid));
+        await this.sendReadReceipt();
 
         const chatPics = await getChatPics(chatId, uid, loadProfilePic);
         const memberNames = await getMemberNames(chatId, uid);
@@ -54,12 +57,25 @@ class ExpandChat extends Component{
         });
     }
 
+    async sendReadReceipt(){
+        const {chatId, uid} = this.props;
+        const {getMemberIds} = msgActions;
+
+        const members = await getMemberIds(chatId, uid);
+
+        io.emit('READ_RECEIPTS', {
+            chatId, 
+            members,
+            uid
+        });
+    }
+
     handleScroll(){
         this.chatBox.scrollTop = this.chatBox.scrollHeight;
     }
 
     render(){
-        const {uid, typingOnDisplay} = this.props;
+        const {uid, typingOnDisplay, isComposerChat} = this.props;
         const {memberNames, chatPics} = this.state;
 
         const messages = this.props.msgsOnDisplay.map(msg =>
@@ -68,27 +84,30 @@ class ExpandChat extends Component{
                 uid = {uid}
                 senderId = {msg.senderId}
                 content = {msg.content}
+                readBy = {[...msg.readBy]}
+                handleScroll = {this.handleScroll}
             />
         );
 
         return(
             <div className ='expandChat'>
-               <header>
-                    <div className='profile'>
-                        {chatPics.map((pic, i) =>
-                            <img 
-                                key={i} 
-                                src={pic? pic : loading} 
-                                alt="profile pic" 
-                                className = "profilePic"
-                            />
-                        )}
+               {!isComposerChat? 
+                    (<header>
+                        <div className='profile'>
+                            {chatPics.map((pic, i) =>
+                                <img 
+                                    key={i} 
+                                    src={pic? pic : loading} 
+                                    alt="profile pic" 
+                                    className = "profilePic"
+                                />
+                            )}
                         
-                        <h2>
-                            {memberNames}
-                        </h2>
-                    </div>
-               </header>
+                            <h2>{memberNames}</h2>
+                        </div>
+                    </header>):
+                    null
+                }
 
                 <section className = 'chat-box' ref = {ele => this.chatBox = ele}>
                     {messages}
@@ -97,6 +116,7 @@ class ExpandChat extends Component{
                             key = {id}
                             uid = {id}
                             show = {id !== uid}
+                            handleScroll = {this.handleScroll}
                         />
                     )}
                 </section>

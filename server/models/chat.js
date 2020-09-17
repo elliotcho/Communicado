@@ -6,7 +6,8 @@ const MessageSchema = new schema({
     content: String,
     timeSent: Date,
     readBy: [String],
-    seenBy: [String]
+    seenBy: [String],
+    image: String
 });
 
 const ChatSchema = new schema({

@@ -26,11 +26,7 @@ class UserComposedTo extends Component{
 
         return(
             <div className='user-composed-to' onClick={() => {addRecipient(user)}}>
-                <img 
-                    src={imgURL? imgURL: loading} 
-                    id='test' 
-                    alt ='profile pic'
-                />
+                <img src={imgURL? imgURL: loading} alt ='profile pic'/>
                 
                 <p>
                     {firstName} {lastName}

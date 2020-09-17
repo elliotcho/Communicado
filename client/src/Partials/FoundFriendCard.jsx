@@ -7,8 +7,8 @@ import './FoundFriendCard.css'
 
 // Found friend card displayed in the FindForm to show possible new friends
 class FoundFriendCard extends Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
 
         // Initial placeholder state
         this.state = {

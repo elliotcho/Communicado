@@ -73,6 +73,7 @@ class Messages extends Component {
             recipients,
             chats,
             typingOnDisplay,
+            composerChatId,
             dispatch
         } = this.props;
 
@@ -119,9 +120,13 @@ class Messages extends Component {
                                     uid={uid}
                                     queryResults = {queryResults}
                                     recipients = {recipients}
+                                    composerChatId = {composerChatId}
                                     dispatch = {dispatch}
                                 />): 
-                                <ExpandChat chatId = {chatId}/>
+                                (<ExpandChat 
+                                    chatId={chatId} 
+                                    isComposerChat={false}
+                                />)
                             }
                             
                             <SendMsg 
@@ -129,6 +134,7 @@ class Messages extends Component {
                                 chatId = {chatId}
                                 recipients = {recipients}
                                 typingOnDisplay = {typingOnDisplay}
+                                composerChatId = {composerChatId}
                                 dispatch ={dispatch}
                             />
                         </div>
@@ -145,7 +151,8 @@ const mapStateToProps = (state) => {
         recipients: state.messages.recipients,
         chats: state.messages.chats,
         typingOnDisplay: state.messages.typingOnDisplay,
-        unseenChats: state.messages.unseenChats
+        unseenChats: state.messages.unseenChats,
+        composerChatId: state.messages.composerChatId
     }   
 }
 

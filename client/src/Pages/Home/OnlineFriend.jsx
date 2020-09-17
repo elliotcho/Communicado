@@ -1,31 +1,46 @@
 import React, { Component } from 'react';
 import {loadProfilePic} from '../../store/actions/profileActions';
+import {checkIfChatExists, getChat} from '../../store/actions/messagesActions';
 import loading from '../../images/loading.jpg';
+import moment from 'moment';
 import './OnlineFriend.css';
 
 class OnlineFriend extends Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
 
         this.state = { 
-            imgURL: null 
+            imgURL: null, 
+            timeOfLastMessage: null
         };
     }
 
     // After init render, load users data
     async componentDidMount() {
+        const {uid} = this.props;
         const {_id} = this.props.user;
 
+        let timeOfLastMessage = null;
+
         const imgURL = await loadProfilePic(_id);
-        
-        this.setState({imgURL});
+        const chatId = await checkIfChatExists(uid, _id);
+
+        if(chatId){
+            const chat = await getChat(chatId);
+            timeOfLastMessage = chat.timeOfLastMessage;
+        }
+
+        this.setState({
+            imgURL, 
+            timeOfLastMessage
+        });
     }
 
     render() {
         // Destructuring
+        const {imgURL, timeOfLastMessage} = this.state;
         const {firstName, lastName} = this.props.user;
-        const {imgURL} = this.state;
-
+    
         return (
             <div className = "onlineFriend">
                 <div className ="row sideBar-body">
@@ -44,10 +59,12 @@ class OnlineFriend extends Component {
                         </div>
 
                         <div className ="col-sm-4 float-right sideBar-time">
-                            <br/>
-                            <span className ="time-meta float-right">
-                                Last Chatted 18:18
-                            </span>
+                            {timeOfLastMessage? 
+                                (<span className ="time-meta float-right">
+                                    Last Chatted: {moment(timeOfLastMessage).calendar()}
+                                </span>):
+                                null
+                            }
                         </div>       
                     </div>
                 </div>
@@ -55,4 +72,5 @@ class OnlineFriend extends Component {
         )
     }
 }
+
 export default OnlineFriend

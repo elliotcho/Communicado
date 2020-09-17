@@ -7,8 +7,8 @@ import './ProfileCard.css'
 
 // Component that shows a Users profile card on the home page
 class ProfileCard extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.state = {
             imgURL: null

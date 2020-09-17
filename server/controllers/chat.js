@@ -1,6 +1,18 @@
 const {User} = require('../models/user');
 const {Message, Chat} = require('../models/chat');
 
+const upload = require('../app').msgPicUpload;
+const path = require('path');
+const fs = require('fs');
+
+exports.getChat = async (req, res) => {
+    const {chatId} = req.params;
+
+    const chat = await Chat.findOne({_id: chatId});
+
+    res.json(chat);
+}
+
 exports.createMessage = async (req,res) =>{
     const {uid, content, chatId} = req.body;
     
@@ -17,7 +29,10 @@ exports.createMessage = async (req,res) =>{
 
     messages.push(newMessage);
     
-    //first parameter finds what we are looking for second parameter is the new thing we are adding for whatever we found with first parametr
+    /*
+        first parameter finds what we are looking for second parameter is 
+        the new thing we are adding for whatever we found with first parameter
+    */
     await Chat.updateOne({_id:chatId},{messages, timeOfLastMessage: newMessage.timeSent});
     
     res.json(newMessage);
@@ -186,4 +201,36 @@ exports.readChat = async (req, res) => {
     await Chat.updateOne({_id: chatId}, {messages});
 
     res.json({msg: 'Success'});
+}
+
+exports.checkIfChatExists = async (req, res) => {
+    const {uid, memberId} = req.body;
+
+    const user = await User.findOne({_id: uid});
+    const member = await User.findOne({_id: memberId});
+
+    const userChats = user.chats;
+    const memberChats = member.chats;
+
+    let chatId = null;
+    const map = {};
+
+    for(let i=0;i<userChats.length;i++){
+        map[userChats[i]] = true;
+    }
+
+    for(let j=0;j<memberChats.length;j++){
+        if(map[memberChats[j]]){
+            const chat = await Chat.findOne({_id: memberChats[j]});
+            const {members} = chat;
+
+            if(members.length === 2){
+                chatId = chat._id;
+            }
+
+            if(chatId){break;}
+        }
+    }
+
+    res.json({chatId});
 }

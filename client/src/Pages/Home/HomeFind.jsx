@@ -3,8 +3,9 @@ import {findUsers} from '../../store/actions/friendsActions';
 import SearchProfileCard from './SearchProfileCard';
 
 class HomeFind extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
+
         this.state = { query: "" };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);

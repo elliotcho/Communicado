@@ -9,11 +9,20 @@ let timeOuts = []
 class SendMsg extends Component{
     constructor(){
         super();
+
+        this.state = {
+            photo: null
+        }
+
         this.pressEnter = this.pressEnter.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleNewChat = this.handleNewChat.bind(this);
         this.handleExistingChat = this.handleExistingChat.bind(this);
-        this.handleTyping = this.handleTyping.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleIsTyping = this.handleIsTyping.bind(this);
+        this.handleStopTyping = this.handleStopTyping.bind(this);
+        this.attachPhoto = this.attachPhoto.bind(this);
+        this.detachPhoto = this.detachPhoto.bind(this);
     }
 
     pressEnter(e){
@@ -43,16 +52,14 @@ class SendMsg extends Component{
     async handleSubmit(e) {
         e.preventDefault();
 
-        const {chatId, recipients} = this.props;
+        const {chatId, composerChatId, recipients} = this.props;
         const content = this.msg.value;
 
-        //handles empty input 
         if(content.trim() === ""){
             return;
         }
 
-        if(chatId === 'new'){
-            //handles having no recipients
+        if(chatId === 'new' && !composerChatId){
             if(recipients.length === 0){
                 return;
             }
@@ -61,6 +68,7 @@ class SendMsg extends Component{
         }
 
         else{
+             await this.handleStopTyping();
              await this.handleExistingChat(content);
         }
         
@@ -81,73 +89,117 @@ class SendMsg extends Component{
     }
 
     async handleExistingChat(content){
-        const {chatId, uid, dispatch} = this.props;
+        const {chatId, composerChatId, uid, dispatch} = this.props;
 
         const {
             sendMessage, 
             loadChats,
-            getMemberIds
+            getMemberIds, 
+            renderNewMessage
         } = msgActions;
 
+        const currChatId = (composerChatId)? composerChatId: chatId;
 
-        const newMessage = await sendMessage(chatId, uid, content);
-        const members = await getMemberIds(chatId, uid);
+        const newMessage = await sendMessage(currChatId, uid, content);
+        dispatch(renderNewMessage(newMessage, currChatId, uid));
+        dispatch(loadChats(uid));
+
+        const members = await getMemberIds(currChatId, uid);
 
         io.emit('NEW_MESSAGE', {
             newMessage, 
-            members: [...members, uid], 
-            chatId
+            members: [...members], 
+            chatId: currChatId
         });
 
-        dispatch(loadChats(uid));
+        if(currChatId !== chatId){
+            this.props.history.push(`/chat/${currChatId}`);
+        }
     }
 
-    async handleTyping(e){
-        //let typing= true;
-        const text = e.target.value;
-        const {uid, chatId, typingOnDisplay} = this.props;
-        
-        if(text.trim()===""){
-            const members = await msgActions.getMemberIds(chatId, uid);
-            
-            io.emit("STOP_TYPING", {
-                uid, 
-                chatId, 
-                members: [...members, uid]
-            });
+    async handleChange(e){
+        if(e.target.value.includes('\n')){
+            this.msg.dispatchEvent(new Event('keydown'));
+            return;
         }
+
+        if(e.target.value.trim() === ""){
+            await this.handleStopTyping();
+            return;
+        }
+
+        await this.handleIsTyping();
+    }
+
+    async handleIsTyping(){
+        const {uid, chatId, composerChatId, typingOnDisplay} = this.props;
+        const{getMemberIds} = msgActions;
         
+        const currChatId = (composerChatId) ? composerChatId: chatId;
+
         timeOuts.forEach(t => clearTimeout(t));
         timeOuts = []
 
         const tO = setTimeout(async () => {
             clearTimeout(tO)
-
-            const members = await msgActions.getMemberIds(chatId, uid);
-
-            io.emit("STOP_TYPING", {
-                chatId, 
-                uid, 
-                members: [...members, uid]
-            });
+            await this.handleStopTyping();
         }, 5000)
 
         timeOuts.push(tO)
         
         if(!typingOnDisplay.includes(uid)){       
-            const members = await msgActions.getMemberIds(chatId, uid);
+            const members = await getMemberIds(currChatId, uid);
 
             io.emit("IS_TYPING", {
-                chatId,
-                uid, 
-                members: [...members, uid]
+                chatId: currChatId,
+                members: [...members, uid],
+                uid
             });
         }       
     }
 
+    async handleStopTyping(){
+        const {chatId, composerChatId, uid} = this.props;
+        const {getMemberIds} = msgActions;
+
+        const currChatId = (composerChatId) ? composerChatId: chatId;
+
+        const members = await getMemberIds(currChatId, uid);
+
+        io.emit("STOP_TYPING", {
+            chatId: currChatId,
+            members: [...members, uid] ,
+            uid
+        });
+    }
+
+    attachPhoto(e){
+        this.setState({photo: e.target.files});
+    }
+
+    detachPhoto(){
+        document.getElementById('msgPic').value = "";
+        this.setState({photo: null});
+    }
+
+    async componentWillUnmount(){
+        await this.handleStopTyping();
+    }
+
     render(){
+        const {photo} = this.state;
+
         return(
             <div className= "send-msg">
+                {photo? 
+                    (<div className = 'photo text-white d-inline-block'>
+                        {photo[0].name}
+
+                        <i className = 'fas fa-times' onClick = {this.detachPhoto}/>
+                    </div>):
+                    null
+                }
+
                 <form ref = {ele => this.msgForm = ele } onSubmit= {this.handleSubmit}>
                     <textarea
                         className =' form-control'
@@ -155,12 +207,19 @@ class SendMsg extends Component{
                         placeholder = 'Type a message...'
                         ref = {ele => this.msg = ele}
                         onKeyDown = {this.pressEnter} 
-                        onChange = {this.handleTyping}
+                        onChange = {this.handleChange}
                     />
 
-                    <label>
+                    <label htmlFor ='msgPic'>
                         <i className = 'fas fa-file-image'/>
                     </label>
+
+                    <input 
+                        type = 'file'
+                        id = 'msgPic'
+                        accept = 'jpg jpeg png'
+                        onChange = {this.attachPhoto}
+                    />
                 </form>
             </div>
         )

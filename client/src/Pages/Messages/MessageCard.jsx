@@ -8,6 +8,7 @@ import './MessageCard.css';
 class MessageCard extends Component {
     constructor(){
         super();
+        
         this.state = {
             isRead: true,
             memberNames: 'Loading Users...',
@@ -27,7 +28,7 @@ class MessageCard extends Component {
         const {chatId, uid, lastMsg, isActive, dispatch} = this.props;
         const {readChat, getChatPics, getMemberNames} = msgActions;
 
-        const isRead = await dispatch(readChat(chatId, uid, lastMsg, isActive));
+        const isRead = dispatch(readChat(chatId, uid, lastMsg, isActive));
         const chatPics = await getChatPics(chatId, uid, loadProfilePic);
         const memberNames = await getMemberNames(chatId, uid);
     
@@ -59,7 +60,7 @@ class MessageCard extends Component {
 
         return (
             <div onClick={this.handleClick} className={`MessageCard ${cardClassName} card flex-row flex-wrap`}>
-                <div class="card-header border-0">
+                <div className = "card-header border-0">
                     {chatPics.map((pic, i) =>
                         <img
                             key = {i}

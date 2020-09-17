@@ -25,3 +25,24 @@
     cursor: pointer;
     color: lightgray;
 }
+
+.send-msg .fa-file-image:hover{
+    color: white;
+}
+
+.send-msg input[type='file']{
+    display: none;
+}
+
+.send-msg .photo{
+    background: black;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.send-msg .photo i{
+    position: relative;
+    left: 5px;
+    top: 2px;
+    color: red;
+}

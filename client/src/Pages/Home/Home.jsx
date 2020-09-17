@@ -62,7 +62,7 @@ class Home extends Component{
                             dispatch = {dispatch}
                         />
                       
-                        <OnlineFriendList active = {active}/>
+                        <OnlineFriendList uid = {uid} active = {active}/>
                         
                         {/* Empty column to end */}
                         <div class="col"></div>
