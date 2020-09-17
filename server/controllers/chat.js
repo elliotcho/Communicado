@@ -234,3 +234,7 @@ exports.checkIfChatExists = async (req, res) => {
 
     res.json({chatId});
 }
+
+exports.formDataTest = (req, res) => {
+    console.log(req.body);
+}
