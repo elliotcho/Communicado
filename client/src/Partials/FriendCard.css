@@ -1,7 +1,7 @@
 .FriendCard {
     width: 90%;
     min-height: 100px;
-    padding: 10px;
+    padding: 0px;
 }
 
 .FriendCard .row {
@@ -11,6 +11,11 @@
 
 .card-title {
     margin: 0;
+}
+
+.friendImg {
+    width: 100%;
+    height: 200px;
 }
 
 .delete {
@@ -28,9 +33,4 @@
 
 .msg i {
     cursor: pointer;
-}
-
-.avatar {
-    width: 90%;
-    height: 90%;
 }
