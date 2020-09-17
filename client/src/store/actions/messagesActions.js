@@ -146,8 +146,9 @@ export const sendMessage = async (chatId, uid, content, image = null) =>{
 
     formData.append('chatId', chatId);
     formData.append('uid', uid);
-    formData.append('content', content);    
-
+    formData.append('content', content);  
+    formData.append('imgExists', image === null);
+    formData.append('image', image);  
 
     const fdConfig = {headers:{'content-type': 'multipart/form-data'}};
 
