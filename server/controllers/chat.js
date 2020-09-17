@@ -16,7 +16,6 @@ exports.getChat = async (req, res) => {
 
 exports.createMessage = (req, res) => {
     parseFormData(req, async (err, data) => {
-      
         const newMessage = await createMessageUtil(data, null);
         res.json(newMessage);
     });
