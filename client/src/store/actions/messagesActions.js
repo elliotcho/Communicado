@@ -142,17 +142,9 @@ export const createChat = async (uid, recipients, content) => {
 }
 
 export const sendMessage = async (chatId, uid, content) =>{
-    const formData = new FormData();
-    formData.append('chatId', chatId);
-    formData.append('uid', uid);
-    formData.append('content', content);    
-
-
-    const fdConfig = {headers:{'content-type': 'multipart/form-data'}};
-
-    const response = await axios.post('http://localhost:5000/chats/test', formData, fdConfig);
-
-    return 0;
+    const response = await axios.post('http://localhost:5000/chats/message',{chatId, uid, content}, config);
+    const newMessage = response.data;
+    return newMessage;
 }
 
 export const getMemberIds = async (chatId, uid) => {
@@ -288,25 +280,45 @@ export const handleReadReceipts = (chatId, readerId) => {
 export const  searchMessageCards = async (uid, text)=>{
     //alert("hjghg");
     const arr = [];
+    let  chatMembers =[];
+    //getUserChats == chatids
     const response = await axios.get(`http://localhost:5000/chats/user/${uid}`); 
     const chatList = response.data;
-    //alert(chatList[0]);
+    
     for( let i=0;i<chatList.length;i++){
-        //alert("hjgjhgjhg");
+        //each chat id
         let chatId = chatList[i]._id;
         for( let j=0; j<chatList[i].members.length;j++){
+            //each member id
             let memberId = chatList[i].members[j];
-            //alert(memberId);
             if(memberId===uid) continue;
-            let response = await axios.post(`http://localhost:5000/chats/members`, {memberId, chatId}, config);
+            //getMemberNames == comma seperated list of names
+            let response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId}, config);
+            //comma seperated list of names
             let memberName = response.data.memberNames;
-            //alert(memberName);
-            if(memberName===text){
-                arr.push(memberName);
+            //alert(memberName)
+            //alert(chatList[i].members.length);
+            memberName = memberName.toLowerCase();
+            text = text.toLowerCase();
+            if (chatList[i].members.length-1!==1){
+                chatMembers = memberName.split(",");
+                for(let k=0;k<chatMembers.length;k++){
+                    if(chatMembers[i].startsWith(text)) arr.push(chatMembers[i]);
+                }
             }
+            else{
+               //alert(memberName)
+                if(memberName.startsWith(text)){
+                    //alert(memberName);
+                    arr.push(memberName);
+                }   
+            }
+           
+            
         }
     }
     return arr;
+}
 
 export const checkIfChatExists = async (uid, memberId) => {
     const data = {uid, memberId};

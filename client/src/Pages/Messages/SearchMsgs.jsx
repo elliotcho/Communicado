@@ -17,8 +17,8 @@ class SearchMsgs extends Component{
         const {uid} = this.props;
         
         const cardOrder = await searchMessageCards(uid,this.state.text);
-        alert(cardOrder[0]);//cardOrder is gonna be an array of the new order of messageCards
-        //alert(cardOrder[0]);
+        //alert(cardOrder[0]);//cardOrder is gonna be an array of the new order of messageCards
+        alert(cardOrder);
     }
 
     handleChange(e){
