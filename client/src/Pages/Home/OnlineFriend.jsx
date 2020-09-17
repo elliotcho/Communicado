@@ -31,13 +31,8 @@ class OnlineFriend extends Component {
                 <div className ="row sideBar-body">
                     <div className ="col-sm-3 sideBar-avatar">
                         <div className ="avatar-icon">
-<<<<<<< HEAD
-                            <img src={imgURL? imgURL: loading} alt="avatar"></img>
-                            <span className = {displayColor}></span>
-=======
                             <img src={imgURL? imgURL: loading} alt = 'Profile Pic'/>
                             <span className = 'activeIconOn'/>
->>>>>>> upstream/master
                         </div>
                     </div>
 

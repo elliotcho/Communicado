@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {loadFriends} from '../../store/actions/friendsActions';
 import FriendCard from '../../Partials/FriendCard';
 
-// Grid for friend cards of all a users' friends
+// A grid for friend cards of all a users' friends
 class FriendGrid extends Component {
     // After init render, load friends of current user
     componentDidMount(){
@@ -14,10 +14,9 @@ class FriendGrid extends Component {
         // Destructure props
         const {uid, dispatch} = this.props;
 
-        // Create friend card for each friend in array and store in variable
+        // Create friend card for each friend in array and pass as props
         const friends = this.props.friends.map(friend =>
             <FriendCard 
-                // Pass all needed information about each friend and all functionality
                 key = {friend._id}
                 user = {friend} 
                 uid = {uid}
@@ -30,7 +29,7 @@ class FriendGrid extends Component {
             <div className="FriendGrid">
                 {/* Bootstrap Grid that creates new row every 2 cards */}
                 <div className="row row-cols-2">
-                    {/* Render each FriendCard */}
+                    {/* Render all FriendCards */}
                      {friends}
                 </div>
             </div>
@@ -46,7 +45,7 @@ const mapStateToProps = (state) =>{
     }
 }
 
-// Store needed methods in props from client action store 
+// Store dispatch to access actions from client store 
 const mapDispatchToProps = (dispatch) =>  ({dispatch});
 
 export default connect(mapStateToProps, mapDispatchToProps)(FriendGrid);

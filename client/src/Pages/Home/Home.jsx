@@ -44,6 +44,7 @@ class Home extends Component{
                 <div className="container-fluid h-100">
                     <div class="row homeRow">
                         
+                        {/* Empty column to fill spot */}
                         <div class="col"></div>
 
                         <HomeFind 
@@ -63,6 +64,7 @@ class Home extends Component{
                       
                         <OnlineFriendList active = {active}/>
                         
+                        {/* Empty column to end */}
                         <div class="col"></div>
                     </div>
                 </div>

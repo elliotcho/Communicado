@@ -27,28 +27,8 @@
   box-shadow: 5px 0px 40px rgba(0,0,0, 0.4);
 }
 
-.home .blueButton {
-  background-color: royalblue;
-  color: #fff;
-}
-.home .whiteButton {
-  background-color: #fff;
-  color: royalblue;
-  border: 1px solid royalblue;
-}
 
-.home .blueButton:hover {
-  border: 1px solid royalblue;
-  background-color: lightskyblue !important;
-  color: royalblue;
-}
-
-.home .whiteButton:hover {
-  
-  background-color: royalblue !important;
-  color: white;
-}
-
+/* R: --- Eric to explain */
 .home .slideanim {visibility:hidden;}
 .home .slide {
   animation-name: slide;

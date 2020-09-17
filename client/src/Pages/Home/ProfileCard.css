@@ -9,3 +9,25 @@
   margin-bottom: 0;
   cursor: pointer;
 }
+
+.whiteButton {
+  background-color: #fff;
+  color: royalblue;
+  border: 1px solid royalblue;
+}
+
+.whiteButton:hover {
+  background-color: royalblue !important;
+  color: white;
+}
+
+/* .blueButton {
+  background-color: royalblue;
+  color: #fff;
+}
+
+.blueButton:hover {
+  border: 1px solid royalblue;
+  background-color: white;
+  color: royalblue;
+} */
