@@ -10,6 +10,11 @@
     margin-top: 10px;
 }
 
+.msg-container .readImg{
+    width:15px;
+    height:15px;
+}
+
 .msg-container .msg{
     max-width: 400px;
     padding: 1rem 1.4rem;

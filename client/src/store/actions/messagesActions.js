@@ -285,6 +285,29 @@ export const handleReadReceipts = (chatId, readerId) => {
     }
 }
 
+export const  searchMessageCards = async (uid, text)=>{
+    //alert("hjghg");
+    const arr = [];
+    const response = await axios.get(`http://localhost:5000/chats/user/${uid}`); 
+    const chatList = response.data;
+    //alert(chatList[0]);
+    for( let i=0;i<chatList.length;i++){
+        //alert("hjgjhgjhg");
+        let chatId = chatList[i]._id;
+        for( let j=0; j<chatList[i].members.length;j++){
+            let memberId = chatList[i].members[j];
+            //alert(memberId);
+            if(memberId===uid) continue;
+            let response = await axios.post(`http://localhost:5000/chats/members`, {memberId, chatId}, config);
+            let memberName = response.data.memberNames;
+            //alert(memberName);
+            if(memberName===text){
+                arr.push(memberName);
+            }
+        }
+    }
+    return arr;
+
 export const checkIfChatExists = async (uid, memberId) => {
     const data = {uid, memberId};
 
