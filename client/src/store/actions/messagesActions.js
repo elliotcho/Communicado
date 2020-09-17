@@ -142,9 +142,17 @@ export const createChat = async (uid, recipients, content) => {
 }
 
 export const sendMessage = async (chatId, uid, content) =>{
-    const response = await axios.post('http://localhost:5000/chats/message',{chatId, uid, content}, config);
-    const newMessage = response.data;
-    return newMessage;
+    const formData = new FormData();
+    formData.append('chatId', chatId);
+    formData.append('uid', uid);
+    formData.append('content', content);    
+
+
+    const fdConfig = {headers:{'content-type': 'multipart/form-data'}};
+
+    const response = await axios.post('http://localhost:5000/chats/test', formData, fdConfig);
+
+    return 0;
 }
 
 export const getMemberIds = async (chatId, uid) => {
@@ -308,4 +316,8 @@ export const checkIfChatExists = async (uid, memberId) => {
 
     return chatId;
 }
+
+export const getChat = async (chatId) => {
+    const response = await axios.get(`http://localhost:5000/chats/${chatId}`);
+    return response.data;
 }

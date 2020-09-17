@@ -1,6 +1,18 @@
 const {User} = require('../models/user');
 const {Message, Chat} = require('../models/chat');
 
+const upload = require('../app').msgPicUpload;
+const path = require('path');
+const fs = require('fs');
+
+exports.getChat = async (req, res) => {
+    const {chatId} = req.params;
+
+    const chat = await Chat.findOne({_id: chatId});
+
+    res.json(chat);
+}
+
 exports.createMessage = async (req,res) =>{
     const {uid, content, chatId} = req.body;
     
@@ -17,7 +29,10 @@ exports.createMessage = async (req,res) =>{
 
     messages.push(newMessage);
     
-    //first parameter finds what we are looking for second parameter is the new thing we are adding for whatever we found with first parametr
+    /*
+        first parameter finds what we are looking for second parameter is 
+        the new thing we are adding for whatever we found with first parameter
+    */
     await Chat.updateOne({_id:chatId},{messages, timeOfLastMessage: newMessage.timeSent});
     
     res.json(newMessage);
@@ -218,4 +233,8 @@ exports.checkIfChatExists = async (req, res) => {
     }
 
     res.json({chatId});
+}
+
+exports.formDataTest = (req, res) => {
+    console.log(req.body);
 }

@@ -60,6 +60,7 @@
   .onlineFriend .name-meta {
     position: relative;
     bottom: -17px;
+    left: 10px;
     font-size: 100%;
     padding: 1% !important;
     text-align: left;
@@ -75,11 +76,9 @@
   .onlineFriend .time-meta {
     position: relative;
     font-size: 12px;
-    bottom: 50px;
-    padding: 1% !important;
+    bottom: 55px;
     color: rgba(0, 0, 0, .4);
     vertical-align: baseline;
-    
   }
   
   .onlineFriend .activeIconOn {
@@ -93,15 +92,4 @@
     border-radius: 50%;
     border: 2px solid #ffffff;
     background-color: #2bcd72;
-  }
-
-  .onlineFriend .activeIconOff {
-    position: absolute;
-    bottom: 0px;
-    margin: 0px -10px;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    border: 2px solid #ffffff;
-    background-color: #7a9787;
   }

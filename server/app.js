@@ -21,18 +21,32 @@ mongoose.connection.once('open', () => {
 }).on('error', err => {console.log(err);});
 
 // Set up image storage into images folder
-const storage = multer.diskStorage({
-    destination: './images',
+const profilePicStorage = multer.diskStorage({
+    destination: './images/profile',
     filename: (req, file, cb) =>{
         cb(null, 'PROFILE-' + req.body.uid + Date.now() + path.extname(file.originalname));
     }
 });
+
 // Use multer to upload imgs
-exports.upload = multer({
-    storage,
+exports.profilePicUpload = multer({
+    storage: profilePicStorage,
     limits: {fileSize: 1000000000}
 }).single('image');
 
+const msgPicStorage = multer.diskStorage({
+    destination: './images/messages',
+    filename: (req, file, cb) =>{
+        cb(null, 'MESSAGE-' + req.body.msgId + Date.now() + path.extname(file.originalname))
+    }
+})
+
+exports.msgPicUpload = multer({
+    storage: msgPicStorage,
+    limits: {fileSize: 1000000000}
+}).single('image');
+
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 

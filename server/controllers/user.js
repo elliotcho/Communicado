@@ -1,7 +1,7 @@
 const {User} = require('../models/user');
 const {Notification} = require('../models/notif');
 
-const {upload} = require('../app');
+const upload = require('../app').profilePicUpload;
 const path = require('path');
 const fs = require('fs');
 
@@ -75,11 +75,11 @@ exports.loadProfilePic = async (req, res) =>{
     const {profilePic} = user;
 
     if(profilePic === null){
-        res.sendFile(path.join(__dirname, '../', 'images/avatar.jpg'));
+        res.sendFile(path.join(__dirname, '../', 'images/profile/avatar.jpg'));
     }
 
     else{
-        res.sendFile(path.join(__dirname, '../', `images/${profilePic}`));
+        res.sendFile(path.join(__dirname, '../', `images/profile/${profilePic}`));
     }
 }
 
@@ -95,7 +95,7 @@ exports.updateProfilePic = (req, res) =>{
         const {profilePic} = user;
 
         if(profilePic !== null){
-            fs.unlink(path.join(__dirname, '../', `images/${profilePic}`), err =>{
+            fs.unlink(path.join(__dirname, '../', `images/profile/${profilePic}`), err =>{
                 if(err){
                     console.log(err);
                 }
