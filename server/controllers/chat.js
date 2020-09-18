@@ -18,8 +18,16 @@ exports.getChat = async (req, res) => {
 
 exports.createMessage = (req, res) => {
     parseFormData(req, async (err, data) => {
-        const newMessage = await createMessageUtil(data, null);
-        res.json(newMessage);
+        if(err){console.log(err);}
+
+        if(data.fields.image){
+            const newMessage = await createMessageUtil(data, null);
+            res.json(newMessage);
+        }
+
+        else{
+            
+        }
     });
 }
 
@@ -47,8 +55,12 @@ const createMessageUtil = async (data, image) =>{
 
 exports.createChat = async (req, res) =>{ 
     parseFormData(req, async (err, data) => {
-        const newChatId = await createChatUtil(data, null);
-        res.json({chatId: newChatId});
+        if(err){console.log(err);}
+
+        if(data.fields.image){
+            const newChatId = await createChatUtil(data, null);
+            res.json({chatId: newChatId});
+        }
     });
 }
 
