@@ -300,7 +300,8 @@ export const handleReadReceipts = (chatId, readerId) => {
     }
 }
 
-export const searchMessageCards = async (uid, text)=>{
+export const searchMessageCards = (uid, text)=>{
+return async (dispatch) =>{
     //alert("hjghg");
     const arr = [];
     let  chatMembers =[];
@@ -340,7 +341,9 @@ export const searchMessageCards = async (uid, text)=>{
             
         }
     }
-    return arr;
+    console.log(arr);
+    dispatch ({type: types.LOAD_CHATS, chats:arr});
+}
 }
 
 export const checkIfChatExists = async (uid, memberId) => {

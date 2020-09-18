@@ -25,10 +25,10 @@ class MessageCard extends Component {
     }
 
     async componentDidMount(){
-        const {chatId, uid, lastMsg, isActive, dispatch} = this.props;
+        const {chatId, uid, messages, isActive, dispatch} = this.props;
         const {readChat, getChatPics, getMemberNames} = msgActions;
 
-        const isRead = dispatch(readChat(chatId, uid, lastMsg, isActive));
+        const isRead = dispatch(readChat(chatId, uid, messages[messages.length-1], isActive));
         const chatPics = await getChatPics(chatId, uid, loadProfilePic);
         const memberNames = await getMemberNames(chatId, uid);
     
@@ -40,11 +40,11 @@ class MessageCard extends Component {
     }
 
     async componentDidUpdate(prevProps){
-        const {chatId, uid, lastMsg, isActive, dispatch} = this.props;
+        const {chatId, uid,messages, isActive, dispatch} = this.props;
         const {readChat} =msgActions;
 
         if(prevProps.isActive !== isActive){
-            const isRead = await dispatch(readChat(chatId, uid, lastMsg, isActive));
+            const isRead = await dispatch(readChat(chatId, uid,messages[messages.length-1], isActive));
             
             this.setState({
                 isRead
@@ -54,7 +54,7 @@ class MessageCard extends Component {
 
     render() {
         const {memberNames, chatPics, isRead} = this.state;
-        const {isActive, lastMsg} = this.props;
+        const {isActive, messages} = this.props;
 
         const cardClassName = (isActive)? 'active': ''
 
@@ -78,10 +78,10 @@ class MessageCard extends Component {
 
                     {isActive || isRead?
                         (<p className="card-text text-muted">
-                            {lastMsg.content}
+                            {messages[messages.length-1].content}
                         </p>):
                         (<p className="card-text">
-                            <strong>{lastMsg.content}</strong>
+                            <strong>{messages[messages.length-1].content}</strong>
                         </p>)
                     }
                 </div>

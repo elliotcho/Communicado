@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { searchMessageCards } from '../../store/actions/messagesActions';
 import './SearchMsgs.css';
+import {connect} from 'react-redux';
 
 class SearchMsgs extends Component{
     constructor(props){
@@ -14,11 +15,12 @@ class SearchMsgs extends Component{
 
     async handleSubmit(e){
         e.preventDefault();
-        const {uid} = this.props;
+        const {uid,dispatch} = this.props;
         
         const cardOrder = await searchMessageCards(uid,this.state.text);
         //alert(cardOrder[0]);//cardOrder is gonna be an array of the new order of messageCards
-        alert(cardOrder);
+        //alert(cardOrder);
+        dispatch(cardOrder);
     }
 
     handleChange(e){
@@ -37,5 +39,5 @@ class SearchMsgs extends Component{
         )
     }
 }
-
-export default SearchMsgs;
+const mapDispatchToProps = (dispatch)=>({dispatch});
+export default connect(null,mapDispatchToProps)(SearchMsgs);
