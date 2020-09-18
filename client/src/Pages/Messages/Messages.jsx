@@ -89,7 +89,7 @@ class Messages extends Component {
                 chatId = {chat._id}
                 uid = {uid}
                 isActive = {chatId === chat._id}
-                lastMsg = {chat.messages[chat.messages.length -1]}
+                messages = {[...chat.messages]}
                 dispatch = {dispatch}
             />
         );

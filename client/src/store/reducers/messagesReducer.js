@@ -86,6 +86,7 @@ const messagesReducer = (state=initState, action) =>{
                 ...state,
                 msgsOnDisplay: [...state.msgsOnDisplay, action.newMessage]
             }
+        
         default:
             return state;
     }
