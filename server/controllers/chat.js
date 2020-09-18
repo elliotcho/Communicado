@@ -9,9 +9,10 @@ const fs = require('fs');
 exports.getChat = async (req, res) => {
     const {chatId} = req.params;
 
-    const chat = await Chat.findOne({_id: chatId});
-
-    res.json(chat);
+    if(chatId !== 'home' && chatId !== 'new'){
+        const chat = await Chat.findOne({_id: chatId});
+        res.json(chat);
+    }
 }
 
 exports.createMessage = (req, res) => {
@@ -43,8 +44,16 @@ const createMessageUtil = async (data, image) =>{
     return newMessage;
 }
 
-exports.createChat = async (req, res) =>{
-    const {uid, recipients, content} = req.body;
+exports.createChat = async (req, res) =>{ 
+    parseFormData(req, async (err, data) => {
+        console.log((data.fields.recipients));
+
+        res.json({chatId : 1});
+    });
+}
+
+const createChatUtil = async (data, image) => {
+    const {uid, recipients, content} = data.fields;
 
     const members = recipients.map(user => user._id);
 
@@ -58,7 +67,8 @@ exports.createChat = async (req, res) =>{
         content,
         timeSent: new Date(),
         readBy: [uid],
-        seenBy: [uid]
+        seenBy: [uid],
+        image
     });
 
     const newChat = new Chat({
@@ -79,7 +89,7 @@ exports.createChat = async (req, res) =>{
         await User.updateOne({_id: members[i]}, {chats: [...chats, chat._id]});
     }
 
-    res.json({chatId: chat._id});
+    return chat._id;
 }
 
 exports.getUserChats = async (req, res) =>{
@@ -103,28 +113,31 @@ exports.getUserChats = async (req, res) =>{
 exports.getMemberNames =  async (req, res) =>{
     const {uid, chatId} = req.body;
 
-    let result = '';
+    if(chatId !== 'new' && chatId !== 'home'){
+        
+        let result = '';
 
-    const chat = await Chat.findOne({_id: chatId});
-    const {members} = chat;
+        const chat = await Chat.findOne({_id: chatId});
+        const {members} = chat;
 
-    members.splice(members.indexOf(uid), 1);
+        members.splice(members.indexOf(uid), 1);
     
-    for(let i=0;i<members.length;i++){
-        const user = await User.findOne({_id: members[i]});
+        for(let i=0;i<members.length;i++){
+            const user = await User.findOne({_id: members[i]});
 
-        const {firstName, lastName} = user;
+            const {firstName, lastName} = user;
 
-        if(i === members.length - 1){
-            result+=`${firstName} ${lastName}`;
+            if(i === members.length - 1){
+                result+=`${firstName} ${lastName}`;
+            }
+
+            else{
+                result+=`${firstName} ${lastName}, `;
+            }
         }
 
-        else{
-            result+=`${firstName} ${lastName}, `;
-        }
+        res.json({memberNames: result});
     }
-
-    res.json({memberNames: result});
 }
 
 exports.getChatMessages = async (req, res) =>{
@@ -141,10 +154,10 @@ exports.getChatMessages = async (req, res) =>{
 exports.getChatMemberIds = async (req, res) =>{
     const {uid, chatId} = req.body;
 
-    if(chatId !== 'home'){
+    if(chatId !== 'home' && chatId !== 'new'){
         const chat = await Chat.findOne({_id: chatId});
         const {members} = chat;
-    
+        
         res.json({members: members.filter(id => id !== uid)});
     }
 }
@@ -192,20 +205,22 @@ exports.seeChats = async (req, res) =>{
 exports.readChat = async (req, res) => {
     const {chatId, uid} = req.body;
 
-    const chat = await Chat.findOne({_id: chatId});
-    const {messages} = chat;
-
-    for(let i = 0; i < messages.length; i++){
-        if(messages[i].readBy.includes(uid)){
-            continue;
+    if(chatId !== 'new' && chatId !== 'home'){
+        const chat = await Chat.findOne({_id: chatId});
+        const {messages} = chat;
+    
+        for(let i = 0; i < messages.length; i++){
+            if(messages[i].readBy.includes(uid)){
+                continue;
+            }
+    
+            messages[i].readBy.push(uid);
         }
-
-        messages[i].readBy.push(uid);
+    
+        await Chat.updateOne({_id: chatId}, {messages});
+    
+        res.json({msg: 'Success'});
     }
-
-    await Chat.updateOne({_id: chatId}, {messages});
-
-    res.json({msg: 'Success'});
 }
 
 exports.checkIfChatExists = async (req, res) => {

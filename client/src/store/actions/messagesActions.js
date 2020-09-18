@@ -135,8 +135,19 @@ export const getUnseenChats = (uid) => {
     }
 }
 
-export const createChat = async (uid, recipients, content) => {
-    const response = await axios.post('http://localhost:5000/chats/create', {uid, recipients, content}, config);
+export const createChat = async (uid, recipients, content, image = null) => {
+    const formData = new FormData();
+
+    recipients.forEach((user, i) => recipients[i] = user._id);
+
+    formData.append('uid', uid);
+    formData.append('content', content);
+    formData.append('recipients', recipients);
+    formData.append('image', image);
+
+    const fdConfig = {headers:{'content-type': 'multipart/form-data'}};
+
+    const response = await axios.post('http://localhost:5000/chats/create', formData, fdConfig);
     const {chatId} = response.data; 
     return chatId;
 }

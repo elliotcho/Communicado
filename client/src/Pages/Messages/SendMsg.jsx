@@ -81,11 +81,11 @@ class SendMsg extends Component{
         const {createChat, loadChats} = msgActions;
 
         const chatId = await createChat(uid, recipients, content);
-        dispatch(loadChats(uid));
+        // dispatch(loadChats(uid));
 
-        io.emit('CREATE_CHAT', {recipients, uid});
+        // io.emit('CREATE_CHAT', {recipients, uid});
 
-        this.props.history.push(`/chat/${chatId}`);
+        // this.props.history.push(`/chat/${chatId}`);
     }
 
     async handleExistingChat(content){
