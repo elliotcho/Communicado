@@ -138,11 +138,9 @@ export const getUnseenChats = (uid) => {
 export const createChat = async (uid, recipients, content, image = null) => {
     const formData = new FormData();
 
-    recipients.forEach((user, i) => recipients[i] = user._id);
-
     formData.append('uid', uid);
     formData.append('content', content);
-    formData.append('recipients', recipients);
+    formData.append('recipients', JSON.stringify(recipients));
     formData.append('image', image);
 
     const fdConfig = {headers:{'content-type': 'multipart/form-data'}};

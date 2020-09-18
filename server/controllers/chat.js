@@ -5,6 +5,7 @@ const parseFormData = require('parse-formdata');
 const upload = require('../app').msgPicUpload;
 const path = require('path');
 const fs = require('fs');
+const { create } = require('domain');
 
 exports.getChat = async (req, res) => {
     const {chatId} = req.params;
@@ -46,16 +47,15 @@ const createMessageUtil = async (data, image) =>{
 
 exports.createChat = async (req, res) =>{ 
     parseFormData(req, async (err, data) => {
-        console.log((data.fields.recipients));
-
-        res.json({chatId : 1});
+        const newChatId = await createChatUtil(data, null);
+        res.json({chatId: newChatId});
     });
 }
 
 const createChatUtil = async (data, image) => {
-    const {uid, recipients, content} = data.fields;
+    const {uid, content, recipients} = data.fields;
 
-    const members = recipients.map(user => user._id);
+    const members = JSON.parse(recipients).map(user => user._id);
 
     //add user creating the chat as a member
     if(!members.includes(uid)){
