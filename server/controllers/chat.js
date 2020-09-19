@@ -131,6 +131,29 @@ const createChatUtil = async (data) => {
     return [newMessage._id, chat._id];
 }
 
+exports.getMessageImage = async (req, res) => {
+    const {chatId, messageId} = req.body;
+
+    if(chatId !== 'home' && chatId !== 'new'){
+        const chat = await Chat.findOne({_id: chatId});
+        const {messages} = chat;
+
+        let imgName = '';
+
+        for(let i=0;i<messages.length;i++){
+            const currMsgId = JSON.stringify(messages[i]._id);
+            const imgMsgId = JSON.stringify(messageId);
+
+            if(currMsgId === imgMsgId){
+                imgName = messages[i].image;
+                break;
+            }
+        }
+
+        res.sendFile(path.join(__dirname, '../', `images/messages/${imgName}`));
+    }
+}
+
 exports.getUserChats = async (req, res) =>{
     const {uid} = req.params;
 

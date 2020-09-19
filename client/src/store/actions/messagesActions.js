@@ -168,6 +168,20 @@ export const sendMessage = async (chatId, uid, content, photo) =>{
     return newMessage;
 }
 
+export const getMessageImage = async (chatId, messageId) => {
+    const data = {chatId, messageId};
+
+    const response = await fetch('http://localhost:5000/chats/image', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: config['headers']
+    });
+
+    let file = await response.blob();
+
+    return URL.createObjectURL(file);
+}
+
 export const getMemberIds = async (chatId, uid) => {
     const response = await axios.post('http://localhost:5000/chats/memberids', {uid, chatId});
     const memberIds = response.data.members;
