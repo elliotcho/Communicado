@@ -75,6 +75,7 @@ class SendMsg extends Component{
         
         //reset textarea value to empty string
         this.msg.value = "";
+        this.detachPhoto();
     }
 
     async handleNewChat(content, photo){
