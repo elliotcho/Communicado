@@ -138,6 +138,7 @@ export const getUnseenChats = (uid) => {
 export const createChat = async (uid, recipients, content, photo) => {
     const formData = new FormData();
     const image = (photo) ? photo[0] : '';
+    content = (content.trim() === '') ? '' : content;
 
     formData.append('uid', uid);
     formData.append('content', content);
@@ -155,6 +156,7 @@ export const createChat = async (uid, recipients, content, photo) => {
 export const sendMessage = async (chatId, uid, content, photo) =>{
     const formData = new FormData();
     const image = (photo) ? photo[0] : '';
+    content = (content.trim() === '') ? '' : content;
 
     formData.append('chatId', chatId);
     formData.append('uid', uid);
