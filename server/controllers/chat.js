@@ -21,7 +21,6 @@ exports.createMessage = (req, res) => {
 
         if(req.file){
             const {filename} = req.file;
-
             const newName = 'MESSAGE-' + `${newMessage._id}` + Date.now() + path.extname(filename);
     
             const oldPath = path.join(__dirname, '../',  `images/messages/${filename}`);
@@ -37,6 +36,7 @@ exports.createMessage = (req, res) => {
 
                     if(currMsgId === imgMsgId){
                         messages[i].image = newName;
+                        newMessage.image = newName;
                         break;
                     }
                 }
@@ -79,11 +79,23 @@ const createMessageUtil = async (data) =>{
 exports.createChat = (req, res) =>{ 
     upload(req, res, async () => {
         const result = await createChatUtil(req.body);
-        const messageId = result[0];
+        const newMessage = result[0];
         const newChatId = result[1];
 
         if(req.file){
-         
+            const {filename} = req.file;
+            const newName = 'MESSAGE-' + `${newMessage._id}` + Date.now() + path.extname(filename);
+    
+            const oldPath = path.join(__dirname, '../',  `images/messages/${filename}`);
+            const newPath = path.join(__dirname, '../', `images/messages/${newName}`);
+
+            fs.rename(oldPath, newPath, async () => {
+                newMessage.image = newName;
+
+                await Chat.updateOne({_id: newChatId}, {messages: [newMessage]});
+
+                res.json({chatId: newChatId});  
+            });
         }
 
         else{
@@ -122,13 +134,15 @@ const createChatUtil = async (data) => {
 
     for(let i=0;i<members.length;i++){
         const user = await User.findOne({_id: members[i]});
-
         const {chats} = user;
 
-        await User.updateOne({_id: members[i]}, {chats: [...chats, chat._id]});
+        await User.updateOne(
+            {_id: members[i]}, 
+            {chats: [...chats, chat._id]}
+        );
     }
 
-    return [newMessage._id, chat._id];
+    return [newMessage, chat._id];
 }
 
 exports.getMessageImage = async (req, res) => {
