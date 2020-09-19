@@ -28,10 +28,14 @@ exports.createMessage = (req, res) => {
             const newPath = path.join(__dirname, '../', `images/messages/${newName}`);
 
             fs.rename(oldPath, newPath, async () => {
-                const messages = await Chat.findOne({_id: chatId});
+                const {messages} = await Chat.findOne({_id: chatId});
+
 
                 for(let i=messages.length-1;i>=0;i--){
-                    if(messages[i]._id === newMessage._id){
+                    const currMsgId = JSON.stringify(messages[i]._id);
+                    const imgMsgId = JSON.stringify(newMessage._id);
+
+                    if(currMsgId === imgMsgId){
                         messages[i].image = newName;
                         break;
                     }
@@ -43,7 +47,6 @@ exports.createMessage = (req, res) => {
         }
 
         else{
-            await Chat.updateOne({_id: chatId});
             res.json(newMessage);
         }
     });
@@ -230,7 +233,9 @@ exports.seeChats = async (req, res) =>{
 
         const n = messages.length;
 
-        messages[n-1].seenBy.push(uid);
+        if(!messages[n-1].seenBy.includes(uid)){
+            messages[n-1].seenBy.push(uid);
+        }
 
         await Chat.updateOne({_id: chats[i]}, {messages});
     }
