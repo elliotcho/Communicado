@@ -14,7 +14,7 @@ const {
     checkIfChatExists
  } = require('../controllers/chat');
 
- router.get('/:chatId', getChat);
+router.get('/:chatId', getChat);
 router.post('/create', createChat);
 router.get('/user/:uid', getUserChats);
 router.post('/members', getMemberNames);

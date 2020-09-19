@@ -1,11 +1,9 @@
 const {User} = require('../models/user');
 const {Message, Chat} = require('../models/chat');
 
-const parseFormData = require('parse-formdata');
 const upload = require('../app').msgPicUpload;
 const path = require('path');
 const fs = require('fs');
-const { create } = require('domain');
 
 exports.getChat = async (req, res) => {
     const {chatId} = req.params;
@@ -17,22 +15,32 @@ exports.getChat = async (req, res) => {
 }
 
 exports.createMessage = (req, res) => {
-    parseFormData(req, async (err, data) => {
-        if(err){console.log(err);}
+    upload(req, res, async () => {
+        const result = await createMessageUtil(req.body);
+        const newMessage = result[0];
+        const chatId = result[1];
+      
+        if(req.file){
+            const {filename} = req.file;
+    
+            const oldName = path.join(__dirname, '../'  `images/messages/${filename}`);
+            const newName = path.join(__dirname, '../', `images/messages/${newMessage._id}`);
 
-        if(data.fields.image){
-            const newMessage = await createMessageUtil(data, null);
-            res.json(newMessage);
+            fs.rename(oldName, newName, async () => {
+                await Chat.updateOne({_id: chatId}, {image: newName});
+                res.json(newMessage);
+            });
         }
 
         else{
-            
+            await Chat.updateOne({_id: chatId}, {image: null});
+            res.json(newMessage);
         }
     });
 }
 
-const createMessageUtil = async (data, image) =>{
-    const {uid, content, chatId} = data.fields;
+const createMessageUtil = async (data) =>{
+    const {uid, content, chatId} = data;
     
     const chat = await Chat.findOne({_id:chatId});
     const {messages} = chat;
@@ -42,30 +50,37 @@ const createMessageUtil = async (data, image) =>{
         content,
         timeSent: new Date(),
         readBy: [uid],
-        seenBy: [uid],
-        image
+        seenBy: [uid]
     });
 
     messages.push(newMessage);
     
-    await Chat.updateOne({_id:chatId},{messages, timeOfLastMessage: newMessage.timeSent});
+    await Chat.updateOne(
+        {_id:chatId},
+        {messages, timeOfLastMessage: newMessage.timeSent}
+    );
     
-    return newMessage;
+    return [newMessage, chatId];
 }
 
-exports.createChat = async (req, res) =>{ 
-    parseFormData(req, async (err, data) => {
-        if(err){console.log(err);}
+exports.createChat = (req, res) =>{ 
+    upload(req, res, async () => {
+        const result = await createChatUtil(req.body);
+        const messageId = result[0];
+        const newChatId = result[1];
 
-        if(data.fields.image){
-            const newChatId = await createChatUtil(data, null);
+        if(req.file){
+         
+        }
+
+        else{
             res.json({chatId: newChatId});
         }
     });
 }
 
-const createChatUtil = async (data, image) => {
-    const {uid, content, recipients} = data.fields;
+const createChatUtil = async (data) => {
+    const {uid, content, recipients} = data;
 
     const members = JSON.parse(recipients).map(user => user._id);
 
@@ -80,7 +95,6 @@ const createChatUtil = async (data, image) => {
         timeSent: new Date(),
         readBy: [uid],
         seenBy: [uid],
-        image
     });
 
     const newChat = new Chat({
@@ -101,7 +115,7 @@ const createChatUtil = async (data, image) => {
         await User.updateOne({_id: members[i]}, {chats: [...chats, chat._id]});
     }
 
-    return chat._id;
+    return [newMessage._id, chat._id];
 }
 
 exports.getUserChats = async (req, res) =>{
