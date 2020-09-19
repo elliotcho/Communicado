@@ -314,21 +314,20 @@ return async (dispatch) =>{
             if (chatList[i].members.length-1!==1){
                 chatMembers = memberName.split(",");
                 for(let k=0;k<chatMembers.length;k++){
-                    if(chatMembers[i].startsWith(text)) arr.push(chatMembers[i]);
+                    if(chatMembers[i].startsWith(text)) arr.push(chatList[i]);
                 }
             }
+            //groupchat case
             else{
                //alert(memberName)
                 if(memberName.startsWith(text)){
                     //alert(memberName);
-                    arr.push(memberName);
+                    arr.push(chatList[i]);
                 }   
             }
-           
-            
         }
     }
-    console.log(arr);
+  
     dispatch ({type: types.LOAD_CHATS, chats:arr});
 }
 }
