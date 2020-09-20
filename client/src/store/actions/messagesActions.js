@@ -314,50 +314,42 @@ export const handleReadReceipts = (chatId, readerId) => {
     }
 }
 
-export const searchMessageCards = (uid, text)=>{
-return async (dispatch) =>{
-    //alert("hjghg");
-    const arr = [];
-    let  chatMembers =[];
-    //getUserChats == chatids
-    const response = await axios.get(`http://localhost:5000/chats/user/${uid}`); 
-    const chatList = response.data;
+export const filterMsgCards = (uid, query)=>{
+    return async (dispatch) =>{
+        const result = [];
+
+        let response = await axios.get(`http://localhost:5000/chats/user/${uid}`); 
+        const chats = response.data;
     
-    for( let i=0;i<chatList.length;i++){
-        //each chat id
-        let chatId = chatList[i]._id;
-        for( let j=0; j<chatList[i].members.length;j++){
-            //each member id
-            let memberId = chatList[i].members[j];
-            if(memberId===uid) continue;
-            //getMemberNames == comma seperated list of names
-            let response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId}, config);
-            //comma seperated list of names
-            let memberName = response.data.memberNames;
-            //alert(memberName)
-            //alert(chatList[i].members.length);
-            memberName = memberName.toLowerCase();
-            text = text.toLowerCase();
-            if (chatList[i].members.length-1!==1){
-                chatMembers = memberName.split(",");
+        for(let i=0;i<chats.length;i++){    
+            const chatId = chats[i]._id;
+
+            response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId}, config);
+            let {memberNames} = response.data;
+             
+            memberNames = memberNames.toLowerCase();
+            query = query.toLowerCase();
+
+            if (chats[i].members.length-1!==1){
+                let chatMembers = memberNames.split(",");
+
                 for(let k=0;k<chatMembers.length;k++){
-                    if(chatMembers[i].startsWith(text)) arr.push(chatMembers[i]);
+                    if(chatMembers[i].startsWith(query)){
+                        result.push(chats[i]);
+                    }
                 }
             }
-            else{
-               //alert(memberName)
-                if(memberName.startsWith(text)){
-                    //alert(memberName);
-                    arr.push(memberName);
-                }   
-            }
-           
             
+            else if(memberNames.startsWith(query)){
+                 result.push(chats[i]);
+            }
         }
+
+        dispatch ({
+            type: types.LOAD_CHATS, 
+            chats: result
+        });
     }
-    console.log(arr);
-    dispatch ({type: types.LOAD_CHATS, chats:arr});
-}
 }
 
 export const checkIfChatExists = async (uid, memberId) => {
