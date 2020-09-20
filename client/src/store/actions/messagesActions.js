@@ -327,14 +327,14 @@ export const filterMsgCards = (uid, query)=>{
             response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId}, config);
             let {memberNames} = response.data;
              
-            memberNames = memberNames.toLowerCase();
-            query = query.toLowerCase();
+            memberNames = memberNames.split(" ").join("").toLowerCase();
+            query = query.split(" ").join("").toLowerCase();
 
             if (chats[i].members.length-1!==1){
                 let chatMembers = memberNames.split(",");
 
-                for(let k=0;k<chatMembers.length;k++){
-                    if(chatMembers[i].startsWith(query)){
+                for(let j=0;j<chatMembers.length;j++){
+                    if(chatMembers[j].startsWith(query)){
                         result.push(chats[i]);
                     }
                 }
