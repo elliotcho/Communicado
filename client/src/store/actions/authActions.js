@@ -29,6 +29,11 @@ export const login = (credentials) => {
 // User signup function with given credentals
 export const signUp = (credentials) => {
     return async (dispatch) =>{
+        if(credentials.firstName.includes(",") || credentials.lastName.includes(",")){
+            alert("Invalid name: First name and last name cannot have a comma character!");
+            return;
+        }
+
         // Create data object with form values
         const data = {...credentials};
 
