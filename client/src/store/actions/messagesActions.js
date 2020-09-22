@@ -336,6 +336,7 @@ export const filterMsgCards = (uid, query)=>{
                 for(let j=0;j<chatMembers.length;j++){
                     if(chatMembers[j].startsWith(query)){
                         result.push(chats[i]);
+                        break;
                     }
                 }
             }

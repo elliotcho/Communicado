@@ -15,45 +15,28 @@ class FindForm extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.globalSearch = this.globalSearch.bind(this);
-        this.showResults = this.showResults.bind(this);
     }
+
     // Handle change in input to adjust state every character
     handleChange(evt) {
-        this.setState({ [evt.target.name] : evt.target.value })
+        this.setState({ [evt.target.id] : evt.target.value })
     }
 
     // Function that finds all users from the DB
     globalSearch(e) {
         e.preventDefault();
+
+        const {nameQuery} = this.state;
+        const {uid, dispatch} = this.props;
         
-        if(this.state.nameQuery.trim() === "") { 
+        if(nameQuery.trim() === "") { 
+            dispatch(clearUsers());
             return; 
         }
-
-        const {uid, dispatch} = this.props;
-        const {nameQuery} = this.state;
 
         dispatch(findUsers(nameQuery, uid));
     }
 
-    // Function that shows the hidden row when form is submit
-    showResults() {
-        const {nameQuery} = this.state;
-        const row = document.getElementById("resultsContainer");
-
-        // If query is just empty space, do not show block
-        if(nameQuery.trim() === "") { 
-            return; 
-        }
-
-        if (row.style.display === "none") {
-            row.style.display = "block";
-        } 
-        
-        else {
-            row.style.display = "none";
-        }
-    }
     // Clear users when deleting
     componentWillUnmount(){
         this.props.dispatch(clearUsers());
@@ -85,25 +68,25 @@ class FindForm extends Component {
                     <form onSubmit={this.globalSearch}>
                         <input 
                             type = "text"
-                            name = "nameQuery"
+                            id = "nameQuery"
                             value = {nameQuery}
                             onChange = {this.handleChange}
                             placeholder = "Enter a users name"
                             className="FindForm-input"
                         />
                         
-                        <button onClick = {this.showResults} className="FindForm-btn">
+                        <button className="FindForm-btn">
                             <i className="fas fa-search FindForm-icon"/>
                         </button>
                     </form>
                 </div>
 
                 {/* Hidden container that displays when form is submitted */}
-                <div style={{display: 'none'}} id="resultsContainer">
-                    <div className="row d-flex justify-content-center align-items-stretch" id="resultsRow">
+                <div id="resultsContainer">
+                    <div className="row d-flex justify-content-center" id="resultsRow">
                         {foundUsers.length === 0 ? 
                             (<h3>
-                                No Users Found
+                                Search for users!
                             </h3>) : 
                             foundUsers
                         }

@@ -1,6 +1,8 @@
 .FoundFriendCard {
     padding: 0;
     margin: 0 10px;
+    height: 100%;
+    min-width: 200px;
 }
 
 #userIcon {

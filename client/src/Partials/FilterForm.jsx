@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {findFriends} from '../store/actions/friendsActions';
+import {findFriends, loadFriends} from '../store/actions/friendsActions';
 import './FilterForm.css'
 
 // Class that creates form that filters through a friends list 
@@ -26,12 +26,12 @@ class FilterForm extends Component {
         e.preventDefault();
         
         const {friendQuery} = this.state;
+        const {uid, dispatch} = this.props;
         
         if(friendQuery.trim() === "") { 
+            dispatch(loadFriends(uid));
             return; 
         }
-        
-        const {uid, dispatch} = this.props;
         
         dispatch(findFriends(friendQuery, uid));
     }
