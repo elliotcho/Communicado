@@ -84,7 +84,7 @@ class ProfileCard extends Component {
                             {/* Settings btn */}
                             <div className="col-md-6 col-sm-12 mb-3">
                                 <Link to='/settings'>
-                                    <button class="btn whiteButton btn-lg w-100 h-100">
+                                    <button className="btn whiteButton btn-lg w-100 h-100">
                                         <label htmlFor="goToSettings" className="settingsLabel">
                                             Settings
                                         </label>
@@ -94,7 +94,7 @@ class ProfileCard extends Component {
                             
                             {/* Profile button */}
                             <div className="col-md-6 col-sm-12 mb-3">
-                                <button class="btn whiteButton btn-lg w-100 h-100">
+                                <button className="btn whiteButton btn-lg w-100 h-100">
                                     <label htmlFor="upload" className="inputLabel">
                                         Edit Picture
                                     </label>

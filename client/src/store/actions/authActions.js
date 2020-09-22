@@ -29,6 +29,13 @@ export const login = (credentials) => {
 // User signup function with given credentals
 export const signUp = (credentials) => {
     return async (dispatch) =>{
+        const {firstName, lastName} = credentials;
+
+        if(!isValidName(firstName) || !isValidName(lastName)){
+            alert("Invalid name: First name and last name should only contain letters!");
+            return;    
+        }
+
         // Create data object with form values
         const data = {...credentials};
 
@@ -47,4 +54,21 @@ export const signUp = (credentials) => {
             alert(msg)
         }
     }
+}
+
+const isValidName = (name) => {
+    let valid = true;
+
+    for(let i=0;i<name.length;i++){
+        if(name[i].toLowerCase() !== name[i].toUpperCase()){
+            continue;
+        }
+
+        else{
+            valid = false;
+            break;
+        }
+    }
+
+    return valid;
 }

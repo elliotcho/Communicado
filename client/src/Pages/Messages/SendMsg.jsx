@@ -53,9 +53,10 @@ class SendMsg extends Component{
         e.preventDefault();
 
         const {chatId, composerChatId, recipients} = this.props;
+        const {photo} = this.state;
         const content = this.msg.value;
 
-        if(content.trim() === ""){
+        if(content.trim() === "" && !photo){
             return;
         }
 
@@ -64,23 +65,25 @@ class SendMsg extends Component{
                 return;
             }
 
-            await this.handleNewChat(content);
+            await this.handleNewChat(content, photo);
         }
 
         else{
              await this.handleStopTyping();
-             await this.handleExistingChat(content);
+             await this.handleExistingChat(content, photo);
         }
         
         //reset textarea value to empty string
         this.msg.value = "";
+        this.msg.style.height = 'revert';
+        this.detachPhoto();
     }
 
-    async handleNewChat(content){
+    async handleNewChat(content, photo){
         const {uid, dispatch, recipients} = this.props;
         const {createChat, loadChats} = msgActions;
 
-        const chatId = await createChat(uid, recipients, content);
+        const chatId = await createChat(uid, recipients, content, photo);
         dispatch(loadChats(uid));
 
         io.emit('CREATE_CHAT', {recipients, uid});
@@ -88,7 +91,7 @@ class SendMsg extends Component{
         this.props.history.push(`/chat/${chatId}`);
     }
 
-    async handleExistingChat(content){
+    async handleExistingChat(content, photo){
         const {chatId, composerChatId, uid, dispatch} = this.props;
 
         const {
@@ -100,7 +103,8 @@ class SendMsg extends Component{
 
         const currChatId = (composerChatId)? composerChatId: chatId;
 
-        const newMessage = await sendMessage(currChatId, uid, content);
+        const newMessage = await sendMessage(currChatId, uid, content, photo);
+
         dispatch(renderNewMessage(newMessage, currChatId, uid));
         dispatch(loadChats(uid));
 

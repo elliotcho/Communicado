@@ -1,43 +1,52 @@
 import React, {Component} from 'react';
-import { searchMessageCards } from '../../store/actions/messagesActions';
-import './SearchMsgs.css';
 import {connect} from 'react-redux';
+import {filterMsgCards} from '../../store/actions/messagesActions';
+import './SearchMsgs.css';
 
 class SearchMsgs extends Component{
-    constructor(props){
+    constructor(){
         super();
+
         this.state = {
-            text:""
+            query: ''
         };
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
     async handleSubmit(e){
         e.preventDefault();
-        const {uid,dispatch} = this.props;
+
+        const {uid, dispatch} = this.props;
+        const {query} = this.state;
         
-        const cardOrder = await searchMessageCards(uid,this.state.text);
-        //alert(cardOrder[0]);//cardOrder is gonna be an array of the new order of messageCards
-        //alert(cardOrder);
-        dispatch(cardOrder);
+        dispatch(filterMsgCards(uid, query));
     }
 
     handleChange(e){
-        e.preventDefault();
-        const {value, type} = e.target;
-        this.setState({[type]:value});
+        this.setState({[e.target.id]: e.target.value});
     }
 
     render(){
+        const {query} = this.state;
+
         return(
             <div className="searchMsgsList">
                 <form onSubmit={this.handleSubmit}>
-                    <input type="text" placeholder="Search Messages..." onChange={this.handleChange}></input>
+                    <input 
+                        type='text' 
+                        id = 'query'
+                        placeholder='Search Messages...' 
+                        value = {query}
+                        onChange={this.handleChange}
+                    />
                 </form>
             </div>
         )
     }
 }
+
 const mapDispatchToProps = (dispatch)=>({dispatch});
+
 export default connect(null,mapDispatchToProps)(SearchMsgs);

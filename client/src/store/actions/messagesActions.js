@@ -135,26 +135,53 @@ export const getUnseenChats = (uid) => {
     }
 }
 
-export const createChat = async (uid, recipients, content) => {
-    const response = await axios.post('http://localhost:5000/chats/create', {uid, recipients, content}, config);
+export const createChat = async (uid, recipients, content, photo) => {
+    const formData = new FormData();
+    const image = (photo) ? photo[0] : '';
+    content = (content.trim() === '') ? '' : content;
+
+    formData.append('uid', uid);
+    formData.append('content', content);
+    formData.append('recipients', JSON.stringify(recipients));
+    formData.append('image', image);
+
+    const fdConfig = {headers:{'content-type': 'multipart/form-data'}};
+
+    const response = await axios.post('http://localhost:5000/chats/create', formData, fdConfig);
     const {chatId} = response.data; 
     return chatId;
 }
 
 
-export const sendMessage = async (chatId, uid, content, image = null) =>{
+export const sendMessage = async (chatId, uid, content, photo) =>{
     const formData = new FormData();
+    const image = (photo) ? photo[0] : '';
+    content = (content.trim() === '') ? '' : content;
 
     formData.append('chatId', chatId);
     formData.append('uid', uid);
     formData.append('content', content); 
-    formData.append('image', image);  
+    formData.append('image', image);
 
     const fdConfig = {headers:{'content-type': 'multipart/form-data'}};
 
     const response = await axios.post('http://localhost:5000/chats/message', formData, fdConfig);
     const newMessage = response.data;
     return newMessage;
+}
+
+export const getMessageImage = async (chatId, messageId) => {
+    const data = {chatId, messageId};
+
+    const response = await fetch('http://localhost:5000/chats/image', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: config['headers']
+    });
+
+    let file = await response.blob();
+
+    return URL.createObjectURL(file);
 }
 
 export const getMemberIds = async (chatId, uid) => {
@@ -287,49 +314,42 @@ export const handleReadReceipts = (chatId, readerId) => {
     }
 }
 
-export const searchMessageCards = (uid, text)=>{
-return async (dispatch) =>{
-    //alert("hjghg");
-    const arr = [];
-    let  chatMembers =[];
-    //getUserChats == chatids
-    const response = await axios.get(`http://localhost:5000/chats/user/${uid}`); 
-    const chatList = response.data;
+export const filterMsgCards = (uid, query)=>{
+    return async (dispatch) =>{
+        const result = [];
+
+        let response = await axios.get(`http://localhost:5000/chats/user/${uid}`); 
+        const chats = response.data;
     
-    for( let i=0;i<chatList.length;i++){
-        //each chat id
-        let chatId = chatList[i]._id;
-        for( let j=0; j<chatList[i].members.length;j++){
-            //each member id
-            let memberId = chatList[i].members[j];
-            if(memberId===uid) continue;
-            //getMemberNames == comma seperated list of names
-            let response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId}, config);
-            //comma seperated list of names
-            let memberName = response.data.memberNames;
-            //alert(memberName)
-            //alert(chatList[i].members.length);
-            memberName = memberName.toLowerCase();
-            text = text.toLowerCase();
-            if (chatList[i].members.length-1!==1){
-                chatMembers = memberName.split(",");
-                for(let k=0;k<chatMembers.length;k++){
-                    if(chatMembers[i].startsWith(text)) arr.push(chatList[i]);
+        for(let i=0;i<chats.length;i++){    
+            const chatId = chats[i]._id;
+
+            response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId}, config);
+            let {memberNames} = response.data;
+             
+            memberNames = memberNames.split(" ").join("").toLowerCase();
+            query = query.split(" ").join("").toLowerCase();
+
+            if (chats[i].members.length-1!==1){
+                let chatMembers = memberNames.split(",");
+
+                for(let j=0;j<chatMembers.length;j++){
+                    if(chatMembers[j].startsWith(query)){
+                        result.push(chats[i]);
+                    }
                 }
             }
-            //groupchat case
-            else{
-               //alert(memberName)
-                if(memberName.startsWith(text)){
-                    //alert(memberName);
-                    arr.push(chatList[i]);
-                }   
+            
+            else if(memberNames.startsWith(query)){
+                 result.push(chats[i]);
             }
         }
+
+        dispatch ({
+            type: types.LOAD_CHATS, 
+            chats: result
+        });
     }
-  
-    dispatch ({type: types.LOAD_CHATS, chats:arr});
-}
 }
 
 export const checkIfChatExists = async (uid, memberId) => {

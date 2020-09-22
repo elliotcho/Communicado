@@ -42,10 +42,10 @@ class Home extends Component{
             <div className='home'>
                 {/* Make container 100% height of the 92vh from css */}
                 <div className="container-fluid h-100">
-                    <div class="row homeRow">
+                    <div className="row homeRow">
                         
                         {/* Empty column to fill spot */}
-                        <div class="col"></div>
+                        <div className="col"></div>
 
                         <HomeFind 
                             dispatch = {dispatch}
@@ -65,7 +65,7 @@ class Home extends Component{
                         <OnlineFriendList uid = {uid} active = {active}/>
                         
                         {/* Empty column to end */}
-                        <div class="col"></div>
+                        <div className="col"></div>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,6 @@
 const {User} = require('../models/user');
 const {Message, Chat} = require('../models/chat');
 
-const parseFormData = require('parse-formdata');
 const upload = require('../app').msgPicUpload;
 const path = require('path');
 const fs = require('fs');
@@ -9,20 +8,52 @@ const fs = require('fs');
 exports.getChat = async (req, res) => {
     const {chatId} = req.params;
 
-    const chat = await Chat.findOne({_id: chatId});
-
-    res.json(chat);
+    if(chatId !== 'home' && chatId !== 'new'){
+        const chat = await Chat.findOne({_id: chatId});
+        res.json(chat);
+    }
 }
 
 exports.createMessage = (req, res) => {
-    parseFormData(req, async (err, data) => {
-        const newMessage = await createMessageUtil(data, null);
-        res.json(newMessage);
+    upload(req, res, async () => {
+        const newMessage = await createMessageUtil(req.body);
+        const {chatId} = req.body;
+
+        if(req.file){
+            const {filename} = req.file;
+            const newName = 'MESSAGE-' + `${newMessage._id}` + Date.now() + path.extname(filename);
+    
+            const oldPath = path.join(__dirname, '../',  `images/messages/${filename}`);
+            const newPath = path.join(__dirname, '../', `images/messages/${newName}`);
+
+            fs.rename(oldPath, newPath, async () => {
+                const {messages} = await Chat.findOne({_id: chatId});
+
+
+                for(let i=messages.length-1;i>=0;i--){
+                    const currMsgId = JSON.stringify(messages[i]._id);
+                    const imgMsgId = JSON.stringify(newMessage._id);
+
+                    if(currMsgId === imgMsgId){
+                        messages[i].image = newName;
+                        newMessage.image = newName;
+                        break;
+                    }
+                }
+
+                await Chat.updateOne({_id: chatId}, {messages});
+                res.json(newMessage);
+            });
+        }
+
+        else{
+            res.json(newMessage);
+        }
     });
 }
 
-const createMessageUtil = async (data, image) =>{
-    const {uid, content, chatId} = data.fields;
+const createMessageUtil = async (data) =>{
+    const {uid, content, chatId} = data;
     
     const chat = await Chat.findOne({_id:chatId});
     const {messages} = chat;
@@ -32,21 +63,51 @@ const createMessageUtil = async (data, image) =>{
         content,
         timeSent: new Date(),
         readBy: [uid],
-        seenBy: [uid],
-        image
+        seenBy: [uid]
     });
 
     messages.push(newMessage);
     
-    await Chat.updateOne({_id:chatId},{messages, timeOfLastMessage: newMessage.timeSent});
+    await Chat.updateOne(
+        {_id:chatId},
+        {messages, timeOfLastMessage: newMessage.timeSent}
+    );
     
     return newMessage;
 }
 
-exports.createChat = async (req, res) =>{
-    const {uid, recipients, content} = req.body;
+exports.createChat = (req, res) =>{ 
+    upload(req, res, async () => {
+        const result = await createChatUtil(req.body);
+        const newMessage = result[0];
+        const newChatId = result[1];
 
-    const members = recipients.map(user => user._id);
+        if(req.file){
+            const {filename} = req.file;
+            const newName = 'MESSAGE-' + `${newMessage._id}` + Date.now() + path.extname(filename);
+    
+            const oldPath = path.join(__dirname, '../',  `images/messages/${filename}`);
+            const newPath = path.join(__dirname, '../', `images/messages/${newName}`);
+
+            fs.rename(oldPath, newPath, async () => {
+                newMessage.image = newName;
+
+                await Chat.updateOne({_id: newChatId}, {messages: [newMessage]});
+
+                res.json({chatId: newChatId});  
+            });
+        }
+
+        else{
+            res.json({chatId: newChatId});
+        }
+    });
+}
+
+const createChatUtil = async (data) => {
+    const {uid, content, recipients} = data;
+
+    const members = JSON.parse(recipients).map(user => user._id);
 
     //add user creating the chat as a member
     if(!members.includes(uid)){
@@ -58,7 +119,7 @@ exports.createChat = async (req, res) =>{
         content,
         timeSent: new Date(),
         readBy: [uid],
-        seenBy: [uid]
+        seenBy: [uid],
     });
 
     const newChat = new Chat({
@@ -73,13 +134,38 @@ exports.createChat = async (req, res) =>{
 
     for(let i=0;i<members.length;i++){
         const user = await User.findOne({_id: members[i]});
-
         const {chats} = user;
 
-        await User.updateOne({_id: members[i]}, {chats: [...chats, chat._id]});
+        await User.updateOne(
+            {_id: members[i]}, 
+            {chats: [...chats, chat._id]}
+        );
     }
 
-    res.json({chatId: chat._id});
+    return [newMessage, chat._id];
+}
+
+exports.getMessageImage = async (req, res) => {
+    const {chatId, messageId} = req.body;
+
+    if(chatId !== 'home' && chatId !== 'new'){
+        const chat = await Chat.findOne({_id: chatId});
+        const {messages} = chat;
+
+        let imgName = '';
+
+        for(let i=0;i<messages.length;i++){
+            const currMsgId = JSON.stringify(messages[i]._id);
+            const imgMsgId = JSON.stringify(messageId);
+
+            if(currMsgId === imgMsgId){
+                imgName = messages[i].image;
+                break;
+            }
+        }
+
+        res.sendFile(path.join(__dirname, '../', `images/messages/${imgName}`));
+    }
 }
 
 exports.getUserChats = async (req, res) =>{
@@ -103,28 +189,31 @@ exports.getUserChats = async (req, res) =>{
 exports.getMemberNames =  async (req, res) =>{
     const {uid, chatId} = req.body;
 
-    let result = '';
+    if(chatId !== 'new' && chatId !== 'home'){
+        
+        let result = '';
 
-    const chat = await Chat.findOne({_id: chatId});
-    const {members} = chat;
+        const chat = await Chat.findOne({_id: chatId});
+        const {members} = chat;
 
-    members.splice(members.indexOf(uid), 1);
+        members.splice(members.indexOf(uid), 1);
     
-    for(let i=0;i<members.length;i++){
-        const user = await User.findOne({_id: members[i]});
+        for(let i=0;i<members.length;i++){
+            const user = await User.findOne({_id: members[i]});
 
-        const {firstName, lastName} = user;
+            const {firstName, lastName} = user;
 
-        if(i === members.length - 1){
-            result+=`${firstName} ${lastName}`;
+            if(i === members.length - 1){
+                result+=`${firstName} ${lastName}`;
+            }
+
+            else{
+                result+=`${firstName} ${lastName}, `;
+            }
         }
 
-        else{
-            result+=`${firstName} ${lastName}, `;
-        }
+        res.json({memberNames: result});
     }
-
-    res.json({memberNames: result});
 }
 
 exports.getChatMessages = async (req, res) =>{
@@ -141,10 +230,10 @@ exports.getChatMessages = async (req, res) =>{
 exports.getChatMemberIds = async (req, res) =>{
     const {uid, chatId} = req.body;
 
-    if(chatId !== 'home'){
+    if(chatId !== 'home' && chatId !== 'new'){
         const chat = await Chat.findOne({_id: chatId});
         const {members} = chat;
-    
+        
         res.json({members: members.filter(id => id !== uid)});
     }
 }
@@ -181,7 +270,9 @@ exports.seeChats = async (req, res) =>{
 
         const n = messages.length;
 
-        messages[n-1].seenBy.push(uid);
+        if(!messages[n-1].seenBy.includes(uid)){
+            messages[n-1].seenBy.push(uid);
+        }
 
         await Chat.updateOne({_id: chats[i]}, {messages});
     }
@@ -192,20 +283,22 @@ exports.seeChats = async (req, res) =>{
 exports.readChat = async (req, res) => {
     const {chatId, uid} = req.body;
 
-    const chat = await Chat.findOne({_id: chatId});
-    const {messages} = chat;
-
-    for(let i = 0; i < messages.length; i++){
-        if(messages[i].readBy.includes(uid)){
-            continue;
+    if(chatId !== 'new' && chatId !== 'home'){
+        const chat = await Chat.findOne({_id: chatId});
+        const {messages} = chat;
+    
+        for(let i = 0; i < messages.length; i++){
+            if(messages[i].readBy.includes(uid)){
+                continue;
+            }
+    
+            messages[i].readBy.push(uid);
         }
-
-        messages[i].readBy.push(uid);
+    
+        await Chat.updateOne({_id: chatId}, {messages});
+    
+        res.json({msg: 'Success'});
     }
-
-    await Chat.updateOne({_id: chatId}, {messages});
-
-    res.json({msg: 'Success'});
 }
 
 exports.checkIfChatExists = async (req, res) => {

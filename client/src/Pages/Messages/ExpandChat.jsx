@@ -75,15 +75,18 @@ class ExpandChat extends Component{
     }
 
     render(){
-        const {uid, typingOnDisplay, isComposerChat} = this.props;
+        const {uid, typingOnDisplay, isComposerChat, chatId} = this.props;
         const {memberNames, chatPics} = this.state;
 
         const messages = this.props.msgsOnDisplay.map(msg =>
             <MessageBubble
                 key = {msg._id}
+                msgId = {msg._id}
                 uid = {uid}
+                chatId = {chatId}
                 senderId = {msg.senderId}
                 content = {msg.content}
+                image = {msg.image}
                 readBy = {[...msg.readBy]}
                 handleScroll = {this.handleScroll}
             />

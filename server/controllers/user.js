@@ -181,7 +181,7 @@ exports.deleteUser = async  (req,res) =>{
     //delete profile pic if it exists
     const {profilePic} = user;
     
-    if(profilePic !== null){
+    if(profilePic){
         fs.unlink(path.join(__dirname, '../', `images/${profilePic}`), err =>{
             if(err){
                 console.log(err);

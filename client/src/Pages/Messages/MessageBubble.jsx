@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {getReadReceipts} from '../../store/actions/messagesActions';
+import {getReadReceipts, getMessageImage} from '../../store/actions/messagesActions';
 import {loadProfilePic} from '../../store/actions/profileActions';
 import loading from '../../images/loading.jpg';
 import './MessageBubble.css';
@@ -10,6 +10,7 @@ class MessageBubble extends Component{
 
         this.state={
             senderImgURL: null,
+            contentImg: null,
             readReceipts: []
         }
 
@@ -17,7 +18,12 @@ class MessageBubble extends Component{
     }
 
     async componentDidMount(){
-        const {senderId, handleScroll} = this.props;
+        const {chatId, msgId, senderId, handleScroll, image} = this.props;
+
+        if(image){
+            const contentImg = await getMessageImage(chatId, msgId);
+            this.setState({contentImg});
+        }
 
         const senderImgURL = await loadProfilePic(senderId);
         await this.loadReadReceipts();
@@ -43,8 +49,8 @@ class MessageBubble extends Component{
     }
 
     render(){
-        const {uid, senderId, content} = this.props;
-        const {senderImgURL, readReceipts} = this.state;
+        const {uid, senderId, content, image} = this.props;
+        const {senderImgURL, contentImg, readReceipts} = this.state;
 
         const msgPosition = (uid === senderId)? 
             'msg-r': 
@@ -60,6 +66,7 @@ class MessageBubble extends Component{
 
                     <div className ={`msg ${msgPosition} my-1`}>
                         <div>
+                            {image? <img src={contentImg? contentImg: loading} alt='content pic'/>: null}
                             {content}
                         </div>
 
