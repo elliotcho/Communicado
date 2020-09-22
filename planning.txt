@@ -1,23 +1,9 @@
-Convo - [MessageBubbles]
-[MsgCards]
-SendMsg
-
-Global state:
-Recipients
-
-SendMsg
-chatId will exist or 'new'
-
-if(new): create 
-make message card with convo active
-add one new message card 
-render the Convo
-
-else: message in chat
-if user is looking at that convo real time add bubble (emit read, so that others looking at chat saw you read)
-if user isn't on msg page color navbar
-if user is not on msg card bold text in card with new msg
-update message cards order
+TODOS (September 21):
+Home page CSS
+Home page online friend intervals
+Message bubble extras
+Hash passwords
+O - Auth google sign in? 
 
 
                      routes   <-- view/client --> socket(5000)
@@ -28,6 +14,5 @@ Client uses routes
 Routes activates controllers
 Controllers read/write from db using models 
 Controllers send response back to client
-
 
 store (global state) --> components --> actions --> reducer --> store (global state)
