@@ -13,19 +13,22 @@ class SearchMsgs extends Component{
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleKeyUp = this.handleKeyUp.bind(this);
     }
 
     async handleSubmit(e){
-        e.preventDefault();
-
-        const {uid, dispatch} = this.props;
-        const {query} = this.state;
         
-        dispatch(filterMsgCards(uid, query));
     }
 
     handleChange(e){
         this.setState({[e.target.id]: e.target.value});
+    }
+    handleKeyUp(e){
+        e.preventDefault();
+        const {uid, dispatch} = this.props;
+        const {query} = this.state;
+        
+        dispatch(filterMsgCards(uid, query));
     }
 
     render(){
@@ -40,6 +43,7 @@ class SearchMsgs extends Component{
                         placeholder='Search Messages...' 
                         value = {query}
                         onChange={this.handleChange}
+                        onKeyUp={this.handleKeyUp}
                     />
                 </form>
             </div>

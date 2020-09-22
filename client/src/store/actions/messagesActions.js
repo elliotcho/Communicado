@@ -83,7 +83,7 @@ export const getChatPics = async (chatId, uid, loadProfilePic) => {
 
         return chatPics;
 }
-
+//returns object with property memberNames that has a value of a string of names
 export const getMemberNames = async (chatId, uid) => {
     const response = await axios.post(`http://localhost:5000/chats/members`, {uid, chatId}, config);
     const memberNames = response.data.memberNames;

@@ -53,3 +53,12 @@
     width: 15px;
     height: 15px;
 }
+
+
+.msg-container .msg.msg-r .usersName{
+    float: left;
+}
+
+.msg-container .msg.msg-l .usersName{
+    float: left;
+}

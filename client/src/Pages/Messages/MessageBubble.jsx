@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {getReadReceipts, getMessageImage} from '../../store/actions/messagesActions';
-import {loadProfilePic} from '../../store/actions/profileActions';
+import { loadProfilePic,getUserData} from '../../store/actions/profileActions';
 import loading from '../../images/loading.jpg';
 import './MessageBubble.css';
 
@@ -11,10 +11,12 @@ class MessageBubble extends Component{
         this.state={
             senderImgURL: null,
             contentImg: null,
-            readReceipts: []
+            readReceipts: [],
+            name: "Loading User..."
         }
 
         this.loadReadReceipts = this.loadReadReceipts.bind(this);
+        this.getGroupChatNames = this.getGroupChatNames.bind(this);
     }
 
     async componentDidMount(){
@@ -27,6 +29,7 @@ class MessageBubble extends Component{
 
         const senderImgURL = await loadProfilePic(senderId);
         await this.loadReadReceipts();
+        await this.getGroupChatNames();
    
         this.setState({senderImgURL});
         handleScroll();
@@ -48,9 +51,19 @@ class MessageBubble extends Component{
         this.setState({readReceipts});
     }
 
+    async getGroupChatNames(){
+        const{senderId} = this.props;
+        const user = await getUserData(senderId);
+        const name = user.firstName+" "+ user.lastName;
+        this.setState({name});
+    }
+  
+   
+
     render(){
         const {uid, senderId, content, image} = this.props;
-        const {senderImgURL, contentImg, readReceipts} = this.state;
+        const {senderImgURL, contentImg, readReceipts,name} = this.state;
+
 
         const msgPosition = (uid === senderId)? 
             'msg-r': 
@@ -59,12 +72,16 @@ class MessageBubble extends Component{
         return(
             <div className ='row no-gutters'>
                 <div className='msg-container'>
+                
                     {msgPosition === 'msg-l'? 
                         <img src = {senderImgURL? senderImgURL: loading} alt ='profile pic'/>: 
                         null
                     }
-
+                    
                     <div className ={`msg ${msgPosition} my-1`}>
+                <strong className='usersName'>{name}</strong>
+                    <br></br>
+                    <br></br>
                         <div>
                             {image? <img src={contentImg? contentImg: loading} alt='content pic'/>: null}
                             {content}
