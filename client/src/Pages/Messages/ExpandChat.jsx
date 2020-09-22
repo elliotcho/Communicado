@@ -73,6 +73,7 @@ class ExpandChat extends Component{
     handleScroll(){
         this.chatBox.scrollTop = this.chatBox.scrollHeight;
     }
+    
 
     render(){
         const {uid, typingOnDisplay, isComposerChat, chatId} = this.props;
@@ -89,6 +90,7 @@ class ExpandChat extends Component{
                 image = {msg.image}
                 readBy = {[...msg.readBy]}
                 handleScroll = {this.handleScroll}
+                
             />
         );
 
@@ -114,6 +116,7 @@ class ExpandChat extends Component{
 
                 <section className = 'chat-box' ref = {ele => this.chatBox = ele}>
                     {messages}
+                    
                     {typingOnDisplay.map(id =>
                         <TypingBubble
                             key = {id}
