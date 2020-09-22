@@ -27,18 +27,25 @@ class Messages extends Component {
         const chats = await dispatch(loadChats(uid, this.cancelSource));
         dispatch(seeChats(uid));
 
-        if(chats.length !== 0 && chatId !== 'new'){
+        if(chatId === 'home'){
             this.props.history.push(`/chat/${chats[0]._id}`);
         }
 
-        else{
+        else if(chats.length === 0 || chatId === 'new'){
             this.props.history.push('/chat/new');
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate(prevProps){
+        const prevPathName = prevProps.location.pathname;
+        const currPathName = this.props.location.pathname;
+
         const {uid, dispatch, unseenChats} = this.props;
         const {seeChats} = msgActions;
+
+        if(prevPathName !== '/chat/home' && currPathName === '/chat/home'){
+            this.props.history.push(prevPathName);
+        }
 
         if(unseenChats){
             dispatch(seeChats(uid));
@@ -55,14 +62,22 @@ class Messages extends Component {
     }
 
     handleComposer(){
-        const {id} = this.props.match.params;
+        const {chats, recipients} = this.props;
 
-        if(id === 'new'){
-            this.props.history.push('/chat/home');
+        const {id} = this.props.match.params;
+        
+        if(id !== 'new'){
+            this.props.history.push('/chat/new');
         }
 
         else{
-            this.props.history.push('/chat/new');
+            const msg = "Are you sure you want to exit?";
+
+            if(chats.length === 0 || (recipients.length !== 0 && !window.confirm(msg))){
+                return;
+            }
+
+            this.props.history.goBack();
         }
     }
 
