@@ -9,7 +9,14 @@ import OnlineFriendList from './OnlineFriendList';
 import {io} from '../../App';
 import './Home.css';
 
+let interval = [];
+
 class Home extends Component{
+    constructor(){
+        super();
+        this.getOnlineFriends = this.getOnlineFriends.bind(this);
+    }
+
     // After init render, read userID and get info + picture to display
     componentDidMount(){
         const {uid, dispatch} = this.props;
@@ -18,8 +25,18 @@ class Home extends Component{
         dispatch(getAccountData(uid));
         dispatch(loadFriends(uid));
         dispatch(countFriends(uid));
-        
+
+        this.getOnlineFriends();
+    }
+
+    getOnlineFriends(){
+        const {uid} = this.props;
+
         io.emit('GET_ONLINE_FRIENDS', {uid});
+
+        interval = setInterval(() =>{
+            io.emit('GET_ONLINE_FRIENDS', {uid});
+        }, 5000);
     }
 
     // Clear users when moving pages
@@ -27,6 +44,7 @@ class Home extends Component{
         const {dispatch} = this.props;
         const {clearUsers} = friendActions;
 
+        clearInterval(interval);
         dispatch(clearUsers());
     }
 

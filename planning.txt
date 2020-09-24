@@ -1,9 +1,10 @@
 TODOS (September 21):
 Home page CSS
-Home page online friend intervals
 Message bubble extras
-Hash passwords
+Clean up bugs
+__________________________
 O - Auth google sign in? 
+Hash passwords
 
 
                      routes   <-- view/client --> socket(5000)
