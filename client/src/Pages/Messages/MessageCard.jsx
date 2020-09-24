@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
 import * as msgActions from '../../store/actions/messagesActions';
-import {loadProfilePic} from '../../store/actions/profileActions';
+import {loadProfilePic, getUserData} from '../../store/actions/profileActions';
 import loading from '../../images/loading.jpg';
 import './MessageCard.css';
 
@@ -13,9 +13,11 @@ class MessageCard extends Component {
             isRead: true,
             memberNames: 'Loading Users...',
             chatPics: [],
+            content: ''
         }
 
         this.handleClick = this.handleClick.bind(this);
+        this.formatContent = this.formatContent.bind(this);
     }
 
 
@@ -31,11 +33,13 @@ class MessageCard extends Component {
         const isRead = dispatch(readChat(chatId, uid, lastMsg, isActive));
         const chatPics = await getChatPics(chatId, uid, loadProfilePic);
         const memberNames = await getMemberNames(chatId, uid);
+        const content = await this.formatContent();
     
         this.setState({
             memberNames,
             chatPics,
-            isRead
+            isRead,
+            content
         });   
     }
 
@@ -52,11 +56,28 @@ class MessageCard extends Component {
         }
     }
 
-    render() {
-        const {memberNames, chatPics, isRead} = this.state;
-        const {isActive, lastMsg} = this.props;
+    async formatContent(){
+        const {content, senderId} = this.props.lastMsg;
 
-        const cardClassName = (isActive)? 'active': ''
+        if(content.length > 20){
+            return content.substring(0, 18) + '...';
+        }
+
+        else if(content.length === 0){
+            const user = await getUserData(senderId);
+            const {firstName} = user;
+            
+            return `${firstName} sent a photo`;
+        }
+
+        return content;
+    }
+
+    render() {
+        const {memberNames, chatPics, isRead, content} = this.state;
+        const {isActive} = this.props;
+
+        const cardClassName = (isActive)? 'active': '';
 
         return (
             <div onClick={this.handleClick} className={`MessageCard ${cardClassName} card flex-row flex-wrap`}>
@@ -78,10 +99,10 @@ class MessageCard extends Component {
 
                     {isActive || isRead?
                         (<p className="card-text text-muted">
-                            {lastMsg.content}
+                            {content}
                         </p>):
                         (<p className="card-text">
-                            <strong>{lastMsg.content}</strong>
+                            <strong>{content}</strong>
                         </p>)
                     }
                 </div>
