@@ -11,8 +11,8 @@ class SearchMsgs extends Component{
             query: ''
         };
 
-        this.handleKeyUp = this.handleKeyUp.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleKeyUp = this.handleKeyUp.bind(this);
     }
 
     componentDidUpdate(prevProps){
@@ -26,7 +26,7 @@ class SearchMsgs extends Component{
         this.setState({[e.target.id]: e.target.value});
     }
 
-    async handleKeyUp(){
+    handleKeyUp(){
         const {uid, dispatch} = this.props;
         const {query} = this.state;
         
