@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { loadProfilePic,getUserData} from '../../store/actions/profileActions';
 import {getReadReceipts} from '../../store/actions/messagesActions';
 import {loadProfilePic} from '../../store/actions/profileActions';
 import ImageModal from './ImageModal';
@@ -11,10 +12,12 @@ class MessageBubble extends Component{
 
         this.state={
             senderImgURL: null,
-            readReceipts: []
+            readReceipts: [],
+            name: "Loading User..."
         }
 
         this.loadReadReceipts = this.loadReadReceipts.bind(this);
+        this.getGroupChatNames = this.getGroupChatNames.bind(this);
     }
 
     async componentDidMount(){
@@ -22,6 +25,7 @@ class MessageBubble extends Component{
 
         const senderImgURL = await loadProfilePic(senderId);
         await this.loadReadReceipts();
+        await this.getGroupChatNames();
    
         this.setState({senderImgURL});
         handleScroll();
@@ -43,9 +47,18 @@ class MessageBubble extends Component{
         this.setState({readReceipts});
     }
 
+    async getGroupChatNames(){
+        const{senderId} = this.props;
+        const user = await getUserData(senderId);
+        const name = user.firstName+" "+ user.lastName;
+        this.setState({name});
+    }
+  
+   
+
     render(){
         const {uid, msgId, senderId, chatId, content, image} = this.props;
-        const {senderImgURL, readReceipts} = this.state;
+        const {senderImgURL, readReceipts, name} = this.state;
 
         const msgPosition = (uid === senderId)? 
             'msg-r': 
@@ -54,12 +67,16 @@ class MessageBubble extends Component{
         return(
             <div className ='row no-gutters'>
                 <div className='msg-container'>
+                
                     {msgPosition === 'msg-l'? 
                         <img src = {senderImgURL? senderImgURL: loading} alt ='profile pic'/>: 
                         null
                     }
-
+                    
                     <div className ={`msg ${msgPosition} my-1`}>
+                <strong className='usersName'>{name}</strong>
+                    <br></br>
+                    <br></br>
                         <div>
                             {image?
                                 (<div className='text-primary msg-photo' data-toggle ='modal' data-target ={`#${msgId}-image`}>

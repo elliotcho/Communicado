@@ -15,6 +15,13 @@ class SearchMsgs extends Component{
         this.handleChange = this.handleChange.bind(this);
     }
 
+    componentDidUpdate(prevProps){
+        const {clearQuery} = this.props;
+        if(clearQuery && !prevProps.clearQuery){
+            this.setState({query: ''})
+        }
+    }
+
     handleChange(e){
         this.setState({[e.target.id]: e.target.value});
     }
@@ -37,8 +44,8 @@ class SearchMsgs extends Component{
                         id = 'query'
                         placeholder='Search Messages...' 
                         value = {query}
-                        onKeyUp = {this.handleKeyUp}
-                        onChange = {this.handleChange}
+                        onChange={this.handleChange}
+                        onKeyUp={this.handleKeyUp}
                     />
                 </form>
             </div>
