@@ -13,8 +13,14 @@ import './Messages.css';
 class Messages extends Component {
     constructor(){
         super();
+
+        this.state={
+            clearQuery:false
+        };
+
         this.handleComposer = this.handleComposer.bind(this);
-    }
+        this.clearTextbox = this.clearTextbox.bind(this);
+        }
 
     async componentDidMount(){
         const chatId = this.props.match.params.id;
@@ -81,6 +87,10 @@ class Messages extends Component {
         }
     }
 
+    clearTextbox(){
+        this.setState({clearQuery:true});
+    }
+
     render() {
         const {
             uid,
@@ -106,6 +116,8 @@ class Messages extends Component {
                 isActive = {chatId === chat._id}
                 lastMsg = {chat.messages[chat.messages.length - 1]}
                 dispatch = {dispatch}
+                clearTextbox ={this.clearTextbox}
+                clearQuery = {this.state.clearQuery}
             />
         );
 
@@ -124,7 +136,10 @@ class Messages extends Component {
                             </header>
 
                             <div className ='MessageList'>
-                                <SearchMsgs uid={uid}/>
+                                <SearchMsgs 
+                                uid={uid}
+                                clearQuery = {this.state.clearQuery}
+                                />
                                 {msgCards} 
                             </div>
                         </div>

@@ -16,6 +16,13 @@ class SearchMsgs extends Component{
         this.handleKeyUp = this.handleKeyUp.bind(this);
     }
 
+    componentDidUpdate(prevProps){
+        const {clearQuery} = this.props;
+        if(clearQuery && !prevProps.clearQuery){
+            this.setState({query: ''})
+        }
+    }
+
     async handleSubmit(e){
         
     }
