@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {getReadReceipts, getMessageImage} from '../../store/actions/messagesActions';
-import { loadProfilePic,getUserData} from '../../store/actions/profileActions';
+import {loadProfilePic, getUserData} from '../../store/actions/profileActions';
+import {getReadReceipts} from '../../store/actions/messagesActions';
+import ImageModal from './ImageModal';
 import loading from '../../images/loading.jpg';
 import './MessageBubble.css';
 
@@ -10,26 +11,20 @@ class MessageBubble extends Component{
 
         this.state={
             senderImgURL: null,
-            contentImg: null,
             readReceipts: [],
             name: "Loading User..."
         }
 
         this.loadReadReceipts = this.loadReadReceipts.bind(this);
-        this.getGroupChatNames = this.getGroupChatNames.bind(this);
+        this.getMemberName = this.getMemberName.bind(this);
     }
 
     async componentDidMount(){
-        const {chatId, msgId, senderId, handleScroll, image} = this.props;
-
-        if(image){
-            const contentImg = await getMessageImage(chatId, msgId);
-            this.setState({contentImg});
-        }
+        const {senderId, handleScroll} = this.props;
 
         const senderImgURL = await loadProfilePic(senderId);
         await this.loadReadReceipts();
-        await this.getGroupChatNames();
+        await this.getMemberName();
    
         this.setState({senderImgURL});
         handleScroll();
@@ -51,19 +46,18 @@ class MessageBubble extends Component{
         this.setState({readReceipts});
     }
 
-    async getGroupChatNames(){
+    async getMemberName(){
         const{senderId} = this.props;
+        
         const user = await getUserData(senderId);
         const name = user.firstName+" "+ user.lastName;
+        
         this.setState({name});
     }
-  
-   
 
     render(){
-        const {uid, senderId, content, image} = this.props;
-        const {senderImgURL, contentImg, readReceipts,name} = this.state;
-
+        const {uid, msgId, senderId, chatId, content, image} = this.props;
+        const {senderImgURL, readReceipts, name} = this.state;
 
         const msgPosition = (uid === senderId)? 
             'msg-r': 
@@ -79,11 +73,15 @@ class MessageBubble extends Component{
                     }
                     
                     <div className ={`msg ${msgPosition} my-1`}>
-                <strong className='usersName'>{name}</strong>
-                    <br></br>
-                    <br></br>
+                        <strong className='usersName'>{name}</strong>
+                        
                         <div>
-                            {image? <img src={contentImg? contentImg: loading} alt='content pic'/>: null}
+                            {image?
+                                (<div className='text-primary msg-photo' data-toggle ='modal' data-target ={`#${msgId}-image`}>
+                                    Photo
+                                </div>):
+                                null
+                            }
                             {content}
                         </div>
 
@@ -103,6 +101,13 @@ class MessageBubble extends Component{
                         null
                     }
                 </div>
+
+                {image? 
+                    (<div className='modal fade' id={`${msgId}-image`} data-backdrop='false'>
+                        <ImageModal msgId={msgId} chatId={chatId}/>
+                    </div>):
+                    null
+                }
             </div>
         )
     }

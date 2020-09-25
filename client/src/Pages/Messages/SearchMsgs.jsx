@@ -10,6 +10,7 @@ class SearchMsgs extends Component{
         this.state = {
             query: ''
         };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
     }
@@ -24,7 +25,8 @@ class SearchMsgs extends Component{
     handleChange(e){
         this.setState({[e.target.id]: e.target.value});
     }
-    handleKeyUp(e){
+
+    handleKeyUp(){
         const {uid, dispatch} = this.props;
         const {query} = this.state;
         
@@ -36,7 +38,7 @@ class SearchMsgs extends Component{
 
         return(
             <div className="searchMsgsList">
-                <form onSubmit={(e)=>e.preventDefault()}>
+                <form onSubmit = {(e) => e.preventDefault()}>
                     <input 
                         type='text' 
                         id = 'query'

@@ -13,7 +13,7 @@ class FilterForm extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleKeyUp = this.handleKeyUp.bind(this);
     }
 
     // Handle change in input to adjust state every character
@@ -22,9 +22,7 @@ class FilterForm extends Component {
     }
 
     // Trim result on submit and findFriends from props with given query
-    handleSubmit(e){
-        e.preventDefault();
-        
+    handleKeyUp(){
         const {friendQuery} = this.state;
         const {uid, dispatch} = this.props;
         
@@ -42,13 +40,14 @@ class FilterForm extends Component {
         return (
             <div className="row my-4 py-3 FilterForm">
                 <div className = "col-12 d-flex justify-content-center text-center">
-                    <form className="FilterForm-form" onSubmit={this.handleSubmit}>
+                    <form className="FilterForm-form">
                         <label htmlFor="friendQuery">Search your friends: </label>
                         <input 
                             type = "text"
                             name = "friendQuery"
                             value = {friendQuery}
                             onChange = {this.handleChange}
+                            onKeyUp = {this.handleKeyUp}
                             placeholder = "Name"
                             className="FilterForm-inp"
                         />
