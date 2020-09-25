@@ -16,7 +16,7 @@ class MessageBubble extends Component{
         }
 
         this.loadReadReceipts = this.loadReadReceipts.bind(this);
-        this.getGroupChatNames = this.getGroupChatNames.bind(this);
+        this.getMemberName = this.getMemberName.bind(this);
     }
 
     async componentDidMount(){
@@ -24,7 +24,7 @@ class MessageBubble extends Component{
 
         const senderImgURL = await loadProfilePic(senderId);
         await this.loadReadReceipts();
-        await this.getGroupChatNames();
+        await this.getMemberName();
    
         this.setState({senderImgURL});
         handleScroll();
@@ -46,14 +46,14 @@ class MessageBubble extends Component{
         this.setState({readReceipts});
     }
 
-    async getGroupChatNames(){
+    async getMemberName(){
         const{senderId} = this.props;
+        
         const user = await getUserData(senderId);
         const name = user.firstName+" "+ user.lastName;
+        
         this.setState({name});
     }
-  
-   
 
     render(){
         const {uid, msgId, senderId, chatId, content, image} = this.props;
@@ -73,9 +73,8 @@ class MessageBubble extends Component{
                     }
                     
                     <div className ={`msg ${msgPosition} my-1`}>
-                <strong className='usersName'>{name}</strong>
-                    <br></br>
-                    <br></br>
+                        <strong className='usersName'>{name}</strong>
+                        
                         <div>
                             {image?
                                 (<div className='text-primary msg-photo' data-toggle ='modal' data-target ={`#${msgId}-image`}>

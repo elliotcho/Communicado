@@ -1,7 +1,6 @@
 TODOS (September 21):
 Home page CSS
 Notif card css
-
 Redesign confirms/alerts
 Refactor socket
 non-existent routes

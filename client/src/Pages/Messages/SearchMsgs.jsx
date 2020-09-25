@@ -38,7 +38,7 @@ class SearchMsgs extends Component{
 
         return(
             <div className="searchMsgsList">
-                <form>
+                <form onSubmit = {(e) => e.preventDefault()}>
                     <input 
                         type='text' 
                         id = 'query'
