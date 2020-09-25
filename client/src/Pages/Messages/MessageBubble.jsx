@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import { loadProfilePic,getUserData} from '../../store/actions/profileActions';
+import {loadProfilePic, getUserData} from '../../store/actions/profileActions';
 import {getReadReceipts} from '../../store/actions/messagesActions';
-import {loadProfilePic} from '../../store/actions/profileActions';
 import ImageModal from './ImageModal';
 import loading from '../../images/loading.jpg';
 import './MessageBubble.css';
