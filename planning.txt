@@ -1,6 +1,13 @@
 TODOS (September 21):
 Home page CSS
+Notif card css
+
+Redesign confirms/alerts
+Refactor socket
+non-existent routes
 Message bubble extras
+Image modal 
+CSS file structure?
 Clean up bugs
 __________________________
 O - Auth google sign in? 

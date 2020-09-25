@@ -49,6 +49,22 @@
     margin-right: auto;
 }
 
+.msg-container .content-pic{
+    cursor: pointer;
+}
+
+.msg-container .content-pic:hover{
+    text-decoration: underline;
+}
+
+.msg-container .msg-photo{
+    cursor: pointer;
+}
+
+.msg-container .msg-photo:hover{
+    text-decoration: underline;
+}
+
 .read-receipts img{
     width: 15px;
     height: 15px;
