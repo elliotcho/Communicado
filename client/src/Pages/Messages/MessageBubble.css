@@ -70,11 +70,18 @@
     height: 15px;
 }
 
-
 .msg-container .msg.msg-r .usersName{
     float: left;
 }
 
 .msg-container .msg.msg-l .usersName{
     float: left;
+}
+
+.modal {
+    background: rgba(0, 0, 0, 0.5); 
+}
+
+.modal-backdrop {
+     display: none;
 }

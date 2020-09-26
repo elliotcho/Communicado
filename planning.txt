@@ -1,11 +1,17 @@
 TODOS (September 21):
 Home page CSS
 Notif card css
+
 Redesign confirms/alerts
 Refactor socket
-non-existent routes
-Message bubble extras
-Image modal 
+
+non-existent routes - Gugsa
+Message bubble extras - Elliot
+Member names on expand chat header (CSS)
+
+Scroll for expand chat
+
+
 CSS file structure?
 Clean up bugs
 __________________________

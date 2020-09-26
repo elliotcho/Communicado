@@ -103,7 +103,7 @@ class MessageBubble extends Component{
                 </div>
 
                 {image? 
-                    (<div className='modal fade' id={`${msgId}-image`} data-backdrop='false'>
+                    (<div className='modal fade' id={`${msgId}-image`} data-backdrop='static'>
                         <ImageModal msgId={msgId} chatId={chatId}/>
                     </div>):
                     null
