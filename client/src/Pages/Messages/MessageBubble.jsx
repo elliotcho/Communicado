@@ -3,6 +3,7 @@ import {loadProfilePic, getUserData} from '../../store/actions/profileActions';
 import {getReadReceipts} from '../../store/actions/messagesActions';
 import ImageModal from './ImageModal';
 import loading from '../../images/loading.jpg';
+import moment from 'moment';
 import './MessageBubble.css';
 
 class MessageBubble extends Component{
@@ -56,7 +57,7 @@ class MessageBubble extends Component{
     }
 
     render(){
-        const {uid, msgId, senderId, chatId, content, image} = this.props;
+        const {uid, msgId, senderId, chatId, content, timeSent, image} = this.props;
         const {senderImgURL, readReceipts, name} = this.state;
 
         const msgPosition = (uid === senderId)? 
@@ -68,7 +69,13 @@ class MessageBubble extends Component{
                 <div className='msg-container'>
                 
                     {msgPosition === 'msg-l'? 
-                        <img src = {senderImgURL? senderImgURL: loading} alt ='profile pic'/>: 
+                        (<img 
+                            src = {senderImgURL? senderImgURL: loading} 
+                            alt ='profile pic'
+                            data-toggle='tooltip' 
+                            data-placement='top'
+                            title= {moment(timeSent).calendar()}
+                        />): 
                         null
                     }
                     
@@ -97,7 +104,13 @@ class MessageBubble extends Component{
                     </div>
                   
                     {msgPosition === 'msg-r'? 
-                        <img src = {senderImgURL? senderImgURL: loading} alt ='profile pic'/>:
+                         (<img 
+                            src = {senderImgURL? senderImgURL: loading} 
+                            alt ='profile pic'
+                            data-toggle='tooltip' 
+                            data-placement='bottom'
+                            title= {moment(timeSent).calendar()}
+                        />): 
                         null
                     }
                 </div>

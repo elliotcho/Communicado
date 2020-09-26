@@ -7,9 +7,31 @@
 
 .MessageCard img {
     border-radius: 50%;
-    width: 32px;
+    width: 42px;
 }
 
 .MessageCard.active{
     background: white;
+}
+
+.MessageCard .card-header{
+    margin: auto;
+}
+
+.MessageCard .card-block{
+    display: none;
+}
+
+@media screen and (min-width:768px){
+    .MessageCard .card-block{
+        display: block;
+    }
+
+    .MessageCard .card-header{
+        margin: revert;
+    }
+
+    .MessageCard img{
+        width: 32px;
+    }
 }

@@ -89,6 +89,7 @@ class ExpandChat extends Component{
                 content = {msg.content}
                 image = {msg.image}
                 readBy = {[...msg.readBy]}
+                timeSent = {msg.timeSent}
                 handleScroll = {this.handleScroll}
                 
             />
