@@ -6,9 +6,6 @@ Redesign confirms/alerts
 Refactor socket
 
 non-existent routes - Gugsa
-Message bubble extras - Elliot
-Scroll for expand chat
-
 
 CSS file structure?
 Clean up bugs

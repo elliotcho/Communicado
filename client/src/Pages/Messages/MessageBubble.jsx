@@ -21,14 +21,13 @@ class MessageBubble extends Component{
     }
 
     async componentDidMount(){
-        const {senderId, handleScroll} = this.props;
+        const {senderId} = this.props;
 
         const senderImgURL = await loadProfilePic(senderId);
         await this.loadReadReceipts();
         await this.getMemberName();
    
         this.setState({senderImgURL});
-        handleScroll();
     }
 
     async componentDidUpdate(prevProps){
@@ -40,18 +39,19 @@ class MessageBubble extends Component{
     }
 
     async loadReadReceipts(){
-        const {readBy, senderId} = this.props;
+        const {readBy, senderId, handleScroll} = this.props;
         
         const readReceipts = await getReadReceipts(readBy, senderId, loadProfilePic);
 
         this.setState({readReceipts});
+        handleScroll();
     }
 
     async getMemberName(){
         const{senderId} = this.props;
         
         const user = await getUserData(senderId);
-        const name = user.firstName+" "+ user.lastName;
+        const name = user.firstName+ " " + user.lastName;
         
         this.setState({name});
     }

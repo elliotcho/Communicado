@@ -71,7 +71,9 @@ class ExpandChat extends Component{
     }
 
     handleScroll(){
-        this.chatBox.scrollTop = this.chatBox.scrollHeight;
+        if(this.chatBox){
+            this.chatBox.scrollTop = this.chatBox.scrollHeight;
+        }
     }
     
 
