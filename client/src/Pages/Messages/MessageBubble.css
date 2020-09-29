@@ -70,15 +70,15 @@
     height: 15px;
 }
 
-.msg-container .msg.msg-r .usersName{
+.msg-container .msg.msg-r .user-name{
     float: left;
 }
 
-.msg-container .msg.msg-l .usersName{
+.msg-container .msg.msg-l .user-name{
     float: left;
 }
 
-.modal {
+.expandChat .modal {
     background: rgba(0, 0, 0, 0.5); 
 }
 

@@ -1,17 +1,21 @@
-.msg-modal .modal-body{
+.msg-modal-dialog{
+    width: 20rem;
+    margin: auto;
+}
+
+.msg-modal-dialog .modal-body{
     background: black;
 }
 
-.msg-modal .close{
+.msg-modal-dialog .close{
     font-size: 2rem;
 }
 
-.msg-modal .close:focus{
+.msg-modal-dialog .close:focus{
     outline: none;
 }
 
-.msg-modal .modal-body img{
-    width: 100%;
-    height: 400px;
-    border-radius: 0;
+.msg-modal-dialog .modal-body img{
+    width: 18rem;
+    height: 18rem;
 }

@@ -18,11 +18,11 @@
     display: inline-block;
     border-radius: 50%;
     margin-right: 10px;
-    margin-bottom: 13px;
+    margin-bottom: -30px;
 }
 
 .expandChat .profile h2{
-    display: inline-block;
+    display: none;
     line-height: 60px;
     vertical-align: bottom;
     color: #fff;
@@ -33,4 +33,14 @@
     padding: 20px;
     overflow-y: auto;
     max-height: 72vh;
+}
+
+@media screen and (min-width: 700px){
+    .expandChat .profile h2{
+        display: inline-block;
+    }
+    
+    .expandChat .profilePic{
+        margin-bottom: 13px;
+    }
 }

@@ -7,8 +7,6 @@ Refactor socket
 
 non-existent routes - Gugsa
 Message bubble extras - Elliot
-Member names on expand chat header (CSS)
-
 Scroll for expand chat
 
 

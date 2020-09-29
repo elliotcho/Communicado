@@ -80,7 +80,9 @@ class MessageBubble extends Component{
                     }
                     
                     <div className ={`msg ${msgPosition} my-1`}>
-                        <strong className='usersName'>{name}</strong>
+                        <p className='mb-4'>
+                            <strong className='user-name'>{name}</strong>
+                        </p>
                         
                         <div>
                             {image?
@@ -89,6 +91,7 @@ class MessageBubble extends Component{
                                 </div>):
                                 null
                             }
+
                             {content}
                         </div>
 
@@ -117,7 +120,11 @@ class MessageBubble extends Component{
 
                 {image? 
                     (<div className='modal fade' id={`${msgId}-image`} data-backdrop='static'>
-                        <ImageModal msgId={msgId} chatId={chatId}/>
+                        <ImageModal 
+                            msgId={msgId} 
+                            chatId={chatId} 
+                            timeSent={timeSent}
+                        />
                     </div>):
                     null
                 }
