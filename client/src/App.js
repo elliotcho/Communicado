@@ -14,6 +14,7 @@ import Messages from './Pages/Messages/Messages'
 import socket from 'socket.io-client';
 import {handleSocketEvents} from './socket/socketEvents';
 import {ToastContainer} from 'react-toastify';
+import DeadPage from './Partials/DeadPage';
 
 let io;
 
@@ -74,6 +75,7 @@ class App extends Component{
                      <Route path='/settings' component = {Settings}/>
                      <Route path='/friends' component = {Friends}/>
                      <Route path='/notifications' component={Notifications}/>
+                     <Route path='/' component={DeadPage}/>
                   </Switch>
                </div>
                
