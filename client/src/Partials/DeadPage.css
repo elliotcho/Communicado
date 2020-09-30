@@ -1,15 +1,15 @@
-.main{
+.dead-page{
     max-width: 800px;
-    margin: auto;
+    margin: 50px auto;
     text-align: center;
 }
 
-img{
-    max-height: 300px;
-    max-width: 150 px;
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#ffffff)); 
+.dead-page img{
+    height: 300px;
+    width: 300px;
 }
 
-body {
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#ffffff)); 
-    }
+.dead-page .dead-page-link{
+    font-size: 2rem;
+    display: block;
+}

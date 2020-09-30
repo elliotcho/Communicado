@@ -1,13 +1,12 @@
 TODOS (September 21):
 Home page CSS
-Notif card css
+Notif card CSS
 
-Redesign confirms/alerts
-Refactor socket
+Refactor socket - Elliot
+non-existent routes - Elliot
+CSS file structure - Gugsa
+Redesign confirms/alerts - Gugsa
 
-non-existent routes - Gugsa
-
-CSS file structure?
 Clean up bugs
 __________________________
 O - Auth google sign in? 
