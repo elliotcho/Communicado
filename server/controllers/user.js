@@ -141,7 +141,7 @@ exports.changePwd = async (req, res) =>{
     const user = await User.findOne({_id: uid});
     const {password} = user;
 
-    const valid = await bcrypt.compare(password, currPwd);
+    const valid = await bcrypt.compare(currPwd, password);
 
     if(!valid){
         res.json({msg: 'Your password is incorrect'});
