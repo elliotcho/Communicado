@@ -4,11 +4,11 @@ Home page CSS
 Refactor socket - Elliot
 CSS file structure - Gugsa
 Redesign confirms/alerts - Gugsa
+Local storage or web token?
 
 Clean up bugs
 __________________________
 O - Auth google sign in? 
-Hash passwords
 
 
                      routes   <-- view/client --> socket(5000)
