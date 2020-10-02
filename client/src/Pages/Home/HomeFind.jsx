@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {findUsers} from '../../store/actions/friendsActions';
+import {findUsers, clearUsers} from '../../store/actions/friendsActions';
 import SearchProfileCard from './SearchProfileCard';
 
 class HomeFind extends Component {
@@ -26,11 +26,10 @@ class HomeFind extends Component {
 
         // If empty query, return
         if (query.trim() === '') {
-            return;
+            dispatch(clearUsers());
+        } else{
+            dispatch(findUsers(query, uid));
         }
-
-        // If not empty, find Users based on query
-        dispatch(findUsers(query, uid));
     }
 
     render() {

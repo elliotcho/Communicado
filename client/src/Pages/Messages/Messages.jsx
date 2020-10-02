@@ -58,15 +58,6 @@ class Messages extends Component {
         }
     }
 
-    componentWillUnmount(){
-        const {dispatch} = this.props;
-        const {clearChats} = msgActions;
-
-        dispatch(clearChats());
-
-        this.cancelSource.cancel();
-    }
-
     handleComposer(){
         const {chats, recipients} = this.props;
 
@@ -89,6 +80,15 @@ class Messages extends Component {
 
     clearTextbox(){
         this.setState({clearQuery:true});
+    }
+
+    componentWillUnmount(){
+        const {dispatch} = this.props;
+        const {clearChats} = msgActions;
+
+        dispatch(clearChats());
+
+        this.cancelSource.cancel();
     }
 
     render() {

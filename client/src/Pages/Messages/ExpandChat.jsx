@@ -76,6 +76,13 @@ class ExpandChat extends Component{
         }
     }
     
+    componentWillUnmount(){
+        const {dispatch} = this.props;
+        const {clearTyping, clearChatOnDisplay} = msgActions;
+        
+        dispatch(clearTyping());
+        dispatch(clearChatOnDisplay());
+    }
 
     render(){
         const {uid, typingOnDisplay, isComposerChat, chatId} = this.props;

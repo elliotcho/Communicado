@@ -366,3 +366,15 @@ export const getChat = async (chatId) => {
     const response = await axios.get(`http://localhost:5000/chats/${chatId}`);
     return response.data;
 }
+
+export const clearTyping = () => {
+    return (dispatch) => {
+        dispatch({type: types.CLEAR_TYPING});
+    }
+}
+
+export const clearChatOnDisplay = () => {
+    return (dispatch) => {
+        dispatch({type: types.CLEAR_DISPLAYED_CHAT});
+    }
+}

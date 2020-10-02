@@ -29,7 +29,6 @@ export const findUsers = (name, uid) => {
     }
 }
 
-//clear friends when unmounting page
 export const clearUsers = () =>{
     return (dispatch) =>{
         dispatch({type: types.CLEAR_USER_SEARCH});

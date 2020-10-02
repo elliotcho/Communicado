@@ -86,7 +86,17 @@ const messagesReducer = (state=initState, action) =>{
                 ...state,
                 msgsOnDisplay: [...state.msgsOnDisplay, action.newMessage]
             }
-        
+        case types.CLEAR_TYPING:
+            return{
+                ...state,
+                typingOnDisplay: []
+            }
+        case types.CLEAR_DISPLAYED_CHAT:
+            return{
+                ...state,
+                msgsOnDisplay: [],
+                chatIdOnDisplay: null
+            }
         default:
             return state;
     }

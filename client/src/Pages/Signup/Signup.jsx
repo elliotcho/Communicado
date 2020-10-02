@@ -65,6 +65,7 @@ class Signup extends Component {
                         maxLength='30'
                         placeholder="First Name"
                         className="Signup-input"
+                        required
                     />
 
                     <input 
@@ -76,6 +77,7 @@ class Signup extends Component {
                         maxLength='30'
                         placeholder="Last Name"
                         className="Signup-input"
+                        required
                     />
 
                     <br/>
@@ -89,6 +91,7 @@ class Signup extends Component {
                         maxLength='50'
                         placeholder="Email"
                         className="Signup-input Signup-input-long"
+                        required
                     />
 
                     <br/>
@@ -102,6 +105,7 @@ class Signup extends Component {
                         maxLength='50'
                         placeholder="Password"
                         className="Signup-input"
+                        required
                     />
 
                     <input 
@@ -113,6 +117,7 @@ class Signup extends Component {
                         maxLength='50'
                         placeholder="Confirm Password"
                         className="Signup-input"
+                        required
                     />
 
                     <br/>

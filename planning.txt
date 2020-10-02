@@ -3,7 +3,6 @@ Home page CSS
 Notif card CSS
 
 Refactor socket - Elliot
-non-existent routes - Elliot
 CSS file structure - Gugsa
 Redesign confirms/alerts - Gugsa
 
