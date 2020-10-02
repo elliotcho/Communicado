@@ -66,9 +66,9 @@ class NotificationCard extends Component {
         const declineRequest = () => {this.handleRequest("DECLINE_REQUEST")};
      
         return (
-            <div className="NotificationCard card">
-                <div className="row d-flex justify-content-center text-left align-items-center">
-                    <div className="col-2 text-center">
+            <div className="NotificationCard card mt-2">
+                <div className="row">
+                    <div className="col-4">
                         {/* While loading for img, display placeholer */}
                         <img 
                             src={imgURL ? imgURL : loading} 
@@ -78,11 +78,11 @@ class NotificationCard extends Component {
                     </div>
 
                     {/* Notif body: name, content and date */}
-                    <div className="col-5 NotificationCard-body">
-                        <h2 className="NotificationCard-msg">
-                            <strong className="NotificationCard-name">{firstName} {lastName} </strong>
+                    <div className="col-8">
+                        <h2>
+                            <strong>{firstName} {lastName} </strong>
                             
-                            <span className="NotificationCard-content">
+                            <span>
                                 {content}
                             </span>
                         </h2>
@@ -90,26 +90,23 @@ class NotificationCard extends Component {
                         <h5 className="text-muted">
                             Sent {moment(date).calendar()}
                         </h5>
-                    </div>
-                   
-                    {
-                        friendRequest?
-                        (
-                            [
-                                <div className = "accept col-1 d-inline-block" key ='check-button'>
-                                    <i className="fas fa-check-square" onClick = {acceptRequest}/>
-                                </div>,
-                                
-                                <div className ='reject col-1 d-inline-block' key='x-button'>
-                                    <i className="fas fa-times-circle" onClick = {declineRequest}/>
+
+                        
+                        {
+                            friendRequest?
+                            (
+                                <div>
+                                    <button className = 'btn btn-success mr-3' onClick = {acceptRequest}>
+                                        Accept
+                                    </button>
+
+                                    <button className="btn btn-danger" onClick = {declineRequest}>
+                                        Decline
+                                    </button>
                                 </div>
-                            ]
-                        ):
-                        [
-                          <div className='col-1 d-inline-block' key='block1'/>,
-                          <div className='col-1 d-inline-block' key='block2'/>
-                        ]
-                    }
+                            ): null
+                        }
+                    </div>
                 </div>
             </div>
         )

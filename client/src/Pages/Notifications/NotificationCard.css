@@ -1,22 +1,19 @@
-.NotificationCard i {
-    font-size: 40px;
+.NotificationCard{
+    max-width: 800px;
+    padding: 20px;
+    margin: auto;
 }
 
-.accept {
-    color: lightgreen;
-    cursor: pointer;
+.NotificationCard:hover{
+    box-shadow: 0 0 2px black;
 }
 
-.reject {
-    color: red;
-    cursor: pointer;
+.NotificationCard img{
+    width: 10rem;
+    height: 10rem;
 }
 
-.NotificationCard-content {
-    font-weight: 200;
-}
-
-.NotificationCard-msg {
-    margin-top: 10px;
-    margin-bottom: 10px;
+.NotificationCard button:focus{
+    box-shadow: none;
+    outline: none;
 }
