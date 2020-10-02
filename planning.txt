@@ -1,6 +1,5 @@
 TODOS (September 21):
 Home page CSS
-Notif card CSS
 
 Refactor socket - Elliot
 CSS file structure - Gugsa
