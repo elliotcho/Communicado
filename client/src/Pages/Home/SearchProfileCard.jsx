@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {loadProfilePic} from '../../store/actions/profileActions';
 import {getFriendStatus} from '../../store/actions/friendsActions';
 import {confirmAlert} from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import loading from '../../images/loading.jpg';
 import {io} from '../../App';
 import './SearchProfileCard.css';
