@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import {getFriendStatus} from '../store/actions/friendsActions';
 import {loadProfilePic} from '../store/actions/profileActions';
+import {confirmAlert} from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import {io} from '../App';
 import './FoundFriendCard.css'
 
@@ -62,17 +64,24 @@ class FoundFriendCard extends Component {
         }
         // Already friends. If clicked, will delete friend from friend list if user confirms
         else {
-            if(!window.confirm(`Are you sure you want to unfriend ${firstName} ${lastName}?`)){
-                return;
+            const confirmDeleteFriend = () => {
+                io.emit("CHANGE_FRIEND_STATUS", {
+                    status, 
+                    uid, 
+                    friendId: _id
+                });
+                
+                this.setState({status: 'Add Friend'});
             }
 
-            io.emit("CHANGE_FRIEND_STATUS", {
-                status, 
-                uid, 
-                friendId: _id
+            confirmAlert({
+                title: 'Communicado',
+                message: `Are you sure you want to unfriend ${firstName} ${lastName}`,
+                buttons: [
+                    {label: 'Yes', onClick: confirmDeleteFriend},
+                    {label: 'No', onClick: () => {return;}}
+                ]
             });
-            
-            this.setState({status: 'Add Friend'});
         }
     }
 

@@ -7,6 +7,8 @@ import SearchMsgs from './SearchMsgs';
 import ExpandChat from './ExpandChat';
 import SendMsg from './SendMsg'
 import ComposeMsg from './ComposeMsg';
+import {confirmAlert} from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import axios from 'axios';
 import './Messages.css';
 
@@ -68,13 +70,26 @@ class Messages extends Component {
         }
 
         else{
-            const msg = "Are you sure you want to exit?";
+            const exitComposer = () => {this.props.history.goBack();}
 
-            if(chats.length === 0 || (recipients.length !== 0 && !window.confirm(msg))){
+            if(chats.length === 0){
                 return;
             }
 
-            this.props.history.goBack();
+            if(recipients.length !== 0){
+                confirmAlert({
+                    title: 'Communicado',
+                    message: 'Are you sure you want to exit?',
+                    buttons: [
+                        {label: 'Yes', onClick: exitComposer},
+                        {label: 'No', onClick: () => {return;}}
+                    ]
+                });
+            }
+
+            else{
+                exitComposer();
+            }
         }
     }
 

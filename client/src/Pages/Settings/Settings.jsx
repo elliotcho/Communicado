@@ -3,6 +3,8 @@ import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as profileActions from '../../store/actions/profileActions';
 import {withAlert} from 'react-alert';
+import {confirmAlert} from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import './Settings.css';
 
 // Settings Page
@@ -88,16 +90,19 @@ class Settings extends Component{
     deleteUser(e){
         e.preventDefault();
 
-        // Show window to delete
-        if(!window.confirm("Are you sure you want to delete your account?")){
-            return;
-        }
-
-        // If yes, delete
         const {uid, dispatch} = this.props;
         const {deleteUser} = profileActions;
 
-        dispatch(deleteUser(uid));  
+        const  confirmDeleteAccount = () => { dispatch(deleteUser(uid)); }
+
+        confirmAlert({
+            title: 'Communicado',
+            message: 'Are you sure you want to delete your account?',
+            buttons: [
+                {label: 'Yes', onClick: confirmDeleteAccount},
+                {label: 'No', onClick: () => {return;}}
+            ]
+        });
     }
 
     render(){
