@@ -33,7 +33,7 @@ class Messages extends Component {
         const chats = await dispatch(loadChats(uid, this.cancelSource));
         dispatch(seeChats(uid));
 
-        if(chatId === 'home'){
+        if(chatId === 'home' && chats.length !== 0){
             this.props.history.push(`/chat/${chats[0]._id}`);
         }
 

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as profileActions from '../../store/actions/profileActions';
+import {withAlert} from 'react-alert';
 import './Settings.css';
 
 // Settings Page
@@ -53,12 +54,12 @@ class Settings extends Component{
 
         // Destructure 
         const {firstName, lastName} = this.state;
-        const {uid, dispatch} = this.props;
+        const {uid, dispatch, alert} = this.props;
 
         const {changeUserName} = profileActions;
 
         // Change name based on what is given in redux client store
-        dispatch(changeUserName(uid, firstName, lastName));
+        dispatch(changeUserName(uid, firstName, lastName, alert));
 
         // Empty state
         this.setState({firstName: "",lastName:""});
@@ -70,10 +71,10 @@ class Settings extends Component{
 
         // Destructure
         const  {currPwd, newPwd, confirmPwd} = this.state;
-        const {uid, dispatch} = this.props;
+        const {uid, dispatch, alert} = this.props;
 
         const {changePwd} = profileActions;
-        dispatch(changePwd(uid, currPwd, newPwd, confirmPwd));
+        dispatch(changePwd(uid, currPwd, newPwd, confirmPwd, alert));
 
         // Empty state
         this.setState({
@@ -222,4 +223,4 @@ const mapStateToProps = (state) =>{
 // Map functions to props from store
 const mapDispatchToProps = (dispatch) => ({dispatch});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert()(Settings));
