@@ -1,8 +1,8 @@
  .send-msg{
-    position: fixed;
+    position: absolute;
+    bottom: 117px;
     width: 100%;
     background: #6262b4;
-    bottom: 0;
     padding: 15px;
     font-family: 'Tahoma';
 }
@@ -11,7 +11,7 @@
     position: relative;
     top: 10px;
     resize: none;
-    max-width: 50%;
+    max-width: 80%;
     display: inline-block;
     overflow: none;
     max-height: 200px;
