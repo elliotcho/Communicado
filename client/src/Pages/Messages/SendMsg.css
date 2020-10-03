@@ -1,6 +1,6 @@
  .send-msg{
-    position: absolute;
-    bottom: 117px;
+    position: fixed;
+    bottom: 0;
     width: 100%;
     background: #6262b4;
     padding: 15px;
@@ -11,7 +11,7 @@
     position: relative;
     top: 10px;
     resize: none;
-    max-width: 80%;
+    max-width: 50%;
     display: inline-block;
     overflow: none;
     max-height: 200px;

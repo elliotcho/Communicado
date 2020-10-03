@@ -15,11 +15,10 @@ import thunk from 'redux-thunk';
 const store=createStore(rootReducer, applyMiddleware(thunk));
 
 const options = {
-  position: 'bottom right',
-  type: 'error',
+  position: 'top center',
   timeout: 5000,
   transition: 'scale',
-  offset: '10px'
+  offset: '10px',
 }
 
 ReactDOM.render(

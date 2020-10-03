@@ -72,7 +72,11 @@ export const changeUserName = (uid, firstName, lastName, alert) =>{
             });
         }
 
-        alert.show(msg);
+        if(msg === 'Both inputs are blank: your name has not been changed.'){
+            alert.error(msg);
+        } else{
+            alert.success(msg);
+        }
     }
 }
 
@@ -85,7 +89,11 @@ export const changePwd = (uid, currPwd, newPwd, confirmPwd, alert) => {
         const response = await axios.post('http://localhost:5000/users/changepwd', data, config);
         const {msg} = response.data;
 
-        alert.show(msg);
+        if(msg !== 'Your password has been changed'){
+            alert.error(msg);
+        } else{
+            alert.success(msg);
+        }
     }
 }
 

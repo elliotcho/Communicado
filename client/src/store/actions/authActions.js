@@ -21,7 +21,7 @@ export const login = (credentials, alert) => {
         }
         
         else {
-            alert.show(msg);
+            alert.error(msg);
         }
     }
 }
@@ -32,7 +32,7 @@ export const signUp = (credentials, alert) => {
         const {firstName, lastName} = credentials;
 
         if(!isValidName(firstName) || !isValidName(lastName)){
-            alert.show("Invalid name: First name and last name should only contain letters!");
+            alert.error("Invalid name: First name and last name should only contain letters!");
             return;    
         }
 
@@ -51,7 +51,7 @@ export const signUp = (credentials, alert) => {
         } 
         
         else {
-            alert.show(msg)
+            alert.error(msg)
         }
     }
 }
