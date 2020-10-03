@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {loadProfilePic} from '../../store/actions/profileActions';
-import {checkIfChatExists, getChat} from '../../store/actions/messagesActions';
+import * as msgActions from '../../store/actions/messagesActions';
+import {withRouter} from 'react-router-dom';
 import loading from '../../images/loading.jpg';
 import moment from 'moment';
 import './OnlineFriend.css';
@@ -13,12 +14,15 @@ class OnlineFriend extends Component {
             imgURL: null, 
             timeOfLastMessage: null
         };
+
+        this.messageFriend = this.messageFriend.bind(this);
     }
 
     // After init render, load users data
     async componentDidMount() {
         const {uid} = this.props;
         const {_id} = this.props.user;
+        const {getChat, checkIfChatExists} = msgActions;
 
         let timeOfLastMessage = null;
 
@@ -36,13 +40,33 @@ class OnlineFriend extends Component {
         });
     }
 
+    async messageFriend(){
+        const {uid, dispatch} = this.props;
+        const {_id, firstName, lastName} = this.props.user;
+        const {checkIfChatExists, updateRecipients} = msgActions;
+
+        const chatId = await checkIfChatExists(uid, _id);
+    
+        if(chatId){
+            this.props.history.push(`/chat/${chatId}`);
+        }
+
+        else{
+            const friend = {_id, firstName, lastName};
+    
+            dispatch(updateRecipients([friend]));
+
+            this.props.history.push('/chat/new');
+        }
+    }
+
     render() {
         // Destructuring
         const {imgURL, timeOfLastMessage} = this.state;
         const {firstName, lastName} = this.props.user;
     
         return (
-            <div className = "onlineFriend">
+            <div className = "onlineFriend" onClick={this.messageFriend}>
                 <div className ="row sideBar-body">
                     <div className ="col-sm-3 sideBar-avatar">
                         <div className ="avatar-icon">
@@ -73,4 +97,4 @@ class OnlineFriend extends Component {
     }
 }
 
-export default OnlineFriend
+export default withRouter(OnlineFriend);
