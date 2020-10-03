@@ -22,15 +22,14 @@ class OnlineFriend extends Component {
     async componentDidMount() {
         const {uid} = this.props;
         const {_id} = this.props.user;
-        const {getChat, checkIfChatExists} = msgActions;
-
+    
         let timeOfLastMessage = null;
 
         const imgURL = await loadProfilePic(_id);
-        const chatId = await checkIfChatExists(uid, _id);
+        const chatId = await msgActions.checkIfChatExists(uid, _id);
 
         if(chatId){
-            const chat = await getChat(chatId);
+            const chat = await msgActions.getChat(chatId);
             timeOfLastMessage = chat.timeOfLastMessage;
         }
 
@@ -43,9 +42,8 @@ class OnlineFriend extends Component {
     async messageFriend(){
         const {uid, dispatch} = this.props;
         const {_id, firstName, lastName} = this.props.user;
-        const {checkIfChatExists, updateRecipients} = msgActions;
-
-        const chatId = await checkIfChatExists(uid, _id);
+     
+        const chatId = await msgActions.checkIfChatExists(uid, _id);
     
         if(chatId){
             this.props.history.push(`/chat/${chatId}`);
@@ -54,7 +52,7 @@ class OnlineFriend extends Component {
         else{
             const friend = {_id, firstName, lastName};
     
-            dispatch(updateRecipients([friend]));
+            dispatch(msgActions.updateRecipients([friend]));
 
             this.props.history.push('/chat/new');
         }
