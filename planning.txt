@@ -3,8 +3,8 @@ Home page CSS
 
 Refactor socket - Elliot
 CSS file structure - Gugsa
-Redesign confirms/alerts - Gugsa
 Local storage or web token?
+Scroll in chat
 
 Clean up bugs
 __________________________
