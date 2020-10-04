@@ -1,6 +1,5 @@
-const {getRecipients} = require('./chat');
-
 const active = {};
+
 //io= socket(server) from app.js
 module.exports = (io) => {
     io.on('connection', socket => {
@@ -49,17 +48,6 @@ module.exports = (io) => {
             io.sockets.to(active[uid]).emit('GET_ONLINE_FRIENDS',{
                     friends: activeFriends
             });
-        });
-  
-        socket.on('GET_RECIPIENTS', async data =>{
-            const queryResult = await getRecipients(data);
-            
-            const {uid} = data;
-
-            io.sockets.to(active[uid]).emit(
-                'GET_RECIPIENTS'
-                ,{queryResult} 
-            );
         });
 
         socket.on('CREATE_CHAT', async data =>{

@@ -3,11 +3,20 @@ import axios from 'axios';
 
 const config = {headers: {'content-type': 'application/json'}};
 
-export const getRecipients = (queryResults) =>{
-    return (dispatch) =>{
+export const getRecipients = (uid, name, recipients) =>{
+    return async (dispatch) => {
+        let composerResults = [];
+
+        if(name){
+            const data = {uid, name, recipients};
+    
+            const response = await axios.post('http://localhost:5000/chats/composer', data , config);
+            composerResults = response.data;
+        }
+
         dispatch({
             type: types.LOAD_COMPOSER_RESULTS, 
-            queryResults
+            composerResults
         });
     }
 }

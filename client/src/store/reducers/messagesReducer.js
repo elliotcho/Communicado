@@ -1,7 +1,7 @@
 import * as types from '../constants/actionTypes';
 
 const initState = {
-    queryResults: [],
+    composerResults: [],
     recipients: [],
     chats: [],
     msgsOnDisplay: [],
@@ -17,7 +17,7 @@ const messagesReducer = (state=initState, action) =>{
         case types.LOAD_COMPOSER_RESULTS:
             return{
                 ...state,
-                queryResults: [...action.queryResults]
+                composerResults: [...action.composerResults]
             }
         case types.UPDATE_RECIPIENTS:
             return{

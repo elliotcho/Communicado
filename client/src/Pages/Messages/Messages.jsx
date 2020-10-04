@@ -109,7 +109,7 @@ class Messages extends Component {
     render() {
         const {
             uid,
-            queryResults,        
+            composerResults,        
             recipients,
             chats,
             typingOnDisplay,
@@ -163,7 +163,7 @@ class Messages extends Component {
                             {chatId === 'new'? 
                                 (<ComposeMsg 
                                     uid={uid}
-                                    queryResults = {queryResults}
+                                    composerResults = {composerResults}
                                     recipients = {recipients}
                                     composerChatId = {composerChatId}
                                     dispatch = {dispatch}
@@ -192,7 +192,7 @@ class Messages extends Component {
 
 const mapStateToProps = (state) => {
     return{
-        queryResults: state.messages.queryResults,
+        composerResults: state.messages.composerResults,
         recipients: state.messages.recipients,
         chats: state.messages.chats,
         typingOnDisplay: state.messages.typingOnDisplay,
