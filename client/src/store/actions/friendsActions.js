@@ -102,3 +102,20 @@ export const updateOnlineFriends = (friends) =>{
         });
     }
 }
+
+export const changeFriendStatus = async (uid, friendId, iconStatus) => {
+    let response = await axios.post('http://localhost:5000/friends/status', {senderId: uid, receiverId: friendId}, config);
+    const serverStatus = response.data.status;
+
+    const data = {
+        uid,
+        friendId, 
+        iconStatus,
+        serverStatus
+    }
+
+    response = await axios.post('http://localhost:5000/friends/change', data, config);
+    const {msg} = response.data;
+
+    return msg;
+}

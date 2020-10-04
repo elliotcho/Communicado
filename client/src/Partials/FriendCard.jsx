@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {removeFriend} from '../store/actions/friendsActions';
 import {loadProfilePic} from '../store/actions/profileActions';
+import {removeFriend, changeFriendStatus} from '../store/actions/friendsActions';
 import {updateRecipients, checkIfChatExists} from '../store/actions/messagesActions';
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -36,14 +36,16 @@ class FriendCard extends Component {
         const {_id, firstName, lastName} = this.props.user;
         const {uid, friends, dispatch} = this.props;
 
-        const confirmDeleteFriend = () => {
-            dispatch(removeFriend(_id, friends));
+        const confirmDeleteFriend = async () => {
+            const msg = await changeFriendStatus(uid, _id, "Friends");
         
             io.emit("CHANGE_FRIEND_STATUS", {
-                status: "Friends", 
-                uid, 
-                friendId: _id
+                uid,
+                friendId: _id,
+                msg
             });
+
+            dispatch(removeFriend(_id, friends));
         }
 
         confirmAlert({

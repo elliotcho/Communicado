@@ -1,4 +1,4 @@
-const {declineReq, acceptReq, changeFriendStatus, getOnlineFriends} = require('./friends');
+const {declineReq, acceptReq, getOnlineFriends} = require('./friends');
 const {getRecipients} = require('./chat');
 
 const active = {};
@@ -33,12 +33,10 @@ module.exports = (io) => {
         });
 
         socket.on("CHANGE_FRIEND_STATUS", async data =>{
-            const msg = await changeFriendStatus(data)
-
-            const {uid} = data;
+            const {uid, friendId, msg} = data;
 
             if(msg){
-                io.sockets.to(active[data.friendId]).emit(
+                io.sockets.to(active[friendId]).emit(
                     'FRIEND_REQUEST', 
                     {toastId: uid}
                 );

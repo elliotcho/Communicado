@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {loadProfilePic} from '../../store/actions/profileActions';
-import {getFriendStatus} from '../../store/actions/friendsActions';
+import {getFriendStatus, changeFriendStatus} from '../../store/actions/friendsActions';
 import {confirmAlert} from 'react-confirm-alert';
 import loading from '../../images/loading.jpg';
 import {io} from '../../App';
@@ -31,7 +31,7 @@ class SearchProfileCard extends Component {
         });
     }
 
-    handleClick(){
+    async handleClick(){
         // Destructure
         const {status} = this.state;
         const {_id, firstName, lastName} = this.props.user;
@@ -39,10 +39,12 @@ class SearchProfileCard extends Component {
 
         // Add Friend button
         if(status === 'Add Friend'){
+            const msg = await changeFriendStatus(uid, _id, status);
+
             io.emit("CHANGE_FRIEND_STATUS", {
-                status, 
                 uid, 
-                friendId: _id
+                friendId: _id,
+                msg
             });
             
             this.setState({status: 'Pending'});
@@ -50,10 +52,12 @@ class SearchProfileCard extends Component {
 
         // Pending Button
         else if(status === 'Pending'){
+            const msg = await changeFriendStatus(uid, _id, status);
+
             io.emit("CHANGE_FRIEND_STATUS", {
-                status, 
                 uid, 
-                friendId: _id
+                friendId: _id,
+                msg
             });
             
             this.setState({status: 'Add Friend'});
@@ -61,11 +65,13 @@ class SearchProfileCard extends Component {
 
         // Already friends. If clicked, will delete friend from friend list if user confirms
         else {
-            const confirmDeleteFriend = () => {
+            const confirmDeleteFriend = async () => {
+                const msg = await changeFriendStatus(uid, _id, status);
+
                 io.emit("CHANGE_FRIEND_STATUS", {
-                    status, 
-                    uid, 
-                    friendId: _id
+                    uid,
+                    friendId: _id,
+                    msg
                 });
                 
                 this.setState({status: 'Add Friend'});
