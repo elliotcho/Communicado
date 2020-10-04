@@ -1,4 +1,3 @@
-const {getOnlineFriends} = require('./friends');
 const {getRecipients} = require('./chat');
 
 const active = {};
@@ -37,12 +36,19 @@ module.exports = (io) => {
         });
 
         socket.on('GET_ONLINE_FRIENDS', async data =>{
-            const friends = await getOnlineFriends(data, active);
+            const {allFriends, uid} = data;
 
-            io.sockets.to(active[data.uid]).emit(
-                'GET_ONLINE_FRIENDS',
-                {friends}
-            );
+            const activeFriends = [];
+
+            for(let i=0;i<allFriends.length;i++){
+                if(active[allFriends[i]._id]){
+                    activeFriends.push(allFriends[i]);
+                }
+            }
+
+            io.sockets.to(active[uid]).emit('GET_ONLINE_FRIENDS',{
+                    friends: activeFriends
+            });
         });
   
         socket.on('GET_RECIPIENTS', async data =>{

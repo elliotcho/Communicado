@@ -18,7 +18,7 @@ class Home extends Component{
     }
 
     // After init render, read userID and get info + picture to display
-    componentDidMount(){
+    async componentDidMount(){
         const {uid, dispatch} = this.props;
         const {loadFriends, countFriends} = friendActions;
         
@@ -26,16 +26,24 @@ class Home extends Component{
         dispatch(loadFriends(uid));
         dispatch(countFriends(uid));
 
-        this.getOnlineFriends();
+        await this.getOnlineFriends();
     }
 
-    getOnlineFriends(){
+    async getOnlineFriends(){
         const {uid} = this.props;
+        const {getUserFriends} = friendActions;
 
-        io.emit('GET_ONLINE_FRIENDS', {uid});
+        const allFriends = await getUserFriends(uid);
 
-        interval = setInterval(() =>{
-            io.emit('GET_ONLINE_FRIENDS', {uid});
+        io.emit('GET_ONLINE_FRIENDS', {uid, allFriends});
+
+        interval = setInterval(async () =>{
+            const allFriends = await getUserFriends(uid);
+
+            io.emit('GET_ONLINE_FRIENDS', {
+                uid, 
+                allFriends
+            });
         }, 5000);
     }
 

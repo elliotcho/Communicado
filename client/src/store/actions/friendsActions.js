@@ -142,3 +142,9 @@ export const declineFriendRequest = async (receiverId, senderId) => {
     const {msg} = response.data;
     return msg;
 }
+
+export const getUserFriends = async (uid) => {
+    const response = await axios.get(`http://localhost:5000/friends/${uid}`);
+    const friends = response.data;
+    return friends;
+}
