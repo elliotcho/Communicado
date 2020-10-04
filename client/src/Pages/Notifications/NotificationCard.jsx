@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 import {getUserData, loadProfilePic} from '../../store/actions/profileActions';
-import {getFriendStatus} from '../../store/actions/friendsActions';
+import * as friendActions from '../../store/actions/friendsActions';
 import loading from '../../images/loading.jpg';
 import moment from 'moment';
 import {io} from '../../App';
@@ -30,8 +30,8 @@ class NotificationCard extends Component {
         
         // Get fName and lName of user who sent notification 
         const user = await getUserData(senderId);
+        const status = await friendActions.getFriendStatus(uid, senderId);
         const imgURL = await loadProfilePic(senderId);
-        const status = await getFriendStatus(uid, senderId);
 
         this.setState({
             firstName: user.firstName, 
@@ -41,20 +41,28 @@ class NotificationCard extends Component {
         });
     }
 
-    handleRequest(eventType){
+    async handleRequest(eventType){
         const {status} = this.state;
         const {_id, senderId} = this.props.notif;
         const {uid, deleteNotif} = this.props;
 
+        if(eventType === 'ACCEPT_REQUEST'){
+            const msg = await friendActions.acceptFriendRequest(uid, senderId, status);
+            
+            if(msg){
+                io.emit(eventType, {
+                    receiverId: uid, 
+                    senderId
+                });
+            }
+        } 
+        
+        else{
+            await friendActions.declineFriendRequest(uid, senderId);
+        }
+
         // Delete notification once clicked
         deleteNotif(_id);
-
-         // Send io event type to handle request of accept or decline
-        io.emit(eventType , {
-            status, 
-            receiverId: uid, 
-            senderId
-        });
     }
 
     render() {

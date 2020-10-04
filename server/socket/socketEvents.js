@@ -1,4 +1,4 @@
-const {declineReq, acceptReq, getOnlineFriends} = require('./friends');
+const {getOnlineFriends} = require('./friends');
 const {getRecipients} = require('./chat');
 
 const active = {};
@@ -14,22 +14,15 @@ module.exports = (io) => {
         socket.on("DISCONNECT", data =>{
             delete active[data.uid];
         });
-        
-        // DECLINE REQUEST --- Remove notification from user
-        socket.on("DECLINE_REQUEST", data => declineReq(data));
 
         // ACCEPT FRIEND REQUEST --- Store sender and recipient data from request
         socket.on("ACCEPT_REQUEST", async data =>{
-            const msg = await acceptReq(data);
-
-            const {receiverId} = data;
+            const {receiverId, senderId} = data;
             
-            if(msg){
-                io.sockets.to(active[data.senderId]).emit(
-                    'ACCEPT_REQUEST', 
-                    {toastId: receiverId}
-                ); 
-            }
+            io.sockets.to(active[senderId]).emit(
+                'ACCEPT_REQUEST', 
+                {toastId: receiverId}
+            ); 
         });
 
         socket.on("CHANGE_FRIEND_STATUS", async data =>{

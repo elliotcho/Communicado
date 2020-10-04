@@ -119,3 +119,26 @@ export const changeFriendStatus = async (uid, friendId, iconStatus) => {
 
     return msg;
 }
+
+export const acceptFriendRequest = async (receiverId, senderId, clientStatus) => {
+    let response = await axios.post('http://localhost:5000/friends/status', {receiverId, senderId}, config);
+    const serverStatus = response.data.status;
+
+    const data = {
+        receiverId,
+        senderId,
+        clientStatus, 
+        serverStatus
+    }
+
+    response = await axios.post('http://localhost:5000/friends/accept', data, config);
+    const {msg} = response.data;
+
+    return msg;
+}
+
+export const declineFriendRequest = async (receiverId, senderId) => {
+    const response = await axios.post('http://localhost:5000/friends/decline',{receiverId, senderId}, config);
+    const {msg} = response.data;
+    return msg;
+}
