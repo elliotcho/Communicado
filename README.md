@@ -3,6 +3,7 @@
 <hr>
 
 <img src='./screenshots/toast.png'></img>
+<img src='./screenshots/homepage.png'></img>
 
 Communicado is a full stack messaging application created using
 React, Express, Node.js, MongoDB, Redux, npm, and styled using Bootstrap.
