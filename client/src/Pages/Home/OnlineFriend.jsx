@@ -4,7 +4,7 @@ import * as msgActions from '../../store/actions/messagesActions';
 import {withRouter} from 'react-router-dom';
 import loading from '../../images/loading.jpg';
 import moment from 'moment';
-import './OnlineFriend.css';
+import './css/OnlineFriend.css';
 
 class OnlineFriend extends Component {
     constructor(){
@@ -64,31 +64,27 @@ class OnlineFriend extends Component {
         const {firstName, lastName} = this.props.user;
     
         return (
-            <div className = "onlineFriend" onClick={this.messageFriend}>
-                <div className ="row sideBar-body">
-                    <div className ="col-sm-3 sideBar-avatar">
-                        <div className ="avatar-icon">
+            <div className = "onlineFriend card rounded-0" onClick={this.messageFriend}>
+                <div className ="row no-gutters d-flex text-center justify-content-center align-items-center">
+                    <div className = "col-4">
+                        <div className ="avatar-icon p-0 m-0">
                             <img src={imgURL? imgURL: loading} alt = 'Profile Pic'/>
                             <span className = 'activeIconOn'/>
                         </div>
                     </div>
 
-                    <div className ="col-sm-9 sideBar-main">
-                        <div className ="col-sm-8 sideBar-name">
-                            <span className ="name-meta">
-                                {firstName} {lastName}
-                            </span>
-                        </div>
-
-                        <div className ="col-sm-4 float-right sideBar-time">
-                            {timeOfLastMessage? 
-                                (<span className ="time-meta float-right">
-                                    Last Chatted: {moment(timeOfLastMessage).calendar()}
-                                </span>):
-                                null
-                            }
-                        </div>       
+                    <div className ="col-5">
+                        <h5>{firstName} {lastName}</h5>
                     </div>
+
+                    <div className ="col-3">
+                        {timeOfLastMessage? 
+                            (<span className="text-muted lastMsgTime">
+                                Last Chatted: {moment(timeOfLastMessage).calendar()}
+                            </span>):
+                            null
+                        }
+                    </div>       
                 </div>
             </div>
         )

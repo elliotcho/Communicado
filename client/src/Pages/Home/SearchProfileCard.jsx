@@ -4,7 +4,7 @@ import {getFriendStatus, changeFriendStatus} from '../../store/actions/friendsAc
 import {confirmAlert} from 'react-confirm-alert';
 import loading from '../../images/loading.jpg';
 import {io} from '../../App';
-import './SearchProfileCard.css';
+import './css/SearchProfileCard.css';
 
 class SearchProfileCard extends Component {
     constructor(){

@@ -7,7 +7,7 @@ import HomeFind from './HomeFind';
 import ProfileCard from './ProfileCard';
 import OnlineFriendList from './OnlineFriendList';
 import {io} from '../../App';
-import './Home.css';
+import './css/Home.css';
 
 let interval = [];
 
