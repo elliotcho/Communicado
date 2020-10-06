@@ -3,7 +3,7 @@ import {withRouter, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {signUp} from '../../store/actions/authActions';
 import {withAlert} from 'react-alert';
-import './Signup.css'
+import './css/Signup.css'
 
 class Signup extends Component {
     constructor() {

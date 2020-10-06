@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import * as msgActions from '../../store/actions/messagesActions';
 import {io} from '../../App';
-import './SendMsg.css';
+import './css/SendMsg.css';
 
 let timeOuts = []
 

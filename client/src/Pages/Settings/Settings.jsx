@@ -5,7 +5,7 @@ import * as profileActions from '../../store/actions/profileActions';
 import {withAlert} from 'react-alert';
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import './Settings.css';
+import './css/Settings.css';
 
 // Settings Page
 class Settings extends Component{

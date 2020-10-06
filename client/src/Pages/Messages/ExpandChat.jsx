@@ -6,7 +6,7 @@ import MessageBubble from './MessageBubble';
 import TypingBubble from './TypingBubble';
 import loading from '../../images/loading.jpg';
 import {io} from '../../App';
-import './ExpandChat.css';
+import './css/ExpandChat.css';
 
 class ExpandChat extends Component{
     constructor(){

@@ -4,7 +4,7 @@ import * as friendActions from '../../store/actions/friendsActions';
 import loading from '../../images/loading.jpg';
 import moment from 'moment';
 import {io} from '../../App';
-import './NotificationCard.css'
+import './css/NotificationCard.css'
 
 // Notification cards that will be rendered in Notifications for each one 
 class NotificationCard extends Component {

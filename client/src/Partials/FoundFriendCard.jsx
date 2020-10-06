@@ -5,7 +5,7 @@ import {loadProfilePic} from '../store/actions/profileActions';
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {io} from '../App';
-import './FoundFriendCard.css'
+import './css/FoundFriendCard.css'
 
 // Found friend card displayed in the FindForm to show possible new friends
 class FoundFriendCard extends Component {

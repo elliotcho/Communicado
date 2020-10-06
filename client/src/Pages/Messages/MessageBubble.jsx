@@ -4,7 +4,7 @@ import {getReadReceipts} from '../../store/actions/messagesActions';
 import ImageModal from './ImageModal';
 import loading from '../../images/loading.jpg';
 import moment from 'moment';
-import './MessageBubble.css';
+import './css/MessageBubble.css';
 
 class MessageBubble extends Component{
     constructor(){
