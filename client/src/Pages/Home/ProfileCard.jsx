@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {loadProfilePic, changeProfilePic} from '../../store/actions/profileActions';
 import moment from 'moment';
 import loading from '../../images/loading.jpg';
-import './ProfileCard.css'
+import './css/ProfileCard.css'
 
 // Component that shows a Users profile card on the home page
 class ProfileCard extends Component {
