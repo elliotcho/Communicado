@@ -1,14 +1,21 @@
-TODOS (September 21):
+TODOS:
 Home page CSS
+Scroll in chat/msg icon hover
 
-Refactor socket - Elliot
-CSS file structure - Gugsa
+React file structure
 Local storage or web token?
-Scroll in chat
 
 Clean up bugs
 __________________________
 O - Auth google sign in? 
+
+
+
+
+
+
+
+
 
 
                      routes   <-- view/client --> socket(5000)
