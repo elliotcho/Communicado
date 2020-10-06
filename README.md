@@ -2,12 +2,15 @@
 
 <hr>
 
-Communicado is a full stack messaging application created using
+Communicado is a responsive full stack messaging application created using
 React, Express, Node.js, MongoDB, Redux, npm, and styled using Bootstrap.
 
 This application authenticates users and allows them to create profiles.
 Users can change their profile information including name, passwords,
 and profile pictures.
+
+Users can also view which friends are online, and the last time
+they chatted with them if they have ever.
 
 <br>
 <img src='./screenshots/homepage.png'></img>
@@ -18,9 +21,13 @@ They can add each other as friends, and real time friend requests and
 notifications are deployed. 
 
 <br>
-<img src ='./screenshots/addFriend.png'></img>
-<br>
 <img src ='./screenshots/friendspage.png'></img>
+<br>
+<p>
+  Friend requests are sent in real time to users
+  Declining a request does not notify whoever sent
+  the friend request.
+</p>
 <br>
 <img src ='./screenshots/friendRequest.png'></img>
 <br>
@@ -34,9 +41,6 @@ If a user is typing, that is rendered in real time as well.
 <br>
 <img src ='./screenshots/messagespage.png'></img>
 <br>
-
-Users can also view which friends are online, and the last time
-they chatted with them if they have ever.
 
 <hr>
 
