@@ -37,7 +37,7 @@ class HomeFind extends Component {
         const {query} = this.state;
 
         return (
-            <div className="HomeFind col-lg-3">
+            <div className="HomeFind col-lg-12 col-xl-3 mb-4 mb-sm-4 mb-md-4 mb-lg-4 mb-xl-0">
                 <div className="card text-center d-flex justify-content-center homeCard w-100 h-100">
 
                     {/* Card Header */}
