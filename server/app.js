@@ -55,7 +55,7 @@ app.use('/chats', require('./routes/chat'));
 app.use('/friends', require('./routes/friends')); 
 
 //Specify localhost port number
-const server = app.listen(process.env.PORT);
+const server = app.listen(process.env.PORT || 5000);
 
 //Here we pass socket server as a parameter to the arrow io function in socketEvents
 require('./socket/socketEvents')(socket(server));
