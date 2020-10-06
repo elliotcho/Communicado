@@ -34,8 +34,6 @@ If a user is typing, that is rendered in real time as well.
 <br>
 <img src ='./screenshots/messagespage.png'></img>
 <br>
-<img src='./screenshots/messagespage-sm.png'></img>
-<br>
 
 Users can also view which friends are online, and the last time
 they chatted with them if they have ever.
