@@ -35,6 +35,40 @@
     max-height: 72vh;
 }
 
+.expandChat .inner-chat-box{
+    margin-bottom: 130px;
+}
+
+@media screen and (min-height: 400px){
+    .expandChat .inner-chat-box{
+        margin-bottom: 100px;
+    }
+}
+
+@media screen and (min-height: 500px){
+    .expandChat .inner-chat-box{
+        margin-bottom: 70px;
+    }
+}
+
+@media screen and (min-height: 600px){
+    .expandChat .inner-chat-box{
+        margin-bottom: 50px;
+    }
+}
+
+@media screen and (min-height: 700px){
+    .expandChat .inner-chat-box{
+        margin-bottom: 20px;
+    }   
+}
+
+@media screen and (min-height: 800px){
+    .expandChat .inner-chat-box{
+        margin-bottom: 10px;
+    }
+}
+
 @media screen and (min-width: 700px){
     .expandChat .profile h2{
         display: inline-block;

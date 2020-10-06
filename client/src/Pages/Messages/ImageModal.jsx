@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {getMessageImage} from '../../store/actions/messagesActions';
 import loading from '../../images/loading.jpg';
 import moment from 'moment';
-import './ImageModal.css';
+import './css/ImageModal.css';
 
 class ImageModal extends Component{
     constructor(){

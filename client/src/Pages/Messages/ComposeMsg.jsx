@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import * as msgActions from '../../store/actions/messagesActions';
 import ExpandChat from './ExpandChat';
 import UserComposedTo from './UserComposedTo';
-import './ComposeMsg.css';
+import './css/ComposeMsg.css';
 
 class ComposeMsg extends Component{
     constructor(){

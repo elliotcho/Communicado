@@ -1,6 +1,6 @@
 import React from 'react';
 import BaseIcon from './BaseIcon';
-import './Alert.css';
+import './css/Alert.css';
 
 const alertStyle = {
   backgroundColor: '#151515',

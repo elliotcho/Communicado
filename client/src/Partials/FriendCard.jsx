@@ -7,7 +7,7 @@ import {updateRecipients, checkIfChatExists} from '../store/actions/messagesActi
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {io} from '../App';
-import './FriendCard.css'
+import './css/FriendCard.css'
 
 // Friend card to be rendered on friends page for each friend
 class FriendCard extends Component {

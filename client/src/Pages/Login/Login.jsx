@@ -3,7 +3,7 @@ import {withRouter, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {login} from '../../store/actions/authActions';
 import {withAlert} from 'react-alert';
-import './Login.css';
+import './css/Login.css';
 
 // Login page of simple credential requirements
 class Login extends Component {

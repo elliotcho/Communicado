@@ -6,7 +6,7 @@ import MessageBubble from './MessageBubble';
 import TypingBubble from './TypingBubble';
 import loading from '../../images/loading.jpg';
 import {io} from '../../App';
-import './ExpandChat.css';
+import './css/ExpandChat.css';
 
 class ExpandChat extends Component{
     constructor(){
@@ -125,16 +125,18 @@ class ExpandChat extends Component{
                 }
 
                 <section className = 'chat-box' ref = {ele => this.chatBox = ele}>
-                    {messages}
+                    <div className='inner-chat-box'>
+                        {messages}
                     
-                    {typingOnDisplay.map(id =>
-                        <TypingBubble
-                            key = {id}
-                            uid = {id}
-                            show = {id !== uid}
-                            handleScroll = {this.handleScroll}
-                        />
-                    )}
+                        {typingOnDisplay.map(id =>
+                            <TypingBubble
+                                key = {id}
+                                uid = {id}
+                                show = {id !== uid}
+                                handleScroll = {this.handleScroll}
+                            />
+                        )}
+                    </div>
                 </section>
             </div>
         )

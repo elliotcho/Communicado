@@ -10,7 +10,7 @@ import ComposeMsg from './ComposeMsg';
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import axios from 'axios';
-import './Messages.css';
+import './css/Messages.css';
 
 class Messages extends Component {
     constructor(){
