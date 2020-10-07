@@ -23,10 +23,9 @@ class App extends Component{
    constructor(props){
       super();
       
-      //io only instantiated once and we dont want override this cnonnection
       io = socket('http://localhost:5000');
       
-      //importing all these socket.on events from server (socketEvents.js)
+      //function imported from (socketEvents.js) with all socket event handlers 
       handleSocketEvents(io, props.dispatch);
    }
 
@@ -34,7 +33,10 @@ class App extends Component{
       const {uid, dispatch} = this.props;
 
       if(uid){
-         io.emit("JOIN_SERVER", {uid: this.props.uid});
+         io.emit("JOIN_SERVER", {
+            uid: this.props.uid
+         });
+         
          await this.checkForNavbarUpdates(uid, dispatch);
       }
    }
@@ -43,7 +45,10 @@ class App extends Component{
       const {uid, dispatch} = this.props;
 
       if(uid){
-         io.emit("JOIN_SERVER", {uid: this.props.uid});
+         io.emit("JOIN_SERVER", {
+            uid: this.props.uid
+         });
+         
          await this.checkForNavbarUpdates(uid, dispatch);
       }
    }
@@ -86,6 +91,7 @@ class App extends Component{
       )
    }
 }
+
 // Convert state to props using reducer
 const mapStateToProps = (state) =>{
     return {
