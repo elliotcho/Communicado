@@ -24,9 +24,11 @@ class MessageCard extends Component {
     handleClick(){
         const {chatId,uid,dispatch,clearTextbox} = this.props;
         const {loadChats} = msgActions;
-        this.props.history.push(`/chat/${chatId}`);
+
         dispatch(loadChats(uid));
         clearTextbox();
+
+        this.props.history.push(`/chat/${chatId}`);
     }
 
     async componentDidMount(){

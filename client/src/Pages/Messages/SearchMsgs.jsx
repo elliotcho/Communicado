@@ -16,9 +16,11 @@ class SearchMsgs extends Component{
     }
 
     componentDidUpdate(prevProps){
-        const {clearQuery} = this.props;
+        const {clearQuery, resetTextbox} = this.props;
+
         if(clearQuery && !prevProps.clearQuery){
-            this.setState({query: ''})
+            this.setState({query: ''});
+            resetTextbox();
         }
     }
 

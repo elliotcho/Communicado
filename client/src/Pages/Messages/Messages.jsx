@@ -21,8 +21,8 @@ class Messages extends Component {
         };
 
         this.handleComposer = this.handleComposer.bind(this);
-        this.clearTextbox = this.clearTextbox.bind(this);
-        }
+        
+    }
 
     async componentDidMount(){
         const chatId = this.props.match.params.id;
@@ -93,10 +93,6 @@ class Messages extends Component {
         }
     }
 
-    clearTextbox(){
-        this.setState({clearQuery:true});
-    }
-
     componentWillUnmount(){
         const {dispatch} = this.props;
         const {clearChats} = msgActions;
@@ -107,21 +103,16 @@ class Messages extends Component {
     }
 
     render() {
-        const {
-            uid,
-            composerResults,        
-            recipients,
-            chats,
-            typingOnDisplay,
-            composerChatId,
-            dispatch
-        } = this.props;
+        const {uid, composerResults, recipients, chats, typingOnDisplay, composerChatId, dispatch} = this.props;
 
         if(!uid){
             return <Redirect to ='/'/>
         }
 
         const chatId = this.props.match.params.id;
+
+        const clearTextbox = () => {this.setState({clearQuery: true});}
+        const resetTextbox = () => {this.setState({clearQuery: false});}
 
         const msgCards =chats.map(chat =>
             <MessageCard
@@ -131,8 +122,7 @@ class Messages extends Component {
                 isActive = {chatId === chat._id}
                 lastMsg = {chat.messages[chat.messages.length - 1]}
                 dispatch = {dispatch}
-                clearTextbox ={this.clearTextbox}
-                clearQuery = {this.state.clearQuery}
+                clearTextbox ={clearTextbox}
             />
         );
 
@@ -152,9 +142,11 @@ class Messages extends Component {
 
                             <div className ='MessageList'>
                                 <SearchMsgs 
-                                uid={uid}
-                                clearQuery = {this.state.clearQuery}
+                                    uid={uid}
+                                    clearQuery = {this.state.clearQuery}
+                                    resetTextbox = {resetTextbox}
                                 />
+
                                 {msgCards} 
                             </div>
                         </div>
