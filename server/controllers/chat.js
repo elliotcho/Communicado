@@ -201,7 +201,8 @@ exports.getMemberNames =  async (req, res) =>{
         for(let i=0;i<members.length;i++){
             const user = await User.findOne({_id: members[i]});
 
-            const {firstName, lastName} = user;
+            const firstName = (user) ? user.firstName : 'Communicado';
+            const lastName = (user) ? user.lastName: 'User';
 
             if(i === members.length - 1){
                 result+=`${firstName} ${lastName}`;

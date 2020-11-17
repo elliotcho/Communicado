@@ -53,23 +53,31 @@ exports.signUp = async (req, res) => {
 exports.getUserInfo = async (req, res) =>{
     const {uid} = req.params;
 
-    const user = await User.findOne({_id: uid})
+    const user = await User.findOne({_id: uid});
 
-    res.json(user);
+    if(user === null){
+        res.json({
+            _id: uid,
+            firstName: 'Communicado',
+            lastName: 'User'
+        });
+    } 
+    
+    else{
+        res.json(user);
+    }
 }
 
 exports.loadProfilePic = async (req, res) =>{
     const {uid} = req.params;
-
     const user = await User.findOne({_id: uid});
-    const {profilePic} = user;
-
-    if(profilePic === null){
+ 
+    if(user === null || user.profilePic === null){
         res.sendFile(path.join(__dirname, '../', 'images/profile/avatar.jpg'));
     }
 
     else{
-        res.sendFile(path.join(__dirname, '../', `images/profile/${profilePic}`));
+        res.sendFile(path.join(__dirname, '../', `images/profile/${user.profilePic}`));
     }
 }
 
